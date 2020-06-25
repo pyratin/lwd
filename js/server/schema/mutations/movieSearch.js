@@ -134,7 +134,6 @@ export default async (
     text
   );
 
-  console.log(results.length);
   results = await movieSearchResultsFilteredGet(
     results
   );

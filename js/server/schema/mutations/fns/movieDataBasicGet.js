@@ -93,11 +93,11 @@ const pageTitleFromUrlGet = (
 };
 
 const movieDataBasicCastGetFn = (
-  _castEl
+  castHtml
 ) => {
 
   const $ = cheerio.load(
-    _castEl
+    castHtml
   );
 
   const castEl = $(
@@ -108,15 +108,15 @@ const movieDataBasicCastGetFn = (
 
   const castText = castEl.text();
 
-  const regExp = new RegExp(
+  const textRegExp = new RegExp(
     `
       ^(.*)\\s+(as\\s+.*)$
     `
       .trim()
   );
 
-  const match = castText.match(
-    regExp
+  const textMatch = castText.match(
+    textRegExp
   );
 
   let actorUd;
@@ -126,14 +126,27 @@ const movieDataBasicCastGetFn = (
   let role;
 
   if (
-    match
+    textMatch
   ) {
 
     [
       ,
       actorText,
       role
-    ] = match;
+    ] = textMatch;
+  }
+
+  const htmlRegExp = /^<a/;
+
+  const htmlMatch = castHtml.match(
+    htmlRegExp
+  );
+
+  if (
+    actorText &&
+    role &&
+    htmlMatch
+  ) {
 
     const actorLinkEl = $(
       castEl
@@ -192,7 +205,8 @@ const movieDataBasicCastGet = (
           actorText,
           role
         ] = movieDataBasicCastGetFn(
-          castEl
+          $(castEl)
+            .html()
         );
 
         if (
@@ -267,8 +281,7 @@ export default async (
   const cast = movieDataBasicCastGet(
     castText
   );
-
-  console.log(title, cast);
+  console.log(cast);
 
   return {
     title,
