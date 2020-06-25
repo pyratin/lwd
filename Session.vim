@@ -21,10 +21,11 @@ badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +1 js/server/schema/mutations/movieSearch/index.js
 badd +1 js/server/schema/mutations/movieSearch.js
 badd +1 js/server/schema/mutations/movieSelect/index.js
-badd +0 js/server/schema/mutations/fns/dictGet/index.js
+badd +1 js/server/schema/mutations/fns/dictGet/index.js
 badd +93 js/server/schema/mutations/fns/dictGet.js
-badd +0 js/server/schema/mutations/fns/plotCapitalizedWordsGet.js
-badd +0 js/server/fns/dictGet.js
+badd +7 js/server/schema/mutations/fns/plotCapitalizedWordsGet.js
+badd +1 js/server/fns/dictGet.js
+badd +1 js/server/schema/mutations/fns/common.js
 argglobal
 %argdel
 set stal=2
@@ -172,12 +173,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 18) / 36)
+let s:l = 17 - ((16 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
+17
 normal! 017|
+tabedit js/server/schema/mutations/fns/common.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 2 - ((1 * winheight(0) + 18) / 36)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+2
+normal! 0
 tabedit js/server/fns/dictGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -197,11 +223,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 95 - ((28 * winheight(0) + 18) / 36)
+let s:l = 50 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-95
+50
 normal! 0
 tabedit js/server/schema/mutations/fns/movieDataBasicGet.js
 set splitbelow splitright
