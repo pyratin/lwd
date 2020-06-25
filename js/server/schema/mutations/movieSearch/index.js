@@ -1,7 +1,7 @@
 'use strict';
 
-import nodeFetch from './fns/nodeFetch';
-import movieDataBasicGet from './fns/movieDataBasicGet';
+import nodeFetch from '../fns/nodeFetch';
+import movieDataBasicGet from '../fns/movieDataBasicGet';
 
 const movieSearchQueryGetFn = (
   text

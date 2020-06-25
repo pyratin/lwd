@@ -14,6 +14,7 @@ import {
 
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
+import movieSelect from './mutations/movieSelect';
 
 const viewerType = new GraphQLObjectType(
   {
@@ -122,13 +123,50 @@ const MovieSearchMutation = mutationWithClientMutationId(
   }
 );
 
+const MovieSelectMutation = mutationWithClientMutationId(
+  {
+    name: 'MovieSelect',
+    inputFields: {
+      title: {
+        type: new GraphQLNonNull(
+          GraphQLString
+        )
+      }
+    },
+    outputFields: {
+      viewer: {
+        type: viewerType,
+        resolve() {
+
+          return viewerGet();
+        }
+      }
+    },
+    mutateAndGetPayload(
+      {
+        title
+      },
+      {
+        dict
+      }
+    ) {
+
+      return movieSelect(
+        title,
+        dict
+      );
+    }
+  }
+);
+
 const mutationType = new GraphQLObjectType(
   {
     name: 'Mutation',
     fields() {
 
       return {
-        movieSearch: MovieSearchMutation
+        movieSearch: MovieSearchMutation,
+        movieSelect: MovieSelectMutation
       };
     }
   }

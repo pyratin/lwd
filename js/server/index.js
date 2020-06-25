@@ -10,11 +10,14 @@ import {
   nodeEnvGet
 } from './fns/variables';
 import schema from './schema';
+import dictGet from './fns/dictGet';
 
 (
   async () => {
 
     const port = portGet();
+
+    const dict = await dictGet();
 
     return express()
 
@@ -43,7 +46,7 @@ import schema from './schema';
 
       .use(
         '/graphql',
-        (
+        async (
           req,
           res
         ) => {
@@ -54,7 +57,8 @@ import schema from './schema';
               pretty: true,
               graphiql: true,
               context: {
-                req
+                req,
+                dict
               }
             }
           )(
