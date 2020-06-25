@@ -137,4 +137,8 @@ export default async (
   results = await movieSearchResultsFilteredGet(
     results
   );
+
+  return (
+    results
+  );
 };

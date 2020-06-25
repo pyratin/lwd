@@ -116,12 +116,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 137 - ((31 * winheight(0) + 18) / 36)
+let s:l = 142 - ((34 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-137
-normal! 03|
+142
+normal! 011|
 tabedit js/server/schema/mutations/fns/movieDataBasicGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -141,12 +141,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 155 - ((25 * winheight(0) + 18) / 36)
+let s:l = 349 - ((23 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-155
-normal! 040|
+349
+normal! 0
 tabedit js/server/schema/mutations/fns/nodeFetch.js
 set splitbelow splitright
 set nosplitbelow
@@ -222,7 +222,7 @@ exe s:l
 normal! zt
 1
 normal! 0
-tabnext 5
+tabnext 3
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -5,7 +5,8 @@ import {
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLList
 } from 'graphql';
 import {
   mutationWithClientMutationId
@@ -59,6 +60,23 @@ const queryType = new GraphQLObjectType(
   }
 );
 
+const movieSearchResultType = new GraphQLObjectType(
+  {
+    name: 'MovieSearchResult',
+    fields() {
+
+      return {
+        title: {
+          type: GraphQLString
+        },
+        snippet: {
+          type: GraphQLString
+        }
+      };
+    }
+  }
+);
+
 const MovieSearchMutation = mutationWithClientMutationId(
   {
     name: 'MovieSearch',
@@ -75,6 +93,19 @@ const MovieSearchMutation = mutationWithClientMutationId(
         resolve() {
 
           return viewerGet();
+        }
+      },
+      results: {
+        type: new GraphQLList(
+          movieSearchResultType
+        ),
+        resolve(
+          results
+        ) {
+
+          return (
+            results
+          );
         }
       }
     },

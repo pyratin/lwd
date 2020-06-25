@@ -1,6 +1,7 @@
 'use strict';
 
 import cheerio from 'cheerio';
+import sbd from 'sbd';
 
 import nodeFetch from './nodeFetch';
 
@@ -239,6 +240,66 @@ const movieDataBasicCastGet = (
   );
 };
 
+const sentencesFromParagraphGet = (
+  paragraph
+) => {
+
+  return sbd.sentences(
+    paragraph
+  );
+};
+
+const movieDataBasicPlotGet = (
+  plotText
+) => {
+
+  if (
+    !plotText
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  const $ = cheerio.load(
+    plotText
+  );
+
+  const paragraphs = $(
+    'p'
+  )
+    .toArray()
+    .reduce(
+      (
+        memo,
+        p
+      ) => {
+
+
+        let paragraph = $(
+          p
+        )
+          .text();
+
+        const sentences = sentencesFromParagraphGet(
+          paragraph
+        );
+
+        return [
+          ...memo ||
+          [],
+          sentences
+        ];
+      },
+      null
+    );
+
+  return (
+    paragraphs
+  );
+};
+
 export default async (
   title
 ) => {
@@ -281,12 +342,16 @@ export default async (
   const cast = movieDataBasicCastGet(
     castText
   );
-  console.log(cast);
+
+  const plot = movieDataBasicPlotGet(
+    plotText
+  );
 
   return {
     title,
     date,
     image,
-    cast
+    cast,
+    plot
   };
 };
