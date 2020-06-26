@@ -1,16 +1,6 @@
 'use strict';
 
-const capitalizedWordsRegExpString = '((?:[A-Z]\\.\\s)*[A-Z][a-z]+(?=(?:\\s|-)[A-Z])*(?:(?:\\s|-)[A-Z][a-z]+)*)';
-
-const capitalizedWordsRegExpForRole = new RegExp(
-  `
-    ${
-      capitalizedWordsRegExpString
-    }(\\'s)*
-  `
-    .trim(),
-  'g'
-);
+const capitalizedWordsRegExpForRole = /((?:[A-Z]\.*\s*)*[A-Z]+[a-z'.]*(?=(?:\s|-)*[A-Z])*(?:(?:\s|-)*[A-Z0-9]+[a-z']*)*)/g;
 
 const allCapsRegExp = /([A-Z]{2,})/g;
 

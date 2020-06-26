@@ -1,8 +1,7 @@
 'use strict';
 
 import {
-  capitalizedWordsRegExpForRole,
-  allCapsRegExp
+  capitalizedWordsRegExpForRole
 } from './variable';
 
 const characterFlatListGet = (
@@ -78,7 +77,13 @@ const capitalizedsWordsGet = (
       !match[
         2
       ] &&
-      !exists
+      !exists &&
+      !character.match(
+        /'s/
+      ) &&
+      !character.match(
+        /\.$/
+      )
     ) {
 
       capitalizedsWords = [
@@ -93,48 +98,6 @@ const capitalizedsWordsGet = (
   );
 };
 
-const allCapsWordsGet = (
-  role,
-  characters
-) => {
-
-  let allCapsWords = [];
-
-  let match;
-
-  while (
-    (
-      match = allCapsRegExp.exec(
-        role
-      )
-    )
-  ) {
-
-    const character = match[
-      1
-    ];
-
-    const exists = characterExistsGet(
-      character,
-      characters
-    );
-
-    if (
-      !exists
-    ) {
-
-      allCapsWords = [
-        ...allCapsWords,
-        character
-      ];
-    }
-  }
-
-  return (
-    allCapsWords
-  );
-};
-
 const charactersGet = (
   role,
   characters
@@ -145,14 +108,8 @@ const charactersGet = (
     characters
   );
 
-  const allCapsWords = allCapsWordsGet(
-    role,
-    characters
-  );
-
   return [
-    ...capitalizedsWords,
-    ...allCapsWords
+    ...capitalizedsWords
   ];
 };
 

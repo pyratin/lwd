@@ -111,7 +111,7 @@ const castGetFn = (
 
   const textRegExp = new RegExp(
     `
-      ^(.*)\\s+(as\\s+.*)$
+      ^(.*?)\\s+(as\\s+.*)$
     `
       .trim()
   );
