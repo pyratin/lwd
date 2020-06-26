@@ -8,7 +8,7 @@ import {
   titleGet,
   portGet,
   nodeEnvGet
-} from './fns/variables';
+} from './fns/variable';
 import schema from './schema';
 import dictGet from './fns/dictGet';
 

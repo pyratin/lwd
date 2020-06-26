@@ -102,7 +102,7 @@ const castGetFn = (
   );
 
   const castEl = $(
-    'span.mw-ref'
+    'span, sup'
   )
     .remove()
     .end();
