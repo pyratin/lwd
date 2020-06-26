@@ -7,26 +7,16 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 .gitignore
-badd +3 .babelrc
 badd +31 package.json
 badd +67 js/server/index.js
-badd +29 .eslintrc.json
-badd +32 views/index.ejs
 badd +16 js/server/schema/index.js
-badd +1 js/server/schema/fns/viewer.js
 badd +1 js/server/schema/mutations/fns/nodeFetch.js
 badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +1 js/server/schema/mutations/movieSearch/index.js
-badd +1 js/server/schema/mutations/movieSearch.js
 badd +1 js/server/schema/mutations/movieSelect/index.js
-badd +1 js/server/schema/mutations/fns/dictGet/index.js
-badd +93 js/server/schema/mutations/fns/dictGet.js
-badd +50 js/server/fns/dictGet.js
 badd +1 js/server/schema/mutations/fns/movieDataExtendedGet.js
 badd +8 js/server/schema/mutations/fns/movieDataExtendedCastGet.js
 badd +1 js/server/schema/mutations/fns/variable.js
-badd +1 ~/Documents/Projects/lwd/js/server/fns/variable.js
 argglobal
 %argdel
 set stal=2
@@ -74,12 +64,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 11 - ((10 * winheight(0) + 18) / 36)
+let s:l = 42 - ((11 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-11
-normal! 022|
+42
+normal! 07|
 tabedit js/server/schema/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -99,12 +89,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 152 - ((13 * winheight(0) + 18) / 36)
+let s:l = 128 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-152
-normal! 013|
+128
+normal! 0
 tabedit js/server/schema/mutations/movieSelect/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -124,11 +114,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 18) / 36)
+let s:l = 6 - ((5 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-4
+6
 normal! 07|
 tabedit js/server/schema/mutations/fns/movieDataExtendedGet.js
 set splitbelow splitright
@@ -149,12 +139,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 18) / 36)
+let s:l = 6 - ((5 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
-normal! 066|
+6
+normal! 07|
 tabedit js/server/schema/mutations/fns/movieDataExtendedCastGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -174,12 +164,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 75 - ((25 * winheight(0) + 19) / 38)
+let s:l = 160 - ((31 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-75
-normal! 039|
+160
+normal! 020|
 tabedit js/server/schema/mutations/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
@@ -199,7 +189,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 19) / 38)
+let s:l = 1 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -280,56 +270,6 @@ exe s:l
 normal! zt
 64
 normal! 013|
-tabedit js/server/schema/fns/viewer.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-3
-normal! 014|
-tabedit ~/Documents/Projects/lwd/js/server/fns/variable.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-1
-normal! 0
 tabnext 6
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
