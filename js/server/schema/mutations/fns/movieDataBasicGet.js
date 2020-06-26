@@ -93,7 +93,7 @@ const pageTitleFromUrlGet = (
     ];
 };
 
-const movieDataBasicCastGetFn = (
+const castGetFn = (
   castHtml
 ) => {
 
@@ -174,7 +174,7 @@ const movieDataBasicCastGetFn = (
   ];
 };
 
-const movieDataBasicCastGet = (
+const castGet = (
   castText
 ) => {
 
@@ -205,7 +205,7 @@ const movieDataBasicCastGet = (
           actorUd,
           actorText,
           role
-        ] = movieDataBasicCastGetFn(
+        ] = castGetFn(
           $(castEl)
             .html()
         );
@@ -240,7 +240,7 @@ const movieDataBasicCastGet = (
   );
 };
 
-const sentencesFromParagraphGet = (
+const plotGetFn = (
   paragraph
 ) => {
 
@@ -249,7 +249,7 @@ const sentencesFromParagraphGet = (
   );
 };
 
-const movieDataBasicPlotGet = (
+const plotGet = (
   plotText
 ) => {
 
@@ -282,7 +282,7 @@ const movieDataBasicPlotGet = (
         )
           .text();
 
-        const sentences = sentencesFromParagraphGet(
+        const sentences = plotGetFn(
           paragraph
         );
 
@@ -339,11 +339,11 @@ export default async (
     anchorNames
   );
 
-  const cast = movieDataBasicCastGet(
+  const cast = castGet(
     castText
   );
 
-  const plot = movieDataBasicPlotGet(
+  const plot = plotGet(
     plotText
   );
 

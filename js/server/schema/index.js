@@ -145,15 +145,11 @@ const MovieSelectMutation = mutationWithClientMutationId(
     mutateAndGetPayload(
       {
         title
-      },
-      {
-        dict
       }
     ) {
 
       return movieSelect(
-        title,
-        dict
+        title
       );
     }
   }

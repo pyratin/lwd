@@ -1,20 +1,17 @@
 'use strict';
 
 import movieDataBasicGet from '../fns/movieDataBasicGet';
-import plotCapitalizedWordsGet from 
-  '../fns/plotCapitalizedWordsGet';
+import movieDataExtendedGet from '../fns/movieDataExtendedGet';
 
 export default async (
-  title,
-  dict
+  title
 ) => {
 
   let movie = await movieDataBasicGet(
     title
   );
 
-  const plotCapitalizedWords = plotCapitalizedWordsGet(
-    movie.plot,
-    dict
+  const movieDataExtended = movieDataExtendedGet(
+    movie
   );
 };
