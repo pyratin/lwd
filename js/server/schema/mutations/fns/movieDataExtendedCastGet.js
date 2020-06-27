@@ -1,8 +1,6 @@
 'use strict';
 
-import {
-  capitalizedWordsRegExpForRole
-} from './variable';
+import NNPsFromSentenceGet from './NNPsFromSentenceGet';
 
 const characterFlatListGet = (
   cast
@@ -27,10 +25,59 @@ const characterFlatListGet = (
   );
 };
 
-const characterExistsGet = (
-  character,
+const charactersExtendedGetFn = (
+  character
+) => {
+
+  return character.split(
+    /[^\w]/
+  )
+    .filter(
+      (
+        _character
+      ) => {
+
+        return (
+          !!_character
+        );
+      }
+    );
+};
+
+const charactersExtendedGet = (
   characters
 ) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      return [
+        ...new Set(
+          [
+            ...memo,
+            character,
+            ...charactersExtendedGetFn(
+              character
+            )
+          ]
+        )
+      ];
+    },
+    []
+  );
+};
+
+const characterExistsGet = (
+  character,
+  _characters
+) => {
+
+  const characters = charactersExtendedGet(
+    _characters
+  );
 
   return !!(
     characters.find(
@@ -47,70 +94,57 @@ const characterExistsGet = (
   );
 };
 
-const capitalizedsWordsGet = (
-  role,
-  characters
+const charactersFilteredGet = (
+  characters,
+  _characters
 ) => {
 
-  let capitalizedsWords = [];
-
-  let match;
-
-  while (
+  return characters.reduce(
     (
-      match = capitalizedWordsRegExpForRole.exec(
-        role
-      )
-    )
-  ) {
+      memo,
+      character
+    ) => {
 
-    const character = match[
-      1
-    ];
+      const exists = characterExistsGet(
+        character,
+        _characters
+      );
 
-    const exists = characterExistsGet(
-      character,
-      characters
-    );
+      if (
+        !exists
+      ) {
 
-    if (
-      !match[
-        2
-      ] &&
-      !exists &&
-      !character.match(
-        /'s/
-      ) &&
-      !character.match(
-        /\.$/
-      )
-    ) {
+        return [
+          ...memo,
+          character
+        ];
+      }
 
-      capitalizedsWords = [
-        ...capitalizedsWords,
-        character
-      ];
-    }
-  }
-
-  return (
-    capitalizedsWords
+      return (
+        memo
+      );
+    },
+    []
   );
 };
 
 const charactersGet = (
   role,
-  characters
+  _characters
 ) => {
 
-  const capitalizedsWords = capitalizedsWordsGet(
-    role,
-    characters
+  const NNPs = NNPsFromSentenceGet(
+    role
   );
 
-  return [
-    ...capitalizedsWords
-  ];
+  const characters = charactersFilteredGet(
+    NNPs,
+    _characters
+  );
+
+  return (
+    characters
+  );
 };
 
 const charactersAssignedGetFn = (
@@ -160,5 +194,5 @@ export default (
   let cast = charactersAssignedGet(
     _cast
   );
-  console.log(cast);
+  //console.log(cast);
 };

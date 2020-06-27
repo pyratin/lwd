@@ -135,6 +135,12 @@ const castGetFn = (
       actorText,
       role
     ] = textMatch;
+
+    role = sbd.sentences(
+      role
+    )[
+      0
+    ];
   }
 
   const htmlRegExp = /^<a/;
