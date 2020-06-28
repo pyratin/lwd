@@ -15,10 +15,10 @@ badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +1 js/server/schema/mutations/movieSearch/index.js
 badd +1 js/server/schema/mutations/movieSelect/index.js
 badd +1 js/server/schema/mutations/fns/movieDataExtendedGet.js
-badd +179 js/server/schema/mutations/fns/movieDataExtendedCastGet.js
-badd +1 js/server/schema/mutations/fns/variable.js
-badd +0 temp/natural.js
+badd +9 js/server/schema/mutations/fns/movieDataExtendedCastGet.js
+badd +1 temp/natural.js
 badd +1 js/server/schema/mutations/fns/NNPsFromSentenceGet.js
+badd +3 js/server/schema/mutations/fns/movieDataExtendedPlotGet.js
 argglobal
 %argdel
 set stal=2
@@ -41,12 +41,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 31 - ((24 * winheight(0) + 18) / 36)
+let s:l = 33 - ((24 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-31
-normal! 0
+33
+normal! 05|
 tabedit temp/natural.js
 set splitbelow splitright
 set nosplitbelow
@@ -66,7 +66,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 27 - ((3 * winheight(0) + 18) / 36)
+let s:l = 27 - ((4 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -166,12 +166,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 9 - ((8 * winheight(0) + 18) / 36)
+let s:l = 11 - ((10 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-9
-normal! 07|
+11
+normal! 014|
 tabedit js/server/schema/mutations/fns/movieDataExtendedCastGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -191,11 +191,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 133 - ((35 * winheight(0) + 18) / 36)
+let s:l = 189 - ((29 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-133
+189
 normal! 0
 tabedit js/server/schema/mutations/fns/NNPsFromSentenceGet.js
 set splitbelow splitright
@@ -216,11 +216,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 18) / 36)
+let s:l = 70 - ((31 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+70
 normal! 0
 tabedit js/server/schema/mutations/movieSearch/index.js
 set splitbelow splitright
@@ -266,11 +266,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 7 - ((6 * winheight(0) + 18) / 36)
+let s:l = 373 - ((24 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-7
+373
 normal! 0
 tabedit js/server/schema/mutations/fns/nodeFetch.js
 set splitbelow splitright

@@ -1,77 +1,106 @@
 'use strict';
 
 import natural from 'natural';
+import {Tag} from 'en-pos';
 
 const wordsTokenize = (
   sentence
 ) => {
 
-  const tokenizer = new natural.TreebankWordTokenizer(
-    sentence
-  );
+  const tokenizer = new natural.TreebankWordTokenizer();
 
   return tokenizer.tokenize(
     sentence
-  );
+  )
+    .reduce(
+      (
+        memo,
+        word,
+        index
+      ) => {
+
+        return [
+          ...memo,
+          {
+            text: word,
+            index
+          }
+        ];
+      },
+      []
+    );
 };
 
 const wordsTag = (
   words
 ) => {
 
-  const language = 'EN';
-  const defaultCategory = 'N';
-  const defaultCategoryCapitalized = 'NNP';
+  return words.reduce(
+    (
+      memo,
+      word
+    ) => {
 
-  const lexicon = new natural.Lexicon(
-    language,
-    defaultCategory,
-    defaultCategoryCapitalized
-  );
+      if (
+        word.text
+          .match(
+            /\w/
+          )
+      ) {
 
-  const ruleSet = new natural.RuleSet(
-    language
-  );
+        const [
+          tag
+        ] = new Tag(
+          [
+            word.text
+          ]
+        )
+          .initial()
+          .smooth()
+          .tags;
 
-  const tagger = new natural.BrillPOSTagger(
-    lexicon,
-    ruleSet
-  );
+        return [
+          ...memo,
+          {
+            ...word,
+            tag
+          }
+        ];
+      }
 
-  const wordsTagged = tagger.tag(
-    words
-  )
-    .taggedWords;
-
-  return (
-    wordsTagged
+      return [
+        ...memo,
+        word
+      ];
+    },
+    []
   );
 };
 
 const wordsChunk = (
-  wordsTagged
+  words
 ) => {
 
-  const wordsChunked = wordsTagged.reduce(
+  const wordsChunked = words.reduce(
     (
       memo,
-      wordTagged
+      word
     ) => {
 
-      const _wordTagged = memo.slice(
+      const _word = memo.slice(
         -1
       )[
         0
       ];
 
       if (
-        _wordTagged &&
+        _word &&
         (
-          _wordTagged.tag === 
+          _word.tag === 
           'NNP'
         ) &&
         (
-          wordTagged.tag === 
+          word.tag === 
           'NNP'
         )
       ) {
@@ -81,12 +110,12 @@ const wordsChunk = (
             0, -1
           ),
           {
-            ..._wordTagged,
-            token: `
+            ..._word,
+            text: `
               ${
-                _wordTagged.token
+                _word.text
               } ${
-                wordTagged.token
+                word.text
               }
             `
               .trim()
@@ -96,7 +125,7 @@ const wordsChunk = (
 
       return [
         ...memo,
-        wordTagged
+        word
       ];
     },
     []
@@ -107,30 +136,26 @@ const wordsChunk = (
   );
 };
 
-const NNPsGetFn = (
-  wordsChunked
+const NNPsFromSentenceGetFn = (
+  words
 ) => {
 
-  return wordsChunked.reduce(
+  return words.reduce(
     (
       memo,
-      wordChunked
+      word
     ) => {
 
       if (
         (
-          wordChunked.tag === 
+          word.tag === 
           'NNP'
-        ) ||
-        (
-          wordChunked.tag ===
-          'FW'
         )
       ) {
 
         return [
           ...memo,
-          wordChunked.token
+          word.text
         ];
       }
 
@@ -146,23 +171,23 @@ export default (
   sentence
 ) => {
 
-  const words = wordsTokenize(
+  let words = wordsTokenize(
     sentence
   );
 
-  const wordsTagged = wordsTag(
+  words = wordsTag(
     words
   );
 
-  const wordsChunked = wordsChunk(
-    wordsTagged
+  words = wordsChunk(
+    words
   );
 
-  const NNPs = NNPsGetFn(
-    wordsChunked
+  words = NNPsFromSentenceGetFn(
+    words
   );
 
   return (
-    NNPs
+    words
   );
 };

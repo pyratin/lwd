@@ -1,66 +1,25 @@
 'use strict';
 
+import natural from 'natural';
+
 import NNPsFromSentenceGet from './NNPsFromSentenceGet';
 
-const characterFlatListGet = (
-  cast
+const plotCharactersGet = (
+  plot
 ) => {
 
-  return cast.reduce(
+  return plot.reduce(
     (
       memo,
-      _cast
+      sentence
     ) => {
 
       return [
         ...new Set(
           [
             ...memo,
-            ..._cast.characters
-          ]
-        )
-      ];
-    },
-    []
-  );
-};
-
-const charactersExtendedGetFn = (
-  character
-) => {
-
-  return character.split(
-    /[^\w]/
-  )
-    .filter(
-      (
-        _character
-      ) => {
-
-        return (
-          !!_character
-        );
-      }
-    );
-};
-
-const charactersExtendedGet = (
-  characters
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      return [
-        ...new Set(
-          [
-            ...memo,
-            character,
-            ...charactersExtendedGetFn(
-              character
+            ...NNPsFromSentenceGet(
+              sentence.text
             )
           ]
         )
@@ -72,14 +31,10 @@ const charactersExtendedGet = (
 
 const characterExistsGet = (
   character,
-  _characters
+  characters
 ) => {
 
-  const characters = charactersExtendedGet(
-    _characters
-  );
-
-  return !!(
+  const exists = !!(
     characters.find(
       (
         _character
@@ -92,11 +47,17 @@ const characterExistsGet = (
       }
     )
   );
+
+  return (
+    exists
+  );
 };
 
-const charactersFilteredGet = (
+const castCharactersFilter = (
   characters,
-  _characters
+  _cast,
+  castCharacters,
+  plotCharacters
 ) => {
 
   return characters.reduce(
@@ -105,13 +66,29 @@ const charactersFilteredGet = (
       character
     ) => {
 
-      const exists = characterExistsGet(
-        character,
-        _characters
-      );
-
       if (
-        !exists
+        (
+          !_cast.role.match(
+            `
+              ${
+                character
+              }'s
+            `
+              .trim()
+          )
+        ) &&
+        (
+          !characterExistsGet(
+            character,
+            castCharacters
+          )
+        ) &&
+        (
+          characterExistsGet(
+            character,
+            plotCharacters
+          )
+        )
       ) {
 
         return [
@@ -128,18 +105,47 @@ const charactersFilteredGet = (
   );
 };
 
-const charactersGet = (
-  role,
-  _characters
+const castCharactersGetFn = (
+  _cast,
+  castCharacters,
+  plotCharacters
 ) => {
 
-  const NNPs = NNPsFromSentenceGet(
-    role
-  );
+  let characters = NNPsFromSentenceGet(
+    _cast.role
+  )
+    .reduce(
+      (
+        memo,
+        character
+      ) => {
 
-  const characters = charactersFilteredGet(
-    NNPs,
-    _characters
+        return [
+          ...new Set(
+            [
+              ...memo,
+              character,
+              ...(
+                () => {
+
+                  return new natural.TreebankWordTokenizer()
+                    .tokenize(
+                      character
+                    );
+                }
+              )()
+            ]
+          )
+        ];
+      },
+      []
+    );
+
+  characters = castCharactersFilter(
+    characters,
+    _cast,
+    castCharacters,
+    plotCharacters
   );
 
   return (
@@ -147,39 +153,35 @@ const charactersGet = (
   );
 };
 
-const charactersAssignedGetFn = (
-  __cast,
-  characters
+const castCharactersGet = (
+  cast,
+  plotCharacters
 ) => {
 
-  return {
-    ...__cast,
-    characters: charactersGet(
-      __cast.role,
-      characters
-    )
-  };
-};
-
-const charactersAssignedGet = (
-  _cast
-) => {
-
-  return _cast.reduce(
+  return cast.reduce(
     (
       memo,
-      __cast
+      _cast
     ) => {
-
-      const characters = characterFlatListGet(
-        memo
-      );
 
       return [
         ...memo,
-        charactersAssignedGetFn(
-          __cast,
-          characters
+        castCharactersGetFn(
+          _cast,
+          memo.reduce(
+            (
+              memo,
+              _memo
+            ) => {
+
+              return [
+                ...memo,
+                ..._memo
+              ];
+            },
+            []
+          ),
+          plotCharacters
         )
       ];
     },
@@ -188,11 +190,18 @@ const charactersAssignedGet = (
 };
 
 export default (
-  _cast
+  cast,
+  plot
 ) => {
 
-  let cast = charactersAssignedGet(
-    _cast
+  const plotCharacters = plotCharactersGet(
+    plot
   );
-  //console.log(cast);
+
+  const castCharacters = castCharactersGet(
+    cast,
+    plotCharacters
+  );
+
+  console.log(castCharacters);
 };

@@ -6,7 +6,8 @@ export default (
   movie
 ) => {
 
-  let cast = movieDataExtendedCastGet(
-    movie.cast
+  const cast = movieDataExtendedCastGet(
+    movie.cast,
+    movie.plot
   );
 };

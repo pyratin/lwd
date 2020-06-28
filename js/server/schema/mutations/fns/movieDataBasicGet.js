@@ -247,12 +247,31 @@ const castGet = (
 };
 
 const plotGetFn = (
-  paragraph
+  paragraph,
+  paragraphIndex
 ) => {
 
   return sbd.sentences(
     paragraph
-  );
+  )
+    .reduce(
+      (
+        memo,
+        text,
+        sentenceIndex
+      ) => {
+
+        return [
+          ...memo,
+          {
+            text,
+            paragraphIndex,
+            sentenceIndex
+          }
+        ];
+      },
+      []
+    );
 };
 
 const plotGet = (
@@ -279,7 +298,8 @@ const plotGet = (
     .reduce(
       (
         memo,
-        p
+        p,
+        paragraphIndex
       ) => {
 
 
@@ -289,13 +309,14 @@ const plotGet = (
           .text();
 
         const sentences = plotGetFn(
-          paragraph
+          paragraph,
+          paragraphIndex
         );
 
         return [
           ...memo ||
           [],
-          sentences
+          ...sentences
         ];
       },
       null
