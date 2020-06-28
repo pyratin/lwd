@@ -34,7 +34,7 @@
     "express-graphql": "^0.9.0",
     "graphql": "^15.1.0",
     "graphql-relay": "^0.6.0",
-    "lexed": "^1.0.10",
+    "leven": "^3.1.0",
     "natural": "^2.1.5",
     "node-fetch": "^2.6.0",
     "sbd": "^1.0.18"

@@ -41,40 +41,28 @@ const wordsTag = (
       word
     ) => {
 
-      if (
-        word.text
-          .match(
-            /\w/
-          )
-      ) {
-
-        const [
-          tag
-        ] = new Tag(
-          [
-            word.text
-          ]
-        )
-          .initial()
-          .smooth()
-          .tags;
-
-        return [
-          ...memo,
-          {
-            ...word,
-            tag
-          }
-        ];
-      }
+      const [
+        tag
+      ] = new Tag(
+        [
+          word.text
+        ]
+      )
+        .initial()
+        .smooth()
+        .tags;
 
       return [
         ...memo,
-        word
+        {
+          ...word,
+          tag
+        }
       ];
     },
     []
   );
+
 };
 
 const wordsChunk = (

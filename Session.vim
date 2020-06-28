@@ -15,7 +15,7 @@ badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +1 js/server/schema/mutations/movieSearch/index.js
 badd +1 js/server/schema/mutations/movieSelect/index.js
 badd +1 js/server/schema/mutations/fns/movieDataExtendedGet.js
-badd +9 js/server/schema/mutations/fns/movieDataExtendedCastGet.js
+badd +206 js/server/schema/mutations/fns/movieDataExtendedCastGet.js
 badd +1 temp/natural.js
 badd +1 js/server/schema/mutations/fns/NNPsFromSentenceGet.js
 badd +3 js/server/schema/mutations/fns/movieDataExtendedPlotGet.js
@@ -41,12 +41,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 33 - ((24 * winheight(0) + 18) / 36)
+let s:l = 35 - ((26 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-33
-normal! 05|
+35
+normal! 025|
 tabedit temp/natural.js
 set splitbelow splitright
 set nosplitbelow
@@ -191,11 +191,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 189 - ((29 * winheight(0) + 18) / 36)
+let s:l = 206 - ((34 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-189
+206
 normal! 0
 tabedit js/server/schema/mutations/fns/NNPsFromSentenceGet.js
 set splitbelow splitright
@@ -216,12 +216,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 70 - ((31 * winheight(0) + 18) / 36)
+let s:l = 41 - ((10 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-70
-normal! 0
+41
+normal! 08|
 tabedit js/server/schema/mutations/movieSearch/index.js
 set splitbelow splitright
 set nosplitbelow

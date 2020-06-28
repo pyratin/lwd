@@ -1,6 +1,7 @@
 'use strict';
 
 import natural from 'natural';
+import leven from 'leven';
 
 import NNPsFromSentenceGet from './NNPsFromSentenceGet';
 
@@ -53,6 +54,38 @@ const characterExistsGet = (
   );
 };
 
+const characterWithinLevenDistanceExixtsGet = (
+  character,
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      _character
+    ) => {
+
+      if (
+        !memo &&
+        leven(
+          _character,
+          character
+        ) === 1
+      ) {
+
+        return (
+          true
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    false
+  );
+};
+
 const castCharactersFilter = (
   characters,
   _cast,
@@ -84,9 +117,17 @@ const castCharactersFilter = (
           )
         ) &&
         (
-          characterExistsGet(
-            character,
-            plotCharacters
+          (
+            characterExistsGet(
+              character,
+              plotCharacters
+            )
+          ) ||
+          (
+            characterWithinLevenDistanceExixtsGet(
+              character,
+              plotCharacters
+            )
           )
         )
       ) {
