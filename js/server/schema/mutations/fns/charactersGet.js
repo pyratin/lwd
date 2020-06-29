@@ -230,6 +230,64 @@ const castCharactersGet = (
   );
 };
 
+const charactersGet = (
+  castCharacters,
+  cast
+) => {
+
+  const characters = castCharacters.reduce(
+    (
+      memo,
+      _castCharacters,
+      castIndex
+    ) => {
+
+      return [
+        ...memo,
+        ..._castCharacters.reduce(
+          (
+            memo,
+            characterText
+          ) => {
+
+            return [
+              ...memo,
+              {
+                text: characterText,
+                castIndex
+              }
+            ];
+          },
+          []
+        )
+      ];
+    },
+    []
+  )
+    .reduce(
+      (
+        memo,
+        character
+      ) => {
+
+        return [
+          ...memo,
+          {
+            ...character,
+            ...cast[
+              character.castIndex
+            ]
+          }
+        ];
+      },
+      []
+    );
+
+  return (
+    characters
+  );
+};
+
 export default (
   cast,
   plot
@@ -244,5 +302,12 @@ export default (
     plotCharacters
   );
 
-  console.log(castCharacters);
+  const characters = charactersGet(
+    castCharacters,
+    cast
+  );
+
+  return (
+    characters
+  );
 };
