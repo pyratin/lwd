@@ -2,6 +2,7 @@
 
 import charactersGet from './charactersGet';
 import segmentsGet from './segmentsGet';
+import deckGet from './deckGet';
 
 export default (
   movie
@@ -14,6 +15,11 @@ export default (
 
   const segments = segmentsGet(
     movie.plot,
+    characters
+  );
+
+  const deck = deckGet(
+    segments,
     characters
   );
 };

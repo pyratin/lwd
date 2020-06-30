@@ -140,19 +140,79 @@ const fragmentsGet = (
   return plot.reduce(
     (
       memo,
-      sentence
+      sentence,
+      segmentIndex
     ) => {
+
+      const fragments = fragmentsGetFn(
+        sentence,
+        characters
+      )
+        .reduce(
+          (
+            memo,
+            fragment
+          ) => {
+
+            return [
+              ...memo,
+              {
+                ...fragment,
+                segmentIndex
+              }
+            ];
+          },
+          []
+        );
 
       return [
         ...memo,
-        ...fragmentsGetFn(
-          sentence,
-          characters
-        )
+        ...fragments
       ];
     },
     []
   );
+};
+
+const segmentsGetFn = (
+  fragments
+) => {
+
+  const segmentCount = fragments.slice(
+    -1
+  )[
+    0
+  ]
+    .segmentIndex;
+
+  return new Array(
+    segmentCount + 1
+  )
+    .fill()
+    .reduce(
+      (
+        memo,
+        _,
+        index
+      ) => {
+
+        return [
+          ...memo,
+          fragments.filter(
+            (
+              fragment
+            ) => {
+
+              return (
+                fragment.segmentIndex ===
+                index
+              );
+            }
+          )
+        ];
+      },
+      []
+    );
 };
 
 export default (
@@ -165,5 +225,11 @@ export default (
     characters
   );
 
-  console.log(fragments);
+  const segments = segmentsGetFn(
+    fragments
+  );
+
+  return (
+    segments
+  );
 };
