@@ -2,8 +2,54 @@
 
 import cheerio from 'cheerio';
 import sbd from 'sbd';
+import escapeStringRegexp from 'escape-string-regexp';
 
 import nodeFetch from './nodeFetch';
+
+const plotTextActorReferencesClear = (
+  plotText,
+  actors
+) => {
+
+  return actors.reduce(
+    (
+      memo,
+      {
+        ud
+      }
+    ) => {
+
+      if (
+        ud
+      ) {
+
+        const udEscaped = escapeStringRegexp(
+          ud
+        );
+
+        const regExp = new RegExp(
+          `
+            \\s\\(<a href="/wiki/${
+              udEscaped
+            }".*?</a>\\)
+          `
+            .trim(),
+          'g'
+        );
+
+        return memo.replace(
+          regExp,
+          ''
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    plotText
+  );
+};
 
 const titleEncodedGet = (
   title
@@ -358,7 +404,7 @@ export default async (
     'Plot'
   ];
 
-  const [
+  let [
     castText,
     plotText
   ] = moviePageSectionTextsGet(
@@ -370,6 +416,23 @@ export default async (
     castText
   );
 
+  plotText = plotTextActorReferencesClear(
+    plotText,
+    cast.reduce(
+      (
+        memo,
+        _cast
+      ) => {
+
+        return [
+          ...memo,
+          _cast.actor
+        ];
+      },
+      []
+    )
+  );
+
   const plot = plotGet(
     plotText
   );
@@ -379,6 +442,8 @@ export default async (
     date,
     image,
     cast,
-    plot
+    plot,
+    castText,
+    plotText
   };
 };
