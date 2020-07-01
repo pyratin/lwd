@@ -73,17 +73,38 @@ const deckSegmentsGet = (
   return paragraphs.reduce(
     (
       memo,
-      paragraph
+      paragraph,
+      paragraphIndex
     ) => {
 
+      const paragraphLastIndex = (
+        memo.length
+      ) ?
+        memo.slice(
+          -1
+        )[
+          0
+        ][
+          0
+        ]
+          .paragraphIndex:
+        0;
+
       if (
+        !paragraphIndex ||
         (
-          memo.length < 
-          5
-        ) &&
-        (
-          paragraph.length <
-          5
+          (
+            (
+              paragraphLastIndex + 
+              1 
+            ) ===
+            paragraphIndex 
+          ) &&
+          (
+            memo.length +
+            paragraph.length
+          ) <
+          10
         )
       ) {
 
