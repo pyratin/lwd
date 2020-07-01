@@ -42,11 +42,11 @@ const __fragmentsGetFn = (
         ) {
 
           const actorFragment = {
+            ...fragment,
             type: 'actor',
             actor: {
               ud: character.actor.ud
             },
-            ...fragment,
             text: character.text
           };
 
@@ -77,12 +77,23 @@ const _fragmentsGetFn = (
       fragment
     ) => {
 
+      if (
+        fragment.type !==
+        'actor'
+      ) {
+
+        return [
+          ...memo,
+          ...__fragmentsGetFn(
+            fragment,
+            character
+          )
+        ];
+      }
+
       return [
         ...memo,
-        ...__fragmentsGetFn(
-          fragment,
-          character
-        )
+        fragment
       ];
     },
     []

@@ -19,7 +19,6 @@ export default (
   );
 
   const deck = deckGet(
-    segments,
-    characters
+    segments
   );
 };

@@ -70,15 +70,124 @@ const deckSegmentsGet = (
     segments
   );
 
-  console.log(JSON.stringify(paragraphs, null, 2));
+  return paragraphs.reduce(
+    (
+      memo,
+      paragraph
+    ) => {
+
+      if (
+        (
+          memo.length < 
+          5
+        ) &&
+        (
+          paragraph.length <
+          5
+        )
+      ) {
+
+        return [
+          ...memo,
+          ...paragraph
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const thumbExistsGet = (
+  thumb,
+  thumbs
+) => {
+
+  return thumbs.find(
+    (
+      _thumb
+    ) => {
+
+      return (
+        _thumb.actor.ud ===
+        thumb.actor.ud
+      );
+    }
+  );
+};
+
+const deckThumbsGetFn = (
+  segment
+) => {
+
+  return segment.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      if (
+        (
+          fragment.type ===
+          'actor'
+        ) &&
+        (
+          !thumbExistsGet(
+            fragment,
+            memo
+          )
+        )
+      ) {
+
+        return [
+          ...memo,
+          fragment
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const deckThumbsGet = (
+  segments
+) => {
+
+  return segments.reduce(
+    (
+      memo,
+      segment
+    ) => {
+
+      return [
+        ...memo,
+        deckThumbsGetFn(
+          segment
+        )
+      ];
+    },
+    []
+  );
 };
 
 export default (
-  segments,
-  characters
+  segments
 ) => {
 
   const deckSegments = deckSegmentsGet(
     segments
   );
+
+  const deckThumbs = deckThumbsGet(
+    deckSegments
+  );
+
+  console.log(deckThumbs);
 };
