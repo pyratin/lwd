@@ -104,21 +104,32 @@ const characterLinksGetFn = (
 
   const regexp = new RegExp(
     `
-      (<a.*?>${
-        character.text
-      }</a>)
+      <a href="/wiki/([^"]*)"[^>]*>${character.text}</a>
     `
       .trim(),
     'g'
   );
 
-  const match = plotText.matchAll(
-    regexp
-  );
-  console.log([...match], '---------');
+  const matchAll = [
+    ...plotText.matchAll(
+      regexp
+    )
+  ]
+    .map(
+      (
+        _matchAll
+      ) => {
+
+        return (
+          _matchAll[
+            1
+          ]
+        );
+      }
+    );
 
   return (
-    match
+    matchAll
   );
 };
 
@@ -133,27 +144,31 @@ const characterLinksGet = (
       character
     ) => {
 
-      const characterLinks = characterLinksGetFn(
-        plotText,
-        character
-      );
-
-      if (
-        characterLinks
-      ) {
-
-        return [
-          ...memo,
-          characterLinks
-        ];
-      }
-
-      return (
-        memo
-      );
+      return [
+        ...new Set(
+          [
+            ...memo,
+            ...characterLinksGetFn(
+              plotText,
+              character
+            )
+          ]
+        )
+      ];
     },
     []
   );
+};
+
+const pageCategoriesQueryGet = (
+  title
+) => {
+
+  return `
+    https://en.wikipedia.org/w/api.php?action=query&format=json&prop=categories&cllimit=500&redirects&titles=${
+      title
+    }
+  `;
 };
 
 export default (
@@ -170,5 +185,5 @@ export default (
     characters
   );
 
-  //console.log(characterLinks);
+  console.log(characterLinks);
 };
