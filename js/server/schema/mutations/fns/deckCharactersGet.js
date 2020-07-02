@@ -179,11 +179,16 @@ export default (
   const characters = charactersGet(
     deckSegments
   );
+  //characters.map(
+    //(character) => {
+      //console.log(character.text);
+    //}
+  //)
 
   const characterLinks = characterLinksGet(
     plotText,
     characters
   );
 
-  console.log(characterLinks);
+  //console.log(characterLinks);
 };

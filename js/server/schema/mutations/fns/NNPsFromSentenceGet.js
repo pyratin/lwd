@@ -1,7 +1,6 @@
 'use strict';
 
 import natural from 'natural';
-import {Tag} from 'en-pos';
 
 const wordsTokenize = (
   sentence
@@ -9,7 +8,7 @@ const wordsTokenize = (
 
   const tokenizer = new natural.TreebankWordTokenizer();
 
-  return tokenizer.tokenize(
+  const words = tokenizer.tokenize(
     sentence
   )
     .reduce(
@@ -29,40 +28,73 @@ const wordsTokenize = (
       },
       []
     );
+
+  return (
+    words
+  );
 };
 
 const wordsTag = (
   words
 ) => {
 
-  return words.reduce(
-    (
-      memo,
-      word
-    ) => {
+  const language = 'EN';
 
-      const [
-        tag
-      ] = new Tag(
-        [
-          word.text
-        ]
-      )
-        .initial()
-        .smooth()
-        .tags;
+  const defaultCategory = 'N';
 
-      return [
-        ...memo,
-        {
-          ...word,
-          tag
-        }
-      ];
-    },
-    []
+  const defaultCategoryCapitalized = 'NNP';
+
+  const lexicon = new natural.Lexicon(
+    language,
+    defaultCategory,
+    defaultCategoryCapitalized
   );
 
+  const ruleSet = new natural.RuleSet(
+    language
+  );
+
+  const tagger = new natural.BrillPOSTagger(
+    lexicon,
+    ruleSet
+  );
+
+  const wordsTagged = tagger.tag(
+    words.map(
+      (
+        word
+      ) => {
+
+        return (
+          word.text
+        );
+      }
+    )
+  )
+    .taggedWords
+    .reduce(
+      (
+        memo,
+        wordtagged,
+        index
+      ) => {
+
+        return [
+          ...memo,
+          {
+            ...wordtagged,
+            ...words[
+              index
+            ]
+          }
+        ];
+      },
+      []
+    );
+
+  return (
+    wordsTagged
+  );
 };
 
 const wordsChunk = (
