@@ -104,7 +104,7 @@ const deckSegmentsGet = (
             memo.length +
             paragraph.length
           ) <
-          10
+          5
         )
       ) {
 
@@ -122,82 +122,6 @@ const deckSegmentsGet = (
   );
 };
 
-const thumbExistsGet = (
-  thumb,
-  thumbs
-) => {
-
-  return thumbs.find(
-    (
-      _thumb
-    ) => {
-
-      return (
-        _thumb.actor.ud ===
-        thumb.actor.ud
-      );
-    }
-  );
-};
-
-const deckThumbsGetFn = (
-  segment
-) => {
-
-  return segment.reduce(
-    (
-      memo,
-      fragment
-    ) => {
-
-      if (
-        (
-          fragment.type ===
-          'actor'
-        ) &&
-        (
-          !thumbExistsGet(
-            fragment,
-            memo
-          )
-        )
-      ) {
-
-        return [
-          ...memo,
-          fragment
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
-const deckThumbsGet = (
-  segments
-) => {
-
-  return segments.reduce(
-    (
-      memo,
-      segment
-    ) => {
-
-      return [
-        ...memo,
-        deckThumbsGetFn(
-          segment
-        )
-      ];
-    },
-    []
-  );
-};
-
 export default (
   segments
 ) => {
@@ -206,9 +130,7 @@ export default (
     segments
   );
 
-  const deckThumbs = deckThumbsGet(
+  return (
     deckSegments
   );
-
-  console.log(deckThumbs);
 };
