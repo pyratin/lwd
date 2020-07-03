@@ -1,9 +1,30 @@
 'use strict';
 
-import natural from 'natural';
 import leven from 'leven';
 
 import NNPsFromSentenceGet from './NNPsFromSentenceGet';
+import wordsTokenize from './wordsTokenize';
+
+const characterTokenize = (
+  character
+) => {
+
+  return wordsTokenize(
+    character
+  )
+    .map(
+      (
+        {
+          text
+        }
+      ) => {
+
+        return (
+          text
+        );
+      }
+    );
+};
 
 const plotCharactersGet = (
   plot
@@ -161,20 +182,16 @@ const castCharactersGetFn = (
         character
       ) => {
 
+        const characterTokenized = characterTokenize(
+          character
+        );
+
         return [
           ...new Set(
             [
               ...memo,
               character,
-              ...(
-                () => {
-
-                  return new natural.TreebankWordTokenizer()
-                    .tokenize(
-                      character
-                    );
-                }
-              )()
+              ...characterTokenized
             ]
           )
         ];
@@ -296,11 +313,13 @@ export default (
   const plotCharacters = plotCharactersGet(
     plot
   );
+  //console.log(plotCharacters);
 
   const castCharacters = castCharactersGet(
     cast,
     plotCharacters
   );
+  console.log(castCharacters);
 
   const characters = charactersGet(
     castCharacters,

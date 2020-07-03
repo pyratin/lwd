@@ -175,15 +175,16 @@ export default (
   deckSegments,
   plotText
 ) => {
+  //console.log(deckSegments);
 
   const characters = charactersGet(
     deckSegments
   );
-  characters.map(
-    (character) => {
-      console.log(character.text);
-    }
-  )
+  //characters.map(
+    //(character) => {
+      //console.log(character.text);
+    //}
+  //)
 
   const characterLinks = characterLinksGet(
     plotText,

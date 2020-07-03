@@ -2,37 +2,7 @@
 
 import natural from 'natural';
 
-const wordsTokenize = (
-  sentence
-) => {
-
-  const tokenizer = new natural.TreebankWordTokenizer();
-
-  const words = tokenizer.tokenize(
-    sentence
-  )
-    .reduce(
-      (
-        memo,
-        word,
-        index
-      ) => {
-
-        return [
-          ...memo,
-          {
-            text: word,
-            index
-          }
-        ];
-      },
-      []
-    );
-
-  return (
-    words
-  );
-};
+import wordsTokenize from './wordsTokenize';
 
 const wordsTag = (
   words
@@ -113,23 +83,6 @@ const wordsChunk = (
         0
       ];
 
-      //if (
-        //word.text === 'Lightning' &&
-        //(
-          //_word.tag === 
-          //'NNP'
-        //) &&
-        //(
-          //word.text
-            //.match(
-              ///^[A-Z]/
-            //)
-        //) 
-      //) {
-
-        //console.log(_word, word);
-      //}
-
       if (
         (
           _word &&
@@ -183,7 +136,8 @@ const wordsChunk = (
                 word.text
               }
             `
-              .trim()
+              .trim(),
+            tag: 'NNP'
           }
         ];
       }
