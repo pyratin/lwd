@@ -3,13 +3,13 @@
 import leven from 'leven';
 
 import NNPsFromSentenceGet from './NNPsFromSentenceGet';
-import wordsTokenize from './wordsTokenize';
+import wordsTokenizedGet from './wordsTokenizedGet';
 
-const characterTokenize = (
+const characterTokenizedGet = (
   character
 ) => {
 
-  return wordsTokenize(
+  return wordsTokenizedGet(
     character
   )
     .map(
@@ -107,6 +107,89 @@ const characterWithinLevenDistanceExixtsGet = (
   );
 };
 
+const characterRegExpFilteredGetFn = (
+  character
+) => {
+
+  const characterTokenized = characterTokenizedGet(
+    character
+  );
+
+  const regExpString = `
+    ${
+      characterTokenized.reduce(
+        (
+          memo,
+          _characterTokenized
+        ) => {
+
+          const prefix = (
+            memo
+          ) ?
+            '\\s[A-Z][a-z]+\\s' :
+            '';
+
+          return `
+            ${
+              memo
+            }${
+              prefix
+            }${
+              _characterTokenized
+            }
+          `
+            .trim();
+        },
+        ''
+      )
+    }
+  `
+    .trim();
+
+  return (
+    regExpString
+  );
+}
+
+const characterRegExpFilteredGet = (
+  character,
+  characters
+) => {
+
+  const characterExists = characters.reduce(
+    (
+      memo,
+      _character
+    ) => {
+
+      if (
+        !memo &&
+        (
+          character.match(
+            characterRegExpFilteredGetFn(
+              _character
+            )
+          )
+        )
+      ) {
+
+        return (
+          true
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    false
+  );
+
+  return (
+    characterExists
+  );
+};
+
 const castCharactersFilter = (
   characters,
   _cast,
@@ -149,6 +232,12 @@ const castCharactersFilter = (
               character,
               plotCharacters
             )
+          ) ||
+          (
+            characterRegExpFilteredGet(
+              character,
+              plotCharacters
+            )
           )
         )
       ) {
@@ -182,7 +271,7 @@ const castCharactersGetFn = (
         character
       ) => {
 
-        const characterTokenized = characterTokenize(
+        const characterTokenized = characterTokenizedGet(
           character
         );
 
@@ -319,7 +408,7 @@ export default (
     cast,
     plotCharacters
   );
-  console.log(castCharacters);
+  //console.log(castCharacters);
 
   const characters = charactersGet(
     castCharacters,

@@ -129,7 +129,7 @@ export default (
   const deckSegments = deckSegmentsGet(
     segments
   );
-  //console.log(deckSegments);
+  console.log(deckSegments);
 
   return (
     deckSegments

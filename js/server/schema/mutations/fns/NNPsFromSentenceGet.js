@@ -2,7 +2,7 @@
 
 import natural from 'natural';
 
-import wordsTokenize from './wordsTokenize';
+import wordsTokenizedGet from './wordsTokenizedGet';
 
 const wordsTag = (
   words
@@ -119,6 +119,9 @@ const wordsChunk = (
               .match(
                 /^[A-Z]/
               )
+          ) &&
+          (
+            _word.index
           )
         )
       ) {
@@ -190,7 +193,7 @@ export default (
   sentence
 ) => {
 
-  let words = wordsTokenize(
+  let words = wordsTokenizedGet(
     sentence
   );
 
