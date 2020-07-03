@@ -113,15 +113,60 @@ const wordsChunk = (
         0
       ];
 
+      //if (
+        //word.text === 'Lightning' &&
+        //(
+          //_word.tag === 
+          //'NNP'
+        //) &&
+        //(
+          //word.text
+            //.match(
+              ///^[A-Z]/
+            //)
+        //) 
+      //) {
+
+        //console.log(_word, word);
+      //}
+
       if (
-        _word &&
         (
-          _word.tag === 
-          'NNP'
-        ) &&
+          _word &&
+          (
+            _word.tag === 
+            'NNP'
+          ) &&
+          (
+            word.tag === 
+            'NNP'
+          )
+        ) ||
         (
-          word.tag === 
-          'NNP'
+          _word &&
+          (
+            _word.tag === 
+            'NNP'
+          ) &&
+          (
+            word.text
+              .match(
+                /^[A-Z]/
+              )
+          )
+        ) ||
+        (
+          _word &&
+          (
+            word.tag === 
+            'NNP'
+          ) &&
+          (
+            _word.text
+              .match(
+                /^[A-Z]/
+              )
+          )
         )
       ) {
 

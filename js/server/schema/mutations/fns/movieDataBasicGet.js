@@ -11,6 +11,15 @@ const plotTextActorReferencesClear = (
   actors
 ) => {
 
+  if (
+    !plotText
+  ) {
+
+    return (
+      plotText
+    );
+  }
+
   return actors.reduce(
     (
       memo,
