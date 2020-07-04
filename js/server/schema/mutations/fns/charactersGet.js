@@ -169,9 +169,9 @@ const characterRegExpExistsGet = (
       if (
         !memo &&
         (
-          _character.match(
+          __character.match(
             characterRegExpExistsGetFn(
-              __character
+              _character
             )
           )
         )
@@ -194,12 +194,49 @@ const characterRegExpExistsGet = (
   );
 };
 
+const characterTokenizedExistsGet = (
+  _character,
+  _characters
+) => {
+
+  const characters = _characters.reduce(
+    (
+      memo,
+      __character
+    ) => {
+
+      return [
+        ...memo,
+        ...characterTokenizedGet(
+          __character
+        )
+      ];
+    },
+    []
+  );
+
+  const character = characters.find(
+    (
+      __character
+    ) => {
+
+      return (
+        __character ===
+        _character
+      );
+    }
+  );
+
+  return (
+    character
+  );
+};
+
 const _castCharactersGetFn = (
   _cast,
   _castCharacters,
   plotCharacters
 ) => {
-  console.log(plotCharacters, '--------');
 
   return plotCharacters.reduce(
     (
@@ -241,7 +278,16 @@ const _castCharactersGetFn = (
             )
           ) &&
           !!character
-        ):
+        ) :
+        case (
+          (
+            character = characterTokenizedExistsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
+        ) :
 
           return [
             ...memo,
