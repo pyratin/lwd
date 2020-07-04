@@ -52,50 +52,50 @@ const plotCharactersGet = (
 };
 
 const characterExistsGet = (
-  character,
+  _character,
   characters
 ) => {
 
-  const exists = !!(
+  const character = (
     characters.find(
       (
-        _character
+        __character
       ) => {
 
         return (
-          _character ===
-          character
+          __character ===
+          _character
         );
       }
     )
   );
 
   return (
-    exists
+    character
   );
 };
 
 const characterWithinLevenDistanceExixtsGet = (
-  character,
+  _character,
   characters
 ) => {
 
-  return characters.reduce(
+  const character = characters.reduce(
     (
       memo,
-      _character
+      __character
     ) => {
 
       if (
         !memo &&
         leven(
-          _character,
-          character
+          __character,
+          _character
         ) === 1
       ) {
 
         return (
-          true
+          __character
         );
       }
 
@@ -103,7 +103,11 @@ const characterWithinLevenDistanceExixtsGet = (
         memo
       );
     },
-    false
+    null
+  );
+
+  return (
+    character
   );
 };
 
@@ -149,32 +153,32 @@ const characterRegExpFilteredGetFn = (
   return (
     regExpString
   );
-}
+};
 
 const characterRegExpFilteredGet = (
-  character,
+  _character,
   characters
 ) => {
 
-  const characterExists = characters.reduce(
+  const character = characters.reduce(
     (
       memo,
-      _character
+      __character
     ) => {
 
       if (
         !memo &&
         (
-          character.match(
+          _character.match(
             characterRegExpFilteredGetFn(
-              _character
+              __character
             )
           )
         )
       ) {
 
         return (
-          true
+          __character
         );
       }
 
@@ -182,11 +186,11 @@ const characterRegExpFilteredGet = (
         memo
       );
     },
-    false
+    null
   );
 
   return (
-    characterExists
+    character
   );
 };
 
@@ -200,42 +204,44 @@ const castCharactersFilter = (
   return characters.reduce(
     (
       memo,
-      character
+      _character
     ) => {
+
+      let character;
 
       if (
         (
-          !_cast.role.match(
+          character = !_cast.role.match(
             `
               ${
-                character
+                _character
               }'s
             `
               .trim()
           )
         ) &&
         (
-          !characterExistsGet(
-            character,
+          character = !characterExistsGet(
+            _character,
             castCharacters
           )
         ) &&
         (
           (
-            characterExistsGet(
-              character,
+            character = characterExistsGet(
+              _character,
               plotCharacters
             )
           ) ||
           (
-            characterWithinLevenDistanceExixtsGet(
-              character,
+            character = characterWithinLevenDistanceExixtsGet(
+              _character,
               plotCharacters
             )
           ) ||
           (
-            characterRegExpFilteredGet(
-              character,
+            character = characterRegExpFilteredGet(
+              _character,
               plotCharacters
             )
           )
@@ -402,12 +408,14 @@ export default (
   const plotCharacters = plotCharactersGet(
     plot
   );
+
   //console.log(plotCharacters);
 
   const castCharacters = castCharactersGet(
     cast,
     plotCharacters
   );
+
   //console.log(castCharacters);
 
   const characters = charactersGet(

@@ -175,7 +175,6 @@ export default (
   deckSegments,
   plotText
 ) => {
-  //console.log(deckSegments);
 
   const characters = charactersGet(
     deckSegments
