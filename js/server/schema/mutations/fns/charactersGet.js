@@ -193,7 +193,6 @@ const characterExistsRegExpsGet = (
             __character
           )
         ) :
-
           return (
             _character
           );
