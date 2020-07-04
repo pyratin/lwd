@@ -75,7 +75,7 @@ const characterExistsGet = (
   );
 };
 
-const characterWithinLevenDistanceExixtsGet = (
+const characterLevenExixtsGet = (
   _character,
   characters
 ) => {
@@ -95,7 +95,7 @@ const characterWithinLevenDistanceExixtsGet = (
       ) {
 
         return (
-          __character
+          _character
         );
       }
 
@@ -111,7 +111,7 @@ const characterWithinLevenDistanceExixtsGet = (
   );
 };
 
-const characterRegExpFilteredGetFn = (
+const characterRegExpExistsGetFn = (
   character
 ) => {
 
@@ -155,7 +155,7 @@ const characterRegExpFilteredGetFn = (
   );
 };
 
-const characterRegExpFilteredGet = (
+const characterRegExpExistsGet = (
   _character,
   characters
 ) => {
@@ -170,7 +170,7 @@ const characterRegExpFilteredGet = (
         !memo &&
         (
           _character.match(
-            characterRegExpFilteredGetFn(
+            characterRegExpExistsGetFn(
               __character
             )
           )
@@ -178,7 +178,7 @@ const characterRegExpFilteredGet = (
       ) {
 
         return (
-          __character
+          _character
         );
       }
 
@@ -194,69 +194,66 @@ const characterRegExpFilteredGet = (
   );
 };
 
-const castCharactersFilter = (
-  characters,
+const _castCharactersGetFn = (
   _cast,
-  castCharacters,
+  _castCharacters,
   plotCharacters
 ) => {
+  console.log(plotCharacters, '--------');
 
-  return characters.reduce(
+  return plotCharacters.reduce(
     (
       memo,
-      _character
+      plotCharacter
     ) => {
 
       let character;
 
-      if (
-        (
-          character = !_cast.role.match(
-            `
-              ${
-                _character
-              }'s
-            `
-              .trim()
-          )
-        ) &&
-        (
-          character = !characterExistsGet(
-            _character,
-            castCharacters
-          )
-        ) &&
-        (
-          (
-            character = characterExistsGet(
-              _character,
-              plotCharacters
-            )
-          ) ||
-          (
-            character = characterWithinLevenDistanceExixtsGet(
-              _character,
-              plotCharacters
-            )
-          ) ||
-          (
-            character = characterRegExpFilteredGet(
-              _character,
-              plotCharacters
-            )
-          )
-        )
+      switch (
+        true
       ) {
 
-        return [
-          ...memo,
-          character
-        ];
-      }
+        case (
+          (
+            character = characterExistsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
+        ) :
+        case (
+          (
+            character = characterLevenExixtsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
+        ) :
+        case (
+          (
+            (
+              character = characterRegExpExistsGet(
+                plotCharacter,
+                _castCharacters
+              )
+            )
+          ) &&
+          !!character
+        ):
 
-      return (
-        memo
-      );
+          return [
+            ...memo,
+            character
+          ];
+
+        default:
+
+          return (
+            memo
+          );
+      }
     },
     []
   );
@@ -264,11 +261,10 @@ const castCharactersFilter = (
 
 const castCharactersGetFn = (
   _cast,
-  castCharacters,
   plotCharacters
 ) => {
 
-  let characters = NNPsFromSentenceGet(
+  let _castCharacters = NNPsFromSentenceGet(
     _cast.role
   )
     .reduce(
@@ -277,16 +273,30 @@ const castCharactersGetFn = (
         character
       ) => {
 
-        const characterTokenized = characterTokenizedGet(
-          character
-        );
+        if (
+          _cast.role.match(
+            new RegExp(
+              `
+                ${
+                  character
+                }'s
+              `
+                .trim(),
+              'g'
+            )
+          )
+        ) {
+
+          return (
+            memo
+          );
+        }
 
         return [
           ...new Set(
             [
               ...memo,
-              character,
-              ...characterTokenized
+              character
             ]
           )
         ];
@@ -294,15 +304,14 @@ const castCharactersGetFn = (
       []
     );
 
-  characters = castCharactersFilter(
-    characters,
+  _castCharacters = _castCharactersGetFn(
     _cast,
-    castCharacters,
+    _castCharacters,
     plotCharacters
   );
 
   return (
-    characters
+    _castCharacters
   );
 };
 
@@ -321,19 +330,6 @@ const castCharactersGet = (
         ...memo,
         castCharactersGetFn(
           _cast,
-          memo.reduce(
-            (
-              memo,
-              _memo
-            ) => {
-
-              return [
-                ...memo,
-                ..._memo
-              ];
-            },
-            []
-          ),
           plotCharacters
         )
       ];
@@ -382,6 +378,38 @@ const charactersGet = (
         character
       ) => {
 
+        if (
+          memo.find(
+            (
+              _memo
+            ) => {
+
+              return (
+                _memo.text ===
+                character.text
+              );
+            }
+          )
+        ) {
+
+          return (
+            memo
+          );
+        }
+
+        return [
+          ...memo,
+          character
+        ];
+      },
+      []
+    )
+    .reduce(
+      (
+        memo,
+        character
+      ) => {
+
         return [
           ...memo,
           {
@@ -422,6 +450,8 @@ export default (
     castCharacters,
     cast
   );
+
+  //console.log(characters);
 
   return (
     characters
