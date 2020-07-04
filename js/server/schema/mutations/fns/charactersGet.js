@@ -51,7 +51,7 @@ const plotCharactersGet = (
   );
 };
 
-const characterExistsGet = (
+const characterExistsEqualGet = (
   _character,
   characters
 ) => {
@@ -71,11 +71,11 @@ const characterExistsGet = (
   );
 
   return (
-    character
+    !!character
   );
 };
 
-const characterLevenExixtsGet = (
+const characterExixtsLevenGet = (
   _character,
   characters
 ) => {
@@ -107,16 +107,17 @@ const characterLevenExixtsGet = (
   );
 
   return (
-    character
+    !!character
   );
 };
 
-const characterRegExpExistsGetFn = (
-  character
+const characterExistsRegExp01Run = (
+  _character,
+  __character
 ) => {
 
   const characterTokenized = characterTokenizedGet(
-    character
+    _character
   );
 
   const regExpString = `
@@ -150,12 +151,20 @@ const characterRegExpExistsGetFn = (
   `
     .trim();
 
-  return (
+  const regExp = new RegExp(
     regExpString
+  );
+
+  const match = __character.match(
+    regExp
+  );
+
+  return (
+    !!match
   );
 };
 
-const characterRegExpExistsGet = (
+const characterExistsRegExpsGet = (
   _character,
   characters
 ) => {
@@ -166,35 +175,45 @@ const characterRegExpExistsGet = (
       __character
     ) => {
 
-      if (
-        !memo &&
-        (
-          __character.match(
-            characterRegExpExistsGetFn(
-              _character
-            )
-          )
-        )
+      switch (
+        true
       ) {
 
-        return (
-          _character
-        );
-      }
+        case (
+          !!memo
+        ) :
 
-      return (
-        memo
-      );
+          return (
+            memo
+          );
+
+        case (
+          characterExistsRegExp01Run(
+            _character,
+            __character
+          )
+        ) :
+
+          return (
+            _character
+          );
+
+        default :
+
+          return (
+            memo
+          );
+      }
     },
     null
   );
 
   return (
-    character
+    !!character
   );
 };
 
-const characterTokenizedExistsGet = (
+const characterExistsTokenizedGet = (
   _character,
   _characters
 ) => {
@@ -228,7 +247,7 @@ const characterTokenizedExistsGet = (
   );
 
   return (
-    character
+    !!character
   );
 };
 
@@ -244,54 +263,38 @@ const _castCharactersGetFn = (
       plotCharacter
     ) => {
 
-      let character;
-
       switch (
         true
       ) {
 
         case (
-          (
-            character = characterExistsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
+          characterExistsEqualGet(
+            plotCharacter,
+            _castCharacters
+          )
         ) :
         case (
-          (
-            character = characterLevenExixtsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
+          characterExixtsLevenGet(
+            plotCharacter,
+            _castCharacters
+          )
         ) :
         case (
-          (
-            (
-              character = characterRegExpExistsGet(
-                plotCharacter,
-                _castCharacters
-              )
-            )
-          ) &&
-          !!character
+          characterExistsRegExpsGet(
+            plotCharacter,
+            _castCharacters
+          )
         ) :
         case (
-          (
-            character = characterTokenizedExistsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
+          characterExistsTokenizedGet(
+            plotCharacter,
+            _castCharacters
+          )
         ) :
 
           return [
             ...memo,
-            character
+            plotCharacter
           ];
 
         default:
