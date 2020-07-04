@@ -6,10 +6,11 @@ export default (
   _sentence
 ) => {
 
-  const sentence = _sentence.replace(
-    /\//g,
-    ' / '
-  );
+  const sentence = _sentence
+    .replace(
+      /\//g,
+      ' / '
+    );
 
   const tokenizer = new natural.TreebankWordTokenizer();
 
