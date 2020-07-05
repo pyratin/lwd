@@ -203,7 +203,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 133
-normal! 03|
+normal! 0
 tabedit js/server/schema/mutations/fns/segmentsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -248,12 +248,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 206 - ((31 * winheight(0) + 18) / 36)
+let s:l = 312 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-206
-normal! 0
+312
+normal! 05|
 tabedit js/server/schema/mutations/fns/NNPsFromSentenceGet.js
 set splitbelow splitright
 set nosplitbelow

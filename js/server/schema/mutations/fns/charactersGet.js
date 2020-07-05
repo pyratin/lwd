@@ -51,7 +51,7 @@ const plotCharactersGet = (
   );
 };
 
-const characterExistsEqualGet = (
+const characterEqualExistsGet = (
   _character,
   characters
 ) => {
@@ -75,7 +75,7 @@ const characterExistsEqualGet = (
   );
 };
 
-const characterExixtsLevenGet = (
+const characterLevenExistsGet = (
   _character,
   characters
 ) => {
@@ -111,7 +111,45 @@ const characterExixtsLevenGet = (
   );
 };
 
-const characterExistsRegExp01Run = (
+const characterTokenizedExistsGet = (
+  _character,
+  _characters
+) => {
+
+  const characters = _characters.reduce(
+    (
+      memo,
+      __character
+    ) => {
+
+      return [
+        ...memo,
+        ...characterTokenizedGet(
+          __character
+        )
+      ];
+    },
+    []
+  );
+
+  const character = characters.find(
+    (
+      __character
+    ) => {
+
+      return (
+        __character ===
+        _character
+      );
+    }
+  );
+
+  return (
+    !!character
+  );
+};
+
+const characterRegExpExists01Run = (
   _character,
   __character
 ) => {
@@ -164,7 +202,7 @@ const characterExistsRegExp01Run = (
   );
 };
 
-const characterExistsRegExpsGet = (
+const characterRegExpExistsGet = (
   _character,
   characters
 ) => {
@@ -188,11 +226,12 @@ const characterExistsRegExpsGet = (
           );
 
         case (
-          characterExistsRegExp01Run(
+          characterRegExpExists01Run(
             _character,
             __character
           )
         ) :
+
           return (
             _character
           );
@@ -212,7 +251,21 @@ const characterExistsRegExpsGet = (
   );
 };
 
-const characterExistsTokenizedGet = (
+const characterRegExpResults01Run = (
+  _character,
+  __character
+) => {
+
+  const match = _character.match(
+    __character
+  );
+
+  return (
+    !!match
+  );
+};
+
+const characterRegExpResultsGet = (
   _character,
   _characters
 ) => {
@@ -223,30 +276,34 @@ const characterExistsTokenizedGet = (
       __character
     ) => {
 
-      return [
-        ...memo,
-        ...characterTokenizedGet(
-          __character
-        )
-      ];
+      switch (
+        true
+      ) {
+
+        case (
+          characterRegExpResults01Run(
+            _character,
+            __character
+          )
+        ) :
+
+          return [
+            ...memo,
+            __character
+          ];
+
+        default:
+
+          return (
+            memo
+          );
+      }
     },
     []
   );
 
-  const character = characters.find(
-    (
-      __character
-    ) => {
-
-      return (
-        __character ===
-        _character
-      );
-    }
-  );
-
   return (
-    !!character
+    characters
   );
 };
 
@@ -262,30 +319,32 @@ const _castCharactersGetFn = (
       plotCharacter
     ) => {
 
+      let characters;
+
       switch (
         true
       ) {
 
         case (
-          characterExistsEqualGet(
+          characterEqualExistsGet(
             plotCharacter,
             _castCharacters
           )
         ) :
         case (
-          characterExixtsLevenGet(
+          characterLevenExistsGet(
             plotCharacter,
             _castCharacters
           )
         ) :
         case (
-          characterExistsRegExpsGet(
+          characterTokenizedExistsGet(
             plotCharacter,
             _castCharacters
           )
         ) :
         case (
-          characterExistsTokenizedGet(
+          characterRegExpExistsGet(
             plotCharacter,
             _castCharacters
           )
@@ -294,6 +353,21 @@ const _castCharactersGetFn = (
           return [
             ...memo,
             plotCharacter
+          ];
+
+        case (
+          (
+            characters = characterRegExpResultsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!characters
+        ) :
+
+          return [
+            ...memo,
+            ...characters
           ];
 
         default:
