@@ -16,16 +16,16 @@ badd +1 js/server/schema/mutations/movieSearch/index.js
 badd +1 js/server/schema/mutations/movieSelect/index.js
 badd +5 js/server/schema/mutations/fns/movieDataExtendedGet.js
 badd +29 temp/natural.js
-badd +124 js/server/schema/mutations/fns/NNPsFromSentenceGet.js
 badd +3 js/server/schema/mutations/fns/movieDataExtendedPlotGet.js
 badd +1 js/server/schema/mutations/fns/segmentsGet.js
-badd +1 js/server/schema/mutations/fns/charactersGet.js
+badd +266 js/server/schema/mutations/fns/charactersGet.js
 badd +1 utils/mediawikiPeopleSubcategoriesGet.js
 badd +95 utils/mediawiki/peopleCategorymembersGet.js
 badd +38 utils/mediawiki/categorymembers.json
 badd +1 js/server/schema/mutations/fns/deckSegmentsGet.js
 badd +1 js/server/schema/mutations/fns/deckCharactersGet.js
 badd +1 js/server/schema/mutations/fns/wordsTokenizedGet.js
+badd +1 js/server/schema/mutations/fns/NNPsGet.js
 argglobal
 %argdel
 set stal=2
@@ -248,13 +248,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 312 - ((35 * winheight(0) + 18) / 36)
+let s:l = 360 - ((21 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-312
-normal! 05|
-tabedit js/server/schema/mutations/fns/NNPsFromSentenceGet.js
+360
+normal! 0
+tabedit js/server/schema/mutations/fns/NNPsGet.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -273,12 +273,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 210 - ((30 * winheight(0) + 18) / 36)
+let s:l = 79 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-210
-normal! 04|
+79
+normal! 0
 tabedit js/server/schema/mutations/fns/wordsTokenizedGet.js
 set splitbelow splitright
 set nosplitbelow

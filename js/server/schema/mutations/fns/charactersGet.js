@@ -2,7 +2,7 @@
 
 import leven from 'leven';
 
-import NNPsFromSentenceGet from './NNPsFromSentenceGet';
+import NNPsGet from './NNPsGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 
 const characterTokenizedGet = (
@@ -40,7 +40,7 @@ const plotCharactersGet = (
         ...new Set(
           [
             ...memo,
-            ...NNPsFromSentenceGet(
+            ...NNPsGet(
               sentence.text
             )
           ]
@@ -386,7 +386,7 @@ const castCharactersGetFn = (
   plotCharacters
 ) => {
 
-  let _castCharacters = NNPsFromSentenceGet(
+  let _castCharacters = NNPsGet(
     _cast.role
   )
     .reduce(

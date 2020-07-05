@@ -83,72 +83,95 @@ const wordsChunk = (
         0
       ];
 
-      if (
-        (
-          _word &&
-          (
-            _word.tag === 
-            'NNP'
-          ) &&
-          (
-            word.tag === 
-            'NNP'
-          )
-        ) ||
-        (
-          _word &&
-          (
-            _word.tag === 
-            'NNP'
-          ) &&
-          (
-            word.text
-              .match(
-                /^[A-Z]/
-              )
-          )
-        ) ||
-        (
-          _word &&
-          (
-            word.tag === 
-            'NNP'
-          ) &&
-          (
-            _word.text
-              .match(
-                /^[A-Z]/
-              )
-          ) &&
-          (
-            _word.index
-          )
-        )
+      switch (
+        true
       ) {
 
-        return [
-          ...memo.slice(
-            0, -1
-          ),
-          {
-            ..._word,
-            text: `
-              ${
-                _word.text
-              } ${
-                word.text
-              }
-            `
-              .trim(),
-            tag: 'NNP'
-          }
-        ];
-      }
+        case (
+          !_word
+        ) :
 
-      return [
-        ...memo,
-        word
-      ];
+          return [
+            ...memo,
+            word
+          ];
+
+        case (
+          (
+            _word.tag === 
+            'NNP'
+          ) &&
+          (
+            word.tag === 
+            'NNP'
+          )
+        ) :
+        case (
+          (
+            _word.tag === 
+            'NNP'
+          ) &&
+          (
+            !!word.text
+              .match(
+                /^[A-Z]/
+              )
+          )
+        ) :
+        case (
+          (
+            word.tag === 
+            'NNP'
+          ) &&
+          (
+            !!_word.text
+              .match(
+                /^[A-Z]/
+              )
+          ) &&
+          (
+            !!_word.index
+          )
+        ) :
+
+          return [
+            ...memo.slice(
+              0, -1
+            ),
+            {
+              ..._word,
+              text: `
+                ${
+                  _word.text
+                } ${
+                  word.text
+                }
+              `
+                .trim(),
+              tag: 'NNP'
+            }
+          ];
+
+        case (
+          word.tag ===
+          'FW'
+        ) :
+
+          return [
+            ...memo,
+            {
+              ...word,
+              tag: 'NNP'
+            }
+          ];
+
+        default:
+
+          return [
+            ...memo,
+            word
+          ];
+      }
     },
     []
   );
@@ -158,7 +181,7 @@ const wordsChunk = (
   );
 };
 
-const NNPsFromSentenceGetFn = (
+const NNPsGetFn = (
   words
 ) => {
 
@@ -168,22 +191,26 @@ const NNPsFromSentenceGetFn = (
       word
     ) => {
 
-      if (
-        (
-          word.tag === 
-          'NNP'
-        )
+      switch (
+        true
       ) {
 
-        return [
-          ...memo,
-          word.text
-        ];
-      }
+        case (
+          word.tag === 
+          'NNP'
+        ) :
 
-      return (
-        memo
-      );
+          return [
+            ...memo,
+            word.text
+          ];
+
+        default :
+
+          return (
+            memo
+          );
+      }
     },
     []
   );
@@ -205,7 +232,7 @@ export default (
     words
   );
 
-  words = NNPsFromSentenceGetFn(
+  words = NNPsGetFn(
     words
   );
 
