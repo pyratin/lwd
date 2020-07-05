@@ -97,6 +97,23 @@ const charactersGet = (
         );
       },
       []
+    )
+    .reduce(
+      (
+        memo,
+        character,
+        index
+      ) => {
+
+        return [
+          ...memo,
+          {
+            ...character,
+            index
+          }
+        ];
+      },
+      []
     );
 };
 
@@ -105,12 +122,14 @@ export default async (
   plotText
 ) => {
 
-  const characters = charactersGet(
+  let characters = charactersGet(
     deckSegments
   );
 
-  const charactersCategorised = await deckCharactersCategorisedGet(
+  characters = await deckCharactersCategorisedGet(
     characters,
     plotText
   );
+
+  console.log(characters);
 };

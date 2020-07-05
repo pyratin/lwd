@@ -2,7 +2,7 @@
 
 import nodeFetch from './nodeFetch';
 
-const characterLinksGetFn = (
+const charactersUdAssignedGetFn = (
   plotText,
   character
 ) => {
@@ -20,17 +20,29 @@ const characterLinksGetFn = (
       regExp
     )
   ]
-    .map(
+    .reduce(
       (
+        memo,
         _matchAll
       ) => {
 
+        if (
+          !memo &&
+          _matchAll.length
+        ) {
+
+          return (
+            _matchAll[
+              1
+            ]
+          );
+        }
+
         return (
-          _matchAll[
-            1
-          ]
+          null
         );
-      }
+      },
+      null
     );
 
   return (
@@ -38,9 +50,9 @@ const characterLinksGetFn = (
   );
 };
 
-const characterLinksGet = (
-  plotText,
-  characters
+const charactersUdAssignedGet = (
+  characters,
+  plotText
 ) => {
 
   return characters.reduce(
@@ -53,10 +65,13 @@ const characterLinksGet = (
         ...new Set(
           [
             ...memo,
-            ...characterLinksGetFn(
-              plotText,
-              character
-            )
+            {
+              ...character,
+              ud: charactersUdAssignedGetFn(
+                plotText,
+                character
+              )
+            }
           ]
         )
       ];
@@ -76,8 +91,8 @@ const pageCategoriesQueryGet = (
   `;
 };
 
-const __characterLinksCategoryAssignedGetFn = (
-  title
+const __charactersCategorisedGetFn = (
+  categoryTitle
 ) => {
 
   const peopleCategoryStrings = [
@@ -97,7 +112,7 @@ const __characterLinksCategoryAssignedGetFn = (
 
       if (
         !memo &&
-        title.match(
+        categoryTitle.match(
           peopleCategoryString
         )
       ) {
@@ -115,25 +130,25 @@ const __characterLinksCategoryAssignedGetFn = (
   );
 };
 
-const _characterLinksCategoryAssignedGetFn = (
-  titles
+const _charactersCategorisedGetFn = (
+  categoryTitles
 ) => {
 
-  return titles.reduce(
+  return categoryTitles.reduce(
     (
       memo,
-      title
+      categoryTitle
     ) => {
 
       if (
         !memo &&
-        __characterLinksCategoryAssignedGetFn(
-          title
+        __charactersCategorisedGetFn(
+          categoryTitle
         )
       ) {
 
         return (
-          true
+          'people'
         );
       }
 
@@ -141,17 +156,17 @@ const _characterLinksCategoryAssignedGetFn = (
         memo
       );
     },
-    false
+    null
   );
 };
 
-const characterLinksCategoryAssignedGetFn = (
-  characterLink
+const charactersCategorisedGetFn = (
+  characterUd
 ) => {
 
   return nodeFetch(
     pageCategoriesQueryGet(
-      characterLink
+      characterUd
     )
   )
     .then(
@@ -165,7 +180,7 @@ const characterLinksCategoryAssignedGetFn = (
           0
         ];
 
-        const titles = res.query.pages[
+        const categoryTitles = res.query.pages[
           pageId
         ]
           .categories
@@ -182,21 +197,21 @@ const characterLinksCategoryAssignedGetFn = (
             }
           );
 
-        return _characterLinksCategoryAssignedGetFn(
-          titles
+        return _charactersCategorisedGetFn(
+          categoryTitles
         );
       }
     );
 };
 
-const characterLinksCategoryAssignedGet = (
-  characterLinks
+const charactersCategorisedGet = (
+  characters
 ) => {
 
-  return characterLinks.reduce(
+  return characters.reduce(
     (
       memo,
-      characterLink
+      character
     ) => {
 
       return memo.then(
@@ -204,27 +219,33 @@ const characterLinksCategoryAssignedGet = (
           res
         ) => {
 
-          return characterLinksCategoryAssignedGetFn(
-            characterLink
-          )
-            .then(
-              (
-                result
-              ) => {
+          if (
+            character.ud
+          ) {
 
-                return [
-                  ...res,
-                  {
-                    ud: characterLink,
-                    category: (
-                      result
-                    ) ?
-                      'people' :
-                      'other'
-                  }
-                ];
-              }
-            );
+            return charactersCategorisedGetFn(
+              character.ud
+            )
+              .then(
+                (
+                  category
+                ) => {
+
+                  return [
+                    ...res,
+                    {
+                      ...character,
+                      category
+                    }
+                  ];
+                }
+              );
+          }
+
+          return [
+            ...res,
+            character
+          ];
         }
       );
     },
@@ -235,19 +256,21 @@ const characterLinksCategoryAssignedGet = (
 };
 
 export default async (
-  characters,
+  _characters,
   plotText
 ) => {
 
-  const characterLinks = characterLinksGet(
-    plotText,
-    characters
+  let characters = charactersUdAssignedGet(
+    _characters,
+    plotText
   );
 
-  const characterLinksCategoryAssigned =
-    await characterLinksCategoryAssignedGet(
-      characterLinks
+  characters =
+    await charactersCategorisedGet(
+      characters
     );
 
-  console.log(characterLinksCategoryAssigned);
+  return (
+    characters
+  );
 };
