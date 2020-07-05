@@ -1,5 +1,8 @@
 'use strict';
 
+import deckCharactersCategorisedGet from 
+  './deckCharactersCategorisedGet';
+
 const charactersGetFn = (
   fragments
 ) => {
@@ -97,81 +100,7 @@ const charactersGet = (
     );
 };
 
-const characterLinksGetFn = (
-  plotText,
-  character
-) => {
-
-  const regexp = new RegExp(
-    `
-      <a href="/wiki/([^"]*)"[^>]*>${character.text}</a>
-    `
-      .trim(),
-    'g'
-  );
-
-  const matchAll = [
-    ...plotText.matchAll(
-      regexp
-    )
-  ]
-    .map(
-      (
-        _matchAll
-      ) => {
-
-        return (
-          _matchAll[
-            1
-          ]
-        );
-      }
-    );
-
-  return (
-    matchAll
-  );
-};
-
-const characterLinksGet = (
-  plotText,
-  characters
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      return [
-        ...new Set(
-          [
-            ...memo,
-            ...characterLinksGetFn(
-              plotText,
-              character
-            )
-          ]
-        )
-      ];
-    },
-    []
-  );
-};
-
-const pageCategoriesQueryGet = (
-  title
-) => {
-
-  return `
-    https://en.wikipedia.org/w/api.php?action=query&format=json&prop=categories&cllimit=500&redirects&titles=${
-      title
-    }
-  `;
-};
-
-export default (
+export default async (
   deckSegments,
   plotText
 ) => {
@@ -179,16 +108,9 @@ export default (
   const characters = charactersGet(
     deckSegments
   );
-  //characters.map(
-    //(character) => {
-      //console.log(character.text);
-    //}
-  //)
 
-  const characterLinks = characterLinksGet(
-    plotText,
-    characters
+  const charactersCategorised = await deckCharactersCategorisedGet(
+    characters,
+    plotText
   );
-
-  //console.log(characterLinks);
 };

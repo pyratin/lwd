@@ -5,7 +5,7 @@ import segmentsGet from './segmentsGet';
 import deckSegmentsGet from './deckSegmentsGet';
 import deckCharactersGet from './deckCharactersGet';
 
-export default (
+export default async (
   movie
 ) => {
 
@@ -23,7 +23,7 @@ export default (
     segments
   );
 
-  const deckCharacters = deckCharactersGet(
+  const deckCharacters = await deckCharactersGet(
     deckSegments,
     movie.plotText
   );

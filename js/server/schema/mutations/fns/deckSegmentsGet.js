@@ -104,7 +104,7 @@ const deckSegmentsGet = (
             memo.length +
             paragraph.length
           ) <
-          5
+          15
         )
       ) {
 
@@ -130,7 +130,7 @@ export default (
     segments
   );
 
-  console.log(deckSegments);
+  //console.log(deckSegments);
 
   return (
     deckSegments
