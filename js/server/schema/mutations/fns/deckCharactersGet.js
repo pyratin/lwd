@@ -2,6 +2,8 @@
 
 import charactersCategoryAssignedGet from 
   './charactersCategoryAssignedGet';
+import charactersInstanceAssignedGet from 
+  './charactersInstanceAssignedGet';
 
 const charactersGetFn = (
   fragments
@@ -131,5 +133,7 @@ export default async (
     plotText
   );
 
-  console.log(characters);
+  characters = await charactersInstanceAssignedGet(
+    characters
+  );
 };
