@@ -1,7 +1,7 @@
 'use strict';
 
-import deckCharactersCategorisedGet from 
-  './deckCharactersCategorisedGet';
+import charactersCategoryAssignedGet from 
+  './charactersCategoryAssignedGet';
 
 const charactersGetFn = (
   fragments
@@ -126,7 +126,7 @@ export default async (
     deckSegments
   );
 
-  characters = await deckCharactersCategorisedGet(
+  characters = await charactersCategoryAssignedGet(
     characters,
     plotText
   );

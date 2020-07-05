@@ -91,7 +91,7 @@ const pageCategoriesQueryGet = (
   `;
 };
 
-const __charactersCategorisedGetFn = (
+const __charactersCategoryAssignedGetFn = (
   categoryTitle
 ) => {
 
@@ -130,7 +130,7 @@ const __charactersCategorisedGetFn = (
   );
 };
 
-const _charactersCategorisedGetFn = (
+const _charactersCategoryAssignedGetFn = (
   categoryTitles
 ) => {
 
@@ -142,7 +142,7 @@ const _charactersCategorisedGetFn = (
 
       if (
         !memo &&
-        __charactersCategorisedGetFn(
+        __charactersCategoryAssignedGetFn(
           categoryTitle
         )
       ) {
@@ -160,7 +160,7 @@ const _charactersCategorisedGetFn = (
   );
 };
 
-const charactersCategorisedGetFn = (
+const charactersCategoryAssignedGetFn = (
   characterUd
 ) => {
 
@@ -197,14 +197,14 @@ const charactersCategorisedGetFn = (
             }
           );
 
-        return _charactersCategorisedGetFn(
+        return _charactersCategoryAssignedGetFn(
           categoryTitles
         );
       }
     );
 };
 
-const charactersCategorisedGet = (
+const charactersCategoryAssignedGet = (
   characters
 ) => {
 
@@ -223,7 +223,7 @@ const charactersCategorisedGet = (
             character.ud
           ) {
 
-            return charactersCategorisedGetFn(
+            return charactersCategoryAssignedGetFn(
               character.ud
             )
               .then(
@@ -235,7 +235,11 @@ const charactersCategorisedGet = (
                     ...res,
                     {
                       ...character,
-                      category
+                      category: (
+                        category
+                      ) ?
+                        category :
+                        null
                     }
                   ];
                 }
@@ -266,7 +270,7 @@ export default async (
   );
 
   characters =
-    await charactersCategorisedGet(
+    await charactersCategoryAssignedGet(
       characters
     );
 
