@@ -23,7 +23,6 @@ export default async (
   const deckSegments = deckSegmentsGet(
     segments
   );
-  console.log(deckSegments);
 
   const deckThumbs = deckThumbsGet(
     deckSegments,

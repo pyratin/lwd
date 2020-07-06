@@ -150,12 +150,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 12 - ((11 * winheight(0) + 18) / 36)
+let s:l = 26 - ((25 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-12
-normal! 025|
+26
+normal! 028|
 tabedit js/server/schema/mutations/fns/deckThumbsGet.js
 set splitbelow splitright
 set nosplitbelow
