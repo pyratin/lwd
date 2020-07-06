@@ -14,7 +14,7 @@ badd +1 js/server/schema/mutations/fns/nodeFetch.js
 badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +1 js/server/schema/mutations/movieSearch/index.js
 badd +1 js/server/schema/mutations/movieSelect/index.js
-badd +5 js/server/schema/mutations/fns/movieDataExtendedGet.js
+badd +34 js/server/schema/mutations/fns/movieDataExtendedGet.js
 badd +29 temp/natural.js
 badd +3 js/server/schema/mutations/fns/movieDataExtendedPlotGet.js
 badd +1 js/server/schema/mutations/fns/segmentsGet.js
@@ -22,12 +22,12 @@ badd +581 js/server/schema/mutations/fns/charactersGet.js
 badd +1 utils/mediawikiPeopleSubcategoriesGet.js
 badd +95 utils/mediawiki/peopleCategorymembersGet.js
 badd +38 utils/mediawiki/categorymembers.json
-badd +1 js/server/schema/mutations/fns/deckSegmentsGet.js
 badd +1 js/server/schema/mutations/fns/deckCharactersGet.js
 badd +1 js/server/schema/mutations/fns/wordsTokenizedGet.js
 badd +1 js/server/schema/mutations/fns/NNPsGet.js
-badd +0 js/server/schema/mutations/fns/deckThumbsGet.js
-badd +1 ~/Documents/Projects/lwd/js/server/schema/mutations/fns/charactersCategoryPeopleGet.js
+badd +1 js/server/schema/mutations/fns/charactersCategoryPeopleGet.js
+badd +84 js/server/schema/mutations/fns/cardsGet.js
+badd +1 js/server/schema/mutations/fns/deckGet.js
 argglobal
 %argdel
 set stal=2
@@ -150,13 +150,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 26 - ((25 * winheight(0) + 18) / 36)
+let s:l = 23 - ((21 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-26
-normal! 028|
-tabedit js/server/schema/mutations/fns/deckThumbsGet.js
+23
+normal! 0
+tabedit js/server/schema/mutations/fns/deckGet.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -175,13 +175,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 5 - ((4 * winheight(0) + 18) / 36)
+let s:l = 8 - ((7 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
-normal! 012|
-tabedit js/server/schema/mutations/fns/deckSegmentsGet.js
+8
+normal! 02|
+tabedit js/server/schema/mutations/fns/cardsGet.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -200,12 +200,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 107 - ((4 * winheight(0) + 18) / 36)
+let s:l = 93 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-107
-normal! 011|
+93
+normal! 0
 tabedit js/server/schema/mutations/fns/segmentsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -250,13 +250,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 575 - ((27 * winheight(0) + 18) / 36)
+let s:l = 81 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-575
+81
 normal! 0
-tabedit ~/Documents/Projects/lwd/js/server/schema/mutations/fns/charactersCategoryPeopleGet.js
+tabedit js/server/schema/mutations/fns/charactersCategoryPeopleGet.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -275,11 +275,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 301 - ((20 * winheight(0) + 18) / 36)
+let s:l = 59 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-301
+59
 normal! 0
 tabedit js/server/schema/mutations/fns/NNPsGet.js
 set splitbelow splitright
@@ -406,7 +406,7 @@ exe s:l
 normal! zt
 72
 normal! 0
-tabnext 5
+tabnext 6
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

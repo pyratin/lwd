@@ -1,8 +1,8 @@
 'use strict';
 
 export default (
-  deckSegments,
-  characters
+  cards
 ) => {
 
+  console.log(cards);
 };

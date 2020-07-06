@@ -2,8 +2,8 @@
 
 import charactersGet from './charactersGet';
 import segmentsGet from './segmentsGet';
-import deckSegmentsGet from './deckSegmentsGet';
-import deckThumbsGet from './deckThumbsGet';
+import cardsGet from './cardsGet';
+import deckGet from './deckGet';
 
 export default async (
   movie
@@ -20,12 +20,11 @@ export default async (
     characters
   );
 
-  const deckSegments = deckSegmentsGet(
+  const cards = cardsGet(
     segments
   );
 
-  const deckThumbs = deckThumbsGet(
-    deckSegments,
-    characters
+  const deck = deckGet(
+    cards
   );
 };
