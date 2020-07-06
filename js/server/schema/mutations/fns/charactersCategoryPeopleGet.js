@@ -9,7 +9,9 @@ const charactersUdAssignedGetFn = (
 
   const regExp = new RegExp(
     `
-      <a href="/wiki/([^"]*)"[^>]*>${character.text}</a>
+      <a href="/wiki/([^"]*)"[^>]*>${
+        character.text
+      }</a>
     `
       .trim(),
     'g'
@@ -259,6 +261,35 @@ const charactersCategoryAssignedGet = (
   );
 };
 
+const charactersFilteredGet = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      if (
+        character.ud &&
+        !character.category
+      ) {
+
+        return (
+          memo
+        );
+      }
+
+      return [
+        ...memo,
+        character
+      ];
+    },
+    []
+  );
+};
+
 export default async (
   _characters,
   plotText
@@ -273,6 +304,10 @@ export default async (
     await charactersCategoryAssignedGet(
       characters
     );
+
+  characters = charactersFilteredGet(
+    characters
+  );
 
   return (
     characters

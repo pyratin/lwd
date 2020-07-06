@@ -4,6 +4,8 @@ import leven from 'leven';
 
 import NNPsGet from './NNPsGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
+import charactersCategoryPeopleGet from 
+  './charactersCategoryPeopleGet';
 
 const characterTokenizedGet = (
   character
@@ -550,30 +552,30 @@ const charactersGet = (
   );
 };
 
-export default (
+export default async (
   cast,
-  plot
+  plot,
+  plotText
 ) => {
 
   const plotCharacters = plotCharactersGet(
     plot
   );
 
-  //console.log(plotCharacters);
-
   const castCharacters = castCharactersGet(
     cast,
     plotCharacters
   );
 
-  //console.log(castCharacters);
-
-  const characters = charactersGet(
+  let characters = charactersGet(
     castCharacters,
     cast
   );
 
-  //console.log(characters);
+  characters = await charactersCategoryPeopleGet(
+    characters,
+    plotText
+  );
 
   return (
     characters

@@ -104,7 +104,7 @@ const deckSegmentsGet = (
             memo.length +
             paragraph.length
           ) <
-          15
+          5
         )
       ) {
 

@@ -3,15 +3,16 @@
 import charactersGet from './charactersGet';
 import segmentsGet from './segmentsGet';
 import deckSegmentsGet from './deckSegmentsGet';
-import deckCharactersGet from './deckCharactersGet';
+import deckThumbsGet from './deckThumbsGet';
 
 export default async (
   movie
 ) => {
 
-  const characters = charactersGet(
+  let characters = await charactersGet(
     movie.cast,
-    movie.plot
+    movie.plot,
+    movie.plotText
   );
 
   const segments = segmentsGet(
@@ -22,9 +23,10 @@ export default async (
   const deckSegments = deckSegmentsGet(
     segments
   );
+  console.log(deckSegments);
 
-  const deckCharacters = await deckCharactersGet(
+  const deckThumbs = deckThumbsGet(
     deckSegments,
-    movie.plotText
+    characters
   );
 };

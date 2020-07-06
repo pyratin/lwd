@@ -1,7 +1,8 @@
 'use strict';
 
 import movieDataBasicGet from '../fns/movieDataBasicGet';
-import movieDataExtendedGet from '../fns/movieDataExtendedGet';
+import movieDataExtendedGet from 
+  '../fns/movieDataExtendedGet';
 
 export default async (
   title
