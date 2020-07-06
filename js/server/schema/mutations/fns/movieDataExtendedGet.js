@@ -27,4 +27,12 @@ export default async (
   const deck = deckGet(
     cards
   );
+
+  console.log(
+    JSON.stringify(
+      deck,
+      null,
+      2
+    )
+  );
 };
