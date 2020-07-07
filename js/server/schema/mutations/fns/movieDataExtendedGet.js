@@ -30,10 +30,11 @@ export default async (
 
   console.log(
     JSON.stringify(
-      cards,
+      deck,
       null,
       2
     )
   );
 
+  return {};
 };

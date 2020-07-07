@@ -46,7 +46,10 @@ const cardsGetFn = (
             ...memo,
             {
               text,
-              actor
+              actor: {
+                text: actor.text,
+                gender: actor.gender
+              }
             }
           ];
       }
@@ -69,7 +72,7 @@ const cardsGet = (
         ...memo,
         {
           text: segment,
-          images: cardsGetFn(
+          characters: cardsGetFn(
             segment
           )
         }

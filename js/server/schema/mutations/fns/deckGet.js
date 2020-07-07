@@ -26,23 +26,46 @@ export default (
       ]
         .paragraphIndex;
 
+      const paragraphCurrentLength = cards.filter(
+        (
+          card
+        ) => {
+
+          return (
+            (
+              card.text[
+                0
+              ]
+                .paragraphIndex
+            ) ===
+            paragraphCurrentIndex
+          );
+        }
+      )
+        .length;
+
       switch (
         true
       ) {
 
         case (
-          !paragraphPreviousIndex
+          !paragraphCurrentIndex
         ) :
         case (
-          paragraphPreviousIndex ===
-          paragraphCurrentIndex
+          paragraphCurrentIndex ===
+          paragraphPreviousIndex
         ) :
         case (
           (
-            paragraphPreviousIndex ===
-            paragraphCurrentIndex - 1
+            paragraphCurrentIndex ===
+            paragraphPreviousIndex + 1
           ) &&
-          memo.length < 5
+          (
+            (
+              memo.length +
+              paragraphCurrentLength
+            ) < 5
+          )
         ) :
 
           return [

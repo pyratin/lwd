@@ -103,10 +103,10 @@ const actorsGenderAssignedGetFn = (
           .toArray()
           .map(
             (
-              pEl
+              el
             ) => {
 
-              return $(pEl)
+              return $(el)
                 .text();
             }
           );
@@ -189,9 +189,13 @@ const actorsGenderAssignedGet = (
               );
           }
 
-          return (
-            res
-          );
+          return [
+            ...res,
+            {
+              ...actor,
+              gender: null
+            }
+          ];
         }
       );
     },
