@@ -44,9 +44,7 @@ const __fragmentsGetFn = (
           const actorFragment = {
             ...fragment,
             type: 'actor',
-            actor: {
-              ud: character.actor.ud
-            },
+            actor: character.actor,
             text: character.text
           };
 

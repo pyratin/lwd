@@ -145,12 +145,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 18) / 36)
+let s:l = 29 - ((26 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 0
+29
+normal! 012|
 tabedit js/server/schema/mutations/fns/deckGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -195,11 +195,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 93 - ((35 * winheight(0) + 18) / 36)
+let s:l = 79 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-93
+79
 normal! 0
 tabedit js/server/schema/mutations/fns/segmentsGet.js
 set splitbelow splitright
@@ -220,12 +220,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 245 - ((34 * winheight(0) + 18) / 36)
+let s:l = 49 - ((27 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-245
-normal! 0
+49
+normal! 012|
 tabedit js/server/schema/mutations/fns/charactersGet.js
 set splitbelow splitright
 set nosplitbelow
