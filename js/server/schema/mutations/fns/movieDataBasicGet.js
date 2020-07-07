@@ -253,7 +253,8 @@ const plotTextActorTextsRemove = (
 ) => {
 
   if (	
-    !plotText	
+    !plotText	||
+    !cast
   ) {	
 
     return (	
@@ -292,7 +293,8 @@ const plotTextActorLinksRemove = (
 ) => {	
 
   if (	
-    !plotText	
+    !plotText	||
+    !cast
   ) {	
 
     return (	
