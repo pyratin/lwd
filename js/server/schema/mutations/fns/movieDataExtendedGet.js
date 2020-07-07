@@ -24,7 +24,7 @@ export default async (
     segments
   );
 
-  const deck = deckGet(
+  let deck = deckGet(
     cards
   );
 
