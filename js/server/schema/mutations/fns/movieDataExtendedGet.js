@@ -24,17 +24,7 @@ export default async (
     segments
   );
 
-  let deck = deckGet(
-    cards
-  );
-
-  console.log(
-    JSON.stringify(
-      deck,
-      null,
-      2
-    )
-  );
-
-  return {};
+  //let deck = deckGet(
+    //cards
+  //);
 };

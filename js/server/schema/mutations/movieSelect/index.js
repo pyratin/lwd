@@ -15,4 +15,6 @@ export default async (
   const movieDataExtended = await movieDataExtendedGet(
     movie
   );
+
+  return {};
 };
