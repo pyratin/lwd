@@ -16,5 +16,7 @@ export default async (
     movie
   );
 
-  return {};
+  return (
+    movieDataExtended
+  );
 };

@@ -145,7 +145,7 @@ const charactersWeightedGetFn = (
     {
       ...character,
       count: 0,
-      distance: -1
+      distance: charactersPrevious.length
     }
   );
 };
@@ -205,14 +205,14 @@ const _characterAssignedGetFn = (
           b.distance
         ) :
 
-          return 1;
+          return -1;
 
         case (
           b.distance >
           a.distance
         ) :
 
-          return -1;
+          return 1;
       }
     }
   )[
@@ -234,15 +234,14 @@ const characterAssignedGetFn = (
     charactersWeighted
   );
 
-  character = {
-    text: character.text,
-    actor: character.actor
-  };
-
-  console.log('____________');
-  console.log('charactersPrevious', charactersPrevious);
-  console.log('charactersWeighted', charactersWeighted);
-  console.log('character', character);
+  character = (
+    character
+  ) ?
+    {
+      text: character.text,
+      actor: character.actor
+    } :
+    null;
 
   return {
     text: card.text,
