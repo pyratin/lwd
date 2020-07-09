@@ -1,8 +1,13 @@
 'use strict';
 
 const find = (
-  query,
-  options,
+  query = {},
+  options = {
+    projection: {},
+    sort: {},
+    skip: 0,
+    limit: 0
+  },
   collectionName,
   db
 ) => {

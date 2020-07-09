@@ -13,13 +13,8 @@ import {
 const actorCollectionName = 'actors';
 
 const actorsFind = (
-  query = {},
-  options = {
-    projection: {},
-    sort: {},
-    skip: 0,
-    limit: 0
-  },
+  query,
+  options,
   db
 ) => {
 
@@ -54,7 +49,7 @@ const actorCreate = (
   );
 };
 
-const actorDelete = (
+const actorRemove = (
   actorId,
   db
 ) => {
@@ -76,5 +71,5 @@ const actorDelete = (
 export {
   actorsFind,
   actorCreate,
-  actorDelete
+  actorRemove
 };

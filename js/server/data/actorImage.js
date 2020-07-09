@@ -5,10 +5,26 @@ import {
 } from 'mongodb';
 
 import {
-  findOneAndUpdate
+  find,
+  findOneAndUpdate,
+  findOneAndDelete
 } from './index';
 
 const actorImageCollectionName = 'actorImages';
+
+const actorImagesFind = (
+  query,
+  options,
+  db
+) => {
+
+  return find(
+    query,
+    options,
+    actorImageCollectionName,
+    db
+  );
+};
 
 const actorImageCreate = (
   actorId,
@@ -37,6 +53,27 @@ const actorImageCreate = (
   );
 };
 
-export default {
-  actorImageCreate
+const actorImageRemove = (
+  actorImageId,
+  db
+) => {
+
+  return findOneAndDelete(
+    {
+      _id: new ObjectID(
+        actorImageId
+      )
+    },
+    {
+      returnOriginal: true
+    },
+    actorImageCollectionName,
+    db
+  );
+};
+
+export {
+  actorImagesFind,
+  actorImageCreate,
+  actorImageRemove
 };
