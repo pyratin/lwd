@@ -10,9 +10,12 @@ import {
   nodeEnvGet
 } from './fns/variable';
 import schema from './schema';
+import mongoClientConnect from './fns/mongoClientConnect';
 
 (
   async () => {
+
+    const db = await mongoClientConnect();
 
     const port = portGet();
 
@@ -54,6 +57,7 @@ import schema from './schema';
               pretty: true,
               graphiql: true,
               context: {
+                db,
                 req
               }
             }

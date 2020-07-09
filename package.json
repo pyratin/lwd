@@ -7,7 +7,8 @@
     "PORT": 3000
   },
   "scripts": {
-    "dev:server": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server"
+    "dev:server": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
+    "utils:actor:colleactionInit": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/actor/collectionInit.js -e js utils/actor/collectionInit.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +24,8 @@
     "eslint": "^7.3.1",
     "eslint-plugin-react": "^7.20.0",
     "json": "^9.0.6",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "shelljs": "^0.8.4"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
@@ -35,6 +37,7 @@
     "graphql": "^15.1.0",
     "graphql-relay": "^0.6.0",
     "leven": "^3.1.0",
+    "mongodb": "^3.5.9",
     "natural": "^2.1.5",
     "node-fetch": "^2.6.0",
     "sbd": "^1.0.18"
