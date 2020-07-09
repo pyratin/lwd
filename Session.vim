@@ -76,12 +76,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 51 - ((37 * winheight(0) + 19) / 38)
+let s:l = 392 - ((21 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-51
-normal! 033|
+392
+normal! 07|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -176,12 +176,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((19 * winheight(0) + 19) / 38)
+let s:l = 42 - ((31 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-20
-normal! 0
+42
+normal! 014|
 tabedit js/server/data/actorImage.js
 set splitbelow splitright
 set nosplitbelow

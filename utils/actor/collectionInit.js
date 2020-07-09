@@ -388,8 +388,14 @@ const actorsCreateFn = (
   db
 ) => {
 
+
   return actorCreate(
     text,
+    text.split(
+      /-/
+    )[
+      0
+    ],
     db
   )
     .then(

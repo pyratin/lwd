@@ -28,6 +28,7 @@ const actorsFind = (
 
 const actorCreate = (
   text,
+  gender,
   db
 ) => {
 
@@ -37,7 +38,8 @@ const actorCreate = (
     },
     {
       $set: {
-        text
+        text,
+        gender
       }
     },
     {
