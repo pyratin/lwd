@@ -281,7 +281,8 @@ const characterAssignedGet = (
 };
 
 export default (
-  segments
+  segments,
+  db
 ) => {
 
   let cards = charactersAssignedGet(
@@ -293,7 +294,8 @@ export default (
   );
 
   cards = cardsActorReplacedGet(
-    cards
+    cards,
+    db
   );
 
   return (
