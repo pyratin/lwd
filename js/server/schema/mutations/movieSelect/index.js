@@ -5,7 +5,8 @@ import movieDataExtendedGet from
   '../fns/movieDataExtendedGet';
 
 export default async (
-  title
+  title,
+  db
 ) => {
 
   let movie = await movieDataBasicGet(
@@ -13,7 +14,8 @@ export default async (
   );
 
   const movieDataExtended = await movieDataExtendedGet(
-    movie
+    movie,
+    db
   );
 
   return (

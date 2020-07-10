@@ -1,5 +1,7 @@
 'use strict';
 
+import cardsActorReplacedGet from './cardsActorReplacedGet';
+
 const charactersAssignedGetFn = (
   fragments
 ) => {
@@ -47,6 +49,7 @@ const charactersAssignedGetFn = (
             {
               text,
               actor: {
+                ud: actor.ud,
                 text: actor.text,
                 gender: actor.gender
               }
@@ -286,6 +289,10 @@ export default (
   );
 
   cards = characterAssignedGet(
+    cards
+  );
+
+  cards = cardsActorReplacedGet(
     cards
   );
 

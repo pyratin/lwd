@@ -144,7 +144,7 @@ const actorsGenderAssignedGetFn = (
           default :
 
             return (
-              null
+              'unknown'
             );
         }
       }

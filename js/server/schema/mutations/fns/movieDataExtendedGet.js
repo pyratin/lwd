@@ -6,7 +6,8 @@ import cardsGet from './cardsGet';
 import deckGet from './deckGet';
 
 export default async (
-  movie
+  movie,
+  db
 ) => {
 
   let characters = await charactersGet(
@@ -21,22 +22,23 @@ export default async (
   );
 
   const cards = cardsGet(
-    segments
+    segments,
+    db
   );
 
-  let deck = deckGet(
-    cards
-  );
+  //let deck = deckGet(
+    //cards
+  //);
 
-  console.log(
-    JSON.stringify(
-      deck,
-      null,
-      2
-    )
-  );
+  //console.log(
+    //JSON.stringify(
+      //cards,
+      //null,
+      //2
+    //)
+  //);
 
-  return (
-    deck
-  );
+  //return (
+    //deck
+  //);
 };
