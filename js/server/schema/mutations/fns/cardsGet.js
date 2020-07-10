@@ -280,7 +280,7 @@ const characterAssignedGet = (
   );
 };
 
-export default (
+export default async (
   segments,
   db
 ) => {
@@ -293,7 +293,7 @@ export default (
     cards
   );
 
-  cards = cardsActorReplacedGet(
+  cards = await cardsActorReplacedGet(
     cards,
     db
   );

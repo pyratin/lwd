@@ -1,8 +1,74 @@
 'use strict';
 
 import {
+  ObjectID
+} from 'mongodb';
+
+import {
   actorsFind
 } from '~/js/server/data/actor';
+import {
+  actorImagesFind
+} from '~/js/server/data/actorImage';
+
+const shuffledGet = (
+  els
+) => {
+
+  return els.reduce(
+    (
+      memo,
+      el
+    ) => {
+
+      return [
+        ...memo,
+        {
+          el,
+          random: Math.random()
+        }
+      ];
+    },
+    []
+  )
+    .sort(
+      (
+        a, b
+      ) => {
+
+        switch (
+          true
+        ) {
+
+          case (
+            a.random >
+            b.random
+          ) :
+
+            return 1;
+
+          case (
+            b.random >
+            a.random
+          ) :
+
+            return -1;
+        }
+      }
+    )
+    .map(
+      (
+        {
+          el
+        }
+      ) => {
+
+        return (
+          el
+        );
+      }
+    );
+};
 
 const starringActorExistsGet = (
   starringActor,
@@ -17,24 +83,6 @@ const starringActorExistsGet = (
       return (
         _starringActor.ud ===
         starringActor.ud
-      );
-    }
-  );
-};
-
-const spoofActorExistsGet = (
-  spoofActor,
-  spoofActors
-) => {
-
-  return spoofActors.find(
-    (
-      _spoofActor
-    ) => {
-
-      return (
-        _spoofActor._id.toString() ===
-        spoofActor._id.toString()
       );
     }
   );
@@ -91,82 +139,52 @@ const starringActorsFlatlistGet = (
   );
 };
 
-const spoofActorsShuffledGet = (
+const spoofActorOccurrenceCountGet = (
+  spoofActor,
   spoofActors
 ) => {
 
   return spoofActors.reduce(
     (
       memo,
-      spoofActor
+      _spoofActor
     ) => {
 
-      return [
-        ...memo,
-        {
-          ...spoofActor,
-          random: Math.random()
-        }
-      ];
-    },
-    []
-  )
-    .sort(
-      (
-        a, b
-      ) => {
-
-        switch (
-          true
-        ) {
-
-          case (
-            a.random >
-            b.random
-          ) :
-
-            return 1;
-
-          case (
-            b.random >
-            a.random
-          ) :
-
-            return -1;
-        }
-      }
-    )
-    .map(
-      (
-        spoofActor
-      ) => {
-
-        delete spoofActor.random;
+      if (
+        _spoofActor._id.toString() ===
+        spoofActor._id.toString()
+      ) {
 
         return (
-          spoofActor
+          memo + 1
         );
       }
-    );
+
+      return (
+        memo
+      );
+    },
+    0
+  );
 };
 
-const spoofActorsSortedByWeightGetFn = (
+const spoofActorOccurrenceCountAssignedGet = (
   spoofActor,
   spoofActorsPrevious
 ) => {
 
-  const exists = !!spoofActorExistsGet(
+  const count = spoofActorOccurrenceCountGet(
     spoofActor,
     spoofActorsPrevious
   );
 
   return {
     ...spoofActor,
-    exists
+    count
   };
 };
 
-const spoofActorsSortedByWeightGet = (
+const spoofActorsSortedByOccurrenceGet = (
   spoofActors,
   spoofActorsPrevious
 ) => {
@@ -179,7 +197,7 @@ const spoofActorsSortedByWeightGet = (
 
       return [
         ...memo,
-        spoofActorsSortedByWeightGetFn(
+        spoofActorOccurrenceCountAssignedGet(
           spoofActor,
           spoofActorsPrevious
         )
@@ -197,15 +215,15 @@ const spoofActorsSortedByWeightGet = (
         ) {
 
           case (
-            a.exists &&
-            !b.exists
+            a.count >
+            b.count
           ) :
 
             return 1;
 
           case (
-            b.exists &&
-            !a.exists
+            b.count >
+            a.count
           ) :
 
             return -1;
@@ -217,7 +235,7 @@ const spoofActorsSortedByWeightGet = (
         spoofActor
       ) => {
 
-        delete spoofActor.exists;
+        delete spoofActor.count;
 
         return (
           spoofActor
@@ -240,11 +258,11 @@ const spoofActorsGetFn = async (
     db
   );
 
-  spoofActors = spoofActorsShuffledGet(
+  spoofActors = shuffledGet(
     spoofActors
   );
 
-  spoofActors = spoofActorsSortedByWeightGet(
+  spoofActors = spoofActorsSortedByOccurrenceGet(
     spoofActors,
     spoofActorsPrevious
   );
@@ -286,7 +304,348 @@ const spoofActorsGet = (
 
                 return [
                   ...res,
-                  result
+                  {
+                    ...result,
+                    actorUd: starringActor.ud
+                  }
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
+const cardCharactersGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card,
+      cardIndex
+    ) => {
+
+      const cardCharacter = card.character;
+
+      if (
+        cardCharacter
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...cardCharacter,
+            cardIndex
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const spoofActorByUdGet = (
+  actorUd,
+  spoofActors
+) => {
+
+  return spoofActors.find(
+    (
+      spoofActor
+    ) => {
+
+      return (
+        spoofActor.actorUd ===
+        actorUd
+      );
+    }
+  );
+};
+
+const charactersSpoofActorsAssignedGet = (
+  characters,
+  spoofActors
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const characterActorUd = character?.actor.ud;
+
+      if (
+        characterActorUd
+      ) {
+
+        const spoofActor = spoofActorByUdGet(
+          characterActorUd,
+          spoofActors
+        );
+
+        return [
+          ...memo,
+          {
+            ...character,
+            _actor: spoofActor
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const actorImageIdsPreviousGet = (
+  charactersPrevious
+) => {
+
+  return charactersPrevious.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const actorImageId = character?.actorImageId;
+
+      if (
+        actorImageId
+      ) {
+
+        return [
+          ...memo,
+          actorImageId
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const actorImageIdOccurrenceCountGet = (
+  actorImageId,
+  actorImageIds
+) => {
+
+  return actorImageIds.reduce(
+    (
+      memo,
+      _actorImageId
+    ) => {
+
+      if (
+        _actorImageId.toString() ===
+        actorImageId.toString()
+      ) {
+
+        return (
+          memo + 1
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    0
+  );
+};
+
+const actorImageIdOccurrenceCountAssignedGet = (
+  actorImageId,
+  actorImageIdsPrevious
+) => {
+
+  const count = actorImageIdOccurrenceCountGet(
+    actorImageId,
+    actorImageIdsPrevious
+  );
+
+  return {
+    actorImageId,
+    count
+  };
+};
+
+const actorImageIdsSortedByOccurrenceGet = (
+  actorImageIds,
+  actorImageIdsPrevious
+) => {
+
+  return actorImageIds.reduce(
+    (
+      memo,
+      actorImageId
+    ) => {
+
+      return [
+        ...memo,
+        actorImageIdOccurrenceCountAssignedGet(
+          actorImageId,
+          actorImageIdsPrevious
+        )
+      ];
+    },
+    []
+  )
+    .sort(
+      (
+        a, b
+      ) => {
+
+        switch (
+          true
+        ) {
+
+          case (
+            a.count >
+            b.count
+          ) :
+
+            return 1;
+
+          case (
+            b.count >
+            a.count
+          ) :
+
+            return -1;
+        }
+      }
+    )
+    .map(
+      (
+        {
+          actorImageId
+        }
+      ) => {
+
+        return (
+          actorImageId
+        );
+      }
+    );
+};
+
+const charactersImageAssignedGetFn = async (
+  character,
+  charactersPrevious,
+  db
+) => {
+
+  const actorImageIdsPrevious = actorImageIdsPreviousGet(
+    charactersPrevious
+  );
+
+  let actorImageIds = await actorImagesFind(
+    {
+      _actorId: new ObjectID(
+        character._actor._id
+      )
+    },
+    {
+      projection: {
+        _id: 1
+      },
+      sort: {},
+      skip: 0,
+      limit: 0
+    },
+    db
+  )
+    .then(
+      (
+        actorImages
+      ) => {
+
+        return actorImages.map(
+          (
+            {
+              _id: actorImageId
+            }
+          ) => {
+
+            return (
+              actorImageId.toString()
+            );
+          }
+        );
+      }
+    );
+
+  actorImageIds = shuffledGet(
+    actorImageIds
+  );
+
+  actorImageIds = actorImageIdsSortedByOccurrenceGet(
+    actorImageIds,
+    actorImageIdsPrevious
+  );
+  console.log(character);
+  console.log('actorImageIdsPrevious', actorImageIdsPrevious);
+  console.log('actorImageIds', actorImageIds);
+  console.log('----------------');
+
+  const actorImageId = actorImageIds[
+    0
+  ];
+
+  return (
+    actorImageId
+  );
+};
+
+const charactersImageAssignedGet = (
+  characters,
+  db
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return charactersImageAssignedGetFn(
+            character,
+            res,
+            db
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  {
+                    ...character,
+                    actorImageId: result
+                  }
                 ];
               }
             );
@@ -313,5 +672,19 @@ export default async (
     db
   );
 
-  console.log(spoofActors);
+  let characters = cardCharactersGet(
+    cards
+  );
+
+  characters = charactersSpoofActorsAssignedGet(
+    characters,
+    spoofActors
+  );
+
+  characters = await charactersImageAssignedGet(
+    characters,
+    db
+  );
+
+  //console.log(characters);
 };

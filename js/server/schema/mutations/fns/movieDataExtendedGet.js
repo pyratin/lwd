@@ -21,7 +21,7 @@ export default async (
     characters
   );
 
-  const cards = cardsGet(
+  const cards = await cardsGet(
     segments,
     db
   );
