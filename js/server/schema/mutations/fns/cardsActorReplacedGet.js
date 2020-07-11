@@ -270,7 +270,6 @@ const spoofActorsGetFn = async (
   spoofActorsPrevious,
   db
 ) => {
-  console.log(starringActor);
 
   let spoofActors = await actorsFind(
     {

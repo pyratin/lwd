@@ -26,19 +26,19 @@ export default async (
     db
   );
 
-  //let deck = deckGet(
-    //cards
-  //);
+  let deck = deckGet(
+    cards
+  );
 
-  //console.log(
-    //JSON.stringify(
-      //deck,
-      //null,
-      //2
-    //)
-  //);
+  console.log(
+    JSON.stringify(
+      deck,
+      null,
+      2
+    )
+  );
 
-  //return (
-    //deck
-  //);
+  return (
+    deck
+  );
 };

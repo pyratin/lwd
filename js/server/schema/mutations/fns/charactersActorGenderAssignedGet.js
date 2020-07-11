@@ -193,7 +193,7 @@ const actorsGenderAssignedGet = (
             ...res,
             {
               ...actor,
-              gender: null
+              gender: 'unknown'
             }
           ];
         }

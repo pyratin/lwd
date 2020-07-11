@@ -190,20 +190,6 @@ const _characterAssignedGetFn = (
       ) {
 
         case (
-          a.count >
-          b.count
-        ) :
-
-          return 1;
-
-        case (
-          b.count >
-          a.count
-        ) :
-
-          return -1;
-
-        case (
           a.distance >
           b.distance
         ) :
@@ -216,6 +202,20 @@ const _characterAssignedGetFn = (
         ) :
 
           return 1;
+
+        case (
+          a.count >
+          b.count
+        ) :
+
+          return 1;
+
+        case (
+          b.count >
+          a.count
+        ) :
+
+          return -1;
       }
     }
   )[
