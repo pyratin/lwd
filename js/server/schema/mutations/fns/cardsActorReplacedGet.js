@@ -270,6 +270,7 @@ const spoofActorsGetFn = async (
   spoofActorsPrevious,
   db
 ) => {
+  console.log(starringActor);
 
   let spoofActors = await actorsFind(
     {
@@ -298,11 +299,11 @@ const spoofActorsGetFn = async (
 };
 
 const spoofActorsGet = (
-  starringActor,
+  starringActors,
   db
 ) => {
 
-  return starringActor.reduce(
+  return starringActors.reduce(
     (
       memo,
       starringActor
@@ -696,22 +697,82 @@ const charactersImageAssignedGet = (
   );
 };
 
+const characterByCardIndexGet = (
+  characters,
+  cardIndex
+) => {
+
+  return characters.find(
+    (
+      character
+    ) => {
+
+      return (
+        character.cardIndex ===
+        cardIndex
+      );
+    }
+  );
+};
+
+const cardsCharacterAssignedGet = (
+  characters,
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card,
+      cardIndex
+    ) => {
+
+      const character = characterByCardIndexGet(
+        characters,
+        cardIndex
+      );
+
+      if (
+        character
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...card,
+            character: {
+              text: character.text,
+              actorImageId: character.actorImageId
+            }
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        card
+      ];
+    },
+    []
+  );
+};
+
 export default async (
-  cards,
+  _cards,
   db
 ) => {
 
-  const starringActorsFlatlist = starringActorsFlatlistGet(
-    cards
+  const starringActors = starringActorsFlatlistGet(
+    _cards
   );
 
   const spoofActors = await spoofActorsGet(
-    starringActorsFlatlist,
+    starringActors,
     db
   );
 
   let characters = cardCharactersGet(
-    cards
+    _cards
   );
 
   characters = charactersSpoofActorsAssignedGet(
@@ -724,5 +785,12 @@ export default async (
     db
   );
 
-  console.log(characters);
+  const cards = cardsCharacterAssignedGet(
+    characters,
+    _cards
+  ); 
+
+  return (
+    cards
+  );
 };
