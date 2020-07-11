@@ -139,52 +139,59 @@ const starringActorsFlatlistGet = (
   );
 };
 
-const spoofActorOccurrenceCountGet = (
+const spoofActorWeightGet = (
   spoofActor,
-  spoofActors
+  spoofActorsPrevious
 ) => {
 
-  return spoofActors.reduce(
+  return spoofActorsPrevious.reduce(
     (
       memo,
-      _spoofActor
+      _spoofActorsPrevious,
+      index
     ) => {
 
       if (
-        _spoofActor._id.toString() ===
+        _spoofActorsPrevious._id.toString() ===
         spoofActor._id.toString()
       ) {
 
-        return (
-          memo + 1
-        );
+        return {
+          count: memo.count + 1,
+          distance: spoofActorsPrevious.length - (
+            index + 1
+          )
+        };
       }
 
       return (
         memo
       );
     },
-    0
+    {
+      count: 0,
+      distance: spoofActorsPrevious.length
+    }
   );
 };
 
-const spoofActorOccurrenceCountAssignedGet = (
+const spoofActorWeightAssignedGet = (
   spoofActor,
   spoofActorsPrevious
 ) => {
 
-  const count = spoofActorOccurrenceCountGet(
+  const weight = spoofActorWeightGet(
     spoofActor,
     spoofActorsPrevious
   );
 
   return {
     ...spoofActor,
-    count
+    ...weight
   };
 };
 
-const spoofActorsSortedByOccurrenceGet = (
+const spoofActorsSortedByWeightGet = (
   spoofActors,
   spoofActorsPrevious
 ) => {
@@ -197,7 +204,7 @@ const spoofActorsSortedByOccurrenceGet = (
 
       return [
         ...memo,
-        spoofActorOccurrenceCountAssignedGet(
+        spoofActorWeightAssignedGet(
           spoofActor,
           spoofActorsPrevious
         )
@@ -227,6 +234,20 @@ const spoofActorsSortedByOccurrenceGet = (
           ) :
 
             return -1;
+
+          case (
+            a.distance >
+            b.distance
+          ) :
+
+            return -1;
+
+          case (
+            b.distance >
+            a.distance
+          ) :
+
+            return 1;
         }
       }
     )
@@ -262,7 +283,7 @@ const spoofActorsGetFn = async (
     spoofActors
   );
 
-  spoofActors = spoofActorsSortedByOccurrenceGet(
+  spoofActors = spoofActorsSortedByWeightGet(
     spoofActors,
     spoofActorsPrevious
   );
@@ -441,52 +462,59 @@ const actorImageIdsPreviousGet = (
   );
 };
 
-const actorImageIdOccurrenceCountGet = (
+const actorImageIdWeightGet = (
   actorImageId,
-  actorImageIds
+  actorImageIdsPrevious
 ) => {
 
-  return actorImageIds.reduce(
+  return actorImageIdsPrevious.reduce(
     (
       memo,
-      _actorImageId
+      _actorImageIdsPrevious,
+      index
     ) => {
 
       if (
-        _actorImageId.toString() ===
+        _actorImageIdsPrevious.toString() ===
         actorImageId.toString()
       ) {
 
-        return (
-          memo + 1
-        );
+        return {
+          count: memo.count + 1,
+          distance: actorImageIdsPrevious.length - (
+            index + 1
+          )
+        };
       }
 
       return (
         memo
       );
     },
-    0
+    {
+      count: 0,
+      distance: actorImageIdsPrevious.length
+    }
   );
 };
 
-const actorImageIdOccurrenceCountAssignedGet = (
+const actorImageIdWeightAssignedGet = (
   actorImageId,
   actorImageIdsPrevious
 ) => {
 
-  const count = actorImageIdOccurrenceCountGet(
+  const weight = actorImageIdWeightGet(
     actorImageId,
     actorImageIdsPrevious
   );
 
   return {
     actorImageId,
-    count
+    ...weight
   };
 };
 
-const actorImageIdsSortedByOccurrenceGet = (
+const actorImageIdsSortedByWeightGet = (
   actorImageIds,
   actorImageIdsPrevious
 ) => {
@@ -499,7 +527,7 @@ const actorImageIdsSortedByOccurrenceGet = (
 
       return [
         ...memo,
-        actorImageIdOccurrenceCountAssignedGet(
+        actorImageIdWeightAssignedGet(
           actorImageId,
           actorImageIdsPrevious
         )
@@ -529,6 +557,20 @@ const actorImageIdsSortedByOccurrenceGet = (
           ) :
 
             return -1;
+
+          case (
+            a.distance >
+            b.distance
+          ) :
+
+            return -1;
+
+          case (
+            b.distance >
+            a.distance
+          ) :
+
+            return 1;
         }
       }
     )
@@ -596,14 +638,10 @@ const charactersImageAssignedGetFn = async (
     actorImageIds
   );
 
-  actorImageIds = actorImageIdsSortedByOccurrenceGet(
+  actorImageIds = actorImageIdsSortedByWeightGet(
     actorImageIds,
     actorImageIdsPrevious
   );
-  console.log(character);
-  console.log('actorImageIdsPrevious', actorImageIdsPrevious);
-  console.log('actorImageIds', actorImageIds);
-  console.log('----------------');
 
   const actorImageId = actorImageIds[
     0
@@ -686,5 +724,5 @@ export default async (
     db
   );
 
-  //console.log(characters);
+  console.log(characters);
 };
