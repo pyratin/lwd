@@ -6,6 +6,8 @@ import escapeStringRegexp from 'escape-string-regexp';
 
 import nodeFetch from './nodeFetch';
 
+const sentenceMaxLength = 100;
+
 const titleEncodedGet = (
   title
 ) => {
@@ -340,6 +342,170 @@ const plotTextActorLinksRemove = (
   );	
 };
 
+const sentenceNormalizedGetFn = (
+  text
+) => {
+
+  return text
+    .split(
+      /,/
+    )
+    .reduce(
+      (
+        memo,
+        _text
+      ) => {
+
+        switch (
+          true
+        ) {
+
+          case (
+            !memo.length
+          ) :
+
+            return [
+              _text
+            ];
+
+          case (
+            (
+              memo[
+                0
+              ]
+                .length +
+              _text.length
+            ) < 
+            sentenceMaxLength
+          ) :
+
+            return [
+              `
+                ${
+                  memo[
+                    0
+                  ]
+                    .trim()
+                }, ${
+                  _text.trim()
+                }
+              `
+                .trim()
+            ];
+
+          case (
+            memo.length < 2
+          ) :
+
+            return [
+              memo[
+                0
+              ],
+              _text.trim()
+            ];
+
+          default:
+
+            return [
+              memo[
+                0
+              ],
+              `
+                ${
+                  memo[
+                    1
+                  ]
+                    .trim()
+                }, ${
+                  _text.trim()
+                }
+              `
+                .trim()
+            ];
+        }
+      },
+      []
+    );
+};
+
+const sentenceNormalizedGet = (
+  text
+) => {
+
+  let texts = [
+    text
+  ];
+
+  while (
+    (
+      (
+        texts[
+          texts.length - 1
+        ]
+          .length
+      ) >
+      sentenceMaxLength
+    ) &&
+    (
+      texts[
+        texts.length -1
+      ]
+        .match(
+          /,/
+        )
+    )
+  ) {
+
+    texts = [
+      ...texts.slice(
+        0, -1
+      ),
+      ...sentenceNormalizedGetFn(
+        texts[
+          texts.length - 1
+        ]
+      )
+    ];
+  }
+
+  texts = texts.reduce(
+    (
+      memo,
+      text,
+      index
+    ) => {
+
+      if (
+        index <
+        (
+          texts.length - 1
+        )
+      ) {
+
+        return [
+          ...memo,
+          `
+            ${
+            text
+            } ...,
+          `
+            .trim()
+        ];
+      }
+
+      return [
+        ...memo,
+        text
+      ];
+    },
+    []
+  );
+
+  return (
+    texts
+  );
+};
+
 const plotGetFn = (
   paragraph,
   paragraphIndex
@@ -351,20 +517,43 @@ const plotGetFn = (
     .reduce(
       (
         memo,
-        text,
-        sentenceIndex
+        text
       ) => {
 
         return [
           ...memo,
-          {
-            text,
-            paragraphIndex,
-            sentenceIndex
-          }
+          text
         ];
       },
       []
+    )
+    .reduce(
+      (
+        memo,
+        text
+      ) => {
+
+        return [
+          ...memo,
+          ...sentenceNormalizedGet(
+            text
+          )
+        ];
+      },
+      []
+    )
+    .map(
+      (
+        text,
+        sentenceIndex
+      ) => {
+
+        return {
+          text,
+          paragraphIndex,
+          sentenceIndex
+        };
+      }
     );
 };
 
