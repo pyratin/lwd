@@ -152,5 +152,8 @@ export default (
         ];
       },
       []
+    )
+    .slice(
+      0, 5
     );
 };
