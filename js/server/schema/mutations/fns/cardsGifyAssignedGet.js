@@ -216,7 +216,7 @@ const cardByIndexGet = (
   cardIndex
 ) => {
 
-  return cards.reduce(
+  return cards.find(
     (
       card
     ) => {
