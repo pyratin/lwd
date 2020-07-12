@@ -1,6 +1,9 @@
 'use strict';
 
-export default (
+import cardsActorReplacedGet from './cardsActorReplacedGet';
+import cardsGifyAssignedGet from './cardsGifyAssignedGet';
+
+const deckGet = (
   cards
 ) => {
 
@@ -120,4 +123,27 @@ export default (
     .slice(
       0, 5
     );
+};
+
+export default async (
+  _cards,
+  db
+) => {
+
+  let cards = deckGet(
+    _cards
+  );
+
+  cards = await cardsActorReplacedGet(
+    cards,
+    db
+  );
+
+  cards = await cardsGifyAssignedGet(
+    cards
+  );
+
+  return (
+    cards
+  );
 };

@@ -62,7 +62,7 @@ const queryGet = (
   return `
     http://api.giphy.com/v1/gifs/search?api_key=${
       process.env.npm_package_config_GIFY_API_KEY
-    }&limit=1&rating=pg-13&q=${
+    }&limit=25&rating=pg-13&q=${
       text
     }
   `
@@ -101,7 +101,7 @@ const _base64AssignedGetFn = (
     );
 };
 
-const base64AssignedGetFn = (
+const cardsFlatlistGifyBase64AssignedGetFn = (
   {
     text
   }
@@ -117,11 +117,44 @@ const base64AssignedGetFn = (
         res
       ) => {
 
+        const randomIndex = Math.floor(
+          Math.random() *
+          res.data.length
+        );
+
+        const url = res.data
+          .reduce(
+            (
+              memo,
+              _data,
+              index
+            ) => {
+
+              if (
+                !memo &&
+                (
+                  index ===
+                  randomIndex
+                )
+              ) {
+
+                return (
+                  _data.images[
+                    '480w_still'
+                  ]
+                    .url
+                );
+              }
+
+              return (
+                memo
+              );
+            },
+            null
+          );
+
         return (
-          res.data[
-            0
-          ]
-            .images.original_still.url
+          url
         );
       }
     )
@@ -137,7 +170,7 @@ const base64AssignedGetFn = (
     );
 };
 
-const base64AssignedGet = (
+const cardsFlatlistGifyBase64AssignedGet = (
   cards
 ) => {
 
@@ -152,7 +185,7 @@ const base64AssignedGet = (
           res
         ) => {
 
-          return base64AssignedGetFn(
+          return cardsFlatlistGifyBase64AssignedGetFn(
             card
           )
             .then(
@@ -164,7 +197,7 @@ const base64AssignedGet = (
                   ...res,
                   {
                     ...card,
-                    base64
+                    base64: base64.slice(0, 100)
                   }
                 ];
               }
@@ -178,19 +211,81 @@ const base64AssignedGet = (
   );
 };
 
+const cardByIndexGet = (
+  cards,
+  cardIndex
+) => {
+
+  return cards.reduce(
+    (
+      card
+    ) => {
+
+      return (
+        card.cardIndex ===
+        cardIndex
+      );
+    }
+  );
+};
+
+const cardsGifyBase64AssignedGet = (
+  cardsFlatlist,
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card,
+      cardIndex
+    ) => {
+
+      const _cardsFlatlist = cardByIndexGet(
+        cardsFlatlist,
+        cardIndex
+      );
+
+      if (
+        _cardsFlatlist
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...card,
+            base64: _cardsFlatlist.base64
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        card
+      ];
+    },
+    []
+  );
+};
+
 export default async (
   _cards
 ) => {
 
-  let cards = cardsForGifyGet(
+  let cardsFlatlist = cardsForGifyGet(
     _cards
   );
 
-  cards = await base64AssignedGet(
-    cards
+  cardsFlatlist = await cardsFlatlistGifyBase64AssignedGet(
+    cardsFlatlist
+  );
+
+  const cards = cardsGifyBase64AssignedGet(
+    cardsFlatlist,
+    _cards
   );
 
   return (
-    _cards
+    cards
   );
 };

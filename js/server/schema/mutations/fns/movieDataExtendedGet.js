@@ -64,25 +64,25 @@ export default async (
   );
 
   const cards = await cardsGet(
-    segments,
-    db
+    segments
   );
 
-  let deck = deckGet(
-    cards
+  let deck = await deckGet(
+    cards,
+    db
   );
 
   deck = cardTextFragmentsCollapsedGet(
     deck
   );
 
-  //console.log(
-    //JSON.stringify(
-      //deck,
-      //null,
-      //2
-    //)
-  //);
+  console.log(
+    JSON.stringify(
+      deck,
+      null,
+      2
+    )
+  );
 
   return (
     deck
