@@ -6,6 +6,7 @@ import {
 
 import {
   find,
+  findOne,
   findOneAndUpdate,
   findOneAndDelete
 } from './index';
@@ -19,6 +20,20 @@ const actorImagesFind = (
 ) => {
 
   return find(
+    query,
+    options,
+    actorImageCollectionName,
+    db
+  );
+};
+
+const actorImageFindOne = (
+  query,
+  options,
+  db
+) => {
+
+  return findOne(
     query,
     options,
     actorImageCollectionName,
@@ -74,6 +89,7 @@ const actorImageRemove = (
 
 export {
   actorImagesFind,
+  actorImageFindOne,
   actorImageCreate,
   actorImageRemove
 };

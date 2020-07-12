@@ -1,6 +1,7 @@
 'use strict';
 
 import cardsActorReplacedGet from './cardsActorReplacedGet';
+import cardsGifyAssignedGet from './cardsGifyAssignedGet';
 
 const charactersAssignedGetFn = (
   fragments
@@ -296,6 +297,10 @@ export default async (
   cards = await cardsActorReplacedGet(
     cards,
     db
+  );
+
+  cards = await cardsGifyAssignedGet(
+    cards
   );
 
   return (

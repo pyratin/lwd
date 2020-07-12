@@ -5,6 +5,48 @@ import segmentsGet from './segmentsGet';
 import cardsGet from './cardsGet';
 import deckGet from './deckGet';
 
+const cardTextFragmentsCollapsedGetFn = (
+  card
+) => {
+
+  const text = card.text.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      return `${memo}${fragment.text}`;
+    },
+    ''
+  );
+
+  return {
+    ...card,
+    text
+  };
+};
+
+const cardTextFragmentsCollapsedGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      return [
+        ...memo,
+        cardTextFragmentsCollapsedGetFn(
+          card
+        )
+      ];
+    },
+    []
+  );
+};
+
 export default async (
   movie,
   db
@@ -30,13 +72,17 @@ export default async (
     cards
   );
 
-  console.log(
-    JSON.stringify(
-      deck,
-      null,
-      2
-    )
+  deck = cardTextFragmentsCollapsedGet(
+    deck
   );
+
+  //console.log(
+    //JSON.stringify(
+      //deck,
+      //null,
+      //2
+    //)
+  //);
 
   return (
     deck

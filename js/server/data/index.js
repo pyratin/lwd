@@ -49,6 +49,52 @@ const find = (
   );
 };
 
+const findOne = (
+  query,
+  options = {
+    projection: {},
+    sort: {},
+    skip: 0
+  },
+  collectionName,
+  db
+) => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      return db.collection(
+        collectionName
+      )
+        .findOne(
+          query,
+          options,
+          (
+            error,
+            res
+          ) => {
+
+            if (
+              error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              res
+            );
+          }
+        );
+    }
+  );
+};
+
 const findOneAndUpdate = (
   filter,
   update,
@@ -141,6 +187,7 @@ const findOneAndDelete = (
 
 export {
   find,
+  findOne,
   findOneAndUpdate,
   findOneAndDelete
 };

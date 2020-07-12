@@ -1,26 +1,5 @@
 'use strict';
 
-const cardTextFragmentsCollapsedGet = (
-  card
-) => {
-
-  const text = card.text.reduce(
-    (
-      memo,
-      fragment
-    ) => {
-
-      return `${memo}${fragment.text}`;
-    },
-    ''
-  );
-
-  return {
-    ...card,
-    text
-  };
-};
-
 export default (
   cards
 ) => {
@@ -134,21 +113,6 @@ export default (
                 []
               )
           }
-        ];
-      },
-      []
-    )
-    .reduce(
-      (
-        memo,
-        card
-      ) => {
-
-        return [
-          ...memo,
-          cardTextFragmentsCollapsedGet(
-            card
-          )
         ];
       },
       []

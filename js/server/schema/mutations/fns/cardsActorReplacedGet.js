@@ -8,7 +8,8 @@ import {
   actorsFind
 } from '~/js/server/data/actor';
 import {
-  actorImagesFind
+  actorImagesFind,
+  actorImageFindOne
 } from '~/js/server/data/actorImage';
 
 const shuffledGet = (
@@ -393,7 +394,7 @@ const spoofActorByUdGet = (
   );
 };
 
-const charactersSpoofActorsAssignedGet = (
+const charactersActorsAssignedGet = (
   characters,
   spoofActors
 ) => {
@@ -588,7 +589,7 @@ const actorImageIdsSortedByWeightGet = (
     );
 };
 
-const charactersImageAssignedGetFn = async (
+const charactersActorImageAssignedGetFn = async (
   character,
   charactersPrevious,
   db
@@ -647,12 +648,24 @@ const charactersImageAssignedGetFn = async (
     0
   ];
 
+  const {
+    base64
+  } = await actorImageFindOne(
+    {
+      _id: new ObjectID(
+        actorImageId
+      )
+    },
+    null,
+    db
+  );
+
   return (
-    actorImageId
+    base64
   );
 };
 
-const charactersImageAssignedGet = (
+const charactersActorImageAssignedGet = (
   characters,
   db
 ) => {
@@ -668,21 +681,21 @@ const charactersImageAssignedGet = (
           res
         ) => {
 
-          return charactersImageAssignedGetFn(
+          return charactersActorImageAssignedGetFn(
             character,
             res,
             db
           )
             .then(
               (
-                result
+                base64
               ) => {
 
                 return [
                   ...res,
                   {
                     ...character,
-                    actorImageId: result
+                    base64
                   }
                 ];
               }
@@ -739,10 +752,8 @@ const cardsCharacterAssignedGet = (
           ...memo,
           {
             ...card,
-            character: {
-              text: character.text,
-              actorImageId: character.actorImageId
-            }
+            character: character.text,
+            base64: character.base64.slice(0, 100)
           }
         ];
       }
@@ -774,12 +785,12 @@ export default async (
     _cards
   );
 
-  characters = charactersSpoofActorsAssignedGet(
+  characters = charactersActorsAssignedGet(
     characters,
     spoofActors
   );
 
-  characters = await charactersImageAssignedGet(
+  characters = await charactersActorImageAssignedGet(
     characters,
     db
   );
