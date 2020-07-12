@@ -370,6 +370,10 @@ const sentenceNormalizedGetFn = (
 
           case (
             (
+              memo.length < 
+              2
+            ) &&
+            (
               memo[
                 0
               ]
@@ -447,7 +451,7 @@ const sentenceNormalizedGet = (
       sentenceMaxLength
     ) &&
     (
-      texts[
+      !!texts[
         texts.length -1
       ]
         .match(
