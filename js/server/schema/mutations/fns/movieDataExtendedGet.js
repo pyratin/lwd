@@ -76,13 +76,13 @@ export default async (
     deck
   );
 
-  console.log(
-    JSON.stringify(
-      deck,
-      null,
-      2
-    )
-  );
+  //console.log(
+    //JSON.stringify(
+      //deck,
+      //null,
+      //2
+    //)
+  //);
 
   return (
     deck

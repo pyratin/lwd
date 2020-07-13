@@ -6,8 +6,6 @@ import NNPsGet from './NNPsGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 import charactersCategoryAssignedGet from 
   './charactersCategoryAssignedGet';
-import charactersActorGenderAssignedGet from
-  './charactersActorGenderAssignedGet';
 
 const characterTokenizedGet = (
   character
@@ -577,10 +575,6 @@ export default async (
   characters = await charactersCategoryAssignedGet(
     characters,
     plotText
-  );
-
-  characters = await charactersActorGenderAssignedGet(
-    characters
   );
 
   return (

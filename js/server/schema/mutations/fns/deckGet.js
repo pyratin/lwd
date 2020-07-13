@@ -2,6 +2,8 @@
 
 import cardsActorReplacedGet from './cardsActorReplacedGet';
 import cardsGifyAssignedGet from './cardsGifyAssignedGet';
+import charactersActorGenderAssignedGet from
+  './charactersActorGenderAssignedGet';
 
 const deckGet = (
   cards
@@ -125,6 +127,58 @@ const deckGet = (
     );
 };
 
+const characterExistsGet = (
+  character, 
+  characters
+) => {
+
+  return characters.find(
+    (
+      _character
+    ) => {
+
+      return (
+        _character.text ===
+        character.text
+      );
+    }
+  );
+};
+
+const charactersFlatlistGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      const character = card.character;
+
+      if (
+        character &&
+        !characterExistsGet(
+          character,
+          memo
+        )
+      ) {
+
+        return [
+          ...memo,
+          character
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 export default async (
   _cards,
   db
@@ -134,14 +188,23 @@ export default async (
     _cards
   );
 
-  cards = await cardsActorReplacedGet(
-    cards,
-    db
-  );
-
-  cards = await cardsGifyAssignedGet(
+  let characters = charactersFlatlistGet(
     cards
   );
+
+  characters = await charactersActorGenderAssignedGet(
+    characters
+  );
+  console.log(characters);
+
+  //cards = await cardsActorReplacedGet(
+    //cards,
+    //db
+  //);
+
+  //cards = await cardsGifyAssignedGet(
+    //cards
+  //);
 
   return (
     cards

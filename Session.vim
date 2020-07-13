@@ -7,7 +7,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +11 package.json
+badd +8 package.json
 badd +67 js/server/index.js
 badd +16 js/server/schema/index.js
 badd +1 js/server/schema/mutations/fns/nodeFetch.js
@@ -22,7 +22,7 @@ badd +1 js/server/schema/mutations/fns/NNPsGet.js
 badd +84 js/server/schema/mutations/fns/cardsGet.js
 badd +65 js/server/schema/mutations/fns/deckGet.js
 badd +1 js/server/schema/mutations/fns/charactersCategoryAssignedGet.js
-badd +1 js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
+badd +261 js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
 badd +1 utils/mediawiki/categorymembers.json
 badd +1 js/server/data/actor.js
 badd +1 js/server/fns/mongoClientConnect.js
@@ -58,7 +58,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 8
-normal! 053|
+normal! 0
 tabedit utils/actor/collectionInit.js
 set splitbelow splitright
 set nosplitbelow
@@ -228,11 +228,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 107 - ((35 * winheight(0) + 18) / 36)
+let s:l = 104 - ((32 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-107
+104
 normal! 012|
 tabedit js/server/schema/mutations/movieSelect/index.js
 set splitbelow splitright
@@ -303,12 +303,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 145 - ((31 * winheight(0) + 18) / 36)
+let s:l = 196 - ((20 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-145
-normal! 0
+196
+normal! 014|
 tabedit js/server/schema/mutations/fns/cardsGifyAssignedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -358,6 +358,31 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 774
+normal! 0
+tabedit js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 261 - ((26 * winheight(0) + 18) / 36)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+261
 normal! 0
 tabedit js/server/schema/mutations/fns/cardsGet.js
 set splitbelow splitright
@@ -428,36 +453,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 589 - ((35 * winheight(0) + 18) / 36)
+let s:l = 581 - ((33 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-589
-normal! 0
-tabedit js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 261 - ((26 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-261
+581
 normal! 0
 tabedit js/server/schema/mutations/fns/charactersCategoryAssignedGet.js
 set splitbelow splitright
@@ -609,7 +609,7 @@ exe s:l
 normal! zt
 22
 normal! 0
-tabnext 10
+tabnext 18
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
