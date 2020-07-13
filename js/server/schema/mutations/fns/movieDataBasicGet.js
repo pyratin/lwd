@@ -584,7 +584,7 @@ const plotGet = (
     .remove()
     .end();
 
-  const paragraphs = plotEl
+  let paragraphs = plotEl
     .find(
       'p'
     )
@@ -614,6 +614,13 @@ const plotGet = (
         ];
       },
       null
+    );
+
+  paragraphs = (
+    paragraphs
+  ) &&
+    paragraphs.slice(
+      0, 5
     );
 
   return (

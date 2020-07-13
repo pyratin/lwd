@@ -1,5 +1,8 @@
 'use strict';
 
+import cardsActorReplacedGet from './cardsActorReplacedGet';
+import cardsGifyAssignedGet from './cardsGifyAssignedGet';
+
 const charactersAssignedGetFn = (
   fragments
 ) => {
@@ -278,8 +281,9 @@ const characterAssignedGet = (
   );
 };
 
-export default (
-  segments
+export default async (
+  segments,
+  db
 ) => {
 
   let cards = charactersAssignedGet(
@@ -287,6 +291,15 @@ export default (
   );
 
   cards = characterAssignedGet(
+    cards
+  );
+
+  cards = await cardsActorReplacedGet(
+    cards,
+    db
+  );
+
+  cards = await cardsGifyAssignedGet(
     cards
   );
 

@@ -3,7 +3,6 @@
 import charactersGet from './charactersGet';
 import segmentsGet from './segmentsGet';
 import cardsGet from './cardsGet';
-import deckGet from './deckGet';
 
 const cardTextFragmentsCollapsedGetFn = (
   card
@@ -63,28 +62,24 @@ export default async (
     characters
   );
 
-  const cards = await cardsGet(
-    segments
-  );
-
-  let deck = await deckGet(
-    cards,
+  let cards = await cardsGet(
+    segments,
     db
   );
 
-  deck = cardTextFragmentsCollapsedGet(
-    deck
+  cards = cardTextFragmentsCollapsedGet(
+    cards
   );
 
-  //console.log(
-    //JSON.stringify(
-      //deck,
-      //null,
-      //2
-    //)
-  //);
+  console.log(
+    JSON.stringify(
+      cards,
+      null,
+      2
+    )
+  );
 
   return (
-    deck
+    cards
   );
 };
