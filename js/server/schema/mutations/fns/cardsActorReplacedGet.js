@@ -753,7 +753,7 @@ const cardsCharacterAssignedGet = (
           {
             ...card,
             character: character.text,
-            base64: character.base64.slice(0, 100)
+            base64: character.base64
           }
         ];
       }

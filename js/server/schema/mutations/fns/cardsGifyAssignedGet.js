@@ -197,7 +197,7 @@ const cardsFlatlistGifyBase64AssignedGet = (
                   ...res,
                   {
                     ...card,
-                    base64: base64.slice(0, 100)
+                    base64
                   }
                 ];
               }
