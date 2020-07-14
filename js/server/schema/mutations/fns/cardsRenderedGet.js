@@ -14,6 +14,31 @@ const cardsRenderedGetFn = async (
       reject
     ) => {
 
+      let text = card.text
+        .replace(
+          /"/g,
+          '\\"'
+        );
+
+      const character = card.character;
+
+      if (
+        character
+      ) {
+
+        text = text.replace(
+          new RegExp(
+            character
+          ),
+          `
+            <b>${
+              character
+            }</b>
+          `
+            .trim()
+        );
+      }
+
       const res = 480;
 
       const command = `
@@ -41,7 +66,7 @@ const cardsRenderedGetFn = async (
           -pointsize 20
           -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
           pango:"${
-            card.text
+            text
           }" 
           -bordercolor "#000"
           -border 10
@@ -109,7 +134,6 @@ const cardsRenderedGetFn = async (
             }
           `
             .trim();
-          console.log(base64);
 
           return resolve(
             base64
@@ -169,15 +193,14 @@ export default async (
 ) => {
 
   let cards = await cardsRenderedGet(
-    _cards.slice(
-      -2, -1
+    _cards
+  );
+
+  console.log(
+    JSON.stringify(
+      cards,
+      null,
+      2
     )
   );
-  //console.log(
-    //JSON.stringify(
-      //cards,
-      //null,
-      //2
-    //)
-  //);
 };
