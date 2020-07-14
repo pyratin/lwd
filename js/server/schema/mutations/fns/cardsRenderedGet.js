@@ -8,81 +8,81 @@ const cardsRenderedGetFn = async (
   card
 ) => {
 
-  const base64 = card.base64
-    .replace(
-      /^data:image\/jpeg;base64,/,
-      ''
-    );
-
-  const buffer = new Buffer.from(
-    base64,
-    'base64'
-  );
-
-  const res = 320;
-
-  const command = `
-    convert 
-    \\(
-      :-
-      -resize ${
-        res
-      }x${
-        res
-      }^
-      -gravity center
-      -crop ${
-        res
-      }x${
-        res
-      }+0+0
-    \\)
-    \\(
-      -size ${
-        res - 20
-      }
-      -background "#000" 
-      -fill "#fff" 
-      -pointsize 14 
-      -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
-      pango:"${
-        card.text
-      }" 
-      -bordercolor "#000"
-      -border 10
-    \\)
-    -gravity south
-    -compose blend
-    -define compose:args=90
-    -composite
-    jpeg:-
-  `
-    .split(
-      /\s/
-    )
-    .reduce(
-      (
-        memo,
-        _command
-      ) => {
-
-        return `
-          ${
-            memo
-          } ${
-            _command
-          }
-        `
-          .trim();
-      },
-      ''
-    );
-
   return new Promise(
     (
       resolve,
       reject
     ) => {
+
+      const res = 480;
+
+      const command = `
+        convert 
+        \\(
+          jpeg:-
+          -resize ${
+            res
+          }x${
+            res
+          }^
+          -gravity center
+          -crop ${
+            res
+          }x${
+            res
+          }+0+0
+        \\)
+        \\(
+          -size ${
+            res - 20
+          }
+          -background "#000" 
+          -fill "#fff" 
+          -pointsize 20
+          -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
+          pango:"${
+            card.text
+          }" 
+          -bordercolor "#000"
+          -border 10
+        \\)
+        -gravity south
+        -compose blend
+        -define compose:args=90
+        -composite
+        jpeg:-
+      `
+        .split(
+          /\s/
+        )
+        .reduce(
+          (
+            memo,
+            _command
+          ) => {
+
+            return `
+              ${
+                memo
+              } ${
+                _command
+              }
+            `
+              .trim();
+          },
+          ''
+        );
+
+      const _base64 = card.base64
+        .replace(
+          /^data:image\/jpeg;base64,/,
+          ''
+        );
+
+      const buffer = new Buffer.from(
+        _base64,
+        'base64'
+      );
 
       const proc = exec(
         command,
@@ -103,13 +103,16 @@ const cardsRenderedGetFn = async (
             );
           }
 
+          const base64 = `
+            data:image/jpeg;base64,${
+              stdout
+            }
+          `
+            .trim();
+          console.log(base64);
+
           return resolve(
-            `
-              data:image/jpeg;base64,${
-                stdout
-              }
-            `
-              .trim()
+            base64
           );
         }
       );
@@ -166,13 +169,15 @@ export default async (
 ) => {
 
   let cards = await cardsRenderedGet(
-    _cards
-  );
-  console.log(
-    JSON.stringify(
-      cards.slice(-1),
-      null,
-      2
+    _cards.slice(
+      -2, -1
     )
   );
+  //console.log(
+    //JSON.stringify(
+      //cards,
+      //null,
+      //2
+    //)
+  //);
 };
