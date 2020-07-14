@@ -80,12 +80,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 255 - ((29 * winheight(0) + 19) / 38)
+let s:l = 334 - ((0 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-255
-normal! 07|
+334
+normal! 015|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -280,7 +280,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 28 - ((26 * winheight(0) + 19) / 38)
+let s:l = 28 - ((27 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -330,11 +330,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 19) / 38)
+let s:l = 18 - ((17 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
+18
 normal! 0
 tabedit js/server/schema/mutations/fns/cardsTextCollapsedGet.js
 set splitbelow splitright
@@ -530,7 +530,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 155 - ((35 * winheight(0) + 18) / 36)
+let s:l = 155 - ((33 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -630,7 +630,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 695 - ((35 * winheight(0) + 18) / 36)
+let s:l = 695 - ((33 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
