@@ -3,6 +3,7 @@
 import {
   exec
 } from 'child_process';
+import streamcat from 'streamcat';
 
 const cardsRenderedGetFn = async (
   card
@@ -188,19 +189,228 @@ const cardsRenderedGet = (
   );
 };
 
+const miffsGetFn = (
+  base64
+) => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      const buffer = new Buffer.from(
+        base64.replace(
+          /^data:image\/jpeg;base64,/,
+          ''
+        ),
+        'base64'
+      );
+
+      const proc = exec(
+        'convert jpeg:- -resize 200x200 miff:-',
+        {
+          encoding: base64
+        },
+        (
+          error,
+          stdout
+        ) => {
+
+          if (
+            error
+          ) {
+
+            return reject(
+              error
+            );
+          }
+
+          return resolve(
+            stdout
+          );
+        }
+      );
+
+      proc.stdin.write(
+        buffer
+      );
+
+      proc.stdin.end();
+    }
+  );
+};
+
+const miffsGet = (
+  base64s
+) => {
+
+  return base64s.reduce(
+    (
+      memo,
+      base64
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return miffsGetFn(
+            base64
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
+const gifGetFn = (
+  miffs
+) => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      const proc = exec(
+        'convert -loop 0 -delay 500 miff:- gif:-',
+        {
+          encoding: 'base64'
+        },
+        (
+          error,
+          stdout
+        ) => {
+
+          if (
+            error
+          ) {
+
+            return reject(
+              error
+            );
+          }
+
+          return resolve(
+            stdout
+          );
+        }
+      );
+
+      miffs.pipe(
+        proc.stdin
+      );
+    }
+  );
+};
+
+const gifOptimizedGet = (
+  gif
+) => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      const buffer = new Buffer.from(
+        gif,
+        'base64'
+      );
+
+      const proc = exec(
+        'convert gif:- -coalesce -fuzz 2% +dither -layers Optimize +map gif:-',
+        {
+          encoding: 'base64'
+        },
+        (
+          error,
+          stdout
+        ) => {
+
+          if (
+            error
+          ) {
+
+            return reject(
+              error
+            );
+          }
+
+          return resolve(
+            `
+              data:image/jpeg;base64,${
+                stdout
+              }
+            `
+              .trim()
+          );
+        }
+      );
+
+      proc.stdin.write(
+        buffer
+      );
+
+      proc.stdin.end();
+    }
+  );
+};
+
+const gifGet = async (
+  base64s
+) => {
+
+  let miffs = await miffsGet(
+    base64s
+  );
+
+  miffs = streamcat(
+    miffs
+  );
+
+  let gif = await gifGetFn(
+    miffs
+  );
+
+  gif = await gifOptimizedGet(
+    gif
+  );
+
+  return (
+    gif
+  );
+};
+
 export default async (
   _cards
 ) => {
 
-  let cards = await cardsRenderedGet(
+  const base64s = await cardsRenderedGet(
     _cards
   );
 
-  console.log(
-    JSON.stringify(
-      cards,
-      null,
-      2
-    )
+  const gif = await gifGet(
+    base64s
   );
+
+  console.log(gif);
 };

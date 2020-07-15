@@ -3,7 +3,7 @@
 import {
   exec
 } from 'child_process';
-import streamCat from 'streamcat';
+import streamcat from 'streamcat';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
 import {
@@ -193,7 +193,7 @@ const gifGet = async (
     base64s
   );
 
-  miffs = streamCat(
+  miffs = streamcat(
     miffs
   );
 
@@ -201,7 +201,9 @@ const gifGet = async (
     miffs
   );
 
-  console.log(gif);
+  return (
+    gif
+  );
 };
 
 (
@@ -218,5 +220,7 @@ const gifGet = async (
       base64s
     );
 
+    // eslint-disable-next-line no-console
+    console.log(gif);
   }
 )();

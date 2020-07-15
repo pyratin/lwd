@@ -56,7 +56,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 46 - ((34 * winheight(0) + 19) / 38)
+let s:l = 46 - ((32 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -81,12 +81,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 152 - ((24 * winheight(0) + 19) / 38)
+let s:l = 55 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-152
-normal! 04|
+55
+normal! 0
 tabedit utils/actor/collectionInit.js
 set splitbelow splitright
 set nosplitbelow
@@ -356,12 +356,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 131 - ((33 * winheight(0) + 18) / 36)
+let s:l = 414 - ((37 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-131
-normal! 0
+414
+normal! 019|
 tabedit js/server/schema/mutations/fns/cardsTextCollapsedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -687,7 +687,7 @@ exe s:l
 normal! zt
 22
 normal! 0
-tabnext 2
+tabnext 13
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
