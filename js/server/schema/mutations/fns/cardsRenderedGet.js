@@ -208,7 +208,7 @@ const miffsGetFn = (
       );
 
       const proc = exec(
-        'convert jpeg:- -resize 200x200 miff:-',
+        'convert jpeg:- -resize 100x100 miff:-',
         {
           encoding: base64
         },
@@ -337,7 +337,7 @@ const gifOptimizedGet = (
       );
 
       const proc = exec(
-        'convert gif:- -coalesce -fuzz 2% +dither -layers Optimize +map gif:-',
+        'convert gif:- -coalesce -fuzz 5% -layers OptimizeFrame +map gif:-',
         {
           encoding: 'base64'
         },

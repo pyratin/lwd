@@ -197,7 +197,7 @@ const spoofActorsSortedByWeightGet = (
   spoofActorsPrevious
 ) => {
 
-  return spoofActors.reduce(
+  const spoofActorsWeightAssigned = spoofActors.reduce(
     (
       memo,
       spoofActor
@@ -212,46 +212,47 @@ const spoofActorsSortedByWeightGet = (
       ];
     },
     []
-  )
-    .sort(
-      (
-        a, b
-      ) => {
+  );
 
-        switch (
-          true
-        ) {
+  return spoofActorsWeightAssigned.sort(
+    (
+      a, b
+    ) => {
 
-          case (
-            a.count >
-            b.count
-          ) :
+      switch (
+        true
+      ) {
 
-            return 1;
+        case (
+          a.count >
+          b.count
+        ) :
 
-          case (
-            b.count >
-            a.count
-          ) :
+          return 1;
 
-            return -1;
+        case (
+          b.count >
+          a.count
+        ) :
 
-          case (
-            a.distance >
-            b.distance
-          ) :
+          return -1;
 
-            return -1;
+        case (
+          a.distance >
+          b.distance
+        ) :
 
-          case (
-            b.distance >
-            a.distance
-          ) :
+          return -1;
 
-            return 1;
-        }
+        case (
+          b.distance >
+          a.distance
+        ) :
+
+          return 1;
       }
-    )
+    }
+  )
     .map(
       (
         spoofActor
@@ -520,7 +521,7 @@ const actorImageIdsSortedByWeightGet = (
   actorImageIdsPrevious
 ) => {
 
-  return actorImageIds.reduce(
+  const actorImageIdsWeightAssigned = actorImageIds.reduce(
     (
       memo,
       actorImageId
@@ -535,46 +536,47 @@ const actorImageIdsSortedByWeightGet = (
       ];
     },
     []
-  )
-    .sort(
-      (
-        a, b
-      ) => {
+  );
 
-        switch (
-          true
-        ) {
+  return actorImageIdsWeightAssigned.sort(
+    (
+      a, b
+    ) => {
 
-          case (
-            a.count >
-            b.count
-          ) :
+      switch (
+        true
+      ) {
 
-            return 1;
+        case (
+          a.count >
+          b.count
+        ) :
 
-          case (
-            b.count >
-            a.count
-          ) :
+          return 1;
 
-            return -1;
+        case (
+          b.count >
+          a.count
+        ) :
 
-          case (
-            a.distance >
-            b.distance
-          ) :
+          return -1;
 
-            return -1;
+        case (
+          a.distance >
+          b.distance
+        ) :
 
-          case (
-            b.distance >
-            a.distance
-          ) :
+          return -1;
 
-            return 1;
-        }
+        case (
+          b.distance >
+          a.distance
+        ) :
+
+          return 1;
       }
-    )
+    }
+  )
     .map(
       (
         {
@@ -660,9 +662,10 @@ const charactersActorImageAssignedGetFn = async (
     db
   );
 
-  return (
+  return {
+    actorImageId,
     base64
-  );
+  };
 };
 
 const charactersActorImageAssignedGet = (
@@ -688,14 +691,14 @@ const charactersActorImageAssignedGet = (
           )
             .then(
               (
-                base64
+                result
               ) => {
 
                 return [
                   ...res,
                   {
                     ...character,
-                    base64
+                    ...result
                   }
                 ];
               }
