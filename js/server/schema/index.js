@@ -15,6 +15,9 @@ import {
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
 import movieSelect from './mutations/movieSelect';
+import {
+  hostUrlGet
+} from '~/js/server/fns/variable';
 
 const viewerType = new GraphQLObjectType(
   {
@@ -139,6 +142,30 @@ const MovieSelectMutation = mutationWithClientMutationId(
         resolve() {
 
           return viewerGet();
+        }
+      },
+      path: {
+        type: GraphQLString,
+        resolve(
+          {
+            _id: movieId
+          },
+          args,
+          {
+            req
+          }
+        ) {
+
+          return `
+            ${
+              hostUrlGet(
+                req
+              )
+            }/output/${
+              movieId.toString()
+            }.gif
+          `
+            .trim();
         }
       }
     },

@@ -5,7 +5,6 @@ import cardsActorReplacedGet from './cardsActorReplacedGet';
 import cardsGifyAssignedGet from './cardsGifyAssignedGet';
 import cardsTextCollapsedGet from 
   './cardsTextCollapsedGet';
-import cardsRenderedGet from './cardsRenderedGet';
 
 export default async (
   segments,
@@ -26,10 +25,6 @@ export default async (
   );
 
   cards = cardsTextCollapsedGet(
-    cards
-  );
-
-  cards = await cardsRenderedGet(
     cards
   );
 

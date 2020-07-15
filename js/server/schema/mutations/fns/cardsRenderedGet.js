@@ -5,6 +5,12 @@ import {
 } from 'child_process';
 import streamcat from 'streamcat';
 
+import {
+  outputResGet
+} from '~/js/server/fns/variable';
+
+const res = outputResGet();
+
 const cardsRenderedGetFn = async (
   card
 ) => {
@@ -40,7 +46,7 @@ const cardsRenderedGetFn = async (
         );
       }
 
-      const res = 480;
+      const factor = res / 480;
 
       const command = `
         convert 
@@ -60,17 +66,23 @@ const cardsRenderedGetFn = async (
         \\)
         \\(
           -size ${
-            res - 20
+            res - (
+              20 * factor
+            )
           }
           -background "#000" 
           -fill "#fff" 
-          -pointsize 20
+          -pointsize ${
+            20 * factor
+          }
           -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
           pango:"${
             text
           }" 
           -bordercolor "#000"
-          -border 10
+          -border ${
+            10 * factor
+          }
         \\)
         -gravity south
         -compose blend
@@ -208,7 +220,7 @@ const miffsGetFn = (
       );
 
       const proc = exec(
-        'convert jpeg:- -resize 100x100 miff:-',
+        'convert jpeg:- miff:-',
         {
           encoding: base64
         },
@@ -357,7 +369,7 @@ const gifOptimizedGet = (
 
           return resolve(
             `
-              data:image/jpeg;base64,${
+              data:image/gif;base64,${
                 stdout
               }
             `
@@ -376,11 +388,21 @@ const gifOptimizedGet = (
 };
 
 const gifGet = async (
+  splash,
   base64s
 ) => {
 
+  const input = (
+    splash
+  ) ?
+    [
+      splash,
+      ...base64s
+    ] :
+    base64s;
+
   let miffs = await miffsGet(
-    base64s
+    input
   );
 
   miffs = streamcat(
@@ -401,6 +423,7 @@ const gifGet = async (
 };
 
 export default async (
+  moviePoster,
   _cards
 ) => {
 
@@ -409,8 +432,11 @@ export default async (
   );
 
   const gif = await gifGet(
+    null,
     base64s
   );
 
-  console.log(gif);
+  return (
+    gif
+  );
 };

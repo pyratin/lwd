@@ -644,7 +644,7 @@ export default async (
     json.lead?.lastmodified
   );
 
-  const image = (
+  const poster = (
     json.lead?.image
   ) ?
     Object.values(
@@ -688,7 +688,7 @@ export default async (
   return {
     title,
     date,
-    image,
+    poster,
     cast,
     plot,
     castText,

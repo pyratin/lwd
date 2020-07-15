@@ -27,8 +27,7 @@ const actorsFind = (
 };
 
 const actorCreate = (
-  text,
-  gender,
+  actor,
   db
 ) => {
 
@@ -37,10 +36,7 @@ const actorCreate = (
       _id: new ObjectID()
     },
     {
-      $set: {
-        text,
-        gender
-      }
+      $set: actor
     },
     {
       upsert: true,

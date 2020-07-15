@@ -3,6 +3,7 @@
 import charactersGet from './charactersGet';
 import segmentsGet from './segmentsGet';
 import cardsGet from './cardsGet';
+import cardsRenderedGet from './cardsRenderedGet';
 
 export default async (
   movie,
@@ -25,15 +26,13 @@ export default async (
     db
   );
 
-  //console.log(
-    //JSON.stringify(
-      //cards,
-      //null,
-      //2
-    //)
-  //);
-
-  return (
+  const gif = await cardsRenderedGet(
+    movie.poster,
     cards
   );
+
+  return {
+    title: movie.title,
+    gif
+  };
 };

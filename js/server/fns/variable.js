@@ -36,8 +36,33 @@ const nodeEnvGet = () => {
   );
 };
 
+const outputResGet = () => {
+
+  return (
+    process.env.npm_package_config_OUTPUT_RES
+  );
+};
+
+const hostUrlGet = (
+  req
+) => {
+
+  return `
+    ${
+      req.protocol
+    }://${
+      req.get(
+        'host'
+      )
+    }
+  `
+    .trim();
+};
+
 export {
   titleGet,
   portGet,
-  nodeEnvGet
+  nodeEnvGet,
+  outputResGet,
+  hostUrlGet
 };

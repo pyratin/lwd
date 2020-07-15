@@ -482,8 +482,12 @@ const _actorImagesCreateFn = (
 ) => {
 
   return actorImageCreate(
-    actor._id,
-    actorImage,
+    {
+      _actorId: new ObjectID(
+        actor._id
+      ),
+      base64: actorImage
+    },
     db
   );
 };
@@ -576,12 +580,14 @@ const actorsCreateFn = (
 
 
   return actorCreate(
-    text,
-    text.split(
-      /-/
-    )[
-      0
-    ],
+    {
+      text,
+      gender: text.split(
+        /-/
+      )[
+        0
+      ]
+    },
     db
   )
     .then(

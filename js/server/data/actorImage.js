@@ -42,8 +42,7 @@ const actorImageFindOne = (
 };
 
 const actorImageCreate = (
-  actorId,
-  base64,
+  actorImage,
   db
 ) => {
 
@@ -52,12 +51,7 @@ const actorImageCreate = (
       _id: new ObjectID()
     },
     {
-      $set: {
-        _actorId: new ObjectID(
-          actorId
-        ),
-        base64
-      }
+      $set: actorImage
     },
     {
       upsert: true,
