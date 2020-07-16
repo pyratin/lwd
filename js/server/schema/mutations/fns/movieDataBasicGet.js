@@ -8,7 +8,7 @@ import nodeFetch from './nodeFetch';
 
 const sentenceMaxLength = 100;
 
-const sentenceNormalizeRegExp = /,/;
+const sentenceNormalizeRegExp = /\W\s/;
 
 const titleEncodedGet = (
   title
@@ -348,6 +348,8 @@ const sentenceNormalizedGetFn = (
   text
 ) => {
 
+  const joinString = ', ';
+
   return text
     .split(
       sentenceNormalizeRegExp
@@ -380,7 +382,8 @@ const sentenceNormalizedGetFn = (
                 0
               ]
                 .length +
-              _text.length
+              _text.length +
+              +joinString.length
             ) < 
             sentenceMaxLength
           ) :
@@ -392,7 +395,9 @@ const sentenceNormalizedGetFn = (
                     0
                   ]
                     .trim()
-                }, ${
+                }${
+                  joinString
+                }${
                   _text.trim()
                 }
               `
@@ -422,7 +427,9 @@ const sentenceNormalizedGetFn = (
                     1
                   ]
                     .trim()
-                }, ${
+                }${
+                  joinString
+                }${
                   _text.trim()
                 }
               `
@@ -462,15 +469,17 @@ const sentenceNormalizedGet = (
     )
   ) {
 
+    const sentenceNormalized = sentenceNormalizedGetFn(
+      texts[
+        texts.length - 1
+      ]
+    );
+
     texts = [
       ...texts.slice(
         0, -1
       ),
-      ...sentenceNormalizedGetFn(
-        texts[
-          texts.length - 1
-        ]
-      )
+      ...sentenceNormalized
     ];
   }
 
