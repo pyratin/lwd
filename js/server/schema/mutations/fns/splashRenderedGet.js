@@ -1,7 +1,5 @@
 'use strict';
 
-import fs from 'fs';
-import path from 'path';
 import nodeFetch from 'node-fetch';
 import {
   exec
@@ -11,11 +9,39 @@ import {
   outputResGet
 } from '~/js/server/fns/variable';
 
-const res = outputResGet();
+const charactersGet = (
+  cards
+) => {
 
-const bgFilePathString = 'media/outputComponents/bg.jpeg';
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      if (
+        card.character
+      ) {
+
+        return [
+          ...memo,
+          {
+            text: card.character,
+            base64: card.base64
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
 
 const moviePosterBase64GetFn = (
+  movieTitle,
   buffer
 ) => {
 
@@ -25,17 +51,79 @@ const moviePosterBase64GetFn = (
       reject
     ) => {
 
-      const resHalf = res / 2;
+
+      let text = movieTitle.replace(
+        /"/g,
+        '\\"'
+      );
+
+      const res = outputResGet() / 2;
+
+      const factor = res / 480;
 
       const proc = exec(
         `
-          convert jpeg:- -resize ${
-            resHalf
-          }x${
-            resHalf
-          }^ jpeg:-
+          convert
+          \\(
+            jpeg:-
+            -resize ${
+              res
+            }x${
+              res
+            }^
+            -crop ${
+              res
+            }x${
+              res
+            }+0+0
+          \\)
+          \\(
+            -size ${
+              res - (
+                20 * factor
+              )
+            }
+            -background "#000"
+            -fill "#fff"
+            -pointsize ${
+              20 * factor
+            }
+            -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
+            -gravity Center
+            pango:"${
+              text
+            }"
+            -bordercolor "#000"
+            -border ${
+              10 * factor
+            }
+          \\)
+          -gravity south
+          -compose blend
+          -define compose:args=90
+          -composite
+          jpeg:-
         `
-          .trim(),
+          .split(
+            /\s/
+          )
+          .reduce(
+            (
+              memo,
+              _command
+            ) => {
+
+              return `
+                ${
+                  memo
+                } ${
+                  _command
+                }
+              `
+                .trim();
+            },
+            ''
+          ),
         {
           encoding: 'base64'
         },
@@ -74,10 +162,12 @@ const moviePosterBase64GetFn = (
 };
 
 const moviePosterBase64Get = (
+  movieTitle,
   moviePoster
 ) => {
 
   if (
+    !movieTitle ||
     !moviePoster
   ) {
 
@@ -103,13 +193,16 @@ const moviePosterBase64Get = (
       ) => {
 
         return moviePosterBase64GetFn(
+          movieTitle,
           buffer
         );
       }
     );
 };
 
-const bgBase64Get = () => {
+const characterBase64sGetFn = (
+  character
+) => {
 
   return new Promise(
     (
@@ -117,15 +210,100 @@ const bgBase64Get = () => {
       reject
     ) => {
 
-      return fs.readFile(
-        path.join(
-          process.cwd(),
-          bgFilePathString
+      let text = character.text
+        .replace(
+          /"/g,
+          '\\"'
+        );
+
+      text = `
+        as <b>${
+          character.text
+        }</b>
+      `
+        .trim();
+
+      const res = outputResGet() / 2;
+
+      const factor = res / 480;
+
+      const buffer = new Buffer.from(
+        character.base64.replace(
+          /^data:image\/jpeg;base64,/,
+          ''
         ),
-        'base64',
+        'base64'
+      );
+
+      const proc = exec(
+        `
+          convert
+          \\(
+            jpeg:-
+            -resize ${
+              res
+            }x${
+              res
+            }^
+            -crop ${
+              res
+            }x${
+              res
+            }+0+0
+          \\)
+          \\(
+            -size ${
+              res - (
+                40 * factor
+              )
+            }
+            -background "#000"
+            -fill "#fff"
+            -pointsize ${
+              40 * factor
+            }
+            -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
+            -gravity Center
+            pango:"${
+              text
+            }"
+            -bordercolor "#000"
+            -border ${
+              20 * factor
+            }
+          \\)
+          -gravity south
+          -compose blend
+          -define compose:args=90
+          -composite
+          jpeg:-
+        `
+          .split(
+            /\s/
+          )
+          .reduce(
+            (
+              memo,
+              _command
+            ) => {
+
+              return `
+                ${
+                  memo
+                } ${
+                  _command
+                }
+              `
+                .trim();
+            },
+            ''
+          ),
+        {
+          encoding: 'base64'
+        },
         (
           error,
-          res
+          stdout
         ) => {
 
           if (
@@ -140,73 +318,79 @@ const bgBase64Get = () => {
           return resolve(
             `
               data:image/jpeg;base64,${
-                res
+                stdout
               }
             `
               .trim()
           );
         }
       );
+
+      proc.stdin.write(
+        buffer
+      );
+
+      proc.stdin.end();
     }
   );
 };
 
-const moviePosterBgCompositedGet = (
-  moviePosterBase64,
-  bgBase64
+const characterBase64sGet = (
+  characters
 ) => {
 
-  return new Promise(
+  return characters.reduce(
     (
-      resolve,
-      reject
+      memo,
+      character
     ) => {
 
+      return memo.then(
+        (
+          res
+        ) => {
 
-      return resolve();
-    }
+          return characterBase64sGetFn(
+            character
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
   );
 };
-
-const splashGet = async (
-  moviePosterBase64
-) => {
-
-  if (
-    !moviePosterBase64
-  ) {
-
-    return Promise.resolve(
-      null
-    );
-  }
-
-  let bgBase64 = await bgBase64Get();
-
-  //bgBase64 = await moviePosterBgCompositedGet(
-    //moviePosterBase64,
-    //bgBase64
-  //);
-
-  return Promise.resolve(
-    moviePosterBase64
-  );
-};
-
 
 export default async (
-  moviePoster
+  movieTitle,
+  moviePoster,
+  cards
 ) => {
 
+  const characters = charactersGet(
+    cards
+  );
+
   const moviePosterBase64 = await moviePosterBase64Get(
+    movieTitle,
     moviePoster
   );
 
-  let splash = await splashGet(
-    moviePosterBase64
+  const characterBase64s = await characterBase64sGet(
+    characters
   );
 
-  return (
-    splash
-  );
+  console.log(characterBase64s);
 };

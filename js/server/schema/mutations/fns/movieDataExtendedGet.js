@@ -27,6 +27,7 @@ export default async (
   );
 
   const gif = await cardsRenderedGet(
+    movie.title,
     movie.poster,
     cards
   );

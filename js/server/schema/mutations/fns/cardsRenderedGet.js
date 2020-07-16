@@ -5,6 +5,7 @@ import {
 } from 'child_process';
 import streamcat from 'streamcat';
 import splashRenderedGet from './splashRenderedGet';
+import miffsGet from './miffsGet';
 
 import {
   outputResGet
@@ -202,96 +203,6 @@ const cardsRenderedGet = (
   );
 };
 
-const miffsGetFn = (
-  base64
-) => {
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-
-      const buffer = new Buffer.from(
-        base64.replace(
-          /^data:image\/jpeg;base64,/,
-          ''
-        ),
-        'base64'
-      );
-
-      const proc = exec(
-        'convert jpeg:- miff:-',
-        {
-          encoding: base64
-        },
-        (
-          error,
-          stdout
-        ) => {
-
-          if (
-            error
-          ) {
-
-            return reject(
-              error
-            );
-          }
-
-          return resolve(
-            stdout
-          );
-        }
-      );
-
-      proc.stdin.write(
-        buffer
-      );
-
-      proc.stdin.end();
-    }
-  );
-};
-
-const miffsGet = (
-  base64s
-) => {
-
-  return base64s.reduce(
-    (
-      memo,
-      base64
-    ) => {
-
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return miffsGetFn(
-            base64
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
-        }
-      );
-    },
-    Promise.resolve(
-      []
-    )
-  );
-};
-
 const gifGetFn = (
   miffs
 ) => {
@@ -424,6 +335,7 @@ const gifGet = async (
 };
 
 export default async (
+  movieTitle,
   moviePoster,
   _cards
 ) => {
@@ -433,7 +345,9 @@ export default async (
   );
 
   await splashRenderedGet(
-    moviePoster
+    movieTitle,
+    moviePoster,
+    _cards
   );
 
   const gif = await gifGet(
