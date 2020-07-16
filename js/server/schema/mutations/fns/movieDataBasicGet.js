@@ -8,6 +8,8 @@ import nodeFetch from './nodeFetch';
 
 const sentenceMaxLength = 100;
 
+const sentenceNormalizeRegExp = /,/;
+
 const titleEncodedGet = (
   title
 ) => {
@@ -348,7 +350,7 @@ const sentenceNormalizedGetFn = (
 
   return text
     .split(
-      /,/
+      sentenceNormalizeRegExp
     )
     .reduce(
       (
@@ -455,7 +457,7 @@ const sentenceNormalizedGet = (
         texts.length -1
       ]
         .match(
-          /,/
+          sentenceNormalizeRegExp 
         )
     )
   ) {

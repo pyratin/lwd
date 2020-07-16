@@ -4,6 +4,7 @@ import {
   exec
 } from 'child_process';
 import streamcat from 'streamcat';
+import splashRenderedGet from './splashRenderedGet';
 
 import {
   outputResGet
@@ -429,6 +430,10 @@ export default async (
 
   const base64s = await cardsRenderedGet(
     _cards
+  );
+
+  await splashRenderedGet(
+    moviePoster
   );
 
   const gif = await gifGet(
