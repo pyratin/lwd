@@ -4,6 +4,8 @@ import {
   exec
 } from 'child_process';
 
+import streamcat from 'streamcat';
+
 const miffsGetFn = (
   base64
 ) => {
@@ -91,5 +93,15 @@ export default (
     Promise.resolve(
       []
     )
-  );
+  )
+    .then(
+      (
+        miffs
+      ) => {
+
+        return streamcat(
+          miffs
+        );
+      }
+    );
 };

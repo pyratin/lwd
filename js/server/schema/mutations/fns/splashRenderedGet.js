@@ -8,6 +8,9 @@ import {
 import {
   outputResGet
 } from '~/js/server/fns/variable';
+import base64TextCompositedGet from './base64TextCompositedGet';
+import base64MiffStreamsConcatedGet from 
+  './base64MiffStreamsConcatedGet';
 
 const charactersGet = (
   cards
@@ -20,7 +23,18 @@ const charactersGet = (
     ) => {
 
       if (
-        card.character
+        card.character &&
+        !memo.find(
+          (
+            _memo
+          ) => {
+
+            return (
+              _memo.text ===
+              card.character
+            );
+          }
+        )
       ) {
 
         return [
@@ -41,7 +55,6 @@ const charactersGet = (
 };
 
 const moviePosterBase64GetFn = (
-  movieTitle,
   buffer
 ) => {
 
@@ -51,56 +64,30 @@ const moviePosterBase64GetFn = (
       reject
     ) => {
 
-
-      let text = movieTitle.replace(
-        /"/g,
-        '\\"'
-      );
-
-      const res = outputResGet() / 2;
-
-      const factor = res / 480;
+      const res = outputResGet();
 
       const proc = exec(
         `
-          convert
+          convert 
+          \\(
+            -size ${
+              res
+            }x${
+              res
+            }
+            xc:"#000" 
+          \\)
           \\(
             jpeg:-
             -resize ${
               res
             }x${
               res
-            }^
-            -crop ${
-              res
-            }x${
-              res
-            }+0+0
-          \\)
-          \\(
-            -size ${
-              res - (
-                20 * factor
-              )
-            }
-            -background "#000"
-            -fill "#fff"
-            -pointsize ${
-              20 * factor
-            }
-            -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
-            -gravity Center
-            pango:"${
-              text
-            }"
-            -bordercolor "#000"
-            -border ${
-              10 * factor
             }
           \\)
-          -gravity south
+          -gravity center
           -compose blend
-          -define compose:args=90
+          -define compose:args=50
           -composite
           jpeg:-
         `
@@ -162,12 +149,10 @@ const moviePosterBase64GetFn = (
 };
 
 const moviePosterBase64Get = (
-  movieTitle,
   moviePoster
 ) => {
 
   if (
-    !movieTitle ||
     !moviePoster
   ) {
 
@@ -193,15 +178,61 @@ const moviePosterBase64Get = (
       ) => {
 
         return moviePosterBase64GetFn(
-          movieTitle,
           buffer
         );
       }
     );
 };
 
-const characterBase64sGetFn = (
-  character
+const characterBase64sGet = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return base64TextCompositedGet(
+            character.base64,
+            `
+              As ${
+                character.text
+              }
+            `
+              .trim(),
+            outputResGet() / 3,
+            40,
+            30
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
+const charactersCompositedBase64Get = (
+  characterStreamsConcated
 ) => {
 
   return new Promise(
@@ -210,94 +241,8 @@ const characterBase64sGetFn = (
       reject
     ) => {
 
-      let text = character.text
-        .replace(
-          /"/g,
-          '\\"'
-        );
-
-      text = `
-        as <b>${
-          character.text
-        }</b>
-      `
-        .trim();
-
-      const res = outputResGet() / 2;
-
-      const factor = res / 480;
-
-      const buffer = new Buffer.from(
-        character.base64.replace(
-          /^data:image\/jpeg;base64,/,
-          ''
-        ),
-        'base64'
-      );
-
       const proc = exec(
-        `
-          convert
-          \\(
-            jpeg:-
-            -resize ${
-              res
-            }x${
-              res
-            }^
-            -crop ${
-              res
-            }x${
-              res
-            }+0+0
-          \\)
-          \\(
-            -size ${
-              res - (
-                40 * factor
-              )
-            }
-            -background "#000"
-            -fill "#fff"
-            -pointsize ${
-              40 * factor
-            }
-            -font "/media/fonts/Muli-Italic-VariableFont_wght.ttf"
-            -gravity Center
-            pango:"${
-              text
-            }"
-            -bordercolor "#000"
-            -border ${
-              20 * factor
-            }
-          \\)
-          -gravity south
-          -compose blend
-          -define compose:args=90
-          -composite
-          jpeg:-
-        `
-          .split(
-            /\s/
-          )
-          .reduce(
-            (
-              memo,
-              _command
-            ) => {
-
-              return `
-                ${
-                  memo
-                } ${
-                  _command
-                }
-              `
-                .trim();
-            },
-            ''
-          ),
+        'convert miff:- -append jpeg:-',
         {
           encoding: 'base64'
         },
@@ -326,50 +271,57 @@ const characterBase64sGetFn = (
         }
       );
 
-      proc.stdin.write(
-        buffer
+      characterStreamsConcated.pipe(
+        proc.stdin
       );
-
-      proc.stdin.end();
     }
   );
 };
 
-const characterBase64sGet = (
-  characters
+const finalCompositedGet = (
+  finalCompositeMiffStreamsConcated
 ) => {
 
-  return characters.reduce(
+  return new Promise(
     (
-      memo,
-      character
+      resolve,
+      reject
     ) => {
 
-      return memo.then(
+      const proc = exec(
+        'convert miff:- -gravity north -composite jpeg:-',
+        {
+          encoding: 'base64'
+        },
         (
-          res
+          error,
+          stdout
         ) => {
 
-          return characterBase64sGetFn(
-            character
-          )
-            .then(
-              (
-                result
-              ) => {
+          if (
+            error
+          ) {
 
-                return [
-                  ...res,
-                  result
-                ];
-              }
+            return reject(
+              error
             );
+          }
+
+          return resolve(
+            `
+              data:image/jpeg;base64,${
+                stdout
+              }
+            `
+              .trim()
+          );
         }
       );
-    },
-    Promise.resolve(
-      []
-    )
+
+      finalCompositeMiffStreamsConcated.pipe(
+        proc.stdin
+      );
+    }
   );
 };
 
@@ -384,7 +336,6 @@ export default async (
   );
 
   const moviePosterBase64 = await moviePosterBase64Get(
-    movieTitle,
     moviePoster
   );
 
@@ -392,5 +343,37 @@ export default async (
     characters
   );
 
-  console.log(characterBase64s);
+  const characterStreamsConcated = 
+    await base64MiffStreamsConcatedGet(
+      characterBase64s
+    );
+
+  const charactersCompositedBase64 = 
+    await charactersCompositedBase64Get(
+      characterStreamsConcated 
+    );
+
+  const finalCompositeMiffStreamsConcated = 
+    await base64MiffStreamsConcatedGet(
+      [
+        moviePosterBase64,
+        charactersCompositedBase64
+      ]
+    );
+
+  let splash = await finalCompositedGet(
+    finalCompositeMiffStreamsConcated
+  );
+
+  splash = await base64TextCompositedGet(
+    splash,
+    movieTitle,
+    outputResGet(),
+    20,
+    10
+  );
+
+  return (
+    splash
+  );
 };
