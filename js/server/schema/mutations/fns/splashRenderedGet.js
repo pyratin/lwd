@@ -207,8 +207,8 @@ const characterBase64sGet = (
               }
             `
               .trim(),
-            outputResGet() / 3,
-            40,
+            outputResGet() / 4,
+            50,
             30
           )
             .then(
