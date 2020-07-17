@@ -133,6 +133,18 @@ const wordsChunk = (
             !!_word.index
           )
         ) :
+        case (
+          (
+            _word.tag === 
+            'NNP'
+          ) &&
+          (
+            !!word.text
+              .match(
+                /^["]/
+              )
+          )
+        ) :
 
           return [
             ...memo.slice(
@@ -178,6 +190,65 @@ const wordsChunk = (
 
   return (
     wordsChunked
+  );
+};
+
+const doublequotesHandledGet = (
+  words
+) => {
+
+  return words.reduce(
+    (
+      memo,
+      word
+    ) => {
+
+      const regExp = /"\s(\w+)\s"/;
+
+      const match = word.text
+        .match(
+          regExp
+        );
+
+      if (
+        match
+      ) {
+
+        const text = word.text
+          .replace(
+            `
+              " ${
+                match[
+                  1
+                ]
+              } "
+            `
+              .trim(),
+            `
+              "${
+                match[
+                  1
+                ]
+              }"
+            `
+              .trim()
+          );
+
+        return [
+          ...memo,
+          {
+            ...word,
+            text
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        word
+      ];
+    },
+    []
   );
 };
 
@@ -229,6 +300,10 @@ export default (
   );
 
   words = wordsChunk(
+    words
+  );
+
+  words = doublequotesHandledGet(
     words
   );
 

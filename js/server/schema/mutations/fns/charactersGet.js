@@ -173,7 +173,7 @@ const characterRegExpExists01Run = (
           const prefix = (
             memo
           ) ?
-            '\\s[A-Z][a-z]+\\s' :
+            '\\s"*[A-Z][a-z]+"*\\s' :
             '';
 
           return `
@@ -446,7 +446,7 @@ const castCharactersGet = (
   plotCharacters
 ) => {
 
-  return cast.reduce(
+  const castCharacters = cast.reduce(
     (
       memo,
       _cast
@@ -461,6 +461,10 @@ const castCharactersGet = (
       ];
     },
     []
+  );
+
+  return (
+    castCharacters
   );
 };
 
@@ -586,7 +590,7 @@ const charactersSortedByDistanceGet = (
     );
 };
 
-const characterByTextGet = (
+const characterByTextMatchGet = (
   character,
   characters
 ) => {
@@ -597,8 +601,9 @@ const characterByTextGet = (
     ) => {
 
       return (
-        _character.text ===
-        character.text
+        _character.text.match(
+          character.text
+        )
       );
     }
   );
@@ -615,7 +620,7 @@ const _charactersGetFn = (
     ) => {
 
       if (
-        !characterByTextGet(
+        !characterByTextMatchGet(
           character,
           memo
         )
@@ -722,21 +727,21 @@ export default async (
     plotCharacters
   );
 
-  let characters = charactersGet(
-    castCharacters,
-    cast
-  );
+  //let characters = charactersGet(
+    //castCharacters,
+    //cast
+  //);
 
-  characters = await charactersCategoryAssignedGet(
-    characters,
-    plotText
-  );
+  //characters = await charactersCategoryAssignedGet(
+    //characters,
+    //plotText
+  //);
 
-  characters = await charactersActorGenderAssignedGet(
-    characters
-  );
+  //characters = await charactersActorGenderAssignedGet(
+    //characters
+  //);
 
-  return (
-    characters
-  );
+  //return (
+    //characters
+  //);
 };
