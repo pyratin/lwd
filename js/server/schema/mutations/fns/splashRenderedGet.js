@@ -209,7 +209,7 @@ const characterBase64sGet = (
               .trim(),
             outputResGet() / 4,
             50,
-            30
+            10
           )
             .then(
               (

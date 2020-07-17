@@ -16,24 +16,24 @@ export default async (
     movie.plotText
   );
 
-  //const segments = segmentsGet(
-    //movie.plot,
-    //characters
-  //);
+  const segments = segmentsGet(
+    movie.plot,
+    characters
+  );
 
-  //let cards = await cardsGet(
-    //segments,
-    //db
-  //);
+  let cards = await cardsGet(
+    segments,
+    db
+  );
 
-  //const gif = await cardsRenderedGet(
-    //movie.title,
-    //movie.poster,
-    //cards
-  //);
+  const gif = await cardsRenderedGet(
+    movie.title,
+    movie.poster,
+    cards
+  );
 
-  //return {
-    //title: movie.title,
-    //gif
-  //};
+  return {
+    title: movie.title,
+    gif
+  };
 };

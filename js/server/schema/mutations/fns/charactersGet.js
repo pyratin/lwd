@@ -63,7 +63,9 @@ const characterEqualExistsGet = (
   const character = (
     characters.find(
       (
-        __character
+        {
+          text: __character
+        } 
       ) => {
 
         return (
@@ -75,7 +77,7 @@ const characterEqualExistsGet = (
   );
 
   return (
-    !!character
+    character
   );
 };
 
@@ -93,14 +95,15 @@ const characterLevenExistsGet = (
       if (
         !memo &&
         leven(
-          __character,
+          __character.text,
           _character
         ) === 1
       ) {
 
-        return (
-          _character
-        );
+        return {
+          ...__character,
+          text: _character
+        };
       }
 
       return (
@@ -111,7 +114,7 @@ const characterLevenExistsGet = (
   );
 
   return (
-    !!character
+    character
   );
 };
 
@@ -129,8 +132,19 @@ const characterTokenizedExistsGet = (
       return [
         ...memo,
         ...characterTokenizedGet(
-          __character
+          __character.text
         )
+          .map(
+            (
+              text
+            ) => {
+
+              return {
+                ...__character,
+                text
+              };
+            }
+          )
       ];
     },
     []
@@ -138,7 +152,9 @@ const characterTokenizedExistsGet = (
 
   const character = characters.find(
     (
-      __character
+      {
+        text: __character
+      } 
     ) => {
 
       return (
@@ -149,7 +165,7 @@ const characterTokenizedExistsGet = (
   );
 
   return (
-    !!character
+    character
   );
 };
 
@@ -232,13 +248,14 @@ const characterRegExpExistsGet = (
         case (
           characterRegExpExists01Run(
             _character,
-            __character
+            __character.text
           )
         ) :
 
-          return (
-            _character
-          );
+          return {
+            ...__character,
+            text: _character
+          };
 
         default :
 
@@ -251,11 +268,11 @@ const characterRegExpExistsGet = (
   );
 
   return (
-    !!character
+    character
   );
 };
 
-const characterRegExpResults01Run = (
+const characterRegExpReversed01Run = (
   _character,
   __character
 ) => {
@@ -269,7 +286,7 @@ const characterRegExpResults01Run = (
   );
 };
 
-const characterRegExpResultsGet = (
+const characterRegExpReversedGet = (
   _character,
   _characters
 ) => {
@@ -285,9 +302,9 @@ const characterRegExpResultsGet = (
       ) {
 
         case (
-          characterRegExpResults01Run(
+          characterRegExpReversed01Run(
             _character,
-            __character
+            __character.text
           )
         ) :
 
@@ -325,43 +342,57 @@ const _castCharactersGetFn = (
 
       let characters;
 
+      let character;
+
       switch (
         true
       ) {
 
         case (
-          characterEqualExistsGet(
-            plotCharacter,
-            _castCharacters
-          )
+          (
+            character = characterEqualExistsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
         ) :
         case (
-          characterLevenExistsGet(
-            plotCharacter,
-            _castCharacters
-          )
+          (
+            character = characterLevenExistsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
         ) :
         case (
-          characterTokenizedExistsGet(
-            plotCharacter,
-            _castCharacters
-          )
+          (
+            character = characterTokenizedExistsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
         ) :
         case (
-          characterRegExpExistsGet(
-            plotCharacter,
-            _castCharacters
-          )
+          (
+            character = characterRegExpExistsGet(
+              plotCharacter,
+              _castCharacters
+            )
+          ) &&
+          !!character
         ) :
 
           return [
             ...memo,
-            plotCharacter
+            character
           ];
 
         case (
           (
-            characters = characterRegExpResultsGet(
+            characters = characterRegExpReversedGet(
               plotCharacter,
               _castCharacters
             )
@@ -428,6 +459,18 @@ const castCharactersGetFn = (
         ];
       },
       []
+    )
+    .map(
+      (
+        text,
+        matchIndex
+      ) => {
+
+        return {
+          text,
+          matchIndex
+        };
+      }
     );
 
   _castCharacters = _castCharactersGetFn(
@@ -468,7 +511,7 @@ const castCharactersGet = (
   );
 };
 
-const castCharactersFlastlistGet = (
+const castCharactersFlatlistGet = (
   castCharacters
 ) => {
 
@@ -484,62 +527,18 @@ const castCharactersFlastlistGet = (
         ..._castCharacters.reduce(
           (
             memo,
-            characterText
+            character
           ) => {
 
             return [
               ...memo,
               {
-                text: characterText,
+                ...character,
                 castIndex
               }
             ];
           },
           []
-        )
-      ];
-    },
-    []
-  );
-};
-
-const charactersWeightedGetFn = (
-  character,
-  cast
-) => {
-
-  const role = cast[
-    character.castIndex
-  ]
-    .role;
-
-  const distance = role.match(
-    character.text
-  )
-    .index;
-
-  return {
-    ...character,
-    distance
-  };
-};
-
-const charactersWeightedGet = (
-  characters,
-  cast
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      return [
-        ...memo,
-        charactersWeightedGetFn(
-          character,
-          cast
         )
       ];
     },
@@ -561,33 +560,21 @@ const charactersSortedByDistanceGet = (
       ) {
 
         case (
-          a.distance >
-          b.distance
+          a.matchIndex >
+          b.matchIndex
         ) :
           
           return 1;
 
         case (
-          b.distance >
-          a.distance
+          b.matchIndex >
+          a.matchIndex
         ) :
 
           return -1;
       }
     }
-  )
-    .map(
-      (
-        character
-      ) => {
-
-        delete character.distance;
-
-        return (
-          character
-        );
-      }
-    );
+  );
 };
 
 const characterByTextMatchGet = (
@@ -641,17 +628,11 @@ const _charactersGetFn = (
 };
 
 const charactersGetFn = (
-  _characters,
-  cast
+  _characters
 ) => {
 
-  let characters = charactersWeightedGet(
-    _characters,
-    cast
-  );
-
-  characters = charactersSortedByDistanceGet(
-    characters
+  let characters = charactersSortedByDistanceGet(
+    _characters
   );
 
   characters = _charactersGetFn(
@@ -693,13 +674,12 @@ const charactersGet = (
   cast
 ) => {
 
-  let characters = castCharactersFlastlistGet(
+  let characters = castCharactersFlatlistGet(
     castCharacters
   );
 
   characters = charactersGetFn(
-    characters,
-    cast
+    characters
   );
 
   characters = charactersCastDataAssignedGet(
@@ -727,21 +707,21 @@ export default async (
     plotCharacters
   );
 
-  //let characters = charactersGet(
-    //castCharacters,
-    //cast
-  //);
+  let characters = charactersGet(
+    castCharacters,
+    cast
+  );
 
-  //characters = await charactersCategoryAssignedGet(
-    //characters,
-    //plotText
-  //);
+  characters = await charactersCategoryAssignedGet(
+    characters,
+    plotText
+  );
 
-  //characters = await charactersActorGenderAssignedGet(
-    //characters
-  //);
+  characters = await charactersActorGenderAssignedGet(
+    characters
+  );
 
-  //return (
-    //characters
-  //);
+  return (
+    characters
+  );
 };
