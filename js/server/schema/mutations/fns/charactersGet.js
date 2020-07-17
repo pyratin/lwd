@@ -464,12 +464,11 @@ const castCharactersGet = (
   );
 };
 
-const charactersGet = (
-  castCharacters,
-  cast
+const castCharactersFlastlistGet = (
+  castCharacters
 ) => {
 
-  const characters = castCharacters.reduce(
+  return castCharacters.reduce(
     (
       memo,
       _castCharacters,
@@ -497,57 +496,211 @@ const charactersGet = (
       ];
     },
     []
+  );
+};
+
+const charactersWeightedGetFn = (
+  character,
+  cast
+) => {
+
+  const role = cast[
+    character.castIndex
+  ]
+    .role;
+
+  const distance = role.match(
+    character.text
   )
-    .reduce(
+    .index;
+
+  return {
+    ...character,
+    distance
+  };
+};
+
+const charactersWeightedGet = (
+  characters,
+  cast
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      return [
+        ...memo,
+        charactersWeightedGetFn(
+          character,
+          cast
+        )
+      ];
+    },
+    []
+  );
+};
+
+const charactersSortedByDistanceGet = (
+  characters
+) => {
+
+  return characters.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a.distance >
+          b.distance
+        ) :
+          
+          return 1;
+
+        case (
+          b.distance >
+          a.distance
+        ) :
+
+          return -1;
+      }
+    }
+  )
+    .map(
       (
-        memo,
         character
       ) => {
 
-        if (
-          memo.find(
-            (
-              _memo
-            ) => {
+        delete character.distance;
 
-              return (
-                _memo.text ===
-                character.text
-              );
-            }
-          )
-        ) {
+        return (
+          character
+        );
+      }
+    );
+};
 
-          return (
-            memo
-          );
-        }
+const characterByTextGet = (
+  character,
+  characters
+) => {
+
+  return characters.find(
+    (
+      _character
+    ) => {
+
+      return (
+        _character.text ===
+        character.text
+      );
+    }
+  );
+};
+
+const _charactersGetFn = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      if (
+        !characterByTextGet(
+          character,
+          memo
+        )
+      ) {
 
         return [
           ...memo,
           character
         ];
-      },
-      []
-    )
-    .reduce(
-      (
-        memo,
-        character
-      ) => {
+      }
 
-        return [
-          ...memo,
-          {
-            ...character,
-            ...cast[
-              character.castIndex
-            ]
-          }
-        ];
-      },
-      []
-    );
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const charactersGetFn = (
+  _characters,
+  cast
+) => {
+
+  let characters = charactersWeightedGet(
+    _characters,
+    cast
+  );
+
+  characters = charactersSortedByDistanceGet(
+    characters
+  );
+
+  characters = _charactersGetFn(
+    characters
+  );
+
+  return (
+    characters
+  );
+};
+
+const charactersCastDataAssignedGet = (
+  characters,
+  cast
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      return [
+        ...memo,
+        {
+          ...character,
+          ...cast[
+            character.castIndex
+          ]
+        }
+      ];
+    },
+    []
+  );
+};
+
+const charactersGet = (
+  castCharacters,
+  cast
+) => {
+
+  let characters = castCharactersFlastlistGet(
+    castCharacters
+  );
+
+  characters = charactersGetFn(
+    characters,
+    cast
+  );
+
+  characters = charactersCastDataAssignedGet(
+    characters,
+    cast
+  );
 
   return (
     characters
