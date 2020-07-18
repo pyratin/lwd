@@ -77,30 +77,30 @@ const castCharactersFlatlistGet = (
 };
 
 const characterStringMatchedGet = (
-  castCharacter,
-  plotCharacter
+  character,
+  _character
 ) => {
 
   return (
-    castCharacter.text ===
-    plotCharacter
+    character ===
+    _character
   ) ?
-    castCharacter :
+    character :
     null;
 };
 
 const characterLevenMatchedGet = (
-  castCharacter,
-  plotCharacter
+  character,
+  _character
 ) => {
 
   return (
     leven(
-      castCharacter.text,
-      plotCharacter
+      character,
+      _character
     ) === 1
   ) ?
-    castCharacter :
+    _character :
     null;
 };
 
@@ -125,50 +125,72 @@ const characterTokenizedGet = (
     );
 };
 
-const characterCastFragmentMatchedGet = (
-  castCharacter,
-  plotCharacter
+const characterRegExpMatchedGet = (
+  character,
+  _character
 ) => {
 
   const characterTokens = characterTokenizedGet(
-    castCharacter.text
-  )
-    .map(
-      (
-        text
-      ) => {
+    _character
+  );
 
-        return {
-          ...castCharacter,
-          text
-        };
-      }
-    );
-
-  const characterToken = characterTokens.find(
+  const regExpString = characterTokens.reduce(
     (
+      memo,
       characterToken
     ) => {
 
+      const _prefix = '\\s"*[A-Z][a-z]+"*\\s';
+
+      const prefix = (
+        memo
+      ) ?
+        _prefix :
+        '';
+
+      const regExpString = `
+        ${
+          memo ||
+          ''
+        }${
+          prefix
+        }${
+          characterToken
+        }
+      `
+        .trim();
       return (
-        characterToken.text ===
-        plotCharacter
+        regExpString
       );
-    }
+    },
+    null
+  );
+
+  const regExp = new RegExp(
+    regExpString
+  );
+
+  const match = character.match(
+    regExp
   );
 
   return (
-    characterToken
-  );
+    (
+      characterTokens.length > 1
+    ) &&
+    match
+  ) ?
+    _character :
+    null;
 };
 
-const characterPlotFragmentMatchedGet = (
-  castCharacter,
-  plotCharacter
+const characterFragmentMatchedGet = (
+  character,
+  _character
 ) => {
 
   const characterTokens = characterTokenizedGet(
-    plotCharacter
+    character
   );
 
   const characterToken = characterTokens.find(
@@ -178,16 +200,19 @@ const characterPlotFragmentMatchedGet = (
 
       return (
         characterToken ===
-        castCharacter.text
+        _character
       );
     }
   );
 
-  if (
+  return (
+    (
+      characterTokens.length > 1 
+    ) &&
     characterToken
-  ) {
-    console.log(characterToken);
-  }
+  ) ?
+    characterToken :
+    null;
 };
 
 const __castCharactersGetFn = (
@@ -195,7 +220,7 @@ const __castCharactersGetFn = (
   plotCharacter
 ) => {
 
-  let character;
+  let text;
 
   switch (
     true
@@ -203,44 +228,63 @@ const __castCharactersGetFn = (
 
     case (
       (
-        character = characterStringMatchedGet(
-          castCharacter,
+        text = characterStringMatchedGet(
+          castCharacter.text,
           plotCharacter
         )
       ) &&
-      !!character
+      !!text
     ) :
     case (
       (
-        character = characterLevenMatchedGet(
-          castCharacter,
+        text = characterLevenMatchedGet(
+          castCharacter.text,
           plotCharacter
         )
       ) &&
-      !!character
+      !!text
     ) :
     case (
       (
-        character = characterCastFragmentMatchedGet(
-          castCharacter,
+        text = characterRegExpMatchedGet(
+          castCharacter.text,
           plotCharacter
         )
       ) &&
-      !!character
+      !!text
     ) :
     case (
       (
-        character = characterPlotFragmentMatchedGet(
-          castCharacter,
+        text = characterRegExpMatchedGet(
+          plotCharacter,
+          castCharacter.text
+        )
+      ) &&
+      !!text
+    ) :
+    case (
+      (
+        text = characterFragmentMatchedGet(
+          castCharacter.text,
           plotCharacter
         )
       ) &&
-      !!character
+      !!text
+    ) :
+    case (
+      (
+        text = characterFragmentMatchedGet(
+          plotCharacter,
+          castCharacter.text
+        )
+      ) &&
+      !!text
     ) :
 
-      return (
-        character
-      );
+      return {
+        ...castCharacter,
+        text
+      };
   }
 };
 
@@ -255,16 +299,14 @@ const _castCharactersGetFn = (
       plotCharacter
     ) => {
 
-      let castCharacter;
+      const castCharacter = __castCharactersGetFn(
+        _castCharacter,
+        plotCharacter
+      );
 
       if (
         !memo &&
-        (
-          castCharacter = __castCharactersGetFn(
-            _castCharacter,
-            plotCharacter
-          )
-        )
+        castCharacter
       ) {
 
         return (
@@ -292,16 +334,27 @@ const castCharactersGetFn = (
   const castCharacter = castCharacters.reduce(
     (
       memo,
-      castCharacter
+      _castCharacter
     ) => {
 
-      return [
-        ...memo,
-        _castCharactersGetFn(
-          castCharacter,
-          plotCharacters
-        )
-      ];
+      let castCharacter = _castCharactersGetFn(
+        _castCharacter,
+        plotCharacters
+      );
+
+      if (
+        castCharacter
+      ) {
+
+        return [
+          ...memo,
+          castCharacter
+        ];
+      }
+
+      return (
+        memo
+      );
     },
     []
   );
@@ -325,7 +378,7 @@ const castCharactersGet = (
     plotCharacters
   );
 
-  //console.log(castCharacters);
+  console.log(castCharacters);
 };
 
 const charactersSortedByDistanceGet = (
