@@ -9,27 +9,6 @@ import charactersCategoryAssignedGet from
 import charactersActorGenderAssignedGet from
   './charactersActorGenderAssignedGet';
 
-const characterTokenizedGet = (
-  character
-) => {
-
-  return wordsTokenizedGet(
-    character
-  )
-    .map(
-      (
-        {
-          text
-        }
-      ) => {
-
-        return (
-          text
-        );
-      }
-    );
-};
-
 const plotCharactersGet = (
   plot
 ) => {
@@ -55,55 +34,242 @@ const plotCharactersGet = (
   );
 };
 
-const characterEqualExistsGet = (
-  _character,
-  characters
+const castCharactersFlatlistGet = (
+  cast
 ) => {
 
-  const character = (
-    characters.find(
-      (
-        {
-          text: __character
-        } 
-      ) => {
+  return cast.reduce(
+    (
+      _castMemo,
+      _cast,
+      castIndex
+    ) => {
 
-        return (
-          __character ===
-          _character
+      const castCharacters = NNPsGet(
+        _cast.role
+      )
+        .reduce(
+          (
+            castCharacterMemo,
+            text,
+            roleIndex
+          ) => {
+
+            return [
+              ...castCharacterMemo,
+              {
+                text,
+                castIndex,
+                roleIndex
+              }
+            ];
+          },
+          []
         );
-      }
-    )
-  );
 
-  return (
-    character
+      return [
+        ..._castMemo,
+        ...castCharacters
+      ];
+    },
+    []
   );
 };
 
-const characterLevenExistsGet = (
-  _character,
-  characters
+const characterStringMatchedGet = (
+  castCharacter,
+  plotCharacter
 ) => {
 
-  const character = characters.reduce(
+  return (
+    castCharacter.text ===
+    plotCharacter
+  ) ?
+    castCharacter :
+    null;
+};
+
+const characterLevenMatchedGet = (
+  castCharacter,
+  plotCharacter
+) => {
+
+  return (
+    leven(
+      castCharacter.text,
+      plotCharacter
+    ) === 1
+  ) ?
+    castCharacter :
+    null;
+};
+
+const characterTokenizedGet = (
+  character
+) => {
+
+  return wordsTokenizedGet(
+    character
+  )
+    .map(
+      (
+        {
+          text
+        }
+      ) => {
+
+        return (
+          text
+        );
+      }
+    );
+};
+
+const characterCastFragmentMatchedGet = (
+  castCharacter,
+  plotCharacter
+) => {
+
+  const characterTokens = characterTokenizedGet(
+    castCharacter.text
+  )
+    .map(
+      (
+        text
+      ) => {
+
+        return {
+          ...castCharacter,
+          text
+        };
+      }
+    );
+
+  const characterToken = characterTokens.find(
+    (
+      characterToken
+    ) => {
+
+      return (
+        characterToken.text ===
+        plotCharacter
+      );
+    }
+  );
+
+  return (
+    characterToken
+  );
+};
+
+const characterPlotFragmentMatchedGet = (
+  castCharacter,
+  plotCharacter
+) => {
+
+  const characterTokens = characterTokenizedGet(
+    plotCharacter
+  );
+
+  const characterToken = characterTokens.find(
+    (
+      characterToken
+    ) => {
+
+      return (
+        characterToken ===
+        castCharacter.text
+      );
+    }
+  );
+
+  if (
+    characterToken
+  ) {
+    console.log(characterToken);
+  }
+};
+
+const __castCharactersGetFn = (
+  castCharacter,
+  plotCharacter
+) => {
+
+  let character;
+
+  switch (
+    true
+  ) {
+
+    case (
+      (
+        character = characterStringMatchedGet(
+          castCharacter,
+          plotCharacter
+        )
+      ) &&
+      !!character
+    ) :
+    case (
+      (
+        character = characterLevenMatchedGet(
+          castCharacter,
+          plotCharacter
+        )
+      ) &&
+      !!character
+    ) :
+    case (
+      (
+        character = characterCastFragmentMatchedGet(
+          castCharacter,
+          plotCharacter
+        )
+      ) &&
+      !!character
+    ) :
+    case (
+      (
+        character = characterPlotFragmentMatchedGet(
+          castCharacter,
+          plotCharacter
+        )
+      ) &&
+      !!character
+    ) :
+
+      return (
+        character
+      );
+  }
+};
+
+const _castCharactersGetFn = (
+  _castCharacter,
+  plotCharacters
+) => {
+
+  const castCharacter = plotCharacters.reduce(
     (
       memo,
-      __character
+      plotCharacter
     ) => {
+
+      let castCharacter;
 
       if (
         !memo &&
-        leven(
-          __character.text,
-          _character
-        ) === 1
+        (
+          castCharacter = __castCharactersGetFn(
+            _castCharacter,
+            plotCharacter
+          )
+        )
       ) {
 
-        return {
-          ...__character,
-          text: _character
-        };
+        return (
+          castCharacter
+        );
       }
 
       return (
@@ -114,391 +280,25 @@ const characterLevenExistsGet = (
   );
 
   return (
-    character
-  );
-};
-
-const characterTokenizedExistsGet = (
-  _character,
-  _characters
-) => {
-
-  const characters = _characters.reduce(
-    (
-      memo,
-      __character
-    ) => {
-
-      return [
-        ...memo,
-        ...characterTokenizedGet(
-          __character.text
-        )
-          .map(
-            (
-              text
-            ) => {
-
-              return {
-                ...__character,
-                text
-              };
-            }
-          )
-      ];
-    },
-    []
-  );
-
-  const character = characters.find(
-    (
-      {
-        text: __character
-      } 
-    ) => {
-
-      return (
-        __character ===
-        _character
-      );
-    }
-  );
-
-  return (
-    character
-  );
-};
-
-const characterRegExpExists01Run = (
-  _character,
-  __character
-) => {
-
-  const characterTokenized = characterTokenizedGet(
-    _character
-  );
-
-  const regExpString = `
-    ${
-      characterTokenized.reduce(
-        (
-          memo,
-          _characterTokenized
-        ) => {
-
-          const prefix = (
-            memo
-          ) ?
-            '\\s"*[A-Z][a-z]+"*\\s' :
-            '';
-
-          return `
-            ${
-              memo
-            }${
-              prefix
-            }${
-              _characterTokenized
-            }
-          `
-            .trim();
-        },
-        ''
-      )
-    }
-  `
-    .trim();
-
-  const regExp = new RegExp(
-    regExpString
-  );
-
-  const match = __character.match(
-    regExp
-  );
-
-  return (
-    !!match
-  );
-};
-
-const characterRegExpExistsGet = (
-  _character,
-  characters
-) => {
-
-  const character = characters.reduce(
-    (
-      memo,
-      __character
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          !!memo
-        ) :
-
-          return (
-            memo
-          );
-
-        case (
-          characterRegExpExists01Run(
-            _character,
-            __character.text
-          )
-        ) :
-
-          return {
-            ...__character,
-            text: _character
-          };
-
-        default :
-
-          return (
-            memo
-          );
-      }
-    },
-    null
-  );
-
-  return (
-    character
-  );
-};
-
-const characterRegExpReversed01Run = (
-  _character,
-  __character
-) => {
-
-  const match = _character.match(
-    __character
-  );
-
-  return (
-    !!match
-  );
-};
-
-const characterRegExpReversedGet = (
-  _character,
-  _characters
-) => {
-
-  const characters = _characters.reduce(
-    (
-      memo,
-      __character
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          characterRegExpReversed01Run(
-            _character,
-            __character.text
-          )
-        ) :
-
-          return [
-            ...memo,
-            __character
-          ];
-
-        default:
-
-          return (
-            memo
-          );
-      }
-    },
-    []
-  );
-
-  return (
-    characters
-  );
-};
-
-const _castCharactersGetFn = (
-  _cast,
-  _castCharacters,
-  plotCharacters
-) => {
-
-  return plotCharacters.reduce(
-    (
-      memo,
-      plotCharacter
-    ) => {
-
-      let characters;
-
-      let character;
-
-      switch (
-        true
-      ) {
-
-        case (
-          (
-            character = characterEqualExistsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
-        ) :
-        case (
-          (
-            character = characterLevenExistsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
-        ) :
-        case (
-          (
-            character = characterTokenizedExistsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
-        ) :
-        case (
-          (
-            character = characterRegExpExistsGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!character
-        ) :
-
-          return [
-            ...memo,
-            character
-          ];
-
-        case (
-          (
-            characters = characterRegExpReversedGet(
-              plotCharacter,
-              _castCharacters
-            )
-          ) &&
-          !!characters
-        ) :
-
-          return [
-            ...memo,
-            ...characters
-          ];
-
-        default:
-
-          return (
-            memo
-          );
-      }
-    },
-    []
+    castCharacter
   );
 };
 
 const castCharactersGetFn = (
-  _cast,
+  castCharacters,
   plotCharacters
 ) => {
 
-  let _castCharacters = NNPsGet(
-    _cast.role
-  )
-    .reduce(
-      (
-        memo,
-        character
-      ) => {
-
-        if (
-          _cast.role.match(
-            new RegExp(
-              `
-                ${
-                  character
-                }'s
-              `
-                .trim(),
-              'g'
-            )
-          )
-        ) {
-
-          return (
-            memo
-          );
-        }
-
-        return [
-          ...new Set(
-            [
-              ...memo,
-              character
-            ]
-          )
-        ];
-      },
-      []
-    )
-    .map(
-      (
-        text,
-        matchIndex
-      ) => {
-
-        return {
-          text,
-          matchIndex
-        };
-      }
-    );
-
-  _castCharacters = _castCharactersGetFn(
-    _cast,
-    _castCharacters,
-    plotCharacters
-  );
-
-  return (
-    _castCharacters
-  );
-};
-
-const castCharactersGet = (
-  cast,
-  plotCharacters
-) => {
-
-  const castCharacters = cast.reduce(
+  const castCharacter = castCharacters.reduce(
     (
       memo,
-      _cast
+      castCharacter
     ) => {
 
       return [
         ...memo,
-        castCharactersGetFn(
-          _cast,
+        _castCharactersGetFn(
+          castCharacter,
           plotCharacters
         )
       ];
@@ -507,43 +307,25 @@ const castCharactersGet = (
   );
 
   return (
-    castCharacters
+    castCharacter
   );
 };
 
-const castCharactersFlatlistGet = (
-  castCharacters
+const castCharactersGet = (
+  cast,
+  plotCharacters
 ) => {
 
-  return castCharacters.reduce(
-    (
-      memo,
-      _castCharacters,
-      castIndex
-    ) => {
-
-      return [
-        ...memo,
-        ..._castCharacters.reduce(
-          (
-            memo,
-            character
-          ) => {
-
-            return [
-              ...memo,
-              {
-                ...character,
-                castIndex
-              }
-            ];
-          },
-          []
-        )
-      ];
-    },
-    []
+  let castCharacters = castCharactersFlatlistGet(
+    cast
   );
+
+  castCharacters = castCharactersGetFn(
+    castCharacters,
+    plotCharacters
+  );
+
+  //console.log(castCharacters);
 };
 
 const charactersSortedByDistanceGet = (
@@ -707,21 +489,21 @@ export default async (
     plotCharacters
   );
 
-  let characters = charactersGet(
-    castCharacters,
-    cast
-  );
+  //let characters = charactersGet(
+    //castCharacters,
+    //cast
+  //);
 
-  characters = await charactersCategoryAssignedGet(
-    characters,
-    plotText
-  );
+  //characters = await charactersCategoryAssignedGet(
+    //characters,
+    //plotText
+  //);
 
-  characters = await charactersActorGenderAssignedGet(
-    characters
-  );
+  //characters = await charactersActorGenderAssignedGet(
+    //characters
+  //);
 
-  return (
-    characters
-  );
+  //return (
+    //characters
+  //);
 };
