@@ -3,7 +3,7 @@
 import {
   exec
 } from 'child_process';
-import splashRenderedGet from './splashRenderedGet';
+import splashGet from './splashGet';
 import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
@@ -212,7 +212,7 @@ export default async (
     _cards
   );
 
-  const splash = await splashRenderedGet(
+  const splash = await splashGet(
     movieTitle,
     moviePoster,
     _cards

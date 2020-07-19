@@ -125,65 +125,6 @@ const characterTokenizedGet = (
     );
 };
 
-const characterRegExpMatchedGet = (
-  character,
-  _character
-) => {
-
-  const characterTokens = characterTokenizedGet(
-    _character
-  );
-
-  const regExpString = characterTokens.reduce(
-    (
-      memo,
-      characterToken
-    ) => {
-
-      const _prefix = '\\s[A-Z][a-z]+\\s';
-
-      const prefix = (
-        memo
-      ) ?
-        _prefix :
-        '';
-
-      const regExpString = `
-        ${
-          memo ||
-          ''
-        }${
-          prefix
-        }${
-          characterToken
-        }
-      `
-        .trim();
-      return (
-        regExpString
-      );
-    },
-    null
-  );
-
-  const regExp = new RegExp(
-    regExpString
-  );
-
-  const match = character.match(
-    regExp
-  );
-
-  return (
-    (
-      characterTokens.length > 1
-    ) &&
-    match
-  ) ?
-    _character :
-    null;
-};
-
 const characterFragmentMatchedGet = (
   character,
   _character
@@ -256,24 +197,6 @@ const __castCharactersGetFn = (
     case (
       (
         text = characterFragmentMatchedGet(
-          plotCharacter,
-          castCharacter.text
-        )
-      ) &&
-      !!text
-    ) :
-    case (
-      (
-        text = characterRegExpMatchedGet(
-          castCharacter.text,
-          plotCharacter
-        )
-      ) &&
-      !!text
-    ) :
-    case (
-      (
-        text = characterRegExpMatchedGet(
           plotCharacter,
           castCharacter.text
         )
