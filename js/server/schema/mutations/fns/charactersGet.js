@@ -140,7 +140,7 @@ const characterRegExpMatchedGet = (
       characterToken
     ) => {
 
-      const _prefix = '\\s"*[A-Z][a-z]+"*\\s';
+      const _prefix = '\\s[A-Z][a-z]+\\s';
 
       const prefix = (
         memo

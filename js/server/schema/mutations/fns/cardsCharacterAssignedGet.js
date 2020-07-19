@@ -259,7 +259,6 @@ const characterAssignedGetFn = (
       actor: character.actor
     } :
     null;
-  console.log(character);
 
   return {
     text: card.text,
