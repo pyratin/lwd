@@ -1,8 +1,8 @@
 'use strict';
 
 import movieDataBasicGet from '../fns/movieDataBasicGet';
-import movieDataExtendedGet from 
-  '../fns/movieDataExtendedGet';
+import cardsGet from '../fns/cardsGet';
+import gifGet from '../fns/gifGet';
 import {
   movieCreate
 } from '~/js/server/data/movie';
@@ -17,13 +17,22 @@ export default async (
     title
   );
 
-  const movieDataExtended = await movieDataExtendedGet(
+  const cards = await cardsGet(
     movieDataBasic,
     db
   );
 
+  const gif = await gifGet(
+    movieDataBasic.title,
+    movieDataBasic.poster,
+    cards
+  );
+
   const movie = await movieCreate(
-    movieDataExtended,
+    {
+      title: movieDataBasic.title,
+      gif
+    },
     db
   );
 
