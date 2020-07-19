@@ -15,6 +15,7 @@ export default async (
     movie.plot,
     movie.plotText
   );
+  console.log(characters);
 
   //const segments = segmentsGet(
     //movie.plot,

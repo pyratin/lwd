@@ -22,16 +22,16 @@ export default async (
     db
   );
 
-  //const movie = await movieCreate(
-    //movieDataExtended,
-    //db
-  //);
+  const movie = await movieCreate(
+    movieDataExtended,
+    db
+  );
 
-  //await movieWrite(
-    //movie
-  //);
+  await movieWrite(
+    movie
+  );
 
-  //return (
-    //movie
-  //);
+  return (
+    movie
+  );
 };

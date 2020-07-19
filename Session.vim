@@ -286,12 +286,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 152 - ((15 * winheight(0) + 18) / 36)
+let s:l = 154 - ((17 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-152
-normal! 012|
+154
+normal! 011|
 tabedit js/server/schema/mutations/movieSelect/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -636,12 +636,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 153 - ((32 * winheight(0) + 19) / 38)
+let s:l = 540 - ((30 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-153
-normal! 053|
+540
+normal! 04|
 tabedit js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -661,12 +661,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 118 - ((24 * winheight(0) + 18) / 36)
+let s:l = 133 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-118
-normal! 010|
+133
+normal! 0
 tabedit js/server/schema/mutations/fns/charactersCategoryAssignedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -686,11 +686,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 155 - ((33 * winheight(0) + 18) / 36)
+let s:l = 1 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-155
+1
 normal! 0
 tabedit js/server/schema/mutations/fns/NNPsGet.js
 set splitbelow splitright
@@ -711,11 +711,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 148 - ((31 * winheight(0) + 18) / 36)
+let s:l = 191 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-148
+191
 normal! 0
 tabedit js/server/schema/mutations/fns/wordsTokenizedGet.js
 set splitbelow splitright
@@ -817,7 +817,7 @@ exe s:l
 normal! zt
 22
 normal! 0
-tabnext 24
+tabnext 13
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
