@@ -1,5 +1,7 @@
 'use strict';
 
+import fs from 'fs';
+import path from 'path';
 import nodeFetch from 'node-fetch';
 import {
   exec
@@ -11,6 +13,48 @@ import {
 import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
+
+const base64BlankGet = () => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      return fs.readFile(
+        path.join(
+          process.cwd(),
+          'media/blank.jpeg'
+        ),
+        'base64',
+        (
+          error,
+          res
+        ) => {
+
+          if (
+            error
+          ) {
+
+            return reject(
+              error
+            );
+          }
+
+          return resolve(
+            `
+              data:image/jpeg;base64,${
+                res
+              }
+            `
+              .trim()
+          );
+        }
+      );
+    }
+  );
+};
 
 const charactersGet = (
   cards
@@ -156,9 +200,7 @@ const moviePosterBase64Get = (
     !moviePoster
   ) {
 
-    return Promise.resolve(
-      null
-    );
+    return base64BlankGet();
   }
 
   return nodeFetch(

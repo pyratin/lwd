@@ -287,7 +287,19 @@ const charactersFilteredGet = (
       ];
     },
     []
-  );
+  )
+    .map(
+      (
+        character
+      ) => {
+
+        delete character.ud;
+
+        return (
+          character
+        );
+      }
+    );
 };
 
 export default async (

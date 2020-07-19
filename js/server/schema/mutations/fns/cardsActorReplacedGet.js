@@ -329,7 +329,7 @@ const spoofActorsGet = (
                   ...res,
                   {
                     ...result,
-                    actorUd: starringActor.ud
+                    actorText: starringActor.text
                   }
                 ];
               }
@@ -377,8 +377,8 @@ const cardCharactersGet = (
   );
 };
 
-const spoofActorByUdGet = (
-  actorUd,
+const spoofActorByTextGet = (
+  actorText,
   spoofActors
 ) => {
 
@@ -388,8 +388,8 @@ const spoofActorByUdGet = (
     ) => {
 
       return (
-        spoofActor.actorUd ===
-        actorUd
+        spoofActor.actorText ===
+        actorText
       );
     }
   );
@@ -406,14 +406,14 @@ const charactersActorsAssignedGet = (
       character
     ) => {
 
-      const characterActorUd = character?.actor.ud;
+      const characterActorText = character.actor.text;
 
       if (
-        characterActorUd
+        characterActorText
       ) {
 
-        const spoofActor = spoofActorByUdGet(
-          characterActorUd,
+        const spoofActor = spoofActorByTextGet(
+          characterActorText,
           spoofActors
         );
 

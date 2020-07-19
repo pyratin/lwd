@@ -507,7 +507,21 @@ const charactersCastDataAssignedGet = (
       ];
     },
     []
-  );
+  )
+    .map(
+      (
+        character
+      ) => {
+
+        delete character.castIndex;
+
+        delete character.roleIndex;
+
+        return (
+          character
+        );
+      }
+    );
 };
 
 export default async (
