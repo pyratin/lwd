@@ -513,8 +513,6 @@ const charactersCastDataAssignedGet = (
         character
       ) => {
 
-        delete character.castIndex;
-
         delete character.roleIndex;
 
         return (

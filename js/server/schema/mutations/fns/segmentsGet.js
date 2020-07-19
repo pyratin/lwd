@@ -45,7 +45,8 @@ const __fragmentsGetFn = (
             ...fragment,
             type: 'actor',
             actor: character.actor,
-            text: character.text
+            text: character.text,
+            castIndex: character.castIndex
           };
 
           return [

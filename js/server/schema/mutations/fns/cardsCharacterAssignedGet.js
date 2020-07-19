@@ -10,7 +10,8 @@ const charactersAssignedGetFn = (
       {
         type,
         text,
-        actor
+        actor,
+        castIndex
       }
     ) => {
 
@@ -49,8 +50,9 @@ const charactersAssignedGetFn = (
               actor: {
                 ud: actor.ud,
                 text: actor.text,
-                gender: actor.gender
-              }
+                gender: actor.gender,
+              },
+              castIndex
             }
           ];
       }
@@ -214,6 +216,20 @@ const _characterAssignedGetFn = (
         ) :
 
           return -1;
+
+        case (
+          a.castIndex >
+          b.castIndex
+        ) :
+
+          return 1;
+
+        case (
+          b.castIndex >
+          a.castIndex
+        ) :
+
+          return -1;
       }
     }
   )[
@@ -243,6 +259,7 @@ const characterAssignedGetFn = (
       actor: character.actor
     } :
     null;
+  console.log(character);
 
   return {
     text: card.text,
