@@ -244,12 +244,12 @@ const characterBase64sGet = (
           return base64TextCompositedGet(
             character.base64,
             `
-              As ${
+              ${
                 character.text
               }
             `
               .trim(),
-            outputResGet() / 4,
+            outputResGet() / 3,
             50,
             10
           )
@@ -274,7 +274,8 @@ const characterBase64sGet = (
 };
 
 const charactersCompositedBase64Get = (
-  characterStreamsConcated
+  characterStreamsConcated,
+  direction = 'row'
 ) => {
 
   return new Promise(
@@ -284,7 +285,44 @@ const charactersCompositedBase64Get = (
     ) => {
 
       const proc = exec(
-        'convert miff:- -append jpeg:-',
+        `
+          convert 
+          \\(
+            miff:-
+            -bordercolor transparent
+            -border ${
+              (direction === 'row') ?
+                '10x0' : '0x5'
+            }
+            -gravity south
+            -background none
+            ${
+              (direction === 'row') ?
+                '+' : '-'
+            }append
+          \\)
+          png:-
+        `
+          .split(
+            /\s/
+          )
+          .reduce(
+            (
+              memo,
+              _command
+            ) => {
+
+              return `
+                ${
+                  memo
+                } ${
+                  _command
+                }
+              `
+                .trim();
+            },
+            ''
+          ),
         {
           encoding: 'base64'
         },
@@ -304,7 +342,7 @@ const charactersCompositedBase64Get = (
 
           return resolve(
             `
-              data:image/jpeg;base64,${
+              data:image/png;base64,${
                 stdout
               }
             `
@@ -317,6 +355,128 @@ const charactersCompositedBase64Get = (
         proc.stdin
       );
     }
+  );
+};
+
+const charactersMontageGet = async (
+  characterBase64s
+) => {
+
+  const characterRows = characterBase64s.reduce(
+    (
+      memo,
+      characterBase64,
+      index
+    ) => {
+
+      if (
+        index % 2
+      ) {
+
+        return [
+          ...memo.slice(
+            0, -1
+          ),
+          [
+            ...memo[
+              memo.length - 1
+            ], 
+            characterBase64
+          ]
+        ];
+      }
+
+      return [
+        ...memo,
+        [
+          characterBase64
+        ]
+      ];
+    },
+    []
+  );
+
+  const characterRowStreams = await characterRows.reduce(
+    (
+      memo,
+      characterBase64Row
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return base64MiffStreamsConcatedGet(
+            characterBase64Row
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+
+  const characterRowCompositedBase64s = 
+    await characterRowStreams.reduce(
+      (
+        memo,
+        characterRowStream
+      ) => {
+
+        return memo.then(
+          (
+            res
+          ) => {
+
+            return charactersCompositedBase64Get(
+              characterRowStream,
+              'row'
+            )
+              .then(
+                (
+                  result
+                ) => {
+
+                  return [
+                    ...res,
+                    result
+                  ];
+                }
+              );
+          }
+        );
+      },
+      Promise.resolve(
+        []
+      )
+    );
+
+  const characterRowCompositedStreams = 
+    await base64MiffStreamsConcatedGet(
+      characterRowCompositedBase64s
+    );
+
+  const charactersCompositedBase64 = 
+    await charactersCompositedBase64Get(
+      characterRowCompositedStreams,
+      'column'
+    );
+
+  return (
+    charactersCompositedBase64
   );
 };
 
@@ -384,27 +544,16 @@ export default async (
   const characterBase64s = await characterBase64sGet(
     characters
   );
-  characterBase64s.map(
-    (characterBase64) => {
-      console.log(characterBase64.slice(0, 100));
-    }
-  )
 
-  const characterStreamsConcated = 
-    await base64MiffStreamsConcatedGet(
-      characterBase64s
-    );
-
-  const charactersCompositedBase64 = 
-    await charactersCompositedBase64Get(
-      characterStreamsConcated 
-    );
+  const charactersMontage = await charactersMontageGet(
+    characterBase64s
+  );
 
   const finalCompositeMiffStreamsConcated = 
     await base64MiffStreamsConcatedGet(
       [
         moviePosterBase64,
-        charactersCompositedBase64
+        charactersMontage
       ]
     );
 

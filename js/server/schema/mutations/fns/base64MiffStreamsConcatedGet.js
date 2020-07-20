@@ -18,14 +18,14 @@ const miffsGetFn = (
 
       const buffer = new Buffer.from(
         base64.replace(
-          /^data:image\/jpeg;base64,/,
+          /^data:image\/(jpeg|png);base64,/,
           ''
         ),
         'base64'
       );
 
       const proc = exec(
-        'convert jpeg:- miff:-',
+        'convert - miff:-',
         {
           encoding: base64
         },
