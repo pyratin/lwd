@@ -1,6 +1,8 @@
 'use strict';
 
 import movieDataBasicGet from '../fns/movieDataBasicGet';
+import charactersGet from '../fns/charactersGet';
+import segmentsGet from '../fns/segmentsGet';
 import cardsGet from '../fns/cardsGet';
 import gifGet from '../fns/gifGet';
 import {
@@ -17,8 +19,19 @@ export default async (
     title
   );
 
+  let characters = await charactersGet(
+    movieDataBasic.cast,
+    movieDataBasic.plot,
+    movieDataBasic.plotText
+  );
+
+  const segments = segmentsGet(
+    movieDataBasic.plot,
+    characters
+  );
+
   const cards = await cardsGet(
-    movieDataBasic,
+    segments,
     db
   );
 
