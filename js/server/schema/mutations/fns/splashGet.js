@@ -249,7 +249,7 @@ const characterBase64sGet = (
               }
             `
               .trim(),
-            outputResGet() / 3,
+            outputResGet() / 3.5,
             50,
             10
           )
@@ -292,7 +292,7 @@ const charactersCompositedBase64Get = (
             -bordercolor transparent
             -border ${
               (direction === 'row') ?
-                '10x0' : '0x5'
+                '5x0' : '0x5'
             }
             -gravity south
             -background none
