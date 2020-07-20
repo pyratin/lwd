@@ -51,8 +51,7 @@ const castCharactersFlatlistGet = (
         .reduce(
           (
             castCharacterMemo,
-            text,
-            roleIndex
+            text
           ) => {
 
             return [
@@ -60,7 +59,11 @@ const castCharactersFlatlistGet = (
               {
                 text,
                 castIndex,
-                roleIndex
+                roleIndex: _cast.role
+                  .match(
+                    text
+                  )
+                  .index
               }
             ];
           },

@@ -384,6 +384,11 @@ export default async (
   const characterBase64s = await characterBase64sGet(
     characters
   );
+  characterBase64s.map(
+    (characterBase64) => {
+      console.log(characterBase64.slice(0, 100));
+    }
+  )
 
   const characterStreamsConcated = 
     await base64MiffStreamsConcatedGet(

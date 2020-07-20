@@ -109,7 +109,9 @@ const cardsFlatlistGifyBase64AssignedGetFn = (
 
   return nodeFetchFn(
     queryGet(
-      text
+      encodeURIComponent(
+        text
+      )
     )
   )
     .then(
