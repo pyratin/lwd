@@ -4,7 +4,7 @@ import cheerio from 'cheerio';
 import sbd from 'sbd';
 import escapeStringRegexp from 'escape-string-regexp';
 
-import nodeFetch from './nodeFetch';
+import mediawikiFetch from './mediawikiFetch';
 
 const sentenceMaxLength = 100;
 
@@ -693,7 +693,7 @@ export default async (
     title
   );
 
-  const json = await nodeFetch(
+  const json = await mediawikiFetch(
     query
   );
 

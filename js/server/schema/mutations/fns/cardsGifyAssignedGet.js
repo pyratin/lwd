@@ -2,8 +2,6 @@
 
 import nodeFetch from 'node-fetch';
 
-import nodeFetchFn from './nodeFetch';
-
 const cardsForGifyGet = (
   cards
 ) => {
@@ -107,7 +105,7 @@ const cardsFlatlistGifyBase64AssignedGetFn = (
   }
 ) => {
 
-  return nodeFetchFn(
+  return nodeFetch(
     queryGet(
       encodeURIComponent(
         text
@@ -119,12 +117,20 @@ const cardsFlatlistGifyBase64AssignedGetFn = (
         res
       ) => {
 
+        return res.json();
+      }
+    )
+    .then(
+      (
+        json
+      ) => {
+
         const randomIndex = Math.floor(
           Math.random() *
-          res.data.length
+          json.data.length
         );
 
-        const url = res.data
+        const url = json.data
           .reduce(
             (
               memo,

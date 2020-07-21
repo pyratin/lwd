@@ -9,14 +9,16 @@ import {
   movieCreate
 } from '~/js/server/data/movie';
 import movieWrite from '../fns/movieWrite';
+import movieTitleRandomGet from 
+  '../fns/movieTitleRandomGet';
 
-export default async (
-  title,
+const process = async (
+  text,
   db
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
-    title
+    text
   );
 
   let characters = await charactersGet(
@@ -55,5 +57,27 @@ export default async (
 
   return (
     movie
+  );
+};
+
+export default async (
+  _text,
+  db
+) => {
+
+  const text = (
+    !_text.match(
+      /^(english|hindi|tamil):\d{4}$/
+    )
+  ) ?
+    _text :
+    await movieTitleRandomGet(
+      _text
+    );
+  console.log(text);
+
+  return process(
+    text,
+    db
   );
 };

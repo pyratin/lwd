@@ -3,7 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import nodeFetch from '~/js/server/schema/mutations/fns/nodeFetch';
+import mediawikiFetch from
+  '~/js/server/schema/mutations/fns/mediawikiFetch';
 
 const categorymembersFilePathString = 
   'utils/mediawiki/categorymembers.json';
@@ -31,7 +32,7 @@ const queryRun = (
     categorymember
   );
 
-  return nodeFetch(
+  return mediawikiFetch(
     queryGet(
       categorymember
     )

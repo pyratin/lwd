@@ -1,6 +1,6 @@
 'use strict';
 
-import nodeFetch from './nodeFetch';
+import mediawikiFetch from './mediawikiFetch';
 
 const charactersUdAssignedGetFn = (
   plotText,
@@ -166,7 +166,7 @@ const charactersCategoryAssignedGetFn = (
   characterUd
 ) => {
 
-  return nodeFetch(
+  return mediawikiFetch(
     pageCategoriesQueryGet(
       characterUd
     )

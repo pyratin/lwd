@@ -3,7 +3,7 @@
 import cheerio from 'cheerio';
 import sbd from 'sbd';
 
-import nodeFetch from './nodeFetch';
+import mediawikiFetch from './mediawikiFetch';
 
 const actorGet = (
   {
@@ -76,7 +76,7 @@ const actorsGenderAssignedGetFn = (
   actorUd
 ) => {
 
-  return nodeFetch(
+  return mediawikiFetch(
     queryGet(
       actorUd
     )

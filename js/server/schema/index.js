@@ -14,7 +14,7 @@ import {
 
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
-import movieSelect from './mutations/movieSelect';
+import movieCreate from './mutations/movieCreate';
 import {
   hostUrlGet
 } from '~/js/server/fns/variable';
@@ -126,11 +126,11 @@ const MovieSearchMutation = mutationWithClientMutationId(
   }
 );
 
-const MovieSelectMutation = mutationWithClientMutationId(
+const MovieCreateMutation = mutationWithClientMutationId(
   {
-    name: 'MovieSelect',
+    name: 'MovieCreate',
     inputFields: {
-      title: {
+      text: {
         type: new GraphQLNonNull(
           GraphQLString
         )
@@ -171,15 +171,15 @@ const MovieSelectMutation = mutationWithClientMutationId(
     },
     mutateAndGetPayload(
       {
-        title
+        text
       },
       {
         db
       }
     ) {
 
-      return movieSelect(
-        title,
+      return movieCreate(
+        text,
         db
       );
     }
@@ -193,7 +193,7 @@ const mutationType = new GraphQLObjectType(
 
       return {
         movieSearch: MovieSearchMutation,
-        movieSelect: MovieSelectMutation
+        movieCreate: MovieCreateMutation
       };
     }
   }

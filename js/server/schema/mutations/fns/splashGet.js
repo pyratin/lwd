@@ -292,7 +292,7 @@ const charactersCompositedBase64Get = (
             -bordercolor transparent
             -border ${
               (direction === 'row') ?
-                '5x0' : '0x5'
+                '2x0' : '0x2'
             }
             -gravity south
             -background none

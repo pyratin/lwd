@@ -25,7 +25,7 @@ const fnDelay = (
   ); 
 };
 
-const nodeFetchFn = (
+const mediawikiFetch = (
   query
 ) => {
 
@@ -45,7 +45,7 @@ const nodeFetchFn = (
           // eslint-disable-next-line no-console
           console.log(
             `
-              nodeFetch: ${
+              mediawikiFetch: ${
                 res.status
               } ${
                 query
@@ -57,7 +57,7 @@ const nodeFetchFn = (
           return fnDelay(
             () => {
 
-              return nodeFetchFn(
+              return mediawikiFetch(
                 query
               );
             },
@@ -70,4 +70,4 @@ const nodeFetchFn = (
     );
 };
 
-export default nodeFetchFn;
+export default mediawikiFetch;

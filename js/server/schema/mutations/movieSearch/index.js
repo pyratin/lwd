@@ -1,6 +1,6 @@
 'use strict';
 
-import nodeFetch from '../fns/nodeFetch';
+import mediawikiFetch from '../fns/mediawikiFetch';
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 
 const movieSearchQueryGetFn = (
@@ -37,7 +37,7 @@ const movieSearchResultsGet = async (
     text
   );
 
-  const json = await nodeFetch(
+  const json = await mediawikiFetch(
     query
   );
 
