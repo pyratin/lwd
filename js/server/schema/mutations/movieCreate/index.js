@@ -12,6 +12,29 @@ import movieWrite from '../fns/movieWrite';
 import movieTitleRandomGet from 
   '../fns/movieTitleRandomGet';
 
+const titleGet = async (
+  text
+) => {
+
+  const match = text.match(
+    /^(english|hindi|tamil):\d{4}$/
+  );
+
+  const title = (
+    match
+  ) ?
+    await movieTitleRandomGet(
+      text
+    ) :
+    Promise.resolve(
+      text
+    );
+
+  return (
+    title
+  );
+};
+
 const process = async (
   text,
   db
@@ -61,23 +84,16 @@ const process = async (
 };
 
 export default async (
-  _text,
+  text,
   db
 ) => {
 
-  const text = (
-    !_text.match(
-      /^(english|hindi|tamil):\d{4}$/
-    )
-  ) ?
-    _text :
-    await movieTitleRandomGet(
-      _text
-    );
-  console.log(text);
+  let title = await titleGet(
+    text
+  );
 
   return process(
-    text,
+    title,
     db
   );
 };

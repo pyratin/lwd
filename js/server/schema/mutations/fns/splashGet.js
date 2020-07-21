@@ -359,8 +359,21 @@ const charactersCompositedBase64Get = (
 };
 
 const charactersMontageGet = async (
-  characterBase64s
+  characters
 ) => {
+
+  if (
+    !characters.length
+  ) {
+
+    return Promise.resolve(
+      null
+    );
+  }
+
+  const characterBase64s = await characterBase64sGet(
+    characters
+  );
 
   const characterRows = characterBase64s.reduce(
     (
@@ -480,7 +493,7 @@ const charactersMontageGet = async (
   );
 };
 
-const finalCompositedGet = (
+const finalCompositedGetFn = (
   finalCompositeMiffStreamsConcated
 ) => {
 
@@ -527,6 +540,56 @@ const finalCompositedGet = (
   );
 };
 
+const finalCompositedGet = async (
+  movieTitle,
+  moviePosterBase64,
+  charactersMontageBase64
+) => {
+
+  const res = outputResGet();
+
+  const pointsize = 20;
+
+  const border = 10;
+
+  if (
+    !charactersMontageBase64
+  ) {
+
+    return base64TextCompositedGet(
+      moviePosterBase64,
+      movieTitle,
+      res,
+      pointsize,
+      border
+    );
+  }
+
+  const finalCompositeMiffStreamsConcated = 
+    await base64MiffStreamsConcatedGet(
+      [
+        moviePosterBase64,
+        charactersMontageBase64
+      ]
+    );
+
+  let splash = await finalCompositedGetFn(
+    finalCompositeMiffStreamsConcated
+  );
+
+  splash = await base64TextCompositedGet(
+    splash,
+    movieTitle,
+    res,
+    pointsize,
+    border
+  );
+
+  return (
+    splash
+  );
+};
+
 export default async (
   movieTitle,
   moviePoster,
@@ -541,32 +604,15 @@ export default async (
     moviePoster
   );
 
-  const characterBase64s = await characterBase64sGet(
-    characters
-  );
-
-  const charactersMontage = await charactersMontageGet(
-    characterBase64s
-  );
-
-  const finalCompositeMiffStreamsConcated = 
-    await base64MiffStreamsConcatedGet(
-      [
-        moviePosterBase64,
-        charactersMontage
-      ]
+  const charactersMontageBase64 = 
+    await charactersMontageGet(
+      characters
     );
 
-  let splash = await finalCompositedGet(
-    finalCompositeMiffStreamsConcated
-  );
-
-  splash = await base64TextCompositedGet(
-    splash,
+  const splash = await finalCompositedGet(
     movieTitle,
-    outputResGet(),
-    20,
-    10
+    moviePosterBase64,
+    charactersMontageBase64
   );
 
   return (

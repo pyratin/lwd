@@ -3,6 +3,7 @@
 import moment from 'moment';
 
 import mediawikiFetch from './mediawikiFetch';
+import movieDataBasicGet from './movieDataBasicGet';
 
 const categoryGet = (
   _category
@@ -79,7 +80,7 @@ const queryGet = (
     .trim();
 };
 
-export default (
+const movieTitleRandomGet = (
   text
 ) => {
 
@@ -109,5 +110,26 @@ export default (
           title
         );
       }
+    )
+    .then(
+      async (
+        title
+      ) => {
+
+        const movieDataBasic = await movieDataBasicGet(
+          title
+        );
+
+        return (
+          movieDataBasic.plot &&
+          movieDataBasic.cast
+        ) ?
+          title :
+          movieTitleRandomGet(
+            text
+          );
+      }
     );
 };
+
+export default movieTitleRandomGet;
