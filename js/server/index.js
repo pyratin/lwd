@@ -11,9 +11,13 @@ import {
 } from './fns/variable';
 import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
+import mediaOutputFolderInit from 
+  './fns/mediaOutputFolderInit';
 
 (
   async () => {
+
+    await mediaOutputFolderInit();
 
     const db = await mongoClientConnect();
 
