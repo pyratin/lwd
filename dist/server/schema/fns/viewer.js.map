@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../js/server/schema/fns/viewer.js"],"names":["_id","text"],"mappings":"AAAA;;;;;;;eAEe,oBAAM;AAEnB,SAAO;AACLA,IAAAA,GAAG,EAAE,SADA;AAELC,IAAAA,IAAI,EAAE;AAFD,GAAP;AAID,C","sourcesContent":["'use strict';\n\nexport default () => {\n\n  return {\n    _id: '_viewer',\n    text: 'Viewer'\n  };\n};\n"],"file":"viewer.js"}

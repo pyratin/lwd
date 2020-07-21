@@ -13,7 +13,7 @@ badd +17 js/server/schema/index.js
 badd +7 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +3 js/server/schema/mutations/movieSearch/index.js
 badd +49 js/server/schema/mutations/fns/segmentsGet.js
-badd +579 js/server/schema/mutations/fns/charactersGet.js
+badd +483 js/server/schema/mutations/fns/charactersGet.js
 badd +1 js/server/schema/mutations/fns/wordsTokenizedGet.js
 badd +1 js/server/schema/mutations/fns/NNPsGet.js
 badd +26 js/server/schema/mutations/fns/cardsGet.js
@@ -35,6 +35,7 @@ badd +1 js/server/schema/mutations/fns/base64TextCompositedGet.js
 badd +23 js/server/schema/mutations/movieCreate/index.js
 badd +72 js/server/schema/mutations/fns/mediawikiFetch.js
 badd +1 js/server/schema/mutations/fns/movieTitleRandomGet.js
+badd +3 .gitignore
 argglobal
 %argdel
 set stal=2
@@ -557,12 +558,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 455 - ((7 * winheight(0) + 17) / 34)
+let s:l = 483 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-455
-normal! 06|
+483
+normal! 0
 tabedit js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -738,7 +739,7 @@ exe s:l
 normal! zt
 72
 normal! 0
-tabnext 21
+tabnext 1
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
