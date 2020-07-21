@@ -614,7 +614,7 @@ const plotGet = (
     .remove()
     .end();
 
-  let paragraphs = plotEl
+  let sentences = plotEl
     .find(
       'p'
     )
@@ -632,7 +632,7 @@ const plotGet = (
         )
           .text();
 
-        const sentences = plotGetFn(
+        const _sentences = plotGetFn(
           paragraph,
           paragraphIndex
         );
@@ -640,21 +640,48 @@ const plotGet = (
         return [
           ...memo ||
           [],
-          ...sentences
+          ..._sentences
         ];
       },
       null
     );
 
-  paragraphs = (
-    paragraphs
+  sentences = (
+    sentences
   ) &&
-    paragraphs.slice(
-      0, 5
+    sentences.reduce(
+      (
+        memo,
+        sentence
+      ) => {
+
+        if (
+          (
+            memo.length >= 
+            5
+          ) &&
+          !memo[
+            memo.length - 1
+          ]
+            .text
+            .match(/\s...,$/)
+        ) {
+
+          return (
+            memo
+          );
+        }
+
+        return [
+          ...memo,
+          sentence
+        ];
+      },
+      []
     );
 
   return (
-    paragraphs
+    sentences
   );
 };
 
