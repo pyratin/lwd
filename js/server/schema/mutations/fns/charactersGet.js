@@ -1,6 +1,7 @@
 'use strict';
 
 import leven from 'leven';
+import combinations from 'combinations';
 
 import NNPsGet from './NNPsGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
@@ -133,12 +134,28 @@ const characterFragmentMatchedGet = (
   _character
 ) => {
 
-  const characterTokens = characterTokenizedGet(
-    character
-  );
-  console.log(characterTokens, _character);
+  const characterTokenCombinations = combinations(
+    characterTokenizedGet(
+      character
+    )
+  )
+    .reduce(
+      (
+        memo,
+        characterTokenCombination
+      ) => {
 
-  const characterToken = characterTokens.find(
+        return [
+          ...memo,
+          characterTokenCombination.join(
+            ' '
+          )
+        ];
+      },
+      []
+    );
+
+  const characterToken = characterTokenCombinations.find(
     (
       characterToken
     ) => {
@@ -152,7 +169,7 @@ const characterFragmentMatchedGet = (
 
   return (
     (
-      characterTokens.length > 1 
+      characterTokenCombinations.length > 1 
     ) &&
     characterToken
   ) ?
@@ -189,15 +206,15 @@ const __castCharactersGetFn = (
       ) &&
       !!text
     ) :
-    //case (
-      //(
-        //text = characterFragmentMatchedGet(
-          //castCharacter.text,
-          //plotCharacter
-        //)
-      //) &&
-      //!!text
-    //) :
+    case (
+      (
+        text = characterFragmentMatchedGet(
+          castCharacter.text,
+          plotCharacter
+        )
+      ) &&
+      !!text
+    ) :
     case (
       (
         text = characterFragmentMatchedGet(
