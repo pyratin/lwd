@@ -7,20 +7,40 @@ import {
 import {
   findOneAndUpdate
 } from './index';
+import {
+  hostUrlGet
+} from '~/js/server/fns/variable';
 
 const movieCollectionName = 'movies';
 
 const movieCreate = (
   movie,
-  db
+  db,
+  req
 ) => {
+
+  const movieId = new ObjectID();
+
+  const path = `
+    ${
+      hostUrlGet(
+        req
+      )
+    }/output/${
+      movieId.toString()
+    }.gif
+  `
+    .trim();
 
   return findOneAndUpdate(
     {
-      _id: new ObjectID()
+      _id: movieId
     },
     {
-      $set: movie
+      $set: {
+        ...movie,
+        path
+      }
     },
     {
       upsert: true,

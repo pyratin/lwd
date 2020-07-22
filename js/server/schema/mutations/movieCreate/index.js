@@ -37,7 +37,8 @@ const titleGet = async (
 
 const process = async (
   text,
-  db
+  db,
+  req
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
@@ -71,7 +72,8 @@ const process = async (
       title: movieDataBasic.title,
       gif
     },
-    db
+    db,
+    req
   );
 
   await movieWrite(
@@ -85,15 +87,27 @@ const process = async (
 
 export default async (
   text,
-  db
+  db,
+  req
 ) => {
 
   let title = await titleGet(
     text
   );
 
+  //eslint-disable-next-line no-console
+  console.log(
+    `
+      title: ${
+        title
+      }
+    `
+      .trim()
+  );
+
   return process(
     title,
-    db
+    db,
+    req
   );
 };

@@ -74,8 +74,14 @@ const charactersGet = (
           ) => {
 
             return (
-              _memo.text ===
-              card.character
+              (
+                _memo.actorId
+                  .toString()
+              ) ===
+              (
+                card.actorId
+                  .toString()
+              )
             );
           }
         )
@@ -84,6 +90,7 @@ const charactersGet = (
         return [
           ...memo,
           {
+            actorId: card.actorId,
             text: card.character,
             base64: card.base64
           }
@@ -95,7 +102,19 @@ const charactersGet = (
       );
     },
     []
-  );
+  )
+    .map(
+      (
+        character
+      ) => {
+
+        delete character.actorId;
+
+        return (
+          character
+        );
+      }
+    );
 };
 
 const moviePosterBase64GetFn = (

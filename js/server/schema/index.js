@@ -15,9 +15,40 @@ import {
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
 import movieCreate from './mutations/movieCreate';
-import {
-  hostUrlGet
-} from '~/js/server/fns/variable';
+
+const movieType = new GraphQLObjectType(
+  {
+    name: 'Movie',
+    fields() {
+
+      return {
+        id: {
+          type: GraphQLID,
+          resolve(
+            {
+              _id: movieId
+            }
+          ) {
+
+            return (
+              movieId
+            ) &&
+              movieId.toString();
+          }
+        },
+        title: {
+          type: GraphQLString
+        },
+        gif: {
+          type: GraphQLString
+        },
+        path: {
+          type: GraphQLString
+        }
+      };
+    }
+  }
+);
 
 const viewerType = new GraphQLObjectType(
   {
@@ -144,43 +175,32 @@ const MovieCreateMutation = mutationWithClientMutationId(
           return viewerGet();
         }
       },
-      path: {
-        type: GraphQLString,
+      movie: {
+        type: movieType,
         resolve(
-          {
-            _id: movieId
-          },
-          args,
-          {
-            req
-          }
+          movie
         ) {
 
-          return `
-            ${
-              hostUrlGet(
-                req
-              )
-            }/output/${
-              movieId.toString()
-            }.gif
-          `
-            .trim();
+          return (
+            movie
+          );
         }
-      }
+      },
     },
     mutateAndGetPayload(
       {
         text
       },
       {
-        db
+        db,
+        req
       }
     ) {
 
       return movieCreate(
         text,
-        db
+        db,
+        req
       );
     }
   }

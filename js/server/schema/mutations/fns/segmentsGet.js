@@ -1,5 +1,44 @@
 'use strict';
 
+import wordsTokenizedGet from './wordsTokenizedGet';
+
+const charactersFragmentedGet = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const characterTokens = wordsTokenizedGet(
+        character.text
+      )
+        .map(
+          (
+            {
+              text
+            }
+          ) => {
+
+            return {
+              ...character,
+              text
+            };
+          }
+        );
+
+      return [
+        ...memo,
+        character,
+        ...characterTokens
+      ];
+    },
+    []
+  );
+};
+
 const __fragmentsGetFn = (
   fragment,
   character
@@ -227,8 +266,12 @@ const segmentsGetFn = (
 
 export default (
   plot,
-  characters
+  _characters
 ) => {
+
+  const characters = charactersFragmentedGet(
+    _characters
+  );
 
   const fragments = fragmentsGet(
     plot,

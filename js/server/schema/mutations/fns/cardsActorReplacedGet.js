@@ -395,7 +395,7 @@ const spoofActorByTextGet = (
   );
 };
 
-const charactersActorsAssignedGet = (
+const charactersActorAssignedGet = (
   characters,
   spoofActors
 ) => {
@@ -756,7 +756,9 @@ const cardsCharacterAssignedGet = (
           {
             ...card,
             character: character.text,
-            base64: character.base64
+            base64: character.base64,
+            actorUd: character.actor.ud,
+            actorId: character._actor._id
           }
         ];
       }
@@ -788,7 +790,7 @@ export default async (
     _cards
   );
 
-  characters = charactersActorsAssignedGet(
+  characters = charactersActorAssignedGet(
     characters,
     spoofActors
   );

@@ -136,6 +136,7 @@ const characterFragmentMatchedGet = (
   const characterTokens = characterTokenizedGet(
     character
   );
+  console.log(characterTokens, _character);
 
   const characterToken = characterTokens.find(
     (
@@ -188,15 +189,15 @@ const __castCharactersGetFn = (
       ) &&
       !!text
     ) :
-    case (
-      (
-        text = characterFragmentMatchedGet(
-          castCharacter.text,
-          plotCharacter
-        )
-      ) &&
-      !!text
-    ) :
+    //case (
+      //(
+        //text = characterFragmentMatchedGet(
+          //castCharacter.text,
+          //plotCharacter
+        //)
+      //) &&
+      //!!text
+    //) :
     case (
       (
         text = characterFragmentMatchedGet(
