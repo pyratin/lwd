@@ -11,30 +11,43 @@ export default () => {
       reject
     ) => {
 
-      return fs.mkdir(
-        path.join(
-          process.cwd(),
-          'media/output'
-        ),
-        {},
-        (
-          error,
-          res
-        ) => {
+      const mediaOutputFolderPath = path.join(
+        process.cwd(),
+        'media/output'
+      );
 
-          if (
-            error
-          ) {
+      if (
+        !fs.existsSync(
+          mediaOutputFolderPath
+        )
+      ) {
 
-            return reject(
+        return fs.mkdir(
+          mediaOutputFolderPath,
+          {},
+          (
+            error,
+            res
+          ) => {
+
+            if (
               error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              res
             );
           }
+        );
+      }
 
-          return resolve(
-            res
-          );
-        }
+      return resolve(
+        null
       );
     }
   );
