@@ -57,10 +57,13 @@ const queryGet = (
   text
 ) => {
 
+  const gifyApiKey = 
+    process.env.npm_package_config_GIFY_API_KEY;
+
   return `
-    http://api.giphy.com/v1/gifs/search?api_key=${
-      process.env.npm_package_config_GIFY_API_KEY
-    }&limit=25&rating=pg-13&q=${
+    http://api.giphy.com/v1/gifs/translate?api_key=${
+      gifyApiKey
+    }&weirdness:=10&s=${
       text
     }
   `
@@ -125,41 +128,31 @@ const cardsFlatlistGifyBase64AssignedGetFn = (
         json
       ) => {
 
-        const randomIndex = Math.floor(
-          Math.random() *
-          json.data.length
-        );
+        const url = json.data.images?.[
+          '480w_still'
+        ]
+          .url;
 
-        const url = json.data
-          .reduce(
-            (
-              memo,
-              _data,
-              index
-            ) => {
+        if (
+          !url
+        ) {
 
-              if (
-                !memo &&
-                (
-                  index ===
-                  randomIndex
-                )
-              ) {
-
-                return (
-                  _data.images[
-                    '480w_still'
-                  ]
-                    .url
-                );
+          //eslint-disable-next-line no-console
+          console.log(
+            `
+              cardsFlatlistGifyBase64AssignedGetFn: ${
+                text
               }
-
-              return (
-                memo
-              );
-            },
-            null
+            `
+              .trim()
           );
+
+          return cardsFlatlistGifyBase64AssignedGetFn(
+            {
+              text
+            }
+          );
+        }
 
         return (
           url
