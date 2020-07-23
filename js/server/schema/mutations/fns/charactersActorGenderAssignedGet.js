@@ -78,7 +78,9 @@ const actorsGenderAssignedGetFn = (
 
   return mediawikiFetch(
     queryGet(
-      actorUd
+      encodeURIComponent(
+        actorUd
+      )
     )
   )
     .then(

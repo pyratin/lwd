@@ -82,8 +82,8 @@ const starringActorExistsGet = (
     ) => {
 
       return (
-        _starringActor.ud ===
-        starringActor.ud
+        _starringActor.text ===
+        starringActor.text
       );
     }
   );
@@ -98,9 +98,7 @@ const starringActorsFlatlistGetFn = (
   return (
     actor
   ) ?
-    {
-      ...card.character?.actor,
-    } :
+    actor :
     null;
 };
 

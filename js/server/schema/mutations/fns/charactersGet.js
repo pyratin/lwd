@@ -131,12 +131,13 @@ const characterTokenizedGet = (
 
 const characterFragmentMatchedGet = (
   character,
-  _character
+  _character,
+  source
 ) => {
 
   const characterTokenCombinations = combinations(
     characterTokenizedGet(
-      character
+      _character
     )
   )
     .reduce(
@@ -162,19 +163,26 @@ const characterFragmentMatchedGet = (
 
       return (
         characterToken ===
-        _character
+        character
       );
     }
   );
 
+  if (
+    !characterToken
+  ) {
+
+    return (
+      null
+    );
+  }
+
   return (
-    (
-      characterTokenCombinations.length > 1 
-    ) &&
-    characterToken
+    source === 
+    'plot'
   ) ?
-    characterToken :
-    null;
+    character :
+    _character;
 };
 
 const __castCharactersGetFn = (
@@ -209,8 +217,9 @@ const __castCharactersGetFn = (
     case (
       (
         text = characterFragmentMatchedGet(
+          plotCharacter,
           castCharacter.text,
-          plotCharacter
+          'plot'
         )
       ) &&
       !!text
@@ -218,8 +227,9 @@ const __castCharactersGetFn = (
     case (
       (
         text = characterFragmentMatchedGet(
+          castCharacter.text,
           plotCharacter,
-          castCharacter.text
+          'cast'
         )
       ) &&
       !!text
