@@ -61,7 +61,7 @@ const queryGet = (
     process.env.npm_package_config_GIFY_API_KEY;
 
   return `
-    http://api.giphy.com/v1/gifs/translate?api_key=${
+    https://api.giphy.com/v1/gifs/translate?api_key=${
       gifyApiKey
     }&weirdness:=10&s=${
       text

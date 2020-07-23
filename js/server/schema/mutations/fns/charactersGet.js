@@ -55,6 +55,18 @@ const castCharactersFlatlistGet = (
             text
           ) => {
 
+            const possessive = !!_cast.role
+              .match(
+                new RegExp(
+                  `
+                    ${
+                      text
+                    }'s
+                  `
+                    .trim()
+                )
+              );
+
             return [
               ...castCharacterMemo,
               {
@@ -64,7 +76,8 @@ const castCharactersFlatlistGet = (
                   .match(
                     text
                   )
-                  .index
+                  .index,
+                possessive
               }
             ];
           },
@@ -332,6 +345,20 @@ const castCharactersSortedGet = (
       ) {
 
         case (
+          a.possessive &&
+          !b.possessive
+        ) :
+
+          return 1;
+
+        case (
+          b.possessive &&
+          !a.possessive
+        ) :
+
+          return -1;
+
+        case (
           a.roleIndex >
           b.roleIndex
         ) :
@@ -368,16 +395,32 @@ const characterExistsGet = (
   characters
 ) => {
 
-  return characters.find(
+  return characters.reduce(
     (
+      memo,
       _character
     ) => {
 
-      return (
-        _character.text ===
-        character.text
+      const exists = __castCharactersGetFn(
+        character,
+        _character.text
       );
-    }
+
+      if (
+        !memo &&
+        exists
+      ) {
+
+        return (
+          true
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    false
   );
 };
 
