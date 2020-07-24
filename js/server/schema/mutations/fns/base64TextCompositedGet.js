@@ -22,6 +22,10 @@ export default async (
         .replace(
           /"/g,
           '\\"'
+        )
+        .replace(
+          /&/g,
+          '\\&amp;'
         );
 
       const factor = res / 480;

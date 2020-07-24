@@ -154,16 +154,6 @@ const cardsFlatlistGifyBase64AssignedGetFn = (
           );
         }
 
-        return (
-          url
-        );
-      }
-    )
-    .then(
-      (
-        url
-      ) => {
-
         return _base64AssignedGetFn(
           url
         );
