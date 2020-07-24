@@ -139,7 +139,7 @@ const gifGetFn = (
     ) => {
 
       const proc = exec(
-        'convert -loop 0 -delay 1000 miff:- gif:-',
+        'convert -loop 0 -delay 1000 miff:- -background black -alpha remove gif:-',
         {
           encoding: 'base64'
         },
@@ -186,7 +186,7 @@ const gifOptimizedGet = (
       );
 
       const proc = exec(
-        'convert gif:- -coalesce -background "#000" -alpha remove -fuzz 5% -layers OptimizeFrame +map gif:-',
+        'convert gif:- -coalesce -fuzz 5% -layers OptimizeFrame +map gif:-',
         {
           encoding: 'base64'
         },
