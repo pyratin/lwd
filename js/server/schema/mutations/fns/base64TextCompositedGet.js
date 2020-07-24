@@ -34,6 +34,8 @@ export default async (
         convert 
         \\(
           jpeg:-
+          -background black
+          -flatten
           -resize ${
             res
           }x${
@@ -45,14 +47,6 @@ export default async (
           }x${
             res
           }+0+0
-          -background black
-          -compose Copy
-          -gravity center
-          -extent ${
-            res
-          }x${
-            res
-          }
         \\)
         \\(
           -size ${
