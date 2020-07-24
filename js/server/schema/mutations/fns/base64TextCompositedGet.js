@@ -34,6 +34,7 @@ export default async (
         convert 
         \\(
           jpeg:-
+          -background "#000"
           -resize ${
             res
           }x${
