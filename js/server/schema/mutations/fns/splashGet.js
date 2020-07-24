@@ -14,6 +14,50 @@ import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 
+const charactersGet = (
+  characters,
+  cards
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const card = cards.find(
+        (
+          card
+        ) => {
+
+          return (
+            card?.actorUd ===
+            character.actor.ud
+          );
+        }
+      );
+
+      if (
+        card
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...character,
+            base64: card.base64
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const base64BlankGet = () => {
 
   return new Promise(
@@ -54,67 +98,6 @@ const base64BlankGet = () => {
       );
     }
   );
-};
-
-const charactersGet = (
-  cards
-) => {
-
-  return cards.reduce(
-    (
-      memo,
-      card
-    ) => {
-
-      if (
-        card.character &&
-        !memo.find(
-          (
-            _memo
-          ) => {
-
-            return (
-              (
-                _memo.actorId
-                  .toString()
-              ) ===
-              (
-                card.actorId
-                  .toString()
-              )
-            );
-          }
-        )
-      ) {
-
-        return [
-          ...memo,
-          {
-            actorId: card.actorId,
-            text: card.character,
-            base64: card.base64
-          }
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  )
-    .map(
-      (
-        character
-      ) => {
-
-        delete character.actorId;
-
-        return (
-          character
-        );
-      }
-    );
 };
 
 const moviePosterBase64GetFn = (
@@ -612,10 +595,12 @@ const finalCompositedGet = async (
 export default async (
   movieTitle,
   moviePoster,
+  _characters,
   cards
 ) => {
 
   const characters = charactersGet(
+    _characters,
     cards
   );
 

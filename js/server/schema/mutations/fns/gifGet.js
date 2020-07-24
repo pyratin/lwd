@@ -205,6 +205,7 @@ const gifGet = async (
 export default async (
   movieTitle,
   moviePoster,
+  characters,
   _cards
 ) => {
 
@@ -215,6 +216,7 @@ export default async (
   const splash = await splashGet(
     movieTitle,
     moviePoster,
+    characters,
     _cards
   );
 

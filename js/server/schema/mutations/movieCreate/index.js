@@ -64,6 +64,7 @@ const process = async (
   const gif = await gifGet(
     movieDataBasic.title,
     movieDataBasic.poster,
+    characters,
     cards
   );
 
