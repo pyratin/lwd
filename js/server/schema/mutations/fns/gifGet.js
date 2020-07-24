@@ -7,10 +7,63 @@ import splashGet from './splashGet';
 import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
+import base64FilterAppliedGet from 
+  './base64FilterAppliedGet';
 
 import {
   outputResGet
 } from '~/js/server/fns/variable';
+
+const cardsFilterAppliedGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          if (
+            !card.character
+          ) {
+
+            return base64FilterAppliedGet(
+              card.base64
+            )
+              .then(
+                (
+                  result
+                ) => {
+
+                  return [
+                    ...res,
+                    {
+                      ...card,
+                      base64: result
+                    }
+                  ];
+                }
+              );
+          }
+
+          return [
+            ...res,
+            card
+          ];
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
 
 const cardsRenderedGet = (
   cards
@@ -209,15 +262,19 @@ export default async (
   _cards
 ) => {
 
-  const base64s = await cardsRenderedGet(
+  let cards = await cardsFilterAppliedGet(
     _cards
+  );
+
+  const base64s = await cardsRenderedGet(
+    cards
   );
 
   const splash = await splashGet(
     movieTitle,
     moviePoster,
     characters,
-    _cards
+    cards
   );
 
   const gif = await gifGet(
