@@ -45,7 +45,8 @@ export default async (
           }x${
             res
           }+0+0
-          -background "#000"
+          -background black
+          -gravity center
           -extent ${
             res
           }x${
