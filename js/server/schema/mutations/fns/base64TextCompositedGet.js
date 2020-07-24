@@ -46,6 +46,7 @@ export default async (
             res
           }+0+0
           -background black
+          -compose Copy
           -gravity center
           -extent ${
             res
