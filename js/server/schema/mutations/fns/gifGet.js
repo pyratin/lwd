@@ -186,7 +186,7 @@ const gifOptimizedGet = (
       );
 
       const proc = exec(
-        'convert gif:- -coalesce -fuzz 5% -layers OptimizeFrame +map gif:-',
+        'convert gif:- -coalesce -background "#000" -alpha remove -fuzz 5% -layers OptimizeFrame +map gif:-',
         {
           encoding: 'base64'
         },

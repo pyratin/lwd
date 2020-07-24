@@ -34,8 +34,6 @@ export default async (
         convert 
         \\(
           jpeg:-
-          -background black
-          -flatten
           -resize ${
             res
           }x${
