@@ -1,6 +1,6 @@
 'use strict';
 
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
 import {
@@ -17,31 +17,37 @@ const genres = [
 
 const inquirerFn = () => {
 
-  return inquirer.prompt(
+  return prompts(
     [
       {
         name: 'init',
         message: 
         'delete all collections ?',
         type: 'confirm',
-        default: false
-      },
-      {
-        name: 'setOverwrite',
-        message: 'overwrite a set ?',
-        type: 'confirm',
-        default: false
+        initial: false
       },
       {
         name: 'setText',
         message: 'new set\'s name :',
-        type: 'input'
+        type: 'text'
       },
       {
         name: 'genre',
         message: 'which genre ?',
-        type: 'rawlist',
-        choices: genres
+        type: 'select',
+        choices() {
+
+          return genres.map(
+            (
+              genre
+            ) => {
+
+              return {
+                value: genre
+              };
+            }
+          );
+        }
       }
     ],
   )

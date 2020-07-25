@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev:server": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
-    "utils:actor:create": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/actor -e js utils/actor/create.js",
+    "utils:actor:create": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -I -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/actor -e js utils/actor/create.js",
     "build:server": "env NODE_ENV=development node_modules/@babel/cli/bin/babel.js js/server --out-dir dist/server --source-maps",
     "prebuild": "rm -Rrf dist",
     "build": "npm run build:server",
@@ -29,7 +29,6 @@
     "babel-plugin-root-import": "^6.5.0",
     "eslint": "^7.3.1",
     "eslint-plugin-react": "^7.20.0",
-    "inquirer": "^7.3.3",
     "json": "^9.0.6",
     "nodemon": "^2.0.4",
     "shelljs": "^0.8.4"
@@ -50,6 +49,7 @@
     "mongodb": "^3.5.9",
     "natural": "^2.1.5",
     "node-fetch": "^2.6.0",
+    "prompts": "^2.3.2",
     "sbd": "^1.0.18",
     "streamcat": "^2.6.4"
   }
