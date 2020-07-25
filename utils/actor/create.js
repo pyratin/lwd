@@ -9,9 +9,14 @@ import {
 import {
   exec
 } from 'child_process';
-import minimist from 'minimist';
+import inquirer from 'inquirer';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
+import {
+  setsFind,
+  setCreate,
+  setRemove
+} from '~/js/server/data/set';
 import {
   actorsFind,
   actorCreate,
@@ -25,24 +30,45 @@ import {
 
 const actorsSourceFolderPathString = 'utils/actor/source';
 
-const minimistFn = () => {
+const genres = [
+  'tamil-spoof',
+  'tamil-mythology'
+];
 
-  const {
-    init: _init
-  } = minimist(
-    process.argv
-      .slice(
-        2
-      )
-  );
+const inquirerFn = () => {
 
-  const init = (
-    !!_init
-  );
+  return inquirer.prompt(
+    [
+      {
+        name: 'init',
+        message: 
+        'delete the actors and actorImages collection ?',
+        type: 'confirm',
+        default: false
+      },
+      {
+        name: 'setText',
+        message: 'name for this set of grabs :',
+        type: 'input'
+      },
+      {
+        name: 'genre',
+        message: 'which genre ?',
+        type: 'rawlist',
+        choices: genres
+      }
+    ],
+  )
+    .then(
+      (
+        answers
+      ) => {
 
-  return {
-    init
-  };
+        return (
+          answers
+        );
+      }
+    );
 };
 
 const actorImageRemoveFn = (
@@ -199,21 +225,16 @@ const actorsRemoveFn = (
 };
 
 const actorsRemove = (
-  init,
+  set,
   db
 ) => {
 
-  if (
-    !init
-  ) {
-
-    return Promise.resolve(
-      null
-    );
-  }
-
   return actorsFind(
-    null,
+    {
+      _setId: new ObjectID(
+        set._id
+      )
+    },
     null,
     db
   )
@@ -228,6 +249,113 @@ const actorsRemove = (
         );
       }
     );
+};
+
+const _setsRemoveFn = (
+  set,
+  db
+) => {
+
+  return setRemove(
+    set._id,
+    db
+  )
+    .then(
+      () => {
+
+        return actorsRemove(
+          set,
+          db
+        );
+      }
+    );
+};
+
+const setsRemoveFn = (
+  sets,
+  db
+) => {
+
+  return sets.reduce(
+    (
+      memo,
+      set
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return _setsRemoveFn(
+            set,
+            db
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
+const setsRemove = (
+  init,
+  db
+) => {
+
+  if (
+    !init
+  ) {
+
+    return Promise.resolve(
+      null
+    );
+  }
+
+  return setsFind(
+    null,
+    null,
+    db
+  )
+    .then(
+      (
+        sets
+      ) => {
+
+        return setsRemoveFn(
+          sets,
+          db
+        );
+      }
+    );
+};
+
+const setInitFn = (
+  text,
+  genre,
+  db
+) => {
+
+  return setCreate(
+    {
+      text,
+      genre
+    },
+    db
+  );
 };
 
 const actorsGet = () => {
@@ -606,6 +734,7 @@ const actorImagesCreate = async (
 
 const actorsCreateFn = (
   text,
+  set,
   db
 ) => {
 
@@ -613,6 +742,9 @@ const actorsCreateFn = (
   return actorCreate(
     {
       text,
+      _setId: new ObjectID(
+        set._id
+      ),
       gender: text.split(
         /-/
       )[
@@ -636,6 +768,7 @@ const actorsCreateFn = (
 
 const actorsCreate = (
   actors,
+  set,
   db
 ) => {
 
@@ -652,6 +785,7 @@ const actorsCreate = (
 
           return actorsCreateFn(
             actor,
+            set,
             db
           )
             .then(
@@ -674,35 +808,68 @@ const actorsCreate = (
   );
 };
 
+const setInit = async (
+  setText,
+  genre,
+  db
+) => {
+
+  const set = await setInitFn(
+    setText,
+    genre,
+    db
+  );
+
+  const actors = actorsGet();
+
+  await actorsCreate(
+    actors,
+    set,
+    db
+  );
+
+  return (
+    set
+  );
+};
+
 (
   async () => {
 
-    const {
-      init
-    } = minimistFn();
+    //const {
+      //init,
+      //setText,
+      //genre
+    //} = await inquirerFn();
+
+    const init = true;
+
+    const setText = 'lollu-sabha';
+
+    const genre = 'tamil-spoof';
 
     const db = await mongoClientConnect();
 
-    await actorsRemove(
+    await setsRemove(
       init,
       db
     );
 
-    const actors = actorsGet();
-
-    await actorsCreate(
-      actors,
+    const set = await setInit(
+      setText,
+      genre,
       db
     );
+    console.log(set);
 
-    // eslint-disable-next-line no-console
-    console.log(
-      `
-        collectionInit: ${
-          actors.length
-        }
-      `
-        .trim()
-    );
+    //// eslint-disable-next-line no-console
+    //console.log(
+      //`
+        //collectionInit: ${
+          //actors.length
+        //}
+      //`
+        //.trim()
+    //);
   }
 )();
