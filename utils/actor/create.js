@@ -9,6 +9,7 @@ import {
 import {
   exec
 } from 'child_process';
+import minimist from 'minimist';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
 import {
@@ -23,6 +24,26 @@ import {
 } from '~/js/server/data/actorImage';
 
 const actorsSourceFolderPathString = 'utils/actor/source';
+
+const minimistFn = () => {
+
+  const {
+    init: _init
+  } = minimist(
+    process.argv
+      .slice(
+        2
+      )
+  );
+
+  const init = (
+    !!_init
+  );
+
+  return {
+    init
+  };
+};
 
 const actorImageRemoveFn = (
   {
@@ -178,8 +199,18 @@ const actorsRemoveFn = (
 };
 
 const actorsRemove = (
+  init,
   db
 ) => {
+
+  if (
+    !init
+  ) {
+
+    return Promise.resolve(
+      null
+    );
+  }
 
   return actorsFind(
     null,
@@ -646,9 +677,14 @@ const actorsCreate = (
 (
   async () => {
 
+    const {
+      init
+    } = minimistFn();
+
     const db = await mongoClientConnect();
 
     await actorsRemove(
+      init,
       db
     );
 

@@ -37,9 +37,9 @@ badd +72 js/server/schema/mutations/fns/mediawikiFetch.js
 badd +1 js/server/schema/mutations/fns/movieTitleRandomGet.js
 badd +2 .gitignore
 badd +18 js/server/fns/mediaOutputFolderInit.js
-badd +315 utils/actor/collectionInit.js
 badd +1 js/server/schema/mutations/fns/base64FilterAppliedGet.js
-badd +0 js/server/schema/mutations/fns/sentencesGet.js
+badd +1 js/server/schema/mutations/fns/sentencesGet.js
+badd +1 ~/Documents/Projects/lwd/utils/actor/create.js
 argglobal
 %argdel
 set stal=2
@@ -62,13 +62,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 55 - ((33 * winheight(0) + 17) / 34)
+let s:l = 13 - ((12 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-55
-normal! 0
-tabedit utils/actor/collectionInit.js
+13
+normal! 0230|
+tabedit ~/Documents/Projects/lwd/utils/actor/create.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -87,11 +87,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 343 - ((29 * winheight(0) + 18) / 36)
+let s:l = 1 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-343
+1
 normal! 0
 tabedit js/server/index.js
 set splitbelow splitright
@@ -112,12 +112,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 18 - ((17 * winheight(0) + 18) / 36)
+let s:l = 1 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-18
-normal! 02|
+1
+normal! 013|
 tabedit js/server/schema/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -212,12 +212,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 101 - ((35 * winheight(0) + 18) / 36)
+let s:l = 189 - ((24 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-101
-normal! 014|
+189
+normal! 051|
 tabedit js/server/schema/mutations/fns/base64FilterAppliedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -262,7 +262,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 571 - ((23 * winheight(0) + 17) / 34)
+let s:l = 571 - ((24 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -287,7 +287,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 52 - ((25 * winheight(0) + 17) / 34)
+let s:l = 52 - ((26 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -312,7 +312,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 29 - ((4 * winheight(0) + 17) / 34)
+let s:l = 29 - ((4 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -337,7 +337,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 29 - ((24 * winheight(0) + 17) / 34)
+let s:l = 29 - ((25 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -687,13 +687,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 72 - ((32 * winheight(0) + 17) / 34)
+let s:l = 72 - ((34 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 72
 normal! 0
-tabnext 7
+tabnext 2
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
