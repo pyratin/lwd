@@ -53,8 +53,7 @@ const findOne = (
   query,
   options = {
     projection: {},
-    sort: {},
-    skip: 0
+    sort: {}
   },
   collectionName,
   db
@@ -70,6 +69,48 @@ const findOne = (
         collectionName
       )
         .findOne(
+          query,
+          options,
+          (
+            error,
+            res
+          ) => {
+
+            if (
+              error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              res
+            );
+          }
+        );
+    }
+  );
+};
+
+const countDocuments = (
+  query = {},
+  options = {},
+  collectionName,
+  db
+) => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      return db.collection(
+        collectionName
+      )
+        .countDocuments(
           query,
           options,
           (
@@ -188,6 +229,7 @@ const findOneAndDelete = (
 export {
   find,
   findOne,
+  countDocuments,
   findOneAndUpdate,
   findOneAndDelete
 };

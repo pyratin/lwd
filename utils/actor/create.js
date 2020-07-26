@@ -9,7 +9,9 @@ import {
 } from './fns/set';
 import {
   setsFind,
-  setFindOne
+  setFindOne,
+  setCountDocuments,
+  setRemove
 } from '~/js/server/data/set';
 
 const actorsSourceFolderPathString = 'utils/actor/source';
@@ -19,7 +21,55 @@ const genres = [
   'tamil-mythology'
 ];
 
-const inquirerFn = (
+const setSelectChoicesGet = async (
+  db
+) => {
+
+  const choices = await setsFind(
+    null,
+    null,
+    db
+  )
+    .then(
+      (
+        sets
+      ) => {
+
+        return sets.reduce(
+          (
+            memo,
+            {
+              text
+            }
+          ) => {
+
+            if (
+              text
+            ) {
+
+              return [
+                ...memo,
+                {
+                  value: text
+                }
+              ];
+            }
+
+            return (
+              memo
+            );
+          },
+          []
+        );
+      }
+    );
+
+  return (
+    choices
+  );
+};
+
+const promptsFn = (
   db
 ) => {
 
@@ -27,58 +77,93 @@ const inquirerFn = (
     [
       {
         name: 'init',
-        message: 
-        'delete all collections ?',
         type: 'confirm',
-        initial: false
+        initial: false,
+        message: 'delete all collections ?'
       },
-      //{
-        //name: 'setText',
-        //type: 'select',
-        //message: 'new set\'s name :',
-        //choices() {
-
-          //return setsFind(
-            //null,
-            //null,
-            //db
-          //)
-            //.then(
-              //(
-                //sets
-              //) => {
-
-                //return [
-                  //...sets.map(
-                    //(
-                      //{
-                        //text: value
-                      //}
-                    //) => {
-
-                      //return {
-                        //value
-                      //};
-                    //}
-                  //),
-                  //{
-                    //title: 'create new ?',
-                    //value: 'create'
-                  //}
-                //];
-              //}
-            //);
-        //}
-      //},
       {
         name: 'setText',
         type(
-          prev
+          prev,
+          {
+            init
+          }
         ) {
 
           return (
-            'text'
+            init
+          ) ?
+            'text' :
+            null;
+        },
+        message: 'new set\'s name :',
+      },
+      {
+        name: 'setOverwrite',
+        async type(
+          prev,
+          {
+            init
+          }
+        ) {
+
+          const setCount = await setCountDocuments(
+            null,
+            null,
+            db
           );
+
+          return (
+            !init &&
+            setCount
+          ) ?
+            'confirm' :
+            null;
+        },
+        initial: false,
+        message: 'overwrite existing set ?',
+      },
+      {
+        name: 'setText',
+        type(
+          prev,
+          {
+            setText,
+            setOverwrite
+          }
+        ) {
+
+          return (
+            !setText &&
+            setOverwrite
+          ) ?
+            'select' :
+            null;
+        },
+        async choices() {
+
+          return setSelectChoicesGet(
+            db
+          );
+        },
+        message: 'select a set to overwrite :'
+      },
+      {
+        name: 'setText',
+        type(
+          prev,
+          {
+            setText,
+            setOverwrite
+          }
+        ) {
+
+          return (
+            !setText &&
+            !setOverwrite
+          ) ?
+            'text' :
+            null;
         },
         message: 'new set\'s name :',
         async validate(
@@ -141,14 +226,32 @@ const inquirerFn = (
       init,
       setText,
       genre
-    } = await inquirerFn(
+    } = await promptsFn(
       db
     );
 
-    await setsRemove(
-      init,
+    (
+      init
+    ) &&
+      await setsRemove(
+        db
+      );
+
+    const set = await setFindOne(
+      {
+        text: setText
+      },
+      null,
       db
     );
+
+    (
+      set
+    ) &&
+      await setRemove(
+        set._id,
+        db
+      );
 
     await setCreate(
       setText,

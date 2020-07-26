@@ -100,18 +100,8 @@ const setsRemoveFn = (
 };
 
 const setsRemove = (
-  init,
   db
 ) => {
-
-  if (
-    !init
-  ) {
-
-    return Promise.resolve(
-      null
-    );
-  }
 
   return setsFind(
     null,

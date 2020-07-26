@@ -7,6 +7,7 @@ import {
 import {
   find,
   findOne,
+  countDocuments,
   findOneAndUpdate,
   findOneAndDelete
 } from './index';
@@ -37,6 +38,20 @@ const setFindOne = (
 ) => {
 
   return findOne(
+    query,
+    options,
+    setCollectionName,
+    db
+  );
+};
+
+const setCountDocuments = (
+  query,
+  options,
+  db
+) => {
+
+  return countDocuments(
     query,
     options,
     setCollectionName,
@@ -100,6 +115,7 @@ const setRemove = (
 export {
   setsFind,
   setFindOne,
+  setCountDocuments,
   setCreate,
   setRemove
 };
