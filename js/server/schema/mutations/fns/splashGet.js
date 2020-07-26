@@ -31,8 +31,12 @@ const charactersGet = (
         ) => {
 
           return (
-            card?.actorUd ===
-            character.actor.ud
+            card.actorUd &&
+            character.actor.ud &&
+            (
+              card.actorUd ===
+              character.actor.ud
+            )
           );
         }
       );
