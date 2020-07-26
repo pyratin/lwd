@@ -31,7 +31,7 @@ const actorTextsGet = (
 
 const actorsCreateFn = (
   text,
-  set,
+  setId,
   actorsSourceFolderPathString,
   db
 ) => {
@@ -40,7 +40,7 @@ const actorsCreateFn = (
     {
       text,
       _setId: new ObjectID(
-        set._id
+        setId
       ),
       gender: text.split(
         /-/
@@ -52,12 +52,21 @@ const actorsCreateFn = (
   )
     .then(
       (
-        actor
+        {
+          _id: actorId,
+          text: actorText
+        }
       ) => {
 
-        return actorImagesCreate(
-          actor,
+        const actorImagesFolderPath = path.join(
+          process.cwd(),
           actorsSourceFolderPathString,
+          actorText
+        );
+
+        return actorImagesCreate(
+          actorId,
+          actorImagesFolderPath,
           db
         );
       }
@@ -65,7 +74,7 @@ const actorsCreateFn = (
 };
 
 const actorsCreate = (
-  set,
+  setId,
   actorsSourceFolderPathString,
   db
 ) => {
@@ -87,7 +96,7 @@ const actorsCreate = (
 
           return actorsCreateFn(
             actorText,
-            set,
+            setId,
             actorsSourceFolderPathString,
             db
           )

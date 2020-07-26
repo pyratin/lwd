@@ -4,9 +4,16 @@ import prompts from 'prompts';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
 import {
-  setCreate,
-  setsRemove
+  setCreate
 } from './fns/set';
+import {
+  genresRemove
+} from './fns/genre';
+import {
+  genreCountDocuments,
+  genresFind,
+  genreFindOne
+} from '~/js/server/data/genre';
 import {
   setsFind,
   setFindOne,
@@ -16,12 +23,7 @@ import {
 
 const actorsSourceFolderPathString = 'utils/actor/source';
 
-const genres = [
-  'tamil-spoof',
-  'tamil-mythology'
-];
-
-const setSelectChoicesGet = async (
+const setUpdateSelectChoicesGet = async (
   db
 ) => {
 
@@ -51,6 +53,56 @@ const setSelectChoicesGet = async (
                 ...memo,
                 {
                   value: text
+                }
+              ];
+            }
+
+            return (
+              memo
+            );
+          },
+          []
+        );
+      }
+    );
+
+  return (
+    choices
+  );
+};
+
+const genreIdSelectChoicesGet = async (
+  db
+) => {
+
+  const choices = await genresFind(
+    null,
+    null,
+    db
+  )
+    .then(
+      (
+        genres
+      ) => {
+
+        return genres.reduce(
+          (
+            memo,
+            {
+              text,
+              _id: genreId
+            }
+          ) => {
+
+            if (
+              text
+            ) {
+
+              return [
+                ...memo,
+                {
+                  title: text,
+                  value: genreId
                 }
               ];
             }
@@ -99,7 +151,24 @@ const promptsFn = (
         message: 'new set\'s name :',
       },
       {
-        name: 'setOverwrite',
+        name: 'genreText',
+        type(
+          prev,
+          {
+            init
+          }
+        ) {
+
+          return (
+            init
+          ) ?
+            'text' :
+            null;
+        },
+        message: 'new genre\'s name :'
+      },
+      {
+        name: 'setUpdate',
         async type(
           prev,
           {
@@ -121,7 +190,7 @@ const promptsFn = (
             null;
         },
         initial: false,
-        message: 'overwrite existing set ?',
+        message: 'update existing set ?',
       },
       {
         name: 'setText',
@@ -129,20 +198,20 @@ const promptsFn = (
           prev,
           {
             setText,
-            setOverwrite
+            setUpdate
           }
         ) {
 
           return (
             !setText &&
-            setOverwrite
+            setUpdate
           ) ?
             'select' :
             null;
         },
-        async choices() {
+        choices() {
 
-          return setSelectChoicesGet(
+          return setUpdateSelectChoicesGet(
             db
           );
         },
@@ -154,25 +223,24 @@ const promptsFn = (
           prev,
           {
             setText,
-            setOverwrite
+            setUpdate
           }
         ) {
 
           return (
             !setText &&
-            !setOverwrite
+            !setUpdate
           ) ?
             'text' :
             null;
         },
-        message: 'new set\'s name :',
         async validate(
-          prev
+          value
         ) {
 
           const exists = await setFindOne(
             {
-              text: prev
+              text: value
             },
             null,
             db
@@ -183,25 +251,94 @@ const promptsFn = (
           ) ?
             'name is registered' :
             true;
-        }
+        },
+        message: 'new set\'s name :'
       },
       {
-        name: 'genre',
-        type: 'select',
-        message: 'which genre ?',
+        name: 'genreCreate',
+        async type(
+          {
+            init
+          }
+        ) {
+
+          const genreCount = await genreCountDocuments(
+            null,
+            null,
+            db
+          );
+
+          return (
+            !init &&
+            genreCount
+          ) ?
+            'confirm' :
+            null;
+        },
+        initial: false,
+        message: 'new genre ?'
+      },
+      {
+        name: 'genreId',
+        type(
+          prev,
+          {
+            genreText,
+            genreCreate
+          }
+        ) {
+
+          return (
+            !genreText &&
+            !genreCreate
+          ) ?
+            'select' :
+            null;
+        },
         choices() {
 
-          return genres.map(
-            (
-              genre
-            ) => {
-
-              return {
-                value: genre
-              };
-            }
+          return genreIdSelectChoicesGet(
+            db
           );
-        }
+        },
+        message: 'which genre ?'
+      },
+      {
+        name: 'genreId',
+        type(
+          prev,
+          {
+            genreText,
+            genreCreate
+          }
+        ) {
+
+          return (
+            !genreText &&
+            genreCreate
+          ) ?
+            'input' :
+            null;
+        },
+        async validate(
+          value
+        ) {
+
+          const exists = await genreFindOne(
+            {
+              text: value
+            },
+            null,
+            db
+          );
+
+          return (
+            exists
+          ) ?
+            'name is registered' :
+            true;
+        },
+        message: 'new genre\'s name :'
       }
     ],
   )
@@ -233,7 +370,7 @@ const promptsFn = (
     (
       init
     ) &&
-      await setsRemove(
+      await genresRemove(
         db
       );
 

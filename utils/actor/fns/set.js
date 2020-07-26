@@ -1,120 +1,42 @@
 'use strict';
 
 import {
-  setCreate as _setCreate,
-  setsFind,
-  setRemove
+  ObjectID
+} from 'mongodb';
+
+import {
+  setCreate as setCreateFn
 } from '~/js/server/data/set';
 import {
   actorsCreate
 } from './actor';
 
-const setCreateFn = (
+const setCreate = (
   text,
-  genre,
-  db
-) => {
-
-  return _setCreate(
-    {
-      text,
-      genre
-    },
-    db
-  );
-};
-
-const setCreate = async (
-  setText,
-  genre,
+  genreId,
   actorsSourceFolderPathString,
   db
 ) => {
 
-  const set = await setCreateFn(
-    setText,
-    genre,
-    db
-  );
-
-  await actorsCreate(
-    set,
-    actorsSourceFolderPathString,
-    db
-  );
-
-  return (
-    set
-  );
-};
-
-const _setsRemoveFn = (
-  set,
-  db
-) => {
-
-  return setRemove(
-    set._id,
-    db
-  );
-};
-
-const setsRemoveFn = (
-  sets,
-  db
-) => {
-
-  return sets.reduce(
-    (
-      memo,
-      set
-    ) => {
-
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return _setsRemoveFn(
-            set,
-            db
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
-        }
-      );
+  return setCreateFn(
+    {
+      text,
+      _genreId: new ObjectID(
+        genreId
+      )
     },
-    Promise.resolve(
-      []
-    )
-  );
-};
-
-const setsRemove = (
-  db
-) => {
-
-  return setsFind(
-    null,
-    null,
     db
   )
     .then(
       (
-        sets
+        {
+          _id: setId
+        }
       ) => {
 
-        return setsRemoveFn(
-          sets,
+        return actorsCreate(
+          setId,
+          actorsSourceFolderPathString,
           db
         );
       }
@@ -122,6 +44,5 @@ const setsRemove = (
 };
 
 export {
-  setCreate,
-  setsRemove
+  setCreate
 };

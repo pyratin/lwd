@@ -112,10 +112,69 @@ const setRemove = (
     );
 };
 
+const setsByGenreIdRemove = (
+  genreId,
+  db
+) => {
+
+  return setsFind(
+    {
+      _genreId: new ObjectID(
+        genreId
+      )
+    },
+    null,
+    db
+  )
+    .then(
+      (
+        sets
+      ) => {
+
+        return sets.reduce(
+          (
+            memo,
+            {
+              _id: setId
+            }
+          ) => {
+
+            return memo.then(
+              (
+                res
+              ) => {
+
+                return setRemove(
+                  setId,
+                  db
+                )
+                  .then(
+                    (
+                      result
+                    ) => {
+
+                      return [
+                        ...res,
+                        result
+                      ];
+                    }
+                  );
+              }
+            );
+          },
+          Promise.resolve(
+            []
+          )
+        );
+      }
+    );
+};
+
 export {
   setsFind,
   setFindOne,
   setCountDocuments,
   setCreate,
-  setRemove
+  setRemove,
+  setsByGenreIdRemove
 };

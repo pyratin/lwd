@@ -81,59 +81,6 @@ const actorImageRemove = (
   );
 };
 
-const actorImageRemoveFn = (
-  {
-    _id: actorImageId
-  },
-  db
-) => {
-
-  return actorImageRemove(
-    actorImageId,
-    db
-  );
-};
-
-const actorImagesRemoveFn = (
-  actorImages,
-  db
-) => {
-
-  return actorImages.reduce(
-    (
-      memo,
-      actorImage
-    ) => {
-
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return actorImageRemoveFn(
-            actorImage,
-            db
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
-        }
-      );
-    },
-    Promise.resolve(
-      []
-    )
-  );
-};
-
 const actorImagesByActorIdRemove = (
   actorId,
   db
@@ -160,9 +107,40 @@ const actorImagesByActorIdRemove = (
         actorImages
       ) => {
 
-        return actorImagesRemoveFn(
-          actorImages,
-          db
+        return actorImages.reduce(
+          (
+            memo,
+            {
+              _id: actorImageId
+            }
+          ) => {
+
+            return memo.then(
+              (
+                res
+              ) => {
+
+                return actorImageRemove(
+                  actorImageId,
+                  db
+                )
+                  .then(
+                    (
+                      result
+                    ) => {
+
+                      return [
+                        ...res,
+                        result
+                      ];
+                    }
+                  );
+              }
+            );
+          },
+          Promise.resolve(
+            []
+          )
         );
       }
     );

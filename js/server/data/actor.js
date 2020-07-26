@@ -66,19 +66,6 @@ const actorRemove = (
     },
     actorCollectionName,
     db
-  );
-};
-
-const _actorsRemoveFn = (
-  {
-    _id: actorId
-  },
-  db
-) => {
-
-  return actorRemove(
-    actorId,
-    db
   )
     .then(
       (
@@ -93,46 +80,6 @@ const _actorsRemoveFn = (
         );
       }
     );
-};
-
-const actorsRemoveFn = (
-  actors,
-  db
-) => {
-
-  return actors.reduce(
-    (
-      memo,
-      actor
-    ) => {
-
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return _actorsRemoveFn(
-            actor,
-            db
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
-        }
-      );
-    },
-    Promise.resolve(
-      []
-    )
-  );
 };
 
 const actorsBySetIdRemove = (
@@ -154,9 +101,40 @@ const actorsBySetIdRemove = (
         actors
       ) => {
 
-        return actorsRemoveFn(
-          actors,
-          db
+        return actors.reduce(
+          (
+            memo,
+            {
+              _id: actorId
+            }
+          ) => {
+
+            return memo.then(
+              (
+                res
+              ) => {
+
+                return actorRemove(
+                  actorId,
+                  db
+                )
+                  .then(
+                    (
+                      result
+                    ) => {
+
+                      return [
+                        ...res,
+                        result
+                      ];
+                    }
+                  );
+              }
+            );
+          },
+          Promise.resolve(
+            []
+          )
         );
       }
     );

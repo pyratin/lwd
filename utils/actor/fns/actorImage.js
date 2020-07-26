@@ -276,33 +276,16 @@ const actorImagesGet = (
   );
 };
 
-const _actorImagesCreateFn = (
-  actorImage,
-  actor,
-  db
-) => {
-
-  return actorImageCreate(
-    {
-      _actorId: new ObjectID(
-        actor._id
-      ),
-      base64: actorImage
-    },
-    db
-  );
-};
-
 const actorImagesCreateFn = (
   actorImages,
-  actor,
+  actorId,
   db
 ) => {
 
   return actorImages.reduce(
     (
       memo,
-      actorImage
+      base64
     ) => {
 
       return memo.then(
@@ -310,9 +293,13 @@ const actorImagesCreateFn = (
           res
         ) => {
 
-          return _actorImagesCreateFn(
-            actorImage,
-            actor,
+          return actorImageCreate(
+            {
+              _actorId: new ObjectID(
+                actorId
+              ),
+              base64
+            },
             db
           )
             .then(
@@ -336,16 +323,10 @@ const actorImagesCreateFn = (
 };
 
 const actorImagesCreate = async (
-  actor,
-  actorsSourceFolderPathString,
+  actorId,
+  actorImagesFolderPath,
   db
 ) => {
-
-  const actorImagesFolderPath = path.join(
-    process.cwd(),
-    actorsSourceFolderPathString,
-    actor.text
-  );
 
   const actorImagePaths = [
     ...shelljs.ls(
@@ -370,7 +351,7 @@ const actorImagesCreate = async (
 
   return actorImagesCreateFn(
     actorImages,
-    actor,
+    actorId,
     db
   );
 };
