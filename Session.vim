@@ -91,15 +91,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-24,144fold
-24
+72,209fold
+72
 normal! zo
-let s:l = 13 - ((12 * winheight(0) + 18) / 36)
+let s:l = 198 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
-normal! 020|
+198
+normal! 0
 tabedit utils/actor/fns/set.js
 set splitbelow splitright
 set nosplitbelow
