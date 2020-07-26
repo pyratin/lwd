@@ -10,6 +10,9 @@ import {
   findOneAndUpdate,
   findOneAndDelete
 } from './index';
+import {
+  actorsBySetIdRemove
+} from './actor';
 
 const setCollectionName = 'sets';
 
@@ -78,7 +81,20 @@ const setRemove = (
     },
     setCollectionName,
     db
-  );
+  )
+    .then(
+      (
+        {
+          _id: setId
+        }
+      ) => {
+
+        return actorsBySetIdRemove(
+          setId,
+          db
+        );
+      }
+    );
 };
 
 export {

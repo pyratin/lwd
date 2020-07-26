@@ -11,9 +11,7 @@ import {
 } from 'child_process';
 
 import {
-  actorImagesFind,
-  actorImageCreate,
-  actorImageRemove
+  actorImageCreate
 } from '~/js/server/data/actorImage';
 
 const imageFormatGet = (
@@ -377,96 +375,6 @@ const actorImagesCreate = async (
   );
 };
 
-const actorImageRemoveFn = (
-  {
-    _id: actorImageId
-  },
-  db
-) => {
-
-  return actorImageRemove(
-    actorImageId,
-    db
-  );
-};
-
-const actorImagesRemoveFn = (
-  actorImages,
-  db
-) => {
-
-  return actorImages.reduce(
-    (
-      memo,
-      actorImage
-    ) => {
-
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return actorImageRemoveFn(
-            actorImage,
-            db
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
-        }
-      );
-    },
-    Promise.resolve(
-      []
-    )
-  );
-};
-
-const actorImagesRemove = (
-  {
-    _id: actorId
-  },
-  db
-) => {
-
-  return actorImagesFind(
-    {
-      _actorId: new ObjectID(
-        actorId
-      )
-    },
-    {
-      projection: {
-        _id: 1
-      },
-      sort: {},
-      skip: 0,
-      limit: 0
-    },
-    db
-  )
-    .then(
-      (
-        actorImages
-      ) => {
-
-        return actorImagesRemoveFn(
-          actorImages,
-          db
-        );
-      }
-    );
-};
-
 export {
-  actorImagesCreate,
-  actorImagesRemove
+  actorImagesCreate
 };

@@ -7,13 +7,10 @@ import {
 } from 'mongodb';
 
 import {
-  actorsFind,
-  actorCreate,
-  actorRemove
+  actorCreate
 } from '~/js/server/data/actor';
 import {
-  actorImagesCreate,
-  actorImagesRemove
+  actorImagesCreate
 } from './actorImage';
 
 const actorTextsGet = (
@@ -114,98 +111,6 @@ const actorsCreate = (
   );
 };
 
-const _actorsRemoveFn = (
-  {
-    _id: actorId
-  },
-  db
-) => {
-
-  return actorRemove(
-    actorId,
-    db
-  )
-    .then(
-      (
-        actor
-      ) => {
-
-        return actorImagesRemove(
-          actor,
-          db
-        );
-      }
-    );
-};
-
-const actorsRemoveFn = (
-  actors,
-  db
-) => {
-
-  return actors.reduce(
-    (
-      memo,
-      actor
-    ) => {
-
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return _actorsRemoveFn(
-            actor,
-            db
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
-        }
-      );
-    },
-    Promise.resolve(
-      []
-    )
-  );
-};
-
-const actorsRemove = (
-  set,
-  db
-) => {
-
-  return actorsFind(
-    {
-      _setId: new ObjectID(
-        set._id
-      )
-    },
-    null,
-    db
-  )
-    .then(
-      (
-        actors
-      ) => {
-
-        return actorsRemoveFn(
-          actors,
-          db
-        );
-      }
-    );
-};
-
 export {
-  actorsCreate,
-  actorsRemove
+  actorsCreate
 };

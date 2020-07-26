@@ -9,6 +9,9 @@ import {
   findOneAndUpdate,
   findOneAndDelete
 } from './index';
+import {
+  actorImagesByActorIdRemove
+} from './actorImage';
 
 const actorCollectionName = 'actors';
 
@@ -66,8 +69,102 @@ const actorRemove = (
   );
 };
 
+const _actorsRemoveFn = (
+  {
+    _id: actorId
+  },
+  db
+) => {
+
+  return actorRemove(
+    actorId,
+    db
+  )
+    .then(
+      (
+        {
+          _id: actorId
+        }
+      ) => {
+
+        return actorImagesByActorIdRemove(
+          actorId,
+          db
+        );
+      }
+    );
+};
+
+const actorsRemoveFn = (
+  actors,
+  db
+) => {
+
+  return actors.reduce(
+    (
+      memo,
+      actor
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return _actorsRemoveFn(
+            actor,
+            db
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
+const actorsBySetIdRemove = (
+  setId,
+  db
+) => {
+
+  return actorsFind(
+    {
+      _setId: new ObjectID(
+        setId
+      )
+    },
+    null,
+    db
+  )
+    .then(
+      (
+        actors
+      ) => {
+
+        return actorsRemoveFn(
+          actors,
+          db
+        );
+      }
+    );
+};
+
 export {
   actorsFind,
   actorCreate,
-  actorRemove
+  actorRemove,
+  actorsBySetIdRemove
 };

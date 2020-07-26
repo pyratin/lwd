@@ -32,44 +32,44 @@ const inquirerFn = (
         type: 'confirm',
         initial: false
       },
-      {
-        name: 'setText',
-        type: 'select',
-        message: 'new set\'s name :',
-        choices() {
+      //{
+        //name: 'setText',
+        //type: 'select',
+        //message: 'new set\'s name :',
+        //choices() {
 
-          return setsFind(
-            null,
-            null,
-            db
-          )
-            .then(
-              (
-                sets
-              ) => {
+          //return setsFind(
+            //null,
+            //null,
+            //db
+          //)
+            //.then(
+              //(
+                //sets
+              //) => {
 
-                return [
-                  ...sets.map(
-                    (
-                      {
-                        text: value
-                      }
-                    ) => {
+                //return [
+                  //...sets.map(
+                    //(
+                      //{
+                        //text: value
+                      //}
+                    //) => {
 
-                      return {
-                        value
-                      };
-                    }
-                  ),
-                  {
-                    title: 'create new ?',
-                    value: 'create'
-                  }
-                ];
-              }
-            );
-        }
-      },
+                      //return {
+                        //value
+                      //};
+                    //}
+                  //),
+                  //{
+                    //title: 'create new ?',
+                    //value: 'create'
+                  //}
+                //];
+              //}
+            //);
+        //}
+      //},
       {
         name: 'setText',
         type(
@@ -77,10 +77,8 @@ const inquirerFn = (
         ) {
 
           return (
-            prev === 'create'
-          ) ?
-            'text' :
-            null;
+            'text'
+          );
         },
         message: 'new set\'s name :',
         async validate(

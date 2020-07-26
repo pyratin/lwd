@@ -6,8 +6,7 @@ import {
   setRemove
 } from '~/js/server/data/set';
 import {
-  actorsCreate,
-  actorsRemove
+  actorsCreate
 } from './actor';
 
 const setCreateFn = (
@@ -57,16 +56,7 @@ const _setsRemoveFn = (
   return setRemove(
     set._id,
     db
-  )
-    .then(
-      () => {
-
-        return actorsRemove(
-          set,
-          db
-        );
-      }
-    );
+  );
 };
 
 const setsRemoveFn = (
