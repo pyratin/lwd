@@ -7,6 +7,10 @@ import {
   setCreate,
   setsRemove
 } from './fns/set';
+import {
+  setsFind,
+  setFindOne
+} from '~/js/server/data/set';
 
 const actorsSourceFolderPathString = 'utils/actor/source';
 
@@ -15,7 +19,9 @@ const genres = [
   'tamil-mythology'
 ];
 
-const inquirerFn = () => {
+const inquirerFn = (
+  db
+) => {
 
   return prompts(
     [
@@ -28,13 +34,78 @@ const inquirerFn = () => {
       },
       {
         name: 'setText',
+        type: 'select',
         message: 'new set\'s name :',
-        type: 'text'
+        choices() {
+
+          return setsFind(
+            null,
+            null,
+            db
+          )
+            .then(
+              (
+                sets
+              ) => {
+
+                return [
+                  ...sets.map(
+                    (
+                      {
+                        text: value
+                      }
+                    ) => {
+
+                      return {
+                        value
+                      };
+                    }
+                  ),
+                  {
+                    title: 'create new ?',
+                    value: 'create'
+                  }
+                ];
+              }
+            );
+        }
+      },
+      {
+        name: 'setText',
+        type(
+          prev
+        ) {
+
+          return (
+            prev === 'create'
+          ) ?
+            'text' :
+            null;
+        },
+        message: 'new set\'s name :',
+        async validate(
+          prev
+        ) {
+
+          const exists = await setFindOne(
+            {
+              text: prev
+            },
+            null,
+            db
+          );
+
+          return (
+            exists
+          ) ?
+            'name is registered' :
+            true;
+        }
       },
       {
         name: 'genre',
-        message: 'which genre ?',
         type: 'select',
+        message: 'which genre ?',
         choices() {
 
           return genres.map(
@@ -66,13 +137,15 @@ const inquirerFn = () => {
 (
   async () => {
 
+    const db = await mongoClientConnect();
+
     const {
       init,
       setText,
       genre
-    } = await inquirerFn();
-
-    const db = await mongoClientConnect();
+    } = await inquirerFn(
+      db
+    );
 
     await setsRemove(
       init,
