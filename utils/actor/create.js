@@ -23,7 +23,7 @@ import {
 
 const actorsSourceFolderPathString = 'utils/actor/source';
 
-const setUpdateSelectChoicesGet = async (
+const setIdSelectChoicesGet = async (
   db
 ) => {
 
@@ -41,18 +41,20 @@ const setUpdateSelectChoicesGet = async (
           (
             memo,
             {
-              text
+              text: setText,
+              _id: setId
             }
           ) => {
 
             if (
-              text
+              setText
             ) {
 
               return [
                 ...memo,
                 {
-                  value: text
+                  title: setText,
+                  value: setId
                 }
               ];
             }
@@ -89,19 +91,19 @@ const genreIdSelectChoicesGet = async (
           (
             memo,
             {
-              text,
+              text: genreText,
               _id: genreId
             }
           ) => {
 
             if (
-              text
+              genreText
             ) {
 
               return [
                 ...memo,
                 {
-                  title: text,
+                  title: genreText,
                   value: genreId
                 }
               ];
@@ -168,11 +170,11 @@ const promptsFn = (
         message: 'new genre\'s name :'
       },
       {
-        name: 'setUpdate',
+        name: 'setCreate',
         async type(
           prev,
           {
-            init
+            setText
           }
         ) {
 
@@ -183,53 +185,26 @@ const promptsFn = (
           );
 
           return (
-            !init &&
+            !setText &&
             setCount
           ) ?
             'confirm' :
             null;
         },
         initial: false,
-        message: 'update existing set ?',
+        message: 'new set ?',
       },
       {
         name: 'setText',
         type(
           prev,
           {
-            setText,
-            setUpdate
+            setText
           }
         ) {
 
           return (
-            !setText &&
-            setUpdate
-          ) ?
-            'select' :
-            null;
-        },
-        choices() {
-
-          return setUpdateSelectChoicesGet(
-            db
-          );
-        },
-        message: 'select a set to overwrite :'
-      },
-      {
-        name: 'setText',
-        type(
-          prev,
-          {
-            setText,
-            setUpdate
-          }
-        ) {
-
-          return (
-            !setText &&
-            !setUpdate
+            !setText
           ) ?
             'text' :
             null;
@@ -254,11 +229,34 @@ const promptsFn = (
         },
         message: 'new set\'s name :'
       },
+      //{
+        //name: 'setId',
+        //type(
+          //prev,
+          //{
+            //setText
+          //}
+        //) {
+
+          //return (
+            //!setText
+          //) ?
+            //'select' :
+            //null;
+        //},
+        //choices() {
+
+          //return setIdSelectChoicesGet(
+            //db
+          //);
+        //},
+        //message: 'select a set to overwrite :'
+      //},
       {
         name: 'genreCreate',
         async type(
           {
-            init
+            genreText
           }
         ) {
 
@@ -269,7 +267,7 @@ const promptsFn = (
           );
 
           return (
-            !init &&
+            !genreText &&
             genreCount
           ) ?
             'confirm' :
@@ -279,45 +277,18 @@ const promptsFn = (
         message: 'new genre ?'
       },
       {
-        name: 'genreId',
+        name: 'genreText',
         type(
           prev,
           {
-            genreText,
-            genreCreate
+            genreText
           }
         ) {
 
           return (
-            !genreText &&
-            !genreCreate
+            !genreText
           ) ?
-            'select' :
-            null;
-        },
-        choices() {
-
-          return genreIdSelectChoicesGet(
-            db
-          );
-        },
-        message: 'which genre ?'
-      },
-      {
-        name: 'genreId',
-        type(
-          prev,
-          {
-            genreText,
-            genreCreate
-          }
-        ) {
-
-          return (
-            !genreText &&
-            genreCreate
-          ) ?
-            'input' :
+            'text' :
             null;
         },
         async validate(
@@ -339,6 +310,29 @@ const promptsFn = (
             true;
         },
         message: 'new genre\'s name :'
+      },
+      {
+        name: 'genreId',
+        type(
+          prev,
+          {
+            genreText
+          }
+        ) {
+
+          return (
+            !genreText
+          ) ?
+            'select' :
+            null;
+        },
+        choices() {
+
+          return genreIdSelectChoicesGet(
+            db
+          );
+        },
+        message: 'which genre ?'
       }
     ],
   )
@@ -362,44 +356,57 @@ const promptsFn = (
     const {
       init,
       setText,
-      genre
+      genreText,
+      setCreate,
+      genreCreate,
+      setId,
+      genreId
     } = await promptsFn(
       db
     );
-
-    (
-      init
-    ) &&
-      await genresRemove(
-        db
-      );
-
-    const set = await setFindOne(
-      {
-        text: setText
-      },
-      null,
-      db
-    );
-
-    (
-      set
-    ) &&
-      await setRemove(
-        set._id,
-        db
-      );
-
-    await setCreate(
-      setText,
-      genre,
-      actorsSourceFolderPathString,
-      db
-    );
-
-    // eslint-disable-next-line no-console
     console.log(
-      'collectionInit: DONE'
+      init,
+      setText,
+      genreText,
+      setCreate,
+      genreCreate,
+      setId,
+      genreId
     );
+
+    //(
+      //init
+    //) &&
+      //await genresRemove(
+        //db
+      //);
+
+    //const set = await setFindOne(
+      //{
+        //text: setText
+      //},
+      //null,
+      //db
+    //);
+
+    //(
+      //set
+    //) &&
+      //await setRemove(
+        //set._id,
+        //db
+      //);
+
+    //await setCreate(
+      //setText,
+      //genre,
+      //actorsSourceFolderPathString,
+      //db
+    //);
+
+    //// eslint-disable-next-line no-console
+    //console.log(
+      //'collectionInit: DONE'
+    //);
   }
 )();
