@@ -42,40 +42,35 @@ const actorImageFindOne = (
 };
 
 const actorImageCreate = (
-  actorImage,
+  filter,
+  update,
+  options = {
+    upsert: true,
+    returnOriginal: false
+  },
   db
 ) => {
 
   return findOneAndUpdate(
-    {
-      _id: new ObjectID()
-    },
-    {
-      $set: actorImage
-    },
-    {
-      upsert: true,
-      returnOriginal: false
-    },
+    filter,
+    update,
+    options,
     actorImageCollectionName,
     db
   );
 };
 
 const actorImageRemove = (
-  actorImageId,
+  filter,
+  options = {
+    returnOriginal: true
+  },
   db
 ) => {
 
   return findOneAndDelete(
-    {
-      _id: new ObjectID(
-        actorImageId
-      )
-    },
-    {
-      returnOriginal: true
-    },
+    filter,
+    options,
     actorImageCollectionName,
     db
   );
@@ -121,7 +116,12 @@ const actorImagesByActorIdRemove = (
               ) => {
 
                 return actorImageRemove(
-                  actorImageId,
+                  {
+                    _id: new ObjectID(
+                      actorImageId
+                    )
+                  },
+                  undefined,
                   db
                 )
                   .then(

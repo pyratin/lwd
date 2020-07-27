@@ -34,16 +34,22 @@ const actorsCreateFn = (
 
   return actorCreate(
     {
-      text: actorText,
-      _setId: new ObjectID(
-        setId
-      ),
-      gender: actorText.split(
-        /-/
-      )[
-        0
-      ]
+      _id: new ObjectID()
     },
+    {
+      $set: {
+        text: actorText,
+        _setId: new ObjectID(
+          setId
+        ),
+        gender: actorText.split(
+          /-/
+        )[
+          0
+        ]
+      }
+    },
+    undefined,
     db
   );
 };

@@ -30,40 +30,35 @@ const actorsFind = (
 };
 
 const actorCreate = (
-  actor,
+  filter,
+  update,
+  options = {
+    upsert: true,
+    returnOriginal: false
+  },
   db
 ) => {
 
   return findOneAndUpdate(
-    {
-      _id: new ObjectID()
-    },
-    {
-      $set: actor
-    },
-    {
-      upsert: true,
-      returnOriginal: false
-    },
+    filter,
+    update,
+    options,
     actorCollectionName,
     db
   );
 };
 
 const actorRemove = (
-  actorId,
+  filter,
+  options = {
+    returnOriginal: true
+  },
   db
 ) => {
 
   return findOneAndDelete(
-    {
-      _id: new ObjectID(
-        actorId
-      )
-    },
-    {
-      returnOriginal: true
-    },
+    filter,
+    options,
     actorCollectionName,
     db
   )
@@ -115,7 +110,12 @@ const actorsBySetIdRemove = (
               ) => {
 
                 return actorRemove(
-                  actorId,
+                  {
+                    _id: new ObjectID(
+                      actorId
+                    )
+                  },
+                  undefined,
                   db
                 )
                   .then(

@@ -60,40 +60,35 @@ const genreCountDocuments = (
 };
 
 const genreCreate = (
-  genre,
+  filter,
+  update,
+  options = {
+    upsert: true,
+    returnOriginal: false
+  },
   db
 ) => {
 
   return findOneAndUpdate(
-    {
-      _id: new ObjectID()
-    },
-    {
-      $set: genre
-    },
-    {
-      upsert: true,
-      returnOriginal: false
-    },
+    filter,
+    update,
+    options,
     genreCollectionName,
     db
   );
 };
 
 const genreRemove = (
-  genreId,
+  filter,
+  options = {
+    returnOriginal: true
+  },
   db
 ) => {
 
   return findOneAndDelete(
-    {
-      _id: new ObjectID(
-        genreId
-      )
-    },
-    {
-      returnOriginal: true
-    },
+    filter,
+    options,
     genreCollectionName,
     db
   )
@@ -140,7 +135,12 @@ const genresRemove = (
               ) => {
 
                 return genreRemove(
-                  genreId,
+                  {
+                    _id: new ObjectID(
+                      genreId
+                    )
+                  },
+                  undefined,
                   db
                 )
                   .then(

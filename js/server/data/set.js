@@ -60,40 +60,35 @@ const setCountDocuments = (
 };
 
 const setCreate = (
-  set,
+  filter,
+  update,
+  options = {
+    upsert: true,
+    returnOriginal: false
+  },
   db
 ) => {
 
   return findOneAndUpdate(
-    {
-      _id: new ObjectID()
-    },
-    {
-      $set: set
-    },
-    {
-      upsert: true,
-      returnOriginal: false
-    },
+    filter,
+    update,
+    options,
     setCollectionName,
     db
   );
 };
 
 const setRemove = (
-  setId,
+  filter,
+  options = {
+    returnOriginal: true
+  },
   db
 ) => {
 
   return findOneAndDelete(
-    {
-      _id: new ObjectID(
-        setId
-      )
-    },
-    {
-      returnOriginal: true
-    },
+    filter,
+    options,
     setCollectionName,
     db
   )
@@ -145,7 +140,12 @@ const setsByGenreIdRemove = (
               ) => {
 
                 return setRemove(
-                  setId,
+                  {
+                    _id: new ObjectID(
+                      setId
+                    )
+                  },
+                  undefined,
                   db
                 )
                   .then(

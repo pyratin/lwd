@@ -295,11 +295,17 @@ const _actorImagesCreateFn = (
 
           return actorImageCreate(
             {
-              _actorId: new ObjectID(
-                actorId
-              ),
-              base64
+              _id: new ObjectID()
             },
+            {
+              $set: {
+                _actorId: new ObjectID(
+                  actorId
+                ),
+                base64
+              }
+            },
+            undefined,
             db
           )
             .then(

@@ -269,7 +269,14 @@ const promptsFn = (
 
           return (
             !setText &&
-            setCreate
+            (
+              (
+                typeof(
+                  setCreate
+                ) === 'undefined' 
+              ) ||
+              setCreate
+            )
           ) ?
             'text' :
             null;
@@ -293,7 +300,7 @@ const promptsFn = (
             {
               text: value
             },
-            null,
+            undefined,
             db
           );
 
@@ -310,7 +317,7 @@ const promptsFn = (
               );
 
             case (
-              exists
+              !!exists
             ) :
 
               return (
@@ -386,7 +393,14 @@ const promptsFn = (
 
           return (
             !genreText &&
-            genreCreate
+            (
+              (
+                typeof(
+                  genreCreate
+                ) === 'undefined'
+              ) ||
+              genreCreate
+            )
           ) ?
             'text' :
             null;
@@ -416,11 +430,11 @@ const promptsFn = (
               );
 
             case (
-              exists
+              !!exists
             ) :
 
               return (
-                'required'
+                'registered'
               );
 
             default :
@@ -485,8 +499,14 @@ const genreGet = (
 
       return genreCreate(
         {
-          text: genreText
+          _id: new ObjectID()
         },
+        {
+          $set: {
+            text: genreText
+          }
+        },
+        undefined,
         db
       );
 
@@ -523,11 +543,17 @@ const setGet = (
 
       return setCreate(
         {
-          text: setText,
-          _genreId: new ObjectID(
-            genreId
-          )
+          _id: new ObjectID()
         },
+        {
+          $set: {
+            text: setText,
+            _genreId: new ObjectID(
+              genreId
+            )
+          }
+        },
+        undefined,
         db
       ); 
 
@@ -536,7 +562,12 @@ const setGet = (
     ) :
 
       return setRemove(
-        setId,
+        {
+          _id: new ObjectID(
+            setId
+          )
+        },
+        undefined,
         db
       )
         .then(
@@ -548,11 +579,17 @@ const setGet = (
 
             return setCreate(
               {
-                text: setText,
-                _genreId: new ObjectID(
-                  genreId
-                )
+                _id: new ObjectID()
               },
+              {
+                $set: {
+                  text: setText,
+                  _genreId: new ObjectID(
+                    genreId
+                  )
+                }
+              },
+              undefined,
               db
             );
           }
