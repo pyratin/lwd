@@ -1,25 +1,31 @@
 'use strict';
 
 import prompts from 'prompts';
+import {
+  ObjectID
+} from 'mongodb';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
 import {
-  setCreate
-} from './fns/set';
-import {
-  genresRemove
-} from './fns/genre';
-import {
-  genreCountDocuments,
   genresFind,
-  genreFindOne
+  genreFindOne,
+  genreCountDocuments,
+  genreCreate,
+  genresRemove
 } from '~/js/server/data/genre';
 import {
   setsFind,
   setFindOne,
   setCountDocuments,
+  setCreate,
   setRemove
 } from '~/js/server/data/set';
+import {
+  actorsCreate
+} from './fns/actor';
+import {
+  actorImagesCreate
+} from './fns/actorImage';
 
 const actorsSourceFolderPathString = 'utils/actor/source';
 
@@ -150,6 +156,16 @@ const promptsFn = (
             'text' :
             null;
         },
+        validate(
+          value
+        ) {
+
+          return (
+            !value
+          ) ?
+            'required' :
+            true;
+        },
         message: 'new set\'s name :',
       },
       {
@@ -166,6 +182,16 @@ const promptsFn = (
           ) ?
             'text' :
             null;
+        },
+        validate(
+          value
+        ) {
+
+          return (
+            !value
+          ) ?
+            'required' :
+            true;
         },
         message: 'new genre\'s name :'
       },
@@ -199,12 +225,14 @@ const promptsFn = (
         type(
           prev,
           {
-            setText
+            setText,
+            setCreate
           }
         ) {
 
           return (
-            !setText
+            !setText &&
+            setCreate
           ) ?
             'text' :
             null;
@@ -221,40 +249,62 @@ const promptsFn = (
             db
           );
 
-          return (
-            exists
-          ) ?
-            'name is registered' :
-            true;
+          switch (
+            true
+          ) {
+
+            case (
+              !value
+            ) :
+
+              return (
+                'required'
+              );
+
+            case (
+              exists
+            ) :
+
+              return (
+                'registered'
+              );
+
+            default:
+
+              return (
+                true
+              );
+          }
         },
         message: 'new set\'s name :'
       },
-      //{
-        //name: 'setId',
-        //type(
-          //prev,
-          //{
-            //setText
-          //}
-        //) {
+      {
+        name: 'setId',
+        type(
+          prev,
+          {
+            setText
+          }
+        ) {
 
-          //return (
-            //!setText
-          //) ?
-            //'select' :
-            //null;
-        //},
-        //choices() {
+          return (
+            !setText
+          ) ?
+            'select' :
+            null;
+        },
+        choices() {
 
-          //return setIdSelectChoicesGet(
-            //db
-          //);
-        //},
-        //message: 'select a set to overwrite :'
-      //},
+          return setIdSelectChoicesGet(
+            db
+          );
+        },
+        message: 'select a set to overwrite :'
+      },
       {
         name: 'genreCreate',
         async type(
+          prev,
           {
             genreText
           }
@@ -281,12 +331,14 @@ const promptsFn = (
         type(
           prev,
           {
-            genreText
+            genreText,
+            genreCreate
           }
         ) {
 
           return (
-            !genreText
+            !genreText &&
+            genreCreate
           ) ?
             'text' :
             null;
@@ -303,11 +355,32 @@ const promptsFn = (
             db
           );
 
-          return (
-            exists
-          ) ?
-            'name is registered' :
-            true;
+          switch (
+            true
+          ) {
+
+            case (
+              !value
+            ) :
+
+              return (
+                'required'
+              );
+
+            case (
+              exists
+            ) :
+
+              return (
+                'required'
+              );
+
+            default :
+
+              return (
+                true
+              );
+          }
         },
         message: 'new genre\'s name :'
       },
@@ -348,6 +421,97 @@ const promptsFn = (
     );
 };
 
+const genreGet = (
+  genreText,
+  genreId,
+  db
+) => {
+
+  switch (
+    true
+  ) {
+
+    case (
+      !!genreText
+    ) :
+
+      return genreCreate(
+        {
+          text: genreText
+        },
+        db
+      );
+
+    case (
+      !!genreId
+    ) :
+
+      return genreFindOne(
+        {
+          _id: new ObjectID(
+            genreId
+          )
+        },
+        null,
+        db
+      );
+  }
+};
+
+const setGet = (
+  setText,
+  setId,
+  genreId,
+  db
+) => {
+
+  switch (
+    true
+  ) {
+
+    case (
+      !!setText
+    ) :
+
+      return setCreate(
+        {
+          text: setText,
+          _genreId: new ObjectID(
+            genreId
+          )
+        },
+        db
+      ); 
+
+    case (
+      !!setId
+    ) :
+
+      return setRemove(
+        setId,
+        db
+      )
+        .then(
+          (
+            {
+              text: setText
+            }
+          ) => {
+
+            return setCreate(
+              {
+                text: setText,
+                _genreId: new ObjectID(
+                  genreId
+                )
+              },
+              db
+            );
+          }
+        );
+  }
+};
+
 (
   async () => {
 
@@ -357,56 +521,56 @@ const promptsFn = (
       init,
       setText,
       genreText,
-      setCreate,
-      genreCreate,
       setId,
       genreId
     } = await promptsFn(
       db
     );
-    console.log(
-      init,
-      setText,
+
+    (
+      init
+    ) &&
+      await genresRemove(
+        db
+      );
+
+    const genre = await genreGet(
       genreText,
-      setCreate,
-      genreCreate,
-      setId,
-      genreId
+      genreId,
+      db
     );
 
-    //(
-      //init
-    //) &&
-      //await genresRemove(
-        //db
-      //);
+    const set = await setGet(
+      setText,
+      setId,
+      genre._id,
+      db
+    );
 
-    //const set = await setFindOne(
-      //{
-        //text: setText
-      //},
-      //null,
-      //db
-    //);
+    const actors = await actorsCreate(
+      set._id,
+      actorsSourceFolderPathString,
+      db
+    );
 
-    //(
-      //set
-    //) &&
-      //await setRemove(
-        //set._id,
-        //db
-      //);
+    const actorImages = await actorImagesCreate(
+      actors,
+      actorsSourceFolderPathString,
+      db
+    );
 
-    //await setCreate(
-      //setText,
-      //genre,
-      //actorsSourceFolderPathString,
-      //db
-    //);
-
-    //// eslint-disable-next-line no-console
-    //console.log(
-      //'collectionInit: DONE'
-    //);
+    // eslint-disable-next-line no-console
+    console.log(
+      `
+        collectionInit: DONE
+        actors: ${
+          actors.length
+        }
+        actorImages: ${
+          actorImages.length
+        }
+      `
+        .trim()
+    );
   }
 )();

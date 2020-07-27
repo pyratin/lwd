@@ -15,7 +15,7 @@ import {
   setsByGenreIdRemove
 } from './set';
 
-const genreCollectionName = 'genre';
+const genreCollectionName = 'genres';
 
 const genresFind = (
   query,
@@ -123,38 +123,45 @@ const genresRemove = (
   )
     .then(
       (
-        memo,
-        {
-          _id: genreId
-        }
+        genres
       ) => {
 
-        return memo.then(
+        return genres.reduce(
           (
-            res
+            memo,
+            {
+              _id: genreId
+            }
           ) => {
 
-            return genreRemove(
-              genreId,
-              db
-            )
-              .then(
-                (
-                  result
-                ) => {
+            return memo.then(
+              (
+                res
+              ) => {
 
-                  return [
-                    ...res,
-                    result
-                  ];
-                }
-              );
-          }
+                return genreRemove(
+                  genreId,
+                  db
+                )
+                  .then(
+                    (
+                      result
+                    ) => {
+
+                      return [
+                        ...res,
+                        result
+                      ];
+                    }
+                  );
+              }
+            );
+          },
+          Promise.resolve(
+            []
+          )
         );
-      },
-      Promise.resolve(
-        []
-      )
+      }
     );
 };
 

@@ -9,9 +9,6 @@ import {
 import {
   actorCreate
 } from '~/js/server/data/actor';
-import {
-  actorImagesCreate
-} from './actorImage';
 
 const actorTextsGet = (
   actorsSourceFolderPathString
@@ -49,28 +46,7 @@ const actorsCreateFn = (
       ]
     },
     db
-  )
-    .then(
-      (
-        {
-          _id: actorId,
-          text: actorText
-        }
-      ) => {
-
-        const actorImagesFolderPath = path.join(
-          process.cwd(),
-          actorsSourceFolderPathString,
-          actorText
-        );
-
-        return actorImagesCreate(
-          actorId,
-          actorImagesFolderPath,
-          db
-        );
-      }
-    );
+  );
 };
 
 const actorsCreate = (

@@ -276,7 +276,7 @@ const actorImagesGet = (
   );
 };
 
-const actorImagesCreateFn = (
+const _actorImagesCreateFn = (
   actorImages,
   actorId,
   db
@@ -322,7 +322,7 @@ const actorImagesCreateFn = (
   );
 };
 
-const actorImagesCreate = async (
+const actorImagesCreateFn = async (
   actorId,
   actorImagesFolderPath,
   db
@@ -349,10 +349,61 @@ const actorImagesCreate = async (
     actorImagePaths
   );
 
-  return actorImagesCreateFn(
+  return _actorImagesCreateFn(
     actorImages,
     actorId,
     db
+  );
+};
+
+const actorImagesCreate = (
+  actors,
+  actorsSourceFolderPathString,
+  db
+) => {
+
+  return actors.reduce(
+    (
+      memo,
+      {
+        _id: actorId,
+        text: actorText
+      }
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          const actorImagesFolderPath = path.join(
+            process.cwd(),
+            actorsSourceFolderPathString,
+            actorText
+          );
+
+          return actorImagesCreateFn(
+            actorId,
+            actorImagesFolderPath,
+            db
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return [
+                  ...res,
+                  ...result
+                ];
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
   );
 };
 
