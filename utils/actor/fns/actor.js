@@ -11,35 +11,34 @@ import {
 } from '~/js/server/data/actor';
 
 const actorTextsGet = (
-  actorsSourceFolderPathString
+  setFolderPathString
 ) => {
 
-  const actorsSourceFolderPath = path.join(
+  const setFolderPath = path.join(
     process.cwd(),
-    actorsSourceFolderPathString
+    setFolderPathString
   );
 
   return [
     ...shelljs.ls(
-      actorsSourceFolderPath
+      setFolderPath
     )
   ];
 };
 
 const actorsCreateFn = (
-  text,
+  actorText,
   setId,
-  actorsSourceFolderPathString,
   db
 ) => {
 
   return actorCreate(
     {
-      text,
+      text: actorText,
       _setId: new ObjectID(
         setId
       ),
-      gender: text.split(
+      gender: actorText.split(
         /-/
       )[
         0
@@ -51,12 +50,12 @@ const actorsCreateFn = (
 
 const actorsCreate = (
   setId,
-  actorsSourceFolderPathString,
+  setFolderPathString,
   db
 ) => {
 
   const actorTexts = actorTextsGet(
-    actorsSourceFolderPathString
+    setFolderPathString
   );
 
   return actorTexts.reduce(
@@ -73,7 +72,6 @@ const actorsCreate = (
           return actorsCreateFn(
             actorText,
             setId,
-            actorsSourceFolderPathString,
             db
           )
             .then(

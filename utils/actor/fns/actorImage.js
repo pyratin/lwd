@@ -324,13 +324,13 @@ const _actorImagesCreateFn = (
 
 const actorImagesCreateFn = async (
   actorId,
-  actorImagesFolderPath,
+  setFolderPath,
   db
 ) => {
 
   const actorImagePaths = [
     ...shelljs.ls(
-      actorImagesFolderPath
+      setFolderPath
     )
   ]
     .map(
@@ -339,7 +339,7 @@ const actorImagesCreateFn = async (
       ) => {
 
         return path.join(
-          actorImagesFolderPath,
+          setFolderPath,
           actorImage
         );
       }
@@ -358,7 +358,7 @@ const actorImagesCreateFn = async (
 
 const actorImagesCreate = (
   actors,
-  actorsSourceFolderPathString,
+  setFolderPathString,
   db
 ) => {
 
@@ -376,15 +376,15 @@ const actorImagesCreate = (
           res
         ) => {
 
-          const actorImagesFolderPath = path.join(
+          const setFolderPath = path.join(
             process.cwd(),
-            actorsSourceFolderPathString,
+            setFolderPathString,
             actorText
           );
 
           return actorImagesCreateFn(
             actorId,
-            actorImagesFolderPath,
+            setFolderPath,
             db
           )
             .then(
