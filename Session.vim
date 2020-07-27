@@ -74,15 +74,17 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-132,409fold
-132
+34,82fold
+84,132fold
+134,461fold
+134
 normal! zo
-let s:l = 564 - ((8 * winheight(0) + 18) / 36)
+let s:l = 281 - ((27 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-564
-normal! 07|
+281
+normal! 0
 tabedit utils/actor/fns/actor.js
 set splitbelow splitright
 set nosplitbelow
@@ -102,11 +104,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 10 - ((9 * winheight(0) + 18) / 36)
+let s:l = 97 - ((31 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-10
+97
 normal! 0
 tabedit utils/actor/fns/actorImage.js
 set splitbelow splitright

@@ -1,9 +1,11 @@
 'use strict';
 
+import path from 'path';
 import prompts from 'prompts';
 import {
   ObjectID
 } from 'mongodb';
+import shelljs from 'shelljs';
 
 import mongoClientConnect from '~/js/server/fns/mongoClientConnect';
 import {
@@ -27,7 +29,7 @@ import {
   actorImagesCreate
 } from './fns/actorImage';
 
-const actorsSourceFolderPathString = 'utils/actor/source';
+const sourceFolderPathString = 'utils/actor/source';
 
 const setIdSelectChoicesGet = async (
   db
@@ -136,6 +138,30 @@ const promptsFn = (
   return prompts(
     [
       {
+        name: 'setFolderPathFragment',
+        type: 'select',
+        choices() {
+
+          return shelljs.ls(
+            path.join(
+              process.cwd(),
+              sourceFolderPathString
+            )
+          )
+            .map(
+              (
+                text
+              ) => {
+
+                return {
+                  value: text
+                };
+              }
+            );
+        },
+        message: 'source folder :'
+      },
+      {
         name: 'init',
         type: 'confirm',
         initial: false,
@@ -155,6 +181,17 @@ const promptsFn = (
           ) ?
             'text' :
             null;
+        },
+        initial(
+          prev,
+          {
+            setFolderPathFragment
+          }
+        ) {
+
+          return (
+            setFolderPathFragment
+          );
         },
         validate(
           value
@@ -236,6 +273,17 @@ const promptsFn = (
           ) ?
             'text' :
             null;
+        },
+        initial(
+          prev,
+          {
+            setFolderPathFragment
+          }
+        ) {
+
+          return (
+            setFolderPathFragment
+          );
         },
         async validate(
           value
@@ -518,6 +566,7 @@ const setGet = (
     const db = await mongoClientConnect();
 
     const {
+      setFolderPathFragment,
       init,
       setText,
       genreText,
@@ -526,6 +575,15 @@ const setGet = (
     } = await promptsFn(
       db
     );
+
+    const setFolderPathString = `
+      ${
+        sourceFolderPathString
+      }/${
+        setFolderPathFragment
+      }
+    `
+      .trim();
 
     (
       init
@@ -549,13 +607,13 @@ const setGet = (
 
     const actors = await actorsCreate(
       set._id,
-      actorsSourceFolderPathString,
+      setFolderPathString,
       db
     );
 
     const actorImages = await actorImagesCreate(
       actors,
-      actorsSourceFolderPathString,
+      setFolderPathString,
       db
     );
 
