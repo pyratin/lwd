@@ -19,7 +19,12 @@ const setCollectionName = 'sets';
 
 const setsFind = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {},
+    skip: 0,
+    limit: 0
+  },
   db
 ) => {
 
@@ -33,7 +38,10 @@ const setsFind = (
 
 const setFindOne = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {}
+  },
   db
 ) => {
 
@@ -118,7 +126,7 @@ const setsByGenreIdRemove = (
         genreId
       )
     },
-    null,
+    undefined,
     db
   )
     .then(

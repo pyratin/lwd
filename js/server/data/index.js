@@ -2,12 +2,7 @@
 
 const find = (
   query = {},
-  options = {
-    projection: {},
-    sort: {},
-    skip: 0,
-    limit: 0
-  },
+  options,
   collectionName,
   db
 ) => {
@@ -51,10 +46,7 @@ const find = (
 
 const findOne = (
   query,
-  options = {
-    projection: {},
-    sort: {}
-  },
+  options,
   collectionName,
   db
 ) => {

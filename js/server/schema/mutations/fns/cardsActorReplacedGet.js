@@ -275,7 +275,7 @@ const spoofActorsGetFn = async (
     {
       gender: starringActor.gender
     },
-    null,
+    undefined,
     db
   );
 
@@ -656,7 +656,7 @@ const charactersActorImageAssignedGetFn = async (
         actorImageId
       )
     },
-    null,
+    undefined,
     db
   );
 

@@ -36,8 +36,8 @@ const setIdSelectChoicesGet = async (
 ) => {
 
   const choices = await setsFind(
-    null,
-    null,
+    undefined,
+    undefined,
     db
   )
     .then(
@@ -86,8 +86,8 @@ const genreIdSelectChoicesGet = async (
 ) => {
 
   const choices = await genresFind(
-    null,
-    null,
+    undefined,
+    undefined,
     db
   )
     .then(
@@ -138,6 +138,12 @@ const promptsFn = (
   return prompts(
     [
       {
+        name: 'init',
+        type: 'confirm',
+        initial: false,
+        message: 'delete all collections ?'
+      },
+      {
         name: 'setFolderPathFragment',
         type: 'select',
         choices() {
@@ -160,12 +166,6 @@ const promptsFn = (
             );
         },
         message: 'source folder :'
-      },
-      {
-        name: 'init',
-        type: 'confirm',
-        initial: false,
-        message: 'delete all collections ?'
       },
       {
         name: 'setText',
@@ -413,7 +413,7 @@ const promptsFn = (
             {
               text: value
             },
-            null,
+            undefined,
             db
           );
 
@@ -520,7 +520,7 @@ const genreGet = (
             genreId
           )
         },
-        null,
+        undefined,
         db
       );
   }

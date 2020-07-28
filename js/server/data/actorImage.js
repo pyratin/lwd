@@ -15,7 +15,12 @@ const actorImageCollectionName = 'actorImages';
 
 const actorImagesFind = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {},
+    skip: 0,
+    limit: 0
+  },
   db
 ) => {
 
@@ -29,7 +34,10 @@ const actorImagesFind = (
 
 const actorImageFindOne = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {}
+  },
   db
 ) => {
 

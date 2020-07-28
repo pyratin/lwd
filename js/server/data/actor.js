@@ -17,7 +17,12 @@ const actorCollectionName = 'actors';
 
 const actorsFind = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {},
+    skip: 0,
+    limit: 0
+  },
   db
 ) => {
 
@@ -88,7 +93,7 @@ const actorsBySetIdRemove = (
         setId
       )
     },
-    null,
+    undefined,
     db
   )
     .then(

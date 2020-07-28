@@ -19,7 +19,12 @@ const genreCollectionName = 'genres';
 
 const genresFind = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {},
+    skip: 0,
+    limit: 0
+  },
   db
 ) => {
 
@@ -33,7 +38,10 @@ const genresFind = (
 
 const genreFindOne = (
   query,
-  options,
+  options = {
+    projection: {},
+    sort: {}
+  },
   db
 ) => {
 
@@ -112,8 +120,8 @@ const genresRemove = (
 ) => {
 
   return genresFind(
-    null,
-    null,
+    undefined,
+    undefined,
     db
   )
     .then(
