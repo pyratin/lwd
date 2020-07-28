@@ -10,7 +10,7 @@ set shortmess=aoO
 badd +55 package.json
 badd +1 js/server/index.js
 badd +17 js/server/schema/index.js
-badd +7 js/server/schema/mutations/fns/movieDataBasicGet.js
+badd +392 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +49 js/server/schema/mutations/fns/segmentsGet.js
 badd +483 js/server/schema/mutations/fns/charactersGet.js
 badd +1 js/server/schema/mutations/fns/NNPsGet.js
@@ -30,6 +30,7 @@ badd +1 js/server/data/genre.js
 badd +1 js/server/data/movie.js
 badd +1 js/server/schema/mutations/fns/cardsActorReplacedGet.js
 badd +1 js/server/schema/mutations/fns/movieTitleRandomGet.js
+badd +2 .gitignore
 argglobal
 %argdel
 set stal=2
@@ -52,7 +53,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((11 * winheight(0) + 17) / 34)
+let s:l = 13 - ((12 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -84,7 +85,7 @@ silent! normal! zE
 normal! zo
 134
 normal! zo
-let s:l = 294 - ((11 * winheight(0) + 17) / 34)
+let s:l = 294 - ((12 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -434,12 +435,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 774 - ((0 * winheight(0) + 17) / 34)
+let s:l = 337 - ((10 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-774
-normal! 04|
+337
+normal! 021|
 tabedit js/server/schema/mutations/fns/segmentsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -534,12 +535,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 102 - ((0 * winheight(0) + 17) / 34)
+let s:l = 392 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-102
-normal! 07|
+392
+normal! 0
 tabedit js/server/schema/mutations/fns/sentencesGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -565,7 +566,7 @@ exe s:l
 normal! zt
 15
 normal! 013|
-tabnext 16
+tabnext 1
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
