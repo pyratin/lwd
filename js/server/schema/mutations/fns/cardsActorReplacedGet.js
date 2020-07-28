@@ -5,7 +5,13 @@ import {
 } from 'mongodb';
 
 import {
-  actorsFind
+  genreFindOne
+} from '~/js/server/data/genre';
+import {
+  setsFind
+} from '~/js/server/data/set';
+import {
+  actorsFind as actorsFindFn
 } from '~/js/server/data/actor';
 import {
   actorImagesFind,
@@ -265,19 +271,107 @@ const spoofActorsSortedByWeightGet = (
     );
 };
 
-const spoofActorsGetFn = async (
-  starringActor,
-  spoofActorsPrevious,
+const setRandomForGenreGet = (
+  genre,
   db
 ) => {
 
-  let spoofActors = await actorsFind(
+  return genreFindOne(
     {
-      gender: starringActor.gender
+      text: genre
+    },
+    undefined,
+    db
+  )
+    .then(
+      (
+        {
+          _id: genreId
+        }
+      ) => {
+
+        return setsFind(
+          {
+            _genreId: new ObjectID(
+              genreId
+            )
+          },
+          undefined,
+          db
+        );
+      }
+    )
+    .then(
+      (
+        sets
+      ) => {
+
+        return sets[
+          Math.floor(
+            Math.random() *
+            sets.length
+          )
+        ];
+      }
+    )
+    .then(
+      (
+        {
+          _id: setId
+        }
+      ) => {
+
+        return (
+          setId
+        );
+      }
+    );
+};
+
+const actorsFind = (
+  setId,
+  gender,
+  db
+) => {
+
+  return actorsFindFn(
+    {
+      _setId: new ObjectID(
+        setId
+      ),
+      gender
     },
     undefined,
     db
   );
+};
+
+const spoofActorsGetFn = async (
+  starringActor,
+  setRandomId,
+  setGeneralId,
+  spoofActorsPrevious,
+  db
+) => {
+
+  const gender = starringActor.gender;
+
+  let spoofActors = await actorsFind(
+    setRandomId,
+    gender,
+    db
+  );
+
+  if (
+    !spoofActors.length
+  ) {
+
+    spoofActors = await actorsFind(
+      setGeneralId,
+      gender,
+      db
+    );
+  }
 
   spoofActors = shuffledGet(
     spoofActors
@@ -297,10 +391,21 @@ const spoofActorsGetFn = async (
   );
 };
 
-const spoofActorsGet = (
+const spoofActorsGet = async (
   starringActors,
+  genre,
   db
 ) => {
+
+  const setRandomId = await setRandomForGenreGet(
+    genre,
+    db
+  );
+
+  const setGeneralId = await setRandomForGenreGet(
+    'general',
+    db
+  );
 
   return starringActors.reduce(
     (
@@ -315,6 +420,8 @@ const spoofActorsGet = (
 
           return spoofActorsGetFn(
             starringActor,
+            setRandomId,
+            setGeneralId,
             res,
             db
           )
@@ -772,6 +879,7 @@ const cardsCharacterAssignedGet = (
 
 export default async (
   _cards,
+  genre,
   db
 ) => {
 
@@ -781,6 +889,7 @@ export default async (
 
   const spoofActors = await spoofActorsGet(
     starringActors,
+    genre,
     db
   );
 

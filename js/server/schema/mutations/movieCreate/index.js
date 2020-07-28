@@ -80,6 +80,7 @@ const movieCreate = async (
 
 const process = async (
   text,
+  genre,
   db,
   req
 ) => {
@@ -101,6 +102,7 @@ const process = async (
 
   const cards = await cardsGet(
     segments,
+    genre,
     db
   );
 
@@ -129,6 +131,7 @@ const process = async (
 
 export default async (
   text,
+  genre,
   db,
   req
 ) => {
@@ -137,18 +140,9 @@ export default async (
     text
   );
 
-  //eslint-disable-next-line no-console
-  console.log(
-    `
-      title: ${
-        title
-      }
-    `
-      .trim()
-  );
-
   return process(
     title,
+    genre,
     db,
     req
   );

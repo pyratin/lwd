@@ -165,6 +165,9 @@ const MovieCreateMutation = mutationWithClientMutationId(
         type: new GraphQLNonNull(
           GraphQLString
         )
+      },
+      genre: {
+        type: GraphQLString
       }
     },
     outputFields: {
@@ -189,7 +192,8 @@ const MovieCreateMutation = mutationWithClientMutationId(
     },
     mutateAndGetPayload(
       {
-        text
+        text,
+        genre
       },
       {
         db,
@@ -199,6 +203,7 @@ const MovieCreateMutation = mutationWithClientMutationId(
 
       return movieCreate(
         text,
+        genre,
         db,
         req
       );

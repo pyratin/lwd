@@ -151,6 +151,12 @@ const castGetFn = (
       0
     ];
 
+    role = role.split(
+      ','
+    )[
+      0
+    ];
+
     role = role.replace(
       new RegExp(
         `

@@ -8,6 +8,7 @@ import cardsTextCollapsedGet from
 
 export default async (
   segments,
+  genre,
   db
 ) => {
 
@@ -17,6 +18,7 @@ export default async (
 
   cards = await cardsActorReplacedGet(
     cards,
+    genre,
     db
   );
 

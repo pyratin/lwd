@@ -36,6 +36,10 @@ const charactersGet = (
             (
               card.actorUd ===
               character.actor.ud
+            ) &&
+            (
+              card.character ===
+              character.text
             )
           );
         }

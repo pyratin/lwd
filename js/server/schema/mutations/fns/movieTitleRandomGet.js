@@ -116,6 +116,16 @@ const movieTitleRandomGet = (
         title
       ) => {
 
+        //eslint-disable-next-line no-console
+        console.log(
+          `
+            title: ${
+              title
+            }
+          `
+            .trim()
+        );
+
         const movieDataBasic = await movieDataBasicGet(
           title
         );
