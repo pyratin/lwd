@@ -102,7 +102,11 @@ const characterStringMatchedGet = (
     character ===
     _character
   ) ?
-    character :
+    {
+      text: _character,
+      matchMethodIndex: 0,
+      matchReturned: 'plotCharacter'
+    } :
     null;
 };
 
@@ -117,7 +121,11 @@ const characterLevenMatchedGet = (
       _character
     ) === 1
   ) ?
-    _character :
+    {
+      text: _character,
+      matchMethodIndex: 1,
+      matchReturned: 'plotCharacter'
+    } :
     null;
 };
 
@@ -145,7 +153,7 @@ const characterTokenizedGet = (
 const characterFragmentMatchedGet = (
   character,
   _character,
-  source
+  tokensSource
 ) => {
 
   const characterTokenCombinations = combinations(
@@ -191,11 +199,19 @@ const characterFragmentMatchedGet = (
   }
 
   return (
-    source === 
-    'plot'
+    tokensSource === 
+    'plotCharacter'
   ) ?
-    character :
-    _character;
+    {
+      text: character,
+      matchMethodIndex: 2,
+      matchReturned: 'castCharacter'
+    } :
+    {
+      text: _character,
+      matchMethodIndex: 2,
+      matchReturned: 'plotCharacter'
+    };
 };
 
 const __castCharactersGetFn = (
@@ -203,7 +219,7 @@ const __castCharactersGetFn = (
   plotCharacter
 ) => {
 
-  let text;
+  let match;
 
   switch (
     true
@@ -211,46 +227,46 @@ const __castCharactersGetFn = (
 
     case (
       (
-        text = characterStringMatchedGet(
+        match = characterStringMatchedGet(
           castCharacter.text,
           plotCharacter
         )
       ) &&
-      !!text
+      !!match.text
     ) :
     case (
       (
-        text = characterLevenMatchedGet(
+        match = characterLevenMatchedGet(
           castCharacter.text,
           plotCharacter
         )
       ) &&
-      !!text
+      !!match.text
     ) :
     case (
       (
-        text = characterFragmentMatchedGet(
+        match = characterFragmentMatchedGet(
           plotCharacter,
           castCharacter.text,
-          'plot'
+          'plotCharacter'
         )
       ) &&
-      !!text
+      !!match.text
     ) :
     case (
       (
-        text = characterFragmentMatchedGet(
+        match = characterFragmentMatchedGet(
           castCharacter.text,
           plotCharacter,
-          'cast'
+          'castCharacter'
         )
       ) &&
-      !!text
+      !!match.text
     ) :
 
       return {
         ...castCharacter,
-        text
+        ...match
       };
   }
 };
@@ -343,6 +359,20 @@ const castCharactersSortedGet = (
       switch (
         true
       ) {
+
+        case (
+          a.matchReturned === 'plotCharacter' &&
+          b.matchReturned === 'castCharacter'
+        ) :
+
+          return -1;
+
+        case (
+          b.matchReturned === 'plotCharacter' &&
+          a.matchReturned === 'castCharacter'
+        ) :
+
+          return 1;
 
         case (
           a.possessive &&
@@ -472,6 +502,7 @@ const castCharactersGet = (
   castCharacters = castCharactersSortedGet(
     castCharacters
   );
+  console.log(castCharacters)
 
   castCharacters = castCharactersUniqueGet(
     castCharacters
