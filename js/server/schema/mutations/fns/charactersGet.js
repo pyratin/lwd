@@ -361,20 +361,6 @@ const castCharactersSortedGet = (
       ) {
 
         case (
-          a.matchReturned === 'plotCharacter' &&
-          b.matchReturned === 'castCharacter'
-        ) :
-
-          return -1;
-
-        case (
-          b.matchReturned === 'plotCharacter' &&
-          a.matchReturned === 'castCharacter'
-        ) :
-
-          return 1;
-
-        case (
           a.possessive &&
           !b.possessive
         ) :
@@ -387,6 +373,20 @@ const castCharactersSortedGet = (
         ) :
 
           return -1;
+
+        case (
+          a.matchReturned === 'plotCharacter' &&
+          b.matchReturned === 'castCharacter'
+        ) :
+
+          return -1;
+
+        case (
+          b.matchReturned === 'plotCharacter' &&
+          a.matchReturned === 'castCharacter'
+        ) :
+
+          return 1;
 
         case (
           a.roleIndex >
