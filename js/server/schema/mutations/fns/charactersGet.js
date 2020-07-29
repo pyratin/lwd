@@ -502,7 +502,6 @@ const castCharactersGet = (
   castCharacters = castCharactersSortedGet(
     castCharacters
   );
-  console.log(castCharacters)
 
   castCharacters = castCharactersUniqueGet(
     castCharacters
