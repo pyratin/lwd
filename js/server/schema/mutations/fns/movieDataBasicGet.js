@@ -120,7 +120,7 @@ const castGetFn = (
 
   const textRegExp = new RegExp(
     `
-      ^(.*?)\\s+(as\\s+.*)$
+      ^(.*?)\\s+((?:as|—)\\s+.*)$
     `
       .trim()
   );
@@ -389,35 +389,44 @@ const plotGet = (
     .remove()
     .end();
 
-  const paragraphs = plotEl
+  let paragraphs = plotEl
     .find(
       'p'
     )
-    .toArray()
-    .reduce(
-      (
-        memo,
-        p
-      ) => {
+    .toArray();
 
+  if (
+    !paragraphs.length
+  ) {
 
-        let paragraph = $(
-          p
-        )
-          .text()
-          .replace(
-            /\s*\(.*?\)\s*/g,
-            ''
-          );
-
-        return [
-          ...memo ||
-          [],
-          paragraph
-        ];
-      },
+    return (
       null
     );
+  }
+
+  paragraphs = paragraphs.reduce(
+    (
+      memo,
+      p
+    ) => {
+
+      let paragraph = $(
+        p
+      )
+        .text()
+        .replace(
+          /\s*\(.*?\)\s*/g,
+          ''
+        );
+
+      return [
+        ...memo ||
+        [],
+        paragraph
+      ];
+    },
+    null
+  );
 
   const sentences = sentencesGet(
     paragraphs

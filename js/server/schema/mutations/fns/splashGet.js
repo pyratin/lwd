@@ -132,7 +132,7 @@ const moviePosterBase64GetFn = (
             xc:"#000" 
           \\)
           \\(
-            jpeg:-
+            -
             -resize ${
               res
             }x${

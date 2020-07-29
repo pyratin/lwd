@@ -53,12 +53,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 18) / 36)
+let s:l = 10 - ((9 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
-normal! 05|
+10
+normal! 04|
 tabedit utils/actor/create.js
 set splitbelow splitright
 set nosplitbelow
@@ -85,7 +85,7 @@ silent! normal! zE
 normal! zo
 134
 normal! zo
-let s:l = 294 - ((12 * winheight(0) + 18) / 36)
+let s:l = 294 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -135,11 +135,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 49 - ((19 * winheight(0) + 17) / 34)
+let s:l = 67 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-49
+67
 normal! 09|
 tabedit js/server/data/genre.js
 set splitbelow splitright
@@ -310,12 +310,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 105 - ((27 * winheight(0) + 17) / 34)
+let s:l = 112 - ((19 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-105
-normal! 010|
+112
+normal! 0
 tabedit js/server/schema/mutations/fns/movieTitleRandomGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -385,12 +385,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 35 - ((12 * winheight(0) + 17) / 34)
+let s:l = 113 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-35
-normal! 0
+113
+normal! 06|
 tabedit js/server/schema/mutations/fns/cardsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -535,11 +535,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 392 - ((16 * winheight(0) + 17) / 34)
+let s:l = 492 - ((19 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-392
+492
 normal! 0
 tabedit js/server/schema/mutations/fns/sentencesGet.js
 set splitbelow splitright
@@ -566,7 +566,7 @@ exe s:l
 normal! zt
 15
 normal! 013|
-tabnext 1
+tabnext 15
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

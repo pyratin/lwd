@@ -89,6 +89,16 @@ const process = async (
     text
   );
 
+  if (
+    !movieDataBasic.plot ||
+    !movieDataBasic.cast
+  ) {
+
+    return (
+      {}
+    );
+  }
+
   let characters = await charactersGet(
     movieDataBasic.cast,
     movieDataBasic.plot,
