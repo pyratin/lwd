@@ -449,10 +449,6 @@ export default async (
     query
   );
 
-  const date = new Date(
-    json.lead?.lastmodified
-  );
-
   const poster = (
     json.lead?.image
   ) ?
@@ -496,7 +492,6 @@ export default async (
 
   return {
     title,
-    date,
     poster,
     cast,
     plot,

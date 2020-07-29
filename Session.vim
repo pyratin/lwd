@@ -335,12 +335,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 116 - ((19 * winheight(0) + 17) / 34)
+let s:l = 156 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-116
-normal! 09|
+156
+normal! 010|
 tabedit js/server/schema/mutations/fns/gifGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -410,12 +410,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 21 - ((12 * winheight(0) + 17) / 34)
+let s:l = 24 - ((15 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-21
-normal! 010|
+24
+normal! 0
 tabedit js/server/schema/mutations/fns/cardsActorReplacedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -435,12 +435,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 337 - ((10 * winheight(0) + 17) / 34)
+let s:l = 918 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-337
-normal! 021|
+918
+normal! 0
 tabedit js/server/schema/mutations/fns/segmentsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -535,12 +535,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 492 - ((19 * winheight(0) + 17) / 34)
+let s:l = 495 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-492
-normal! 0
+495
+normal! 05|
 tabedit js/server/schema/mutations/fns/sentencesGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -560,13 +560,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((13 * winheight(0) + 17) / 34)
+let s:l = 16 - ((14 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
-normal! 013|
-tabnext 15
+16
+normal! 011|
+tabnext 18
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -32,18 +32,37 @@ const categoryGet = (
 };
 
 const queryGet = (
+  text,
+  _category,
+  cmstart,
+  cmend
+) => {
+
+  const category = categoryGet(
+    _category 
+  );
+
+  return `
+    https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&format=json&cmlimit=500&cmsort=timestamp&cmstart=${
+      cmstart
+    }&cmend=${
+      cmend
+    }&cmtitle=Category:${
+      category
+    }
+  `
+    .trim();
+};
+
+const movieTitleRandomGet = (
   text
 ) => {
 
   const [
-    _category,
+    category,
     year
   ] = text.split(
     /:/
-  );
-
-  const category = categoryGet(
-    _category 
   );
 
   const cmstart = new Date(
@@ -68,24 +87,11 @@ const queryGet = (
   )
     .toISOString();
 
-  return `
-    https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&format=json&cmlimit=500&cmsort=timestamp&cmstart=${
-      cmstart
-    }&cmend=${
-      cmend
-    }&cmtitle=Category:${
-      category
-    }
-  `
-    .trim();
-};
-
-const movieTitleRandomGet = (
-  text
-) => {
-
   const query = queryGet(
-    text
+    text,
+    category,
+    cmstart,
+    cmend
   );
 
   return mediawikiFetch(
@@ -130,14 +136,29 @@ const movieTitleRandomGet = (
           title
         );
 
-        return (
-          movieDataBasic.plot &&
-          movieDataBasic.cast
-        ) ?
-          title :
-          movieTitleRandomGet(
+        if (
+          !movieDataBasic.plot ||
+          !movieDataBasic.cast
+        ) {
+
+          // eslint-disable-next-line no-console
+          console.log(
+            `
+              movieTitleRandomGet: ${
+                title
+              }
+            `
+              .trim()
+          );
+
+          return movieTitleRandomGet(
             text
           );
+        }
+
+        return (
+          title
+        );
       }
     );
 };
