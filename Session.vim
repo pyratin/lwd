@@ -31,8 +31,8 @@ badd +1 js/server/data/movie.js
 badd +1 js/server/schema/mutations/fns/cardsActorReplacedGet.js
 badd +1 js/server/schema/mutations/fns/movieTitleRandomGet.js
 badd +2 .gitignore
-badd +0 js/server/schema/mutations/fns/charactersMontageGet.js
-badd +0 js/server/schema/mutations/fns/charactersBasicGet.js
+badd +1 js/server/schema/mutations/fns/charactersMontageGet.js
+badd +1 js/server/schema/mutations/fns/charactersBasicGet.js
 argglobal
 %argdel
 set stal=2
@@ -337,11 +337,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 113 - ((16 * winheight(0) + 17) / 34)
+let s:l = 156 - ((28 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-113
+156
 normal! 0
 tabedit js/server/schema/mutations/fns/gifGet.js
 set splitbelow splitright
@@ -412,7 +412,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 233 - ((33 * winheight(0) + 17) / 34)
+let s:l = 233 - ((32 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -437,11 +437,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 14 - ((13 * winheight(0) + 17) / 34)
+let s:l = 30 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-14
+30
 normal! 0
 tabedit js/server/schema/mutations/fns/cardsActorReplacedGet.js
 set splitbelow splitright
@@ -537,7 +537,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 109 - ((33 * winheight(0) + 17) / 34)
+let s:l = 109 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
