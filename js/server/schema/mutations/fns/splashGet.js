@@ -14,50 +14,6 @@ import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 
-const charactersGet = (
-  characters,
-  cards
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const card = cards.find(
-        (
-          card
-        ) => {
-
-          return (
-            card.character ===
-            character.text
-          );
-        }
-      );
-
-      if (
-        card
-      ) {
-
-        return [
-          ...memo,
-          {
-            ...character,
-            base64: card.base64
-          }
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
 const base64BlankGet = () => {
 
   return new Promise(
@@ -226,6 +182,127 @@ const moviePosterBase64Get = (
         );
       }
     );
+};
+
+const charactersGet = (
+  characters,
+  cards
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const card = cards.find(
+        (
+          card
+        ) => {
+
+          return (
+            card.character ===
+            character.text
+          );
+        }
+      );
+
+      if (
+        card
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...character,
+            base64: card.base64
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const characterIndexGet = (
+  character,
+  characters
+) => {
+
+  return characters.findIndex(
+    (
+      _character
+    ) => {
+
+      return (
+        _character.actor.text ===
+        character.actor.text
+      );
+    }
+  );
+};
+
+const charactersConcatedGet = (
+  _characters
+) => {
+
+  const characters = _characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const characterIndex = characterIndexGet(
+        character,
+        memo
+      );
+
+      if (
+        characterIndex >= 
+        0
+      ) {
+
+        return [
+          ...memo.slice(
+            0, characterIndex
+          ),
+          {
+            ...memo[
+              characterIndex
+            ],
+            text: `
+              ${
+                memo[
+                  characterIndex
+                ]
+                  .text
+              } / ${
+                character.text
+              }
+            `
+              .trim()
+          },
+          ...memo.slice(
+            characterIndex + 1
+          )
+        ];
+      }
+
+      return [
+        ...memo,
+        character
+      ];
+    },
+    []
+  );
+
+  return (
+    characters
+  );
 };
 
 const characterBase64sGet = (
@@ -599,13 +676,17 @@ export default async (
   cards
 ) => {
 
-  const characters = charactersGet(
+  const moviePosterBase64 = await moviePosterBase64Get(
+    moviePoster
+  );
+
+  let characters = charactersGet(
     _characters,
     cards
   );
 
-  const moviePosterBase64 = await moviePosterBase64Get(
-    moviePoster
+  characters = charactersConcatedGet(
+    characters
   );
 
   const charactersMontageBase64 = 
