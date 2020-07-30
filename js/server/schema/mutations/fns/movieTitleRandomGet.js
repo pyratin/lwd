@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import mediawikiFetch from './mediawikiFetch';
 import movieDataBasicGet from './movieDataBasicGet';
+import charactersBasicGet from './charactersBasicGet';
+import segmentsGet from '../fns/segmentsGet';
 
 const categoryGet = (
   _category
@@ -98,6 +100,17 @@ const movieTitleRandomGetFn = async (
       null
     );
   }
+
+  const characters = charactersBasicGet(
+    movieDataBasic.cast,
+    movieDataBasic.plot
+  );
+
+  const segments = segmentsGet(
+    movieDataBasic.plot,
+    characters
+  );
+  console.log(segments);
 
   return (
     title
