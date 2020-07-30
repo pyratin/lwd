@@ -337,11 +337,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((19 * winheight(0) + 17) / 34)
+let s:l = 113 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-20
+113
 normal! 0
 tabedit js/server/schema/mutations/fns/gifGet.js
 set splitbelow splitright
@@ -437,11 +437,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((18 * winheight(0) + 17) / 34)
+let s:l = 14 - ((13 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-19
+14
 normal! 0
 tabedit js/server/schema/mutations/fns/cardsActorReplacedGet.js
 set splitbelow splitright

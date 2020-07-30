@@ -6,6 +6,8 @@ import mediawikiFetch from './mediawikiFetch';
 import movieDataBasicGet from './movieDataBasicGet';
 import charactersBasicGet from './charactersBasicGet';
 import segmentsGet from '../fns/segmentsGet';
+import cardsCharacterAssignedGet from
+  './cardsCharacterAssignedGet';
 
 const categoryGet = (
   _category
@@ -110,7 +112,48 @@ const movieTitleRandomGetFn = async (
     movieDataBasic.plot,
     characters
   );
-  console.log(segments);
+
+  const cards = cardsCharacterAssignedGet(
+    segments
+  );
+
+  const characterTexts = cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      if (
+        card.character &&
+        card.character.text
+      ) {
+
+        return[
+          ...new Set(
+            [
+              ...memo,
+              card.character.text
+            ]
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+
+  if (
+    characterTexts.length <
+    3
+  ) {
+
+    return (
+      null
+    );
+  }
 
   return (
     title
