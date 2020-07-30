@@ -413,11 +413,7 @@ const plotGet = (
       let paragraph = $(
         p
       )
-        .text()
-        .replace(
-          /\s*\(.*?\)\s*/g,
-          ''
-        );
+        .text();
 
       return [
         ...memo ||
