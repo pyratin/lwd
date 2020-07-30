@@ -24,14 +24,18 @@ const titleGet = async (
 ) => {
 
   const match = text.match(
-    /^(english|hindi|tamil):\d{4}$/
+    /^random:(english|hindi|tamil)$/
   );
 
   const title = (
     match
   ) ?
     await movieTitleRandomGet(
-      text
+      text.split(
+        /:/
+      )[
+        1
+      ]
     ) :
     Promise.resolve(
       text

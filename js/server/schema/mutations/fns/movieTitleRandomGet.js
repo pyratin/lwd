@@ -32,10 +32,9 @@ const categoryGet = (
 };
 
 const queryGet = (
-  text,
-  _category,
   cmstart,
-  cmend
+  cmend,
+  _category
 ) => {
 
   const category = categoryGet(
@@ -54,105 +53,146 @@ const queryGet = (
     .trim();
 };
 
-const movieTitleRandomGet = (
-  text
+const movieTitleRandomGetFn = async (
+  res
 ) => {
 
-  const [
-    category,
-    year
-  ] = text.split(
-    /:/
+  const categorymembers = res.query.categorymembers;
+
+  const title = categorymembers[
+    Math.floor(
+      Math.random() *
+      categorymembers.length
+    )
+  ]?.title;
+
+  if (
+    !title
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  //eslint-disable-next-line
+  console.log(
+    `
+      title: ${
+        title
+      }
+    `
+      .trim()
   );
 
-  const cmstart = new Date(
-    moment(
-      `
-        ${
-          year
-        }-01-01
-      `
-        .trim()
+  const movieDataBasic = await movieDataBasicGet(
+    title
+  );
+
+  if (
+    !movieDataBasic?.plot ||
+    !movieDataBasic?.cast
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  return (
+    title
+  );
+};
+
+const movieTitleRandomGet = (
+  category
+) => {
+
+  const year = 2000 +
+  (
+    Math.floor(
+      Math.random() *
+      (
+        moment()
+          .year() -
+        2000
+      )
+    )
+  );
+
+  const month = 1 +
+  (
+    Math.floor(
+      Math.random() *
+      12
+    )
+  );
+
+  const dateString = `
+    ${
+      year
+    }-${
+      month
+    }-01
+  `
+    .trim();
+
+  const cmstart = moment(
+    new Date(
+      dateString
     )
   )
     .toISOString();
 
-  const cmend = new Date(
-    moment(
-      cmstart
-    )
-      .add(
-        1, 'year'
-      )
+  const cmend = moment(
+    cmstart
   )
+    .add(
+      1, 'month'
+    )
     .toISOString();
 
   const query = queryGet(
-    text,
-    category,
     cmstart,
-    cmend
+    cmend,
+    category
   );
 
   return mediawikiFetch(
     query
   )
     .then(
-      (
+      async (
         res
       ) => {
 
-        const categorymembers = res.query.categorymembers;
-
-        const title = categorymembers[
-          Math.floor(
-            Math.random() *
-            categorymembers.length
-          )
-        ]
-          .title;
-
-        return (
-          title
-        );
-      }
-    )
-    .then(
-      async (
-        title
-      ) => {
-
-        //eslint-disable-next-line no-console
-        console.log(
-          `
-            title: ${
-              title
-            }
-          `
-            .trim()
-        );
-
-        const movieDataBasic = await movieDataBasicGet(
-          title
+        const title = await movieTitleRandomGetFn(
+          res
         );
 
         if (
-          !movieDataBasic.plot ||
-          !movieDataBasic.cast
+          !title
         ) {
 
-          // eslint-disable-next-line no-console
+          // eslint-disable-next-line
           console.log(
             `
               movieTitleRandomGet: ${
-                title
-              }
+                year
+              }-${
+                month
+              }-01
             `
               .trim()
           );
 
           return movieTitleRandomGet(
-            text
+            `
+              random:${
+                category
+              }
+            `
+              .trim()
           );
         }
 
