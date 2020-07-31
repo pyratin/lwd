@@ -6,6 +6,44 @@ const sentenceMaxLength = 100;
 
 const sentenceNormalizeRegExp = /,\s/;
 
+const sentencesPreprocessedGetFn = (
+  _sentence
+) => {
+
+  const sentence = _sentence
+    .replace(
+      /\s*\(.*?\)(\s*)/g, 
+      '$1'
+    );
+
+  return (
+    sentence
+  );
+};
+
+const sentencesPreprocessedGet = (
+  sentences
+) => {
+
+  return sentences.reduce(
+    (
+      memo,
+      _sentence
+    ) => {
+
+      const sentence = sentencesPreprocessedGetFn(
+        _sentence
+      );
+
+      return [
+        ...memo,
+        sentence
+      ];
+    },
+    []
+  );
+};
+
 const sentenceNormalizedGetFn = (
   text
 ) => {
@@ -190,6 +228,10 @@ const sentencesGetFn = (
 
   let sentences = sbd.sentences(
     paragraph
+  );
+
+  sentences = sentencesPreprocessedGet(
+    sentences
   );
   
   sentences = sentences.reduce(

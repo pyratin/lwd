@@ -90,39 +90,35 @@ const castCharactersFlatlistGet = (
 };
 
 const characterStringMatchedGet = (
-  character,
-  _character
+  plotCharacter,
+  castCharacter
 ) => {
 
   return (
-    character ===
-    _character
+    plotCharacter ===
+    castCharacter
   ) ?
-    {
-      text: _character,
-      matchMethodIndex: 0,
-      matchReturned: 'plotCharacter'
-    } :
+    plotCharacter :
     null;
 };
 
 const characterLevenMatchedGet = (
-  character,
-  _character
+  plotCharacter,
+  castCharacter
 ) => {
 
-  return (
+  const character = (
     leven(
-      character,
-      _character
+      plotCharacter,
+      castCharacter
     ) === 1
   ) ?
-    {
-      text: _character,
-      matchMethodIndex: 1,
-      matchReturned: 'plotCharacter'
-    } :
+    plotCharacter :
     null;
+
+  return (
+    character
+  );
 };
 
 const characterTokenizedGet = (
@@ -196,26 +192,18 @@ const characterFragmentMatchedGet = (
 
   return (
     tokensSource === 
-    'plotCharacter'
+    'castCharacter'
   ) ?
-    {
-      text: character,
-      matchMethodIndex: 2,
-      matchReturned: 'castCharacter'
-    } :
-    {
-      text: _character,
-      matchMethodIndex: 2,
-      matchReturned: 'plotCharacter'
-    };
+    character :
+    _character;
 };
 
-const __castCharactersGetFn = (
-  castCharacter,
-  plotCharacter
+const __charactersGetFn = (
+  plotCharacter,
+  castCharacter
 ) => {
 
-  let match;
+  let characterText;
 
   switch (
     true
@@ -223,74 +211,74 @@ const __castCharactersGetFn = (
 
     case (
       (
-        match = characterStringMatchedGet(
-          castCharacter.text,
-          plotCharacter
-        )
-      ) &&
-      !!match.text
-    ) :
-    case (
-      (
-        match = characterLevenMatchedGet(
-          castCharacter.text,
-          plotCharacter
-        )
-      ) &&
-      !!match.text
-    ) :
-    case (
-      (
-        match = characterFragmentMatchedGet(
+        characterText = characterStringMatchedGet(
           plotCharacter,
-          castCharacter.text,
-          'plotCharacter'
+          castCharacter
         )
       ) &&
-      !!match.text
+      !!characterText
     ) :
     case (
       (
-        match = characterFragmentMatchedGet(
-          castCharacter.text,
+        characterText = characterLevenMatchedGet(
           plotCharacter,
+          castCharacter
+        )
+      ) &&
+      !!characterText
+    ) :
+    case (
+      (
+        characterText = characterFragmentMatchedGet(
+          plotCharacter,
+          castCharacter,
           'castCharacter'
         )
       ) &&
-      !!match.text
+      !!characterText
+    ) :
+    case (
+      (
+        characterText = characterFragmentMatchedGet(
+          castCharacter,
+          plotCharacter,
+          'plotCharacter'
+        )
+      ) &&
+      !!characterText
     ) :
 
-      return {
-        ...castCharacter,
-        ...match
-      };
+      return (
+        plotCharacter
+      );
   }
 };
 
-const _castCharactersGetFn = (
-  _castCharacter,
-  plotCharacters
+const _charactersGetFn = (
+  plotCharacter,
+  castCharacters
 ) => {
 
-  const castCharacter = plotCharacters.reduce(
+  const character = castCharacters.reduce(
     (
       memo,
-      plotCharacter
+      castCharacter
     ) => {
 
-      const castCharacter = __castCharactersGetFn(
-        _castCharacter,
-        plotCharacter
+      const characterText = __charactersGetFn(
+        plotCharacter,
+        castCharacter.text
       );
 
       if (
         !memo &&
-        castCharacter
+        characterText
       ) {
 
-        return (
-          castCharacter
-        );
+        return {
+          ...castCharacter,
+          text: characterText
+        };
       }
 
       return (
@@ -301,33 +289,33 @@ const _castCharactersGetFn = (
   );
 
   return (
-    castCharacter
+    character
   );
 };
 
-const castCharactersGetFn = (
-  castCharacters,
-  plotCharacters
+const charactersGetFn = (
+  plotCharacters,
+  castCharacters
 ) => {
 
-  const castCharacter = castCharacters.reduce(
+  const characters = plotCharacters.reduce(
     (
       memo,
-      _castCharacter
+      plotCharacter
     ) => {
 
-      let castCharacter = _castCharactersGetFn(
-        _castCharacter,
-        plotCharacters
+      let character = _charactersGetFn(
+        plotCharacter,
+        castCharacters
       );
 
       if (
-        castCharacter
+        character
       ) {
 
         return [
           ...memo,
-          castCharacter
+          character
         ];
       }
 
@@ -339,11 +327,11 @@ const castCharactersGetFn = (
   );
 
   return (
-    castCharacter
+    characters
   );
 };
 
-const castCharactersSortedGet = (
+const charactersSortedGet = (
   castCharacters
 ) => {
 
@@ -369,20 +357,6 @@ const castCharactersSortedGet = (
         ) :
 
           return -1;
-
-        case (
-          a.matchReturned === 'plotCharacter' &&
-          b.matchReturned === 'castCharacter'
-        ) :
-
-          return -1;
-
-        case (
-          b.matchReturned === 'plotCharacter' &&
-          a.matchReturned === 'castCharacter'
-        ) :
-
-          return 1;
 
         case (
           a.roleIndex >
@@ -427,8 +401,8 @@ const characterExistsGet = (
       _character
     ) => {
 
-      const exists = __castCharactersGetFn(
-        character,
+      const exists = (
+        character.text ===
         _character.text
       );
 
@@ -450,7 +424,7 @@ const characterExistsGet = (
   );
 };
 
-const castCharactersUniqueGet = (
+const charactersUniqueMatchesGet = (
   castCharacters
 ) => {
 
@@ -460,11 +434,13 @@ const castCharactersUniqueGet = (
       castCharacter
     ) => {
 
+      const exists = characterExistsGet(
+        castCharacter,
+        memo
+      );
+
       if (
-        !characterExistsGet(
-          castCharacter,
-          memo
-        )
+        !exists
       ) {
 
         return [
@@ -481,30 +457,30 @@ const castCharactersUniqueGet = (
   );
 };
 
-const castCharactersGet = (
+const charactersGet = (
   cast,
   plotCharacters
 ) => {
 
-  let castCharacters = castCharactersFlatlistGet(
+  const castCharacters = castCharactersFlatlistGet(
     cast
   );
 
-  castCharacters = castCharactersGetFn(
-    castCharacters,
-    plotCharacters
-  );
-
-  castCharacters = castCharactersSortedGet(
+  let characters = charactersGetFn(
+    plotCharacters,
     castCharacters
   );
 
-  castCharacters = castCharactersUniqueGet(
-    castCharacters
+  characters = charactersSortedGet(
+    characters
+  );
+
+  characters = charactersUniqueMatchesGet(
+    characters
   );
 
   return (
-    castCharacters
+    characters
   );
 };
 
@@ -554,13 +530,13 @@ export default (
     plot
   );
 
-  const castCharacters = castCharactersGet(
+  let characters = charactersGet(
     cast,
     plotCharacters
   );
 
-  let characters = charactersCastDataAssignedGet(
-    castCharacters,
+  characters = charactersCastDataAssignedGet(
+    characters,
     cast
   );
 
