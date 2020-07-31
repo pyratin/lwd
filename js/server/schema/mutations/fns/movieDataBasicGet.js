@@ -2,7 +2,6 @@
 
 import cheerio from 'cheerio';
 import sbd from 'sbd';
-import escapeStringRegexp from 'escape-string-regexp';
 
 import mediawikiFetch from './mediawikiFetch';
 import sentencesGet from './sentencesGet';
@@ -273,99 +272,6 @@ const castGet = (
   );
 };
 
-const plotTextActorTextsRemove = (
-  plotText,
-  cast
-) => {
-
-  if (	
-    !plotText	||
-    !cast
-  ) {	
-
-    return (	
-      plotText	
-    );	
-  }	
-
-  return cast.reduce(
-    (
-      memo,
-      _cast
-    ) => {
-
-      const regExp = new RegExp(
-        `
-          \\s(\\(${
-            _cast.actor.text
-          }\\))
-        `
-          .trim(),
-        'g'
-      );
-
-      return memo.replace(
-        regExp,
-        ''
-      );
-    },
-    plotText
-  );
-};
-
-const plotTextActorLinksRemove = (	
-  plotText,	
-  cast
-) => {	
-
-  if (	
-    !plotText	||
-    !cast
-  ) {	
-
-    return (	
-      plotText	
-    );	
-  }	
-
-  return cast.reduce(	
-    (	
-      memo,	
-      _cast
-    ) => {	
-
-      if (	
-        _cast.actor.ud
-      ) {	
-
-        const udEscaped = escapeStringRegexp(	
-          _cast.actor.ud
-        );	
-
-        const regExp = new RegExp(	
-          `	
-            \\s\\(<a href="/wiki/${	
-              udEscaped	
-            }".*?</a>\\)	
-          `	
-            .trim(),	
-          'g'	
-        );	
-
-        return memo.replace(	
-          regExp,	
-          ''	
-        );	
-      }	
-
-      return (	
-        memo	
-      );	
-    },	
-    plotText	
-  );	
-};
-
 const plotGet = (
   plotText
 ) => {
@@ -470,16 +376,6 @@ export default async (
 
   const cast = castGet(
     castText
-  );
-
-  plotText = plotTextActorTextsRemove(
-    plotText,
-    cast
-  );
-
-  plotText = plotTextActorLinksRemove(
-    plotText,
-    cast
   );
 
   const plot = plotGet(

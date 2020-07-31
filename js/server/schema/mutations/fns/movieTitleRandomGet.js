@@ -79,16 +79,6 @@ const movieTitleRandomGetFn = async (
     );
   }
 
-  //eslint-disable-next-line
-  console.log(
-    `
-      title: ${
-        title
-      }
-    `
-      .trim()
-  );
-
   const movieDataBasic = await movieDataBasicGet(
     title
   );
@@ -145,9 +135,25 @@ const movieTitleRandomGetFn = async (
     []
   );
 
+  //eslint-disable-next-line
+  console.log(
+    `
+      title: ${
+        title
+      }, cast: ${
+        !!movieDataBasic.cast
+      }, plot: ${
+        !!movieDataBasic.plot
+      }, characters: ${
+        characterTexts.length
+      }
+    `
+      .trim()
+  );
+
   if (
     characterTexts.length <
-    3
+    1
   ) {
 
     return (
@@ -204,7 +210,7 @@ const movieTitleRandomGet = (
     cmstart
   )
     .add(
-      1, 'month'
+      1, 'year'
     )
     .toISOString();
 
