@@ -1,10 +1,8 @@
 'use strict';
 
-import cardsCharacterAssignedGet from './cardsCharacterAssignedGet';
+import cardsBasicGet from './cardsBasicGet';
 import cardsActorReplacedGet from './cardsActorReplacedGet';
 import cardsGifyAssignedGet from './cardsGifyAssignedGet';
-import cardsTextCollapsedGet from 
-  './cardsTextCollapsedGet';
 
 export default async (
   segments,
@@ -12,7 +10,7 @@ export default async (
   db
 ) => {
 
-  let cards = cardsCharacterAssignedGet(
+  let cards = cardsBasicGet(
     segments
   );
 
@@ -23,10 +21,6 @@ export default async (
   );
 
   cards = await cardsGifyAssignedGet(
-    cards
-  );
-
-  cards = cardsTextCollapsedGet(
     cards
   );
 

@@ -20,26 +20,7 @@ const cardsForGifyGet = (
         return [
           ...cardMemo,
           {
-            text: card.text
-              .reduce(
-                (
-                  textMemo,
-                  {
-                    text
-                  }
-                ) => {
-
-                  return `
-                    ${
-                      textMemo.trim()
-                    } ${
-                      text.trim()
-                    }
-                  `
-                    .trim();
-                },
-                ''
-              ),
+            ...card,
             cardIndex
           }
         ];

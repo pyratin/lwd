@@ -6,8 +6,8 @@ import mediawikiFetch from './mediawikiFetch';
 import movieDataBasicGet from './movieDataBasicGet';
 import charactersBasicGet from './charactersBasicGet';
 import segmentsGet from '../fns/segmentsGet';
-import cardsCharacterAssignedGet from
-  './cardsCharacterAssignedGet';
+import cardsBasicGet from
+  './cardsBasicGet';
 
 const categoryGet = (
   _category
@@ -113,7 +113,7 @@ const movieTitleRandomGetFn = async (
     characters
   );
 
-  const cards = cardsCharacterAssignedGet(
+  const cards = cardsBasicGet(
     segments
   );
 
