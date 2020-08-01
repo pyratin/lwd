@@ -74,7 +74,7 @@ const sentenceCCReplace = (
       return memo.replace(
         new RegExp(
           `
-            \\s${
+            ,*\\s${
               word
             }(\\s)
           `
@@ -405,11 +405,24 @@ export default (
             memo.length >= 
             5
           ) &&
-          !memo[
-            memo.length - 1
-          ]
-            .text
-            .match(/\s...,$/)
+          (
+            !memo[
+              memo.length - 1
+            ]?.text
+              .match(/\s...,$/)
+          ) &&
+          (
+            (
+              memo[
+                memo.length - 1
+              ]?.paragraphIndex !==
+              sentence.paragraphIndex
+            ) ||
+            (
+              memo.length >=
+              10
+            )
+          )
         ) {
 
           return (

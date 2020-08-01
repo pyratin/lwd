@@ -168,7 +168,9 @@ const charactersCategoryAssignedGetFn = (
 
   return mediawikiFetch(
     pageCategoriesQueryGet(
-      characterUd
+      encodeURIComponent(
+        characterUd
+      )
     )
   )
     .then(
