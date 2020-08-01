@@ -38,12 +38,8 @@ const categoryGet = (
 const queryGet = (
   cmstart,
   cmend,
-  _category
+  category
 ) => {
-
-  const category = categoryGet(
-    _category 
-  );
 
   return `
     https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&format=json&cmlimit=500&cmsort=timestamp&cmstart=${
@@ -167,7 +163,7 @@ const movieTitleRandomGetFn = async (
 };
 
 const movieTitleRandomGet = (
-  category
+  _category
 ) => {
 
   const year = 2000 +
@@ -214,6 +210,10 @@ const movieTitleRandomGet = (
     )
     .toISOString();
 
+  const category = categoryGet(
+    _category
+  );
+
   const query = queryGet(
     cmstart,
     cmend,
@@ -249,12 +249,7 @@ const movieTitleRandomGet = (
           );
 
           return movieTitleRandomGet(
-            `
-              random:${
-                category
-              }
-            `
-              .trim()
+            _category
           );
         }
 
