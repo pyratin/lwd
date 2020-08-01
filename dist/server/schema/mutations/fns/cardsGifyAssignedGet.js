@@ -24,13 +24,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 var cardsForGifyGet = function cardsForGifyGet(cards) {
   return cards.reduce(function (cardMemo, card, cardIndex) {
     if (!card.character) {
-      return [].concat((0, _toConsumableArray2["default"])(cardMemo), [{
-        text: card.text.reduce(function (textMemo, _ref) {
-          var text = _ref.text;
-          return "\n                    ".concat(textMemo.trim(), " ").concat(text.trim(), "\n                  ").trim();
-        }, ''),
+      return [].concat((0, _toConsumableArray2["default"])(cardMemo), [_objectSpread(_objectSpread({}, card), {}, {
         cardIndex: cardIndex
-      }]);
+      })]);
     }
 
     return cardMemo;
@@ -50,8 +46,8 @@ var _base64AssignedGetFn = function _base64AssignedGetFn(url) {
   });
 };
 
-var cardsFlatlistGifyBase64AssignedGetFn = function cardsFlatlistGifyBase64AssignedGetFn(_ref2) {
-  var text = _ref2.text;
+var cardsFlatlistGifyBase64AssignedGetFn = function cardsFlatlistGifyBase64AssignedGetFn(_ref) {
+  var text = _ref.text;
   return (0, _nodeFetch["default"])(queryGet(encodeURIComponent(text))).then(function (res) {
     return res.json();
   }).then(function (json) {
@@ -104,7 +100,7 @@ var cardsGifyBase64AssignedGet = function cardsGifyBase64AssignedGet(cardsFlatli
 };
 
 var _default = /*#__PURE__*/function () {
-  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(_cards) {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(_cards) {
     var cardsFlatlist, cards;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -128,7 +124,7 @@ var _default = /*#__PURE__*/function () {
   }));
 
   return function (_x) {
-    return _ref3.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   };
 }();
 

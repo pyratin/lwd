@@ -23,7 +23,7 @@ var _charactersBasicGet = _interopRequireDefault(require("./charactersBasicGet")
 
 var _segmentsGet = _interopRequireDefault(require("../fns/segmentsGet"));
 
-var _cardsCharacterAssignedGet = _interopRequireDefault(require("./cardsCharacterAssignedGet"));
+var _cardsBasicGet = _interopRequireDefault(require("./cardsBasicGet"));
 
 var categoryGet = function categoryGet(_category) {
   switch (_category) {
@@ -38,8 +38,7 @@ var categoryGet = function categoryGet(_category) {
   }
 };
 
-var queryGet = function queryGet(cmstart, cmend, _category) {
-  var category = categoryGet(_category);
+var queryGet = function queryGet(cmstart, cmend, category) {
   return "\n    https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&format=json&cmlimit=500&cmsort=timestamp&cmstart=".concat(cmstart, "&cmend=").concat(cmend, "&cmtitle=Category:").concat(category, "\n  ").trim();
 };
 
@@ -63,34 +62,34 @@ var movieTitleRandomGetFn = /*#__PURE__*/function () {
             return _context.abrupt("return", null);
 
           case 4:
-            //eslint-disable-next-line
-            console.log("\n      title: ".concat(title, "\n    ").trim());
-            _context.next = 7;
+            _context.next = 6;
             return (0, _movieDataBasicGet["default"])(title);
 
-          case 7:
+          case 6:
             movieDataBasic = _context.sent;
 
             if (!(!(movieDataBasic === null || movieDataBasic === void 0 ? void 0 : movieDataBasic.plot) || !(movieDataBasic === null || movieDataBasic === void 0 ? void 0 : movieDataBasic.cast))) {
-              _context.next = 10;
+              _context.next = 9;
               break;
             }
 
             return _context.abrupt("return", null);
 
-          case 10:
+          case 9:
             characters = (0, _charactersBasicGet["default"])(movieDataBasic.cast, movieDataBasic.plot);
             segments = (0, _segmentsGet["default"])(movieDataBasic.plot, characters);
-            cards = (0, _cardsCharacterAssignedGet["default"])(segments);
+            cards = (0, _cardsBasicGet["default"])(segments);
             characterTexts = cards.reduce(function (memo, card) {
               if (card.character && card.character.text) {
                 return (0, _toConsumableArray2["default"])(new Set([].concat((0, _toConsumableArray2["default"])(memo), [card.character.text])));
               }
 
               return memo;
-            }, []);
+            }, []); //eslint-disable-next-line
 
-            if (!(characterTexts.length < 3)) {
+            console.log("\n      title: ".concat(title, ", cast: ").concat(!!movieDataBasic.cast, ", plot: ").concat(!!movieDataBasic.plot, ", characters: ").concat(characterTexts.length, "\n    ").trim());
+
+            if (!(characterTexts.length < 1)) {
               _context.next = 16;
               break;
             }
@@ -113,12 +112,13 @@ var movieTitleRandomGetFn = /*#__PURE__*/function () {
   };
 }();
 
-var movieTitleRandomGet = function movieTitleRandomGet(category) {
+var movieTitleRandomGet = function movieTitleRandomGet(_category) {
   var year = 2000 + Math.floor(Math.random() * ((0, _moment["default"])().year() - 2000));
   var month = 1 + Math.floor(Math.random() * 12);
   var dateString = "\n    ".concat(year, "-").concat(month, "-01\n  ").trim();
   var cmstart = (0, _moment["default"])(new Date(dateString)).toISOString();
-  var cmend = (0, _moment["default"])(cmstart).add(1, 'month').toISOString();
+  var cmend = (0, _moment["default"])(cmstart).add(1, 'year').toISOString();
+  var category = categoryGet(_category);
   var query = queryGet(cmstart, cmend, category);
   return (0, _mediawikiFetch["default"])(query).then( /*#__PURE__*/function () {
     var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(res) {
@@ -140,7 +140,7 @@ var movieTitleRandomGet = function movieTitleRandomGet(category) {
 
               // eslint-disable-next-line
               console.log("\n              movieTitleRandomGet: ".concat(year, "-").concat(month, "-01\n            ").trim());
-              return _context2.abrupt("return", movieTitleRandomGet("\n              random:".concat(category, "\n            ").trim()));
+              return _context2.abrupt("return", movieTitleRandomGet(_category));
 
             case 6:
               return _context2.abrupt("return", title);

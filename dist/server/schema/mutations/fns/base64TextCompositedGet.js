@@ -20,7 +20,7 @@ var _default = /*#__PURE__*/function () {
         switch (_context.prev = _context.next) {
           case 0:
             return _context.abrupt("return", new Promise(function (resolve, reject) {
-              var text = _text.replace(/"/g, '\\"').replace(/&/g, '\\&amp;');
+              var text = _text.replace(/"/g, '\\"').replace(/&/g, '\\&amp;').replace(/\$/g, '\\$');
 
               var factor = res / 480;
               var command = "\n        convert \n        \\(\n          jpeg:-\n          -resize ".concat(res, "x").concat(res, "^\n          -gravity center\n          -crop ").concat(res, "x").concat(res, "+0+0\n        \\)\n        \\(\n          -size ").concat(res - textBorder * 2 * factor, "\n          -background \"#000\" \n          -fill \"#fff\" \n          -pointsize ").concat(textPointsize * factor, "\n          -font \"/media/fonts/Muli-Italic-VariableFont_wght.ttf\"\n          pango:\"").concat(text, "\" \n          -bordercolor \"#000\"\n          -border ").concat(textBorder * factor, "\n        \\)\n        -gravity south\n        -compose blend\n        -define compose:args=90\n        -composite\n        jpeg:-\n      ").split(/\s/).reduce(function (memo, _command) {

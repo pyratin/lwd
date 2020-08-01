@@ -34,8 +34,11 @@ var charactersGet = function charactersGet(characters, cards) {
     var card = cards.find(function (card) {
       return card.character === character.text;
     });
+    var exists = memo.find(function (_memo) {
+      return character.text.match(_memo.text) || _memo.text.match(character.text);
+    });
 
-    if (card) {
+    if (card && !exists) {
       return [].concat((0, _toConsumableArray2["default"])(memo), [_objectSpread(_objectSpread({}, character), {}, {
         base64: card.base64
       })]);
@@ -43,12 +46,6 @@ var charactersGet = function charactersGet(characters, cards) {
 
     return memo;
   }, []);
-};
-
-var characterIndexGet = function characterIndexGet(character, characters) {
-  return characters.findIndex(function (_character) {
-    return _character.actor.text === character.actor.text;
-  });
 };
 
 var characterTextShortenedGet = function characterTextShortenedGet(_text, lengthMax) {
@@ -82,7 +79,9 @@ var charactersConcatedGet = function charactersConcatedGet(_characters) {
   }, []);
 
   characters = characters.reduce(function (memo, character) {
-    var characterIndex = characterIndexGet(character, memo);
+    var characterIndex = memo.findIndex(function (_memo) {
+      return _memo.actor.text === character.actor.text;
+    });
 
     if (characterIndex >= 0) {
       var _lengthMax = 5;

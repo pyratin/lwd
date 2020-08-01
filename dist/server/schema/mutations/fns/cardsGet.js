@@ -11,13 +11,11 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _cardsCharacterAssignedGet = _interopRequireDefault(require("./cardsCharacterAssignedGet"));
+var _cardsBasicGet = _interopRequireDefault(require("./cardsBasicGet"));
 
 var _cardsActorReplacedGet = _interopRequireDefault(require("./cardsActorReplacedGet"));
 
 var _cardsGifyAssignedGet = _interopRequireDefault(require("./cardsGifyAssignedGet"));
-
-var _cardsTextCollapsedGet = _interopRequireDefault(require("./cardsTextCollapsedGet"));
 
 var _default = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(segments, genre, db) {
@@ -26,7 +24,7 @@ var _default = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            cards = (0, _cardsCharacterAssignedGet["default"])(segments);
+            cards = (0, _cardsBasicGet["default"])(segments);
             _context.next = 3;
             return (0, _cardsActorReplacedGet["default"])(cards, genre, db);
 
@@ -37,10 +35,9 @@ var _default = /*#__PURE__*/function () {
 
           case 6:
             cards = _context.sent;
-            cards = (0, _cardsTextCollapsedGet["default"])(cards);
             return _context.abrupt("return", cards);
 
-          case 9:
+          case 8:
           case "end":
             return _context.stop();
         }

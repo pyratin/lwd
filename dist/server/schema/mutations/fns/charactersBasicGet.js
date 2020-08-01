@@ -44,20 +44,13 @@ var castCharactersFlatlistGet = function castCharactersFlatlistGet(cast) {
   }, []);
 };
 
-var characterStringMatchedGet = function characterStringMatchedGet(character, _character) {
-  return character === _character ? {
-    text: _character,
-    matchMethodIndex: 0,
-    matchReturned: 'plotCharacter'
-  } : null;
+var characterStringMatchedGet = function characterStringMatchedGet(plotCharacter, castCharacter) {
+  return plotCharacter === castCharacter ? plotCharacter : null;
 };
 
-var characterLevenMatchedGet = function characterLevenMatchedGet(character, _character) {
-  return (0, _leven["default"])(character, _character) === 1 ? {
-    text: _character,
-    matchMethodIndex: 1,
-    matchReturned: 'plotCharacter'
-  } : null;
+var characterLevenMatchedGet = function characterLevenMatchedGet(plotCharacter, castCharacter) {
+  var character = (0, _leven["default"])(plotCharacter, castCharacter) === 1 ? plotCharacter : null;
+  return character;
 };
 
 var characterTokenizedGet = function characterTokenizedGet(character) {
@@ -79,56 +72,50 @@ var characterFragmentMatchedGet = function characterFragmentMatchedGet(character
     return null;
   }
 
-  return tokensSource === 'plotCharacter' ? {
-    text: character,
-    matchMethodIndex: 2,
-    matchReturned: 'castCharacter'
-  } : {
-    text: _character,
-    matchMethodIndex: 2,
-    matchReturned: 'plotCharacter'
-  };
+  return tokensSource === 'castCharacter' ? character : _character;
 };
 
-var __castCharactersGetFn = function __castCharactersGetFn(castCharacter, plotCharacter) {
-  var match;
+var __charactersGetFn = function __charactersGetFn(plotCharacter, castCharacter) {
+  var characterText;
 
   switch (true) {
-    case (match = characterStringMatchedGet(castCharacter.text, plotCharacter)) && !!match.text:
-    case (match = characterLevenMatchedGet(castCharacter.text, plotCharacter)) && !!match.text:
-    case (match = characterFragmentMatchedGet(plotCharacter, castCharacter.text, 'plotCharacter')) && !!match.text:
-    case (match = characterFragmentMatchedGet(castCharacter.text, plotCharacter, 'castCharacter')) && !!match.text:
-      return _objectSpread(_objectSpread({}, castCharacter), match);
+    case (characterText = characterStringMatchedGet(plotCharacter, castCharacter)) && !!characterText:
+    case (characterText = characterLevenMatchedGet(plotCharacter, castCharacter)) && !!characterText:
+    case (characterText = characterFragmentMatchedGet(plotCharacter, castCharacter, 'castCharacter')) && !!characterText:
+    case (characterText = characterFragmentMatchedGet(castCharacter, plotCharacter, 'plotCharacter')) && !!characterText:
+      return plotCharacter;
   }
 };
 
-var _castCharactersGetFn = function _castCharactersGetFn(_castCharacter, plotCharacters) {
-  var castCharacter = plotCharacters.reduce(function (memo, plotCharacter) {
-    var castCharacter = __castCharactersGetFn(_castCharacter, plotCharacter);
+var _charactersGetFn = function _charactersGetFn(plotCharacter, castCharacters) {
+  var character = castCharacters.reduce(function (memo, castCharacter) {
+    var characterText = __charactersGetFn(plotCharacter, castCharacter.text);
 
-    if (!memo && castCharacter) {
-      return castCharacter;
+    if (!memo && characterText) {
+      return _objectSpread(_objectSpread({}, castCharacter), {}, {
+        text: characterText
+      });
     }
 
     return memo;
   }, null);
-  return castCharacter;
+  return character;
 };
 
-var castCharactersGetFn = function castCharactersGetFn(castCharacters, plotCharacters) {
-  var castCharacter = castCharacters.reduce(function (memo, _castCharacter) {
-    var castCharacter = _castCharactersGetFn(_castCharacter, plotCharacters);
+var charactersGetFn = function charactersGetFn(plotCharacters, castCharacters) {
+  var characters = plotCharacters.reduce(function (memo, plotCharacter) {
+    var character = _charactersGetFn(plotCharacter, castCharacters);
 
-    if (castCharacter) {
-      return [].concat((0, _toConsumableArray2["default"])(memo), [castCharacter]);
+    if (character) {
+      return [].concat((0, _toConsumableArray2["default"])(memo), [character]);
     }
 
     return memo;
   }, []);
-  return castCharacter;
+  return characters;
 };
 
-var castCharactersSortedGet = function castCharactersSortedGet(castCharacters) {
+var charactersSortedGet = function charactersSortedGet(castCharacters) {
   return castCharacters.sort(function (a, b) {
     switch (true) {
       case a.possessive && !b.possessive:
@@ -136,12 +123,6 @@ var castCharactersSortedGet = function castCharactersSortedGet(castCharacters) {
 
       case b.possessive && !a.possessive:
         return -1;
-
-      case a.matchReturned === 'plotCharacter' && b.matchReturned === 'castCharacter':
-        return -1;
-
-      case b.matchReturned === 'plotCharacter' && a.matchReturned === 'castCharacter':
-        return 1;
 
       case a.roleIndex > b.roleIndex:
         return 1;
@@ -160,7 +141,7 @@ var castCharactersSortedGet = function castCharactersSortedGet(castCharacters) {
 
 var characterExistsGet = function characterExistsGet(character, characters) {
   return characters.reduce(function (memo, _character) {
-    var exists = __castCharactersGetFn(character, _character.text);
+    var exists = character.text === _character.text;
 
     if (!memo && exists) {
       return true;
@@ -170,9 +151,11 @@ var characterExistsGet = function characterExistsGet(character, characters) {
   }, false);
 };
 
-var castCharactersUniqueGet = function castCharactersUniqueGet(castCharacters) {
+var charactersUniqueMatchesGet = function charactersUniqueMatchesGet(castCharacters) {
   return castCharacters.reduce(function (memo, castCharacter) {
-    if (!characterExistsGet(castCharacter, memo)) {
+    var exists = characterExistsGet(castCharacter, memo);
+
+    if (!exists) {
       return [].concat((0, _toConsumableArray2["default"])(memo), [castCharacter]);
     }
 
@@ -180,12 +163,12 @@ var castCharactersUniqueGet = function castCharactersUniqueGet(castCharacters) {
   }, []);
 };
 
-var castCharactersGet = function castCharactersGet(cast, plotCharacters) {
+var charactersGet = function charactersGet(cast, plotCharacters) {
   var castCharacters = castCharactersFlatlistGet(cast);
-  castCharacters = castCharactersGetFn(castCharacters, plotCharacters);
-  castCharacters = castCharactersSortedGet(castCharacters);
-  castCharacters = castCharactersUniqueGet(castCharacters);
-  return castCharacters;
+  var characters = charactersGetFn(plotCharacters, castCharacters);
+  characters = charactersSortedGet(characters);
+  characters = charactersUniqueMatchesGet(characters);
+  return characters;
 };
 
 var charactersCastDataAssignedGet = function charactersCastDataAssignedGet(characters, cast) {
@@ -199,8 +182,8 @@ var charactersCastDataAssignedGet = function charactersCastDataAssignedGet(chara
 
 var _default = function _default(cast, plot) {
   var plotCharacters = plotCharactersGet(plot);
-  var castCharacters = castCharactersGet(cast, plotCharacters);
-  var characters = charactersCastDataAssignedGet(castCharacters, cast);
+  var characters = charactersGet(cast, plotCharacters);
+  characters = charactersCastDataAssignedGet(characters, cast);
   return characters;
 };
 

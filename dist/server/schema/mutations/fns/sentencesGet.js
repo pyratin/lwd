@@ -11,8 +11,44 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
 
 var _sbd = _interopRequireDefault(require("sbd"));
 
+var _wordsTokenizedGet = _interopRequireDefault(require("./wordsTokenizedGet"));
+
+var _wordsTaggedGet = _interopRequireDefault(require("./wordsTaggedGet"));
+
 var sentenceMaxLength = 100;
 var sentenceNormalizeRegExp = /,\s/;
+
+var sentenceCCReplace = function sentenceCCReplace(_sentence) {
+  var words = (0, _wordsTokenizedGet["default"])(_sentence);
+  words = (0, _wordsTaggedGet["default"])(words);
+  words = words.reduce(function (memo, _ref) {
+    var tag = _ref.tag,
+        text = _ref.text;
+
+    if (tag === 'CC' || tag === 'VBG' && text.match(/ing$/)) {
+      return (0, _toConsumableArray2["default"])(new Set([].concat((0, _toConsumableArray2["default"])(memo), [text])));
+    }
+
+    return memo;
+  }, []);
+  var sentence = words.reduce(function (memo, word) {
+    return memo.replace(new RegExp("\n            \\s".concat(word, "(\\s)\n          ").trim(), 'g'), "\n          , ".concat(word, "$1\n        ").trim());
+  }, _sentence);
+  return sentence;
+};
+
+var sentencesPreprocessedGetFn = function sentencesPreprocessedGetFn(_sentence) {
+  var sentence = sentenceCCReplace(_sentence);
+  sentence = sentence.replace(/\swhich(\s)/g, ', which$1');
+  return sentence;
+};
+
+var sentencesPreprocessedGet = function sentencesPreprocessedGet(sentences) {
+  return sentences.reduce(function (memo, _sentence) {
+    var sentence = sentencesPreprocessedGetFn(_sentence);
+    return [].concat((0, _toConsumableArray2["default"])(memo), [sentence]);
+  }, []);
+};
 
 var sentenceNormalizedGetFn = function sentenceNormalizedGetFn(text) {
   var joinString = ', ';
@@ -54,6 +90,7 @@ var sentenceNormalizedGet = function sentenceNormalizedGet(text) {
 var sentencesGetFn = function sentencesGetFn(paragraph, paragraphIndex) {
   var sentences = _sbd["default"].sentences(paragraph);
 
+  sentences = sentencesPreprocessedGet(sentences);
   sentences = sentences.reduce(function (memo, text) {
     return [].concat((0, _toConsumableArray2["default"])(memo), (0, _toConsumableArray2["default"])(sentenceNormalizedGet(text)));
   }, []).map(function (text, sentenceIndex) {
@@ -67,7 +104,9 @@ var sentencesGetFn = function sentencesGetFn(paragraph, paragraphIndex) {
 };
 
 var _default = function _default(paragraphs) {
-  var sentences = paragraphs.reduce(function (memo, paragraph, paragraphIndex) {
+  var sentences = paragraphs.reduce(function (memo, _paragraph, paragraphIndex) {
+    var paragraph = _paragraph.replace(/\s*\([^)]*\)(\s*)/g, '$1');
+
     var _sentences = sentencesGetFn(paragraph, paragraphIndex);
 
     return [].concat((0, _toConsumableArray2["default"])(memo), (0, _toConsumableArray2["default"])(_sentences));

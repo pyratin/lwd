@@ -19,8 +19,6 @@ var _cheerio = _interopRequireDefault(require("cheerio"));
 
 var _sbd = _interopRequireDefault(require("sbd"));
 
-var _escapeStringRegexp = _interopRequireDefault(require("escape-string-regexp"));
-
 var _mediawikiFetch = _interopRequireDefault(require("./mediawikiFetch"));
 
 var _sentencesGet = _interopRequireDefault(require("./sentencesGet"));
@@ -52,16 +50,12 @@ var pageTitleFromUrlGet = function pageTitleFromUrlGet(url) {
   return url.split(/\//).slice(-1)[0];
 };
 
-var castGetFn = function castGetFn(_castHtml) {
-  var linebreakString = '__linebreak__';
-
-  var castHtml = _castHtml.replace(/<br>/g, linebreakString);
-
+var castGetFn = function castGetFn(castHtml) {
   var $ = _cheerio["default"].load(castHtml);
 
   var castEl = $('span, sup').remove().end();
   var castText = castEl.text();
-  var textRegExp = new RegExp("\n      ^(.*?)\\s+((?:as|\u2014)\\s+.*)$\n    ".trim());
+  var textRegExp = new RegExp("\n      ^(.*?)\\s+((?:as|\u2014)(?:\\s|:)(\\n*.*)*)$\n    ".trim());
   var textMatch = castText.match(textRegExp);
   var actorUd;
   var actorText;
@@ -74,7 +68,6 @@ var castGetFn = function castGetFn(_castHtml) {
     role = _textMatch[2];
     role = _sbd["default"].sentences(role)[0];
     role = role.split(',')[0];
-    role = role.replace(new RegExp("\n          ".concat(linebreakString, ".*\n        ").trim()), '');
   }
 
   var htmlRegExp = /^<a/;
@@ -115,33 +108,6 @@ var castGet = function castGet(castText) {
     return memo;
   }, null);
   return cast;
-};
-
-var plotTextActorTextsRemove = function plotTextActorTextsRemove(plotText, cast) {
-  if (!plotText || !cast) {
-    return plotText;
-  }
-
-  return cast.reduce(function (memo, _cast) {
-    var regExp = new RegExp("\n          \\s(\\(".concat(_cast.actor.text, "\\))\n        ").trim(), 'g');
-    return memo.replace(regExp, '');
-  }, plotText);
-};
-
-var plotTextActorLinksRemove = function plotTextActorLinksRemove(plotText, cast) {
-  if (!plotText || !cast) {
-    return plotText;
-  }
-
-  return cast.reduce(function (memo, _cast) {
-    if (_cast.actor.ud) {
-      var udEscaped = (0, _escapeStringRegexp["default"])(_cast.actor.ud);
-      var regExp = new RegExp("\t\n            \\s\\(<a href=\"/wiki/".concat(udEscaped, "\".*?</a>\\)\t\n          ").trim(), 'g');
-      return memo.replace(regExp, '');
-    }
-
-    return memo;
-  }, plotText);
 };
 
 var plotGet = function plotGet(plotText) {
@@ -186,8 +152,6 @@ var _default = /*#__PURE__*/function () {
             anchorNames = ['Cast', 'Plot'];
             _moviePageSectionText = moviePageSectionTextsGet(json, anchorNames), _moviePageSectionText2 = (0, _slicedToArray2["default"])(_moviePageSectionText, 2), castText = _moviePageSectionText2[0], plotText = _moviePageSectionText2[1];
             cast = castGet(castText);
-            plotText = plotTextActorTextsRemove(plotText, cast);
-            plotText = plotTextActorLinksRemove(plotText, cast);
             plot = plotGet(plotText);
             return _context.abrupt("return", {
               title: title,
@@ -198,7 +162,7 @@ var _default = /*#__PURE__*/function () {
               plotText: plotText
             });
 
-          case 12:
+          case 10:
           case "end":
             return _context.stop();
         }
