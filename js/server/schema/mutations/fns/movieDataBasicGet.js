@@ -95,15 +95,8 @@ const pageTitleFromUrlGet = (
 };
 
 const castGetFn = (
-  _castHtml
+  castHtml
 ) => {
-
-  const linebreakString = '__linebreak__';
-
-  const castHtml = _castHtml.replace(
-    /<br>/g,
-    linebreakString 
-  );
 
   const $ = cheerio.load(
     castHtml
@@ -119,7 +112,7 @@ const castGetFn = (
 
   const textRegExp = new RegExp(
     `
-      ^(.*?)\\s+((?:as|—)\\s+.*)$
+      ^(.*?)\\s+((?:as|—)(?:\\s|:)(\\n*.*)*)$
     `
       .trim()
   );
@@ -155,18 +148,6 @@ const castGetFn = (
     )[
       0
     ];
-
-    role = role.replace(
-      new RegExp(
-        `
-          ${
-            linebreakString
-          }.*
-        `
-          .trim(),
-      ),
-      ''
-    );
   }
 
   const htmlRegExp = /^<a/;

@@ -2,19 +2,100 @@
 
 import sbd from 'sbd';
 
+import wordsTokenizedGet from './wordsTokenizedGet';
+import wordsTaggedGet from './wordsTaggedGet';
+
 const sentenceMaxLength = 100;
 
 const sentenceNormalizeRegExp = /,\s/;
+
+const sentenceCCReplace = (
+  _sentence
+) => {
+
+  let words = wordsTokenizedGet(
+    _sentence
+  );
+
+  words = wordsTaggedGet(
+    words
+  ); 
+
+  words = words.reduce(
+    (
+      memo,
+      {
+        tag,
+        text
+      }
+    ) => {
+
+      if (
+        tag === 
+        'CC'
+      ) {
+
+        return [
+          ...new Set(
+            [
+              ...memo,
+              text
+            ]
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+
+  const sentence = words.reduce(
+    (
+      memo,
+      word
+    ) => {
+
+      return memo.replace(
+        new RegExp(
+          `
+            \\s${
+              word
+            }(\\s)
+          `
+            .trim(),
+          'g'
+        ),
+        `
+          , ${
+            word
+          }$1
+        `
+          .trim()
+      );
+    },
+    _sentence
+  );
+
+  return (
+    sentence
+  );
+};
 
 const sentencesPreprocessedGetFn = (
   _sentence
 ) => {
 
-  const sentence = _sentence
-    .replace(
-      /\s*\(.*?\)(\s*)/g, 
-      '$1'
-    );
+  let sentence = sentenceCCReplace(
+    _sentence
+  );
+
+  sentence = sentence.replace(
+    /\swhich(\s)/g,
+    ', which$1'
+  );
 
   return (
     sentence
@@ -275,9 +356,14 @@ export default (
   let sentences = paragraphs.reduce(
     (
       memo,
-      paragraph,
+      _paragraph,
       paragraphIndex
     ) => {
+
+      const paragraph = _paragraph.replace(
+        /\s*\([^)]*\)(\s*)/g,
+        '$1'
+      );
 
       const _sentences = sentencesGetFn(
         paragraph,
