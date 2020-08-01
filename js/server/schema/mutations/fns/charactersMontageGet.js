@@ -35,8 +35,31 @@ const charactersGet = (
         }
       );
 
+      const exists = memo.find(
+        (
+          _memo
+        ) => {
+
+          return (
+            (
+              character.text
+                .match(
+                  _memo.text
+                )
+            ) ||
+            (
+              _memo.text
+                .match(
+                  character.text
+                )
+            )
+          );
+        }
+      );
+
       if (
-        card
+        card &&
+        !exists
       ) {
 
         return [
@@ -53,24 +76,6 @@ const charactersGet = (
       );
     },
     []
-  );
-};
-
-const characterIndexGet = (
-  character,
-  characters
-) => {
-
-  return characters.findIndex(
-    (
-      _character
-    ) => {
-
-      return (
-        _character.actor.text ===
-        character.actor.text
-      );
-    }
   );
 };
 
@@ -175,9 +180,16 @@ const charactersConcatedGet = (
       character
     ) => {
 
-      const characterIndex = characterIndexGet(
-        character,
-        memo
+      const characterIndex = memo.findIndex(
+        (
+          _memo
+        ) => {
+
+          return (
+            _memo.actor.text ===
+            character.actor.text
+          );
+        }
       );
 
       if (

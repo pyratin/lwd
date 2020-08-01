@@ -415,12 +415,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 233 - ((32 * winheight(0) + 17) / 34)
+let s:l = 210 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-233
-normal! 014|
+210
+normal! 0
 tabedit js/server/schema/mutations/fns/base64TextCompositedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -590,7 +590,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 27 - ((26 * winheight(0) + 17) / 34)
+let s:l = 27 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -615,12 +615,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 564 - ((27 * winheight(0) + 17) / 34)
+let s:l = 514 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-564
-normal! 04|
+514
+normal! 0
 tabedit js/server/schema/mutations/fns/NNPsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -696,7 +696,7 @@ exe s:l
 normal! zt
 18
 normal! 0
-tabnext 23
+tabnext 25
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
