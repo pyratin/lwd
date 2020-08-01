@@ -31,8 +31,21 @@ const sentenceCCReplace = (
     ) => {
 
       if (
-        tag === 
-        'CC'
+        (
+          tag === 
+          'CC'
+        ) ||
+        (
+          (
+            tag === 
+            'VBG'
+          ) &&
+          (
+            text.match(
+              /ing$/
+            )
+          )
+        )
       ) {
 
         return [
