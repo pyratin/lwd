@@ -41,8 +41,8 @@ badd +1 js/server/schema/mutations/fns/charactersCategoryAssignedGet.js
 badd +1 js/server/schema/mutations/fns/charactersActorGenderAssignedGet.js
 badd +1 js/server/fns/movieOutputGifRouteHandle.js
 badd +1 js/server/schema/mutations/fns/movieWrite.js
-badd +0 js/server/schema/mutations/fns/cardsRenderedGet.js
-badd +0 js/server/schema/mutations/fns/base64FilterAppliedGet.js
+badd +1 js/server/schema/mutations/fns/cardsRenderedGet.js
+badd +1 js/server/schema/mutations/fns/base64FilterAppliedGet.js
 argglobal
 %argdel
 set stal=2
@@ -447,11 +447,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 95 - ((14 * winheight(0) + 17) / 34)
+let s:l = 75 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-95
+75
 normal! 018|
 tabedit js/server/schema/mutations/fns/base64FilterAppliedGet.js
 set splitbelow splitright
@@ -472,12 +472,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 61 - ((0 * winheight(0) + 17) / 34)
+let s:l = 115 - ((8 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-61
-normal! 06|
+115
+normal! 05|
 tabedit js/server/schema/mutations/fns/splashGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -497,7 +497,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 280 - ((33 * winheight(0) + 17) / 34)
+let s:l = 280 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -522,7 +522,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 220 - ((33 * winheight(0) + 17) / 34)
+let s:l = 220 - ((31 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt

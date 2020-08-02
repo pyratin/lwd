@@ -26,7 +26,9 @@ const filtersGet = (
       'dualRole'
     ) :
 
-      return [];
+      return [
+        'huemap -h 0,30 -t 60,60'
+      ];
   }
 };
 
