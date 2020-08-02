@@ -1,10 +1,28 @@
 'use strict';
 
 import {
+  findOne,
   findOneAndUpdate
 } from './index';
 
 const movieCollectionName = 'movies';
+
+const movieFindOne = (
+  query,
+  options = {
+    projection: {},
+    sort: {}
+  },
+  db
+) => {
+
+  return findOne(
+    query,
+    options,
+    movieCollectionName,
+    db
+  );
+};
 
 const movieCreate = (
   filter,
@@ -26,5 +44,6 @@ const movieCreate = (
 };
 
 export {
+  movieFindOne,
   movieCreate
 };

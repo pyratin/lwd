@@ -13,6 +13,8 @@ import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
 import mediaOutputFolderInit from 
   './fns/mediaOutputFolderInit';
+import movieOutputGifRouteHandle from 
+  './fns/movieOutputGifRouteHandle';
 
 (
   async () => {
@@ -66,6 +68,21 @@ import mediaOutputFolderInit from
               }
             }
           )(
+            req,
+            res
+          );
+        }
+      )
+
+      .get(
+        '/output/:movieGif(\\w{24}.gif)',
+        (
+          req,
+          res
+        ) => {
+
+          return movieOutputGifRouteHandle(
+            db,
             req,
             res
           );
