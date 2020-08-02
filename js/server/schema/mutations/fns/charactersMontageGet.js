@@ -180,20 +180,10 @@ const charactersConcatedGet = (
       character
     ) => {
 
-      const characterIndex = memo.findIndex(
-        (
-          _memo
-        ) => {
-
-          return (
-            _memo.actor.text ===
-            character.actor.text
-          );
-        }
-      );
+      const dualRoleIndex = character.dualRoleIndex;
 
       if (
-        characterIndex >= 
+        dualRoleIndex >= 
         0
       ) {
 
@@ -203,7 +193,7 @@ const charactersConcatedGet = (
           ${
             characterTextShortenedGet(
               memo[
-                characterIndex
+                dualRoleIndex
               ]
                 .text,
               lengthMax
@@ -219,16 +209,16 @@ const charactersConcatedGet = (
 
         return [
           ...memo.slice(
-            0, characterIndex
+            0, dualRoleIndex
           ),
           {
             ...memo[
-              characterIndex
+              dualRoleIndex
             ],
             text
           },
           ...memo.slice(
-            characterIndex + 1
+            dualRoleIndex + 1
           )
         ];
       }

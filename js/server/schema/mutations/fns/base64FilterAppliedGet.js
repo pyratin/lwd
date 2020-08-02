@@ -5,6 +5,31 @@ import {
   exec
 } from 'child_process';
 
+const filtersGet = (
+  filterType
+) => {
+
+  switch (
+    filterType
+  ) {
+
+    case (
+      'giphy'
+    ) :
+
+      return [
+        'vintage3',
+        'vignette3'
+      ];
+
+    case (
+      'dualRole'
+    ) :
+
+      return [];
+  }
+};
+
 const base64FilterAppliedGetFn = (
   base64,
   filter
@@ -75,45 +100,48 @@ const base64FilterAppliedGetFn = (
 };
 
 export default async (
-  _base64
+  {
+    base64: _base64,
+    filterType
+  }
 ) => {
 
-  const base64 = await [
-    'vintage3',
-    'vignette3'
-  ]
-    .reduce(
-      (
-        memo,
-        filter
-      ) => {
+  const filters = filtersGet(
+    filterType
+  );
 
-        return memo.then(
-          (
-            res
-          ) => {
+  const base64 = filters.reduce(
+    (
+      memo,
+      filter
+    ) => {
 
-            return base64FilterAppliedGetFn(
-              res,
-              filter
-            )
-              .then(
-                (
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return base64FilterAppliedGetFn(
+            res,
+            filter
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                return (
                   result
-                ) => {
-
-                  return (
-                    result
-                  );
-                }
-              );
-          }
-        );
-      },
-      Promise.resolve(
-        _base64
-      )
-    );
+                );
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      _base64
+    )
+  );
 
   return (
     base64

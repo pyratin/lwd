@@ -3,128 +3,116 @@
 import {
   exec
 } from 'child_process';
+
+import cardsRenderedGet from './cardsRenderedGet';
 import splashGet from './splashGet';
-import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
-import base64FilterAppliedGet from 
-  './base64FilterAppliedGet';
 
-import {
-  outputResGet
-} from '~/js/server/fns/variable';
-
-const cardsFilterAppliedGet = (
-  cards
+const charactersDualRoleIndexAssignedGet = (
+  _characters
 ) => {
 
-  return cards.reduce(
+  const characters = _characters.reduce(
     (
       memo,
-      card
+      _character
     ) => {
 
-      return memo.then(
+      const dualRoleIndex = memo.findIndex(
         (
-          res
+          _memo
         ) => {
 
-          if (
-            !card.character
-          ) {
-
-            return base64FilterAppliedGet(
-              card.base64
+          return (
+            (
+              _memo.dualRoleIndex === 
+              -1
+            ) &&
+            (
+              _memo.actor.text ===
+              _character.actor.text
             )
-              .then(
-                (
-                  result
-                ) => {
-
-                  return [
-                    ...res,
-                    {
-                      ...card,
-                      base64: result
-                    }
-                  ];
-                }
-              );
-          }
-
-          return [
-            ...res,
-            card
-          ];
+          );
         }
       );
+
+      if (
+        dualRoleIndex >=
+        0
+      ) {
+
+        return [
+          ...memo,
+          {
+            ..._character,
+            dualRoleIndex
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        {
+          ..._character,
+          dualRoleIndex: -1
+        }
+      ];
     },
-    Promise.resolve(
-      []
-    )
+    []
+  );
+
+  return (
+    characters
   );
 };
 
-const cardsRenderedGet = (
-  cards
+const cardsDualRoleIndexAssignedGet = (
+  _cards,
+  characters
 ) => {
 
-  return cards.reduce(
+  const cards = _cards.reduce(
     (
       memo,
-      card
+      _card
     ) => {
 
-      return memo.then(
+      const character = characters.find(
         (
-          res
+          character
         ) => {
 
-          const character = card.character;
-
-          let text = card.text;
-
-          if (
-            character
-          ) {
-
-            text = text.replace(
-              new RegExp(
-                character
-              ),
-              `
-                <b>${
-                  character
-                }</b>
-              `
-                .trim()
-            );
-          }
-
-          return base64TextCompositedGet(
-            card.base64,
-            text,
-            outputResGet(),
-            20,
-            10
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
-            );
+          return (
+            character.text ===
+            _card.character
+          );
         }
       );
+
+      if (
+        character
+      ) {
+
+        return [
+          ...memo,
+          {
+            ..._card,
+            dualRoleIndex: character.dualRoleIndex
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        _card
+      ];
     },
-    Promise.resolve(
-      []
-    )
+    []
+  );
+
+  return (
+    cards
   );
 };
 
@@ -258,15 +246,20 @@ const gifGet = async (
 export default async (
   movieTitle,
   moviePoster,
-  characters,
+  _characters,
   _cards
 ) => {
 
-  let cards = await cardsFilterAppliedGet(
-    _cards
+  const characters = charactersDualRoleIndexAssignedGet(
+    _characters
   );
 
-  const base64s = await cardsRenderedGet(
+  const cards = cardsDualRoleIndexAssignedGet(
+    _cards,
+    characters
+  );
+
+  const cardBase64s = await cardsRenderedGet(
     cards
   );
 
@@ -279,7 +272,7 @@ export default async (
 
   const gif = await gifGet(
     splash,
-    base64s
+    cardBase64s
   );
 
   return (
