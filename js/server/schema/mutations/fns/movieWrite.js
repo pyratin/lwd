@@ -9,7 +9,7 @@ export default (
   (
     {
       _id: movieId,
-      gif
+      base64
     }
   ) => {
 
@@ -32,7 +32,7 @@ export default (
 
         return fs.writeFile(
           outputPath,
-          gif.replace(
+          base64.replace(
             /^data:image\/gif;base64,/,
             ''
           ),

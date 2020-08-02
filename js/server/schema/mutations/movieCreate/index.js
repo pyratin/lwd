@@ -48,7 +48,7 @@ const titleGet = async (
 
 const movieCreate = async (
   title,
-  gif,
+  base64,
   db,
   req
 ) => {
@@ -73,7 +73,7 @@ const movieCreate = async (
     {
       $set: {
         title,
-        gif,
+        base64,
         path
       }
     },
@@ -120,7 +120,7 @@ const process = async (
     db
   );
 
-  const gif = await gifGet(
+  const base64 = await gifGet(
     movieDataBasic.title,
     movieDataBasic.poster,
     characters,
@@ -129,7 +129,7 @@ const process = async (
 
   const movie = await movieCreate(
     movieDataBasic.title,
-    gif,
+    base64,
     db,
     req
   );
