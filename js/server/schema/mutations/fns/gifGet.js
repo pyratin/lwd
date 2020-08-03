@@ -9,6 +9,56 @@ import splashGet from './splashGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 
+const charactersFilteredGet = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const exists = memo.find(
+        (
+          _memo
+        ) => {
+
+          return (
+            (
+              character.text
+                .match(
+                  _memo.text
+                )
+            ) ||
+            (
+              _memo.text
+                .match(
+                  character.text
+                )
+            )
+          );
+        }
+      );
+
+      if (
+        !exists
+      ) {
+
+        return [
+          ...memo,
+          character
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const charactersDualRoleIndexAssignedGet = (
   _characters
 ) => {
@@ -250,8 +300,12 @@ export default async (
   _cards
 ) => {
 
-  const characters = charactersDualRoleIndexAssignedGet(
+  let characters = charactersFilteredGet(
     _characters
+  );
+
+  characters = charactersDualRoleIndexAssignedGet(
+    characters
   );
 
   const cards = cardsDualRoleIndexAssignedGet(

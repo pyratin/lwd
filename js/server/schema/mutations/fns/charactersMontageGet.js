@@ -35,31 +35,8 @@ const charactersGet = (
         }
       );
 
-      const exists = memo.find(
-        (
-          _memo
-        ) => {
-
-          return (
-            (
-              character.text
-                .match(
-                  _memo.text
-                )
-            ) ||
-            (
-              _memo.text
-                .match(
-                  character.text
-                )
-            )
-          );
-        }
-      );
-
       if (
-        card &&
-        !exists
+        card
       ) {
 
         return [
@@ -128,6 +105,10 @@ const characterTextShortenedGet = (
     ''
   );
 
+  text = text.slice(
+    0, lengthMax
+  );
+
   if (
     text.length <
     _text.length
@@ -136,7 +117,7 @@ const characterTextShortenedGet = (
     text = `
       ${
         text
-      } ...
+      }..
     `
       .trim();
   }

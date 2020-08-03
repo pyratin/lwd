@@ -97,8 +97,54 @@ const sentenceCCReplace = (
   );
 };
 
+const sentenceActorTextsRemove = (
+  sentence,
+  cast
+) => {
+
+  return cast.reduce(
+    (
+      memo,
+      _cast
+    ) => {
+
+      const regExp = new RegExp(
+        `
+          \\s(\\(${
+            _cast.actor.text
+          }\\))
+        `
+          .trim(),
+        'g'
+      );
+
+      return memo.replace(
+        regExp,
+        ''
+      );
+    },
+    sentence
+  );
+};
+
+const sentenceParenthesisHandle = (
+  _sentence,
+  cast
+) => {
+
+  let sentence = sentenceActorTextsRemove(
+    _sentence,
+    cast
+  );
+
+  return (
+    sentence
+  );
+};
+
 const sentencesPreprocessedGetFn = (
-  _sentence
+  _sentence,
+  cast
 ) => {
 
   let sentence = sentenceCCReplace(
@@ -110,13 +156,19 @@ const sentencesPreprocessedGetFn = (
     ', which$1'
   );
 
+  sentence = sentenceParenthesisHandle(
+    sentence,
+    cast
+  );
+
   return (
     sentence
   );
 };
 
 const sentencesPreprocessedGet = (
-  sentences
+  sentences,
+  cast
 ) => {
 
   return sentences.reduce(
@@ -126,7 +178,8 @@ const sentencesPreprocessedGet = (
     ) => {
 
       const sentence = sentencesPreprocessedGetFn(
-        _sentence
+        _sentence,
+        cast
       );
 
       return [
@@ -317,7 +370,8 @@ const sentenceNormalizedGet = (
 
 const sentencesGetFn = (
   paragraph,
-  paragraphIndex
+  paragraphIndex,
+  cast
 ) => {
 
   let sentences = sbd.sentences(
@@ -325,7 +379,8 @@ const sentencesGetFn = (
   );
 
   sentences = sentencesPreprocessedGet(
-    sentences
+    sentences,
+    cast
   );
   
   sentences = sentences.reduce(
@@ -363,24 +418,21 @@ const sentencesGetFn = (
 };
 
 export default (
-  paragraphs
+  paragraphs,
+  cast
 ) => {
 
   let sentences = paragraphs.reduce(
     (
       memo,
-      _paragraph,
+      paragraph,
       paragraphIndex
     ) => {
 
-      const paragraph = _paragraph.replace(
-        /\s*\([^)]*\)(\s*)/g,
-        '$1'
-      );
-
       const _sentences = sentencesGetFn(
         paragraph,
-        paragraphIndex
+        paragraphIndex,
+        cast
       );
 
       return [

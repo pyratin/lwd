@@ -254,7 +254,8 @@ const castGet = (
 };
 
 const plotGet = (
-  plotText
+  plotText,
+  cast
 ) => {
 
   if (
@@ -312,7 +313,8 @@ const plotGet = (
   );
 
   const sentences = sentencesGet(
-    paragraphs
+    paragraphs,
+    cast
   );
 
   return (
@@ -360,7 +362,8 @@ export default async (
   );
 
   const plot = plotGet(
-    plotText
+    plotText,
+    cast
   );
 
   return {

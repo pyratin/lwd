@@ -27,7 +27,7 @@ const filtersGet = (
     ) :
 
       return [
-        'huemap -h 0,30 -t 60,60'
+        'huemap -h 0,20 -t 60,60'
       ];
   }
 };

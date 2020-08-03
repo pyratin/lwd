@@ -422,11 +422,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 260 - ((12 * winheight(0) + 17) / 34)
+let s:l = 325 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-260
+325
 normal! 04|
 tabedit js/server/schema/mutations/fns/cardsRenderedGet.js
 set splitbelow splitright
@@ -447,12 +447,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 75 - ((0 * winheight(0) + 18) / 36)
+let s:l = 71 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-75
-normal! 018|
+71
+normal! 09|
 tabedit js/server/schema/mutations/fns/base64FilterAppliedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -472,12 +472,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 115 - ((8 * winheight(0) + 18) / 36)
+let s:l = 22 - ((7 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-115
-normal! 05|
+22
+normal! 019|
 tabedit js/server/schema/mutations/fns/splashGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -522,12 +522,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 220 - ((31 * winheight(0) + 17) / 34)
+let s:l = 169 - ((13 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-220
-normal! 024|
+169
+normal! 09|
 tabedit js/server/schema/mutations/fns/base64TextCompositedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -847,12 +847,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 294 - ((32 * winheight(0) + 17) / 34)
+let s:l = 317 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-294
-normal! 03|
+317
+normal! 08|
 tabedit js/server/schema/mutations/fns/sentencesGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -872,13 +872,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 412 - ((16 * winheight(0) + 17) / 34)
+let s:l = 159 - ((22 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-412
+159
 normal! 0
-tabnext 17
+tabnext 15
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
