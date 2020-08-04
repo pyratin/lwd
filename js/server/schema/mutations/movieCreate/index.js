@@ -114,6 +114,26 @@ const process = async (
     characters
   );
 
+  characters = characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const text = character.levenMatchText ||
+        character.text;
+
+      return [
+        ...memo,
+        {
+          ...character,
+          text
+        }
+      ];
+    },
+    []
+  );
+
   const cards = await cardsGet(
     segments,
     genre,

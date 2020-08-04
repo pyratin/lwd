@@ -41,11 +41,18 @@ const __fragmentsGetFn = (
           index
         ) {
 
+          const text = (
+            character.matchIndex ===
+            1
+          ) ?
+            character.levenMatchText :
+            character.text;
+
           const actorFragment = {
             ...fragment,
             type: 'actor',
             actor: character.actor,
-            text: character.text,
+            text,
             castIndex: character.castIndex
           };
 
