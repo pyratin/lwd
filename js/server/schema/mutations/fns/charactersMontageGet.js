@@ -12,7 +12,7 @@ import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 
-const charactersGet = (
+const charactersBase64AssignedGet = (
   characters,
   cards
 ) => {
@@ -164,26 +164,18 @@ const charactersConcatedGet = (
       const dualRoleIndex = character.dualRoleIndex;
 
       if (
-        dualRoleIndex >= 
+        dualRoleIndex >=
         0
       ) {
 
-        const lengthMax = 5;
-
         const text = `
           ${
-            characterTextShortenedGet(
-              memo[
-                dualRoleIndex
-              ]
-                .text,
-              lengthMax
-            )
+            memo[
+              dualRoleIndex
+            ]
+              .text
           } / ${
-            characterTextShortenedGet(
-              character.text,
-              lengthMax
-            )
+            character.text
           }
         `
           .trim();
@@ -200,7 +192,11 @@ const charactersConcatedGet = (
           },
           ...memo.slice(
             dualRoleIndex + 1
-          )
+          ),
+          {
+            ...character,
+            remove: true
+          }
         ];
       }
 
@@ -210,6 +206,19 @@ const charactersConcatedGet = (
       ];
     },
     []
+  );
+
+  characters = characters.filter(
+    (
+      {
+        remove
+      }
+    ) => {
+
+      return (
+        !remove
+      );
+    }
   );
 
   return (
@@ -241,8 +250,8 @@ const characterBase64sGet = (
             `
               .trim(),
             outputResGet() / 3.5,
-            50,
-            10
+            46,
+            5
           )
             .then(
               (
@@ -489,7 +498,7 @@ export default async (
   cards
 ) => {
 
-  let characters = charactersGet(
+  let characters = charactersBase64AssignedGet(
     _characters,
     cards
   );
