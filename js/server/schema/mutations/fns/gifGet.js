@@ -9,14 +9,14 @@ import splashGet from './splashGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 
-const charactersFilteredGet = (
-  characters
+const charactersFromCardsGet = (
+  cards
 ) => {
 
-  return characters.reduce(
+  return cards.reduce(
     (
       memo,
-      character
+      card
     ) => {
 
       const exists = memo.find(
@@ -24,30 +24,38 @@ const charactersFilteredGet = (
           _memo
         ) => {
 
+          const characterText = card?.character?.text;
+
           return (
             (
-              character.text
-                .match(
-                  _memo.text
-                )
-            ) ||
+              characterText
+            ) &&
             (
-              _memo.text
-                .match(
-                  character.text
-                )
+              (
+                characterText
+                  .match(
+                    _memo.text
+                  )
+              ) ||
+              (
+                _memo.text
+                  .match(
+                    characterText
+                  )
+              )
             )
           );
         }
       );
 
       if (
+        card?.character?.text &&
         !exists
       ) {
 
         return [
           ...memo,
-          character
+          card.character
         ];
       }
 
@@ -135,7 +143,7 @@ const cardsDualRoleIndexAssignedGet = (
 
           return (
             character.text ===
-            _card.character
+            _card?.character?.text
           );
         }
       );
@@ -296,12 +304,11 @@ const gifGet = async (
 export default async (
   movieTitle,
   moviePoster,
-  _characters,
   _cards
 ) => {
 
-  let characters = charactersFilteredGet(
-    _characters
+  let characters = charactersFromCardsGet(
+    _cards
   );
 
   characters = charactersDualRoleIndexAssignedGet(

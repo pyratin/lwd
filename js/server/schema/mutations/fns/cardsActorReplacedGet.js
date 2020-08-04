@@ -860,10 +860,11 @@ const cardsCharacterAssignedGet = (
           ...memo,
           {
             ...card,
-            character: character.text,
             base64: character.base64,
-            actorUd: character.actor.ud,
-            actorId: character._actor._id
+            character: {
+              text: character.text,
+              actor: character.actor
+            }
           }
         ];
       }

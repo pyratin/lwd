@@ -29,7 +29,7 @@ const charactersBase64AssignedGet = (
         ) => {
 
           return (
-            card.character ===
+            card?.character?.text ===
             character.text
           );
         }

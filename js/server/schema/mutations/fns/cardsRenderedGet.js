@@ -18,7 +18,7 @@ const cardsFilterTypeAssignedGetFn = (
   ) {
 
     case (
-      !card.character
+      !card?.character?.text
     ) :
 
       return(
@@ -138,21 +138,21 @@ const cardsRenderedGet = (
           res
         ) => {
 
-          const character = card.character;
+          const characterText = card?.character?.text;
 
           let text = card.text;
 
           if (
-            character
+            characterText
           ) {
 
             text = text.replace(
               new RegExp(
-                character
+                characterText
               ),
               `
                 <b>${
-                  character
+                  characterText
                 }</b>
               `
                 .trim()

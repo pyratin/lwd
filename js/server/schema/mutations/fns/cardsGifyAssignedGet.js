@@ -14,7 +14,7 @@ const cardsForGifyGet = (
     ) => {
 
       if (
-        !card.character
+        !card?.character?.text
       ) {
 
         return [

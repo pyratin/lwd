@@ -143,7 +143,6 @@ const process = async (
   const base64 = await gifGet(
     movieDataBasic.title,
     movieDataBasic.poster,
-    characters,
     cards
   );
 
