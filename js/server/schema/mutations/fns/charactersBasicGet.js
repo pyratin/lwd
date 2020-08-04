@@ -98,7 +98,7 @@ const characterStringMatchedGet = (
     plotCharacter ===
     castCharacter
   ) ?
-    plotCharacter :
+    '0' :
     null;
 };
 
@@ -107,18 +107,14 @@ const characterLevenMatchedGet = (
   castCharacter
 ) => {
 
-  const character = (
+  return (
     leven(
       plotCharacter,
       castCharacter
     ) === 1
   ) ?
-    plotCharacter :
+    '1' :
     null;
-
-  return (
-    character
-  );
 };
 
 const characterTokenizedGet = (
@@ -144,8 +140,7 @@ const characterTokenizedGet = (
 
 const characterFragmentMatchedGet = (
   character,
-  _character,
-  tokensSource
+  _character
 ) => {
 
   const characterTokenCombinations = combinations(
@@ -181,21 +176,11 @@ const characterFragmentMatchedGet = (
     }
   );
 
-  if (
-    !characterToken
-  ) {
-
-    return (
-      null
-    );
-  }
-
   return (
-    tokensSource === 
-    'castCharacter'
+    characterToken
   ) ?
-    character :
-    _character;
+    '2' :
+    null;
 };
 
 const __charactersGetFn = (
@@ -203,7 +188,7 @@ const __charactersGetFn = (
   castCharacter
 ) => {
 
-  let characterText;
+  let matchIndexString;
 
   switch (
     true
@@ -211,45 +196,56 @@ const __charactersGetFn = (
 
     case (
       (
-        characterText = characterStringMatchedGet(
+        matchIndexString = characterStringMatchedGet(
           plotCharacter,
           castCharacter
         )
       ) &&
-      !!characterText
+      !!matchIndexString
     ) :
     case (
       (
-        characterText = characterLevenMatchedGet(
+        matchIndexString = characterLevenMatchedGet(
           plotCharacter,
           castCharacter
         )
       ) &&
-      !!characterText
+      !!matchIndexString
     ) :
     case (
       (
-        characterText = characterFragmentMatchedGet(
+        matchIndexString = characterFragmentMatchedGet(
           plotCharacter,
           castCharacter,
-          'castCharacter'
         )
       ) &&
-      !!characterText
+      !!matchIndexString
     ) :
     case (
       (
-        characterText = characterFragmentMatchedGet(
+        matchIndexString = characterFragmentMatchedGet(
           castCharacter,
           plotCharacter,
-          'plotCharacter'
         )
       ) &&
-      !!characterText
+      !!matchIndexString
     ) :
 
       return (
-        plotCharacter
+        {
+          text: plotCharacter,
+          matchIndex: parseInt(
+            matchIndexString
+          ),
+          levenMatchText: (
+            parseInt(
+              matchIndexString
+            ) === 
+            1
+          ) ?
+            castCharacter :
+            null
+        }
       );
   }
 };
@@ -265,19 +261,19 @@ const _charactersGetFn = (
       castCharacter
     ) => {
 
-      const characterText = __charactersGetFn(
+      const match = __charactersGetFn(
         plotCharacter,
         castCharacter.text
       );
 
       if (
         !memo &&
-        characterText
+        match
       ) {
 
         return {
           ...castCharacter,
-          text: characterText
+          ...match
         };
       }
 
