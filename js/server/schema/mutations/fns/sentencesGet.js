@@ -519,7 +519,7 @@ export default (
         if (
           (
             memo.length >= 
-            5
+            3
           ) &&
           (
             !memo[
@@ -536,7 +536,7 @@ export default (
             ) ||
             (
               memo.length >=
-              10
+              6
             )
           )
         ) {
