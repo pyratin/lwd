@@ -156,7 +156,6 @@ const sentenceShortenedGet = (
       ', '
     );
 
-  console.log(sentence);
   return (
     sentence
   );
@@ -200,6 +199,11 @@ const sentenceParenthesisHandle = (
   let sentence = sentenceActorTextsRemove(
     _sentence,
     cast
+  );
+
+  sentence = sentence.replace(
+    /\s*\([^)]*\)(\s*)/g,
+    '$1'
   );
 
   return (
