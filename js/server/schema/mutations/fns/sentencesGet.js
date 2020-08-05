@@ -9,7 +9,7 @@ const sentenceMaxLength = 100;
 
 const sentenceNormalizeRegExp = /,\s/;
 
-const sentenceCCReplace = (
+const _sentenceShortenedGetFn = (
   _sentence
 ) => {
 
@@ -97,6 +97,71 @@ const sentenceCCReplace = (
   );
 };
 
+const sentenceShortenedGetFn = (
+  _sentence
+) => {
+
+  let sentence = _sentenceShortenedGetFn(
+    _sentence
+  );
+
+  sentence = sentence.replace(
+    /\swhich(\s)/g,
+    ', which$1'
+  );
+
+  return (
+    sentence
+  );
+};
+
+const sentenceShortenedGet = (
+  _sentence
+) => {
+
+  const sentence = _sentence.split(
+    /,/g
+  )
+    .reduce(
+      (
+        memo,
+        __sentence
+      ) => {
+
+        let sentence = __sentence.trim();
+
+        if (
+          sentence.length >
+          sentenceMaxLength
+        ) {
+
+          sentence = sentenceShortenedGetFn(
+            sentence
+          );
+
+          return [
+            ...memo,
+            sentence
+          ];
+        }
+
+        return [
+          ...memo,
+          sentence
+        ];
+      },
+      []
+    )
+    .join(
+      ', '
+    );
+
+  console.log(sentence);
+  return (
+    sentence
+  );
+};
+
 const sentenceActorTextsRemove = (
   sentence,
   cast
@@ -147,13 +212,8 @@ const sentencesPreprocessedGetFn = (
   cast
 ) => {
 
-  let sentence = sentenceCCReplace(
+  let sentence = sentenceShortenedGet(
     _sentence
-  );
-
-  sentence = sentence.replace(
-    /\swhich(\s)/g,
-    ', which$1'
   );
 
   sentence = sentenceParenthesisHandle(
