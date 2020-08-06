@@ -1,0 +1,14 @@
+id=MagickCache
+magick-signature=1951341353
+class=DirectClass  colors=0  matte=False
+columns=480  rows=196 depth=16
+colorspace=sRGB
+page=480x196+0+0
+rendering-intent=Perceptual
+gamma=0.454545
+red-primary=0.64,0.33  green-primary=0.3,0.6  blue-primary=0.15,0.06
+white-point=0.3127,0.329
+date:create=2020-08-06T19:12:32+06:00
+date:modify=2020-08-06T19:12:32+06:00
+
+:
