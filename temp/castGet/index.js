@@ -4,6 +4,9 @@ import path from 'path';
 import fs from 'fs';
 import cheerio from 'cheerio';
 
+import NNPsGet from 
+  '~/js/server/schema/mutations/fns/NNPsGet';
+
 const dataPathString = 'data.json';
 
 const dataGet = () => {
@@ -66,11 +69,37 @@ const castTextGet = (
     .text;
 };
 
-const castGetFn = (
-  castHtml
+const actorsGetFn = (
+  castLine
 ) => {
 
-  console.log(castHtml);
+  const NNPs = NNPsGet(
+    castLine
+  );
+
+};
+
+const actorsGet = (
+  castLines
+) => {
+
+  return castLines.reduce(
+    (
+      memo,
+      castLine
+    ) => {
+
+      const actor = actorsGetFn(
+        castLine
+      );
+
+      return [
+        ...memo,
+        actor
+      ];
+    },
+    []
+  );
 };
 
 const castGet = (
@@ -90,31 +119,18 @@ const castGet = (
     castText
   );
 
-  $(
+  const cast = $(
     'body'
   )
-    .find(
-      'ul,ol'
-    )
-    .find(
-      'li'
-    )
-    .toArray()
-    .reduce(
-      (
-        memo,
-        el
-      ) => {
+    .text();
 
-        castGetFn(
-          $(
-            el
-          )
-            .html()
-        );
-      },
-      []
-    );
+  const castLines = cast.split(
+    /\n/
+  );
+
+  const actors = actorsGet(
+    castLines
+  );
 };
 
 (

@@ -43,8 +43,17 @@ const moviePageSectionTextGet = (
       ) => {
 
         return (
-          anchor ===
-          anchorName
+          anchor.match(
+            new RegExp(
+              `
+                ${
+                  anchorName
+                }
+              `
+                .trim(),
+              'i'
+            )
+          )
         );
       }
     );
@@ -259,7 +268,8 @@ const plotGet = (
 ) => {
 
   if (
-    !plotText
+    !plotText ||
+    !cast
   ) {
 
     return (

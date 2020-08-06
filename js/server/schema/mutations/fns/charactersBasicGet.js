@@ -63,17 +63,18 @@ const castCharactersFlatlistGet = (
                 )
               );
 
+            const roleIndex = _cast.role
+              .match(
+                text
+              )?.index;
+
             return [
               ...castCharacterMemo,
               {
                 text,
                 castIndex,
-                roleIndex: _cast.role
-                  .match(
-                    text
-                  )
-                  .index,
-                possessive
+                possessive,
+                roleIndex
               }
             ];
           },

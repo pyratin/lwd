@@ -46,6 +46,31 @@ const titleGet = async (
   );
 };
 
+const charactersPostSegmentsGet = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const text = character.levenMatchText ||
+        character.text;
+
+      return [
+        ...memo,
+        {
+          ...character,
+          text
+        }
+      ];
+    },
+    []
+  );
+};
+
 const movieCreate = async (
   title,
   base64,
@@ -94,8 +119,8 @@ const process = async (
   );
 
   if (
-    !movieDataBasic.plot ||
-    !movieDataBasic.cast
+    !movieDataBasic?.plot ||
+    !movieDataBasic?.cast
   ) {
 
     return (
@@ -114,24 +139,8 @@ const process = async (
     characters
   );
 
-  characters = characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const text = character.levenMatchText ||
-        character.text;
-
-      return [
-        ...memo,
-        {
-          ...character,
-          text
-        }
-      ];
-    },
-    []
+  characters = charactersPostSegmentsGet(
+    characters
   );
 
   const cards = await cardsGet(
