@@ -101,15 +101,17 @@ const genreRemove = (
     db
   )
     .then(
-      (
-        {
-          _id: genreId
-        }
+      async (
+        genre
       ) => {
 
-        return setsByGenreIdRemove(
-          genreId,
+        await setsByGenreIdRemove(
+          genre._id,
           db
+        );
+
+        return (
+          genre
         );
       }
     );

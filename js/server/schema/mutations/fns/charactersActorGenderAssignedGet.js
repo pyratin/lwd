@@ -1,9 +1,9 @@
 'use strict';
 
 import cheerio from 'cheerio';
-import sbd from 'sbd';
 
 import mediawikiFetch from './mediawikiFetch';
+import sentencesTokenizedGet from './sentencesTokenizedGet';
 
 const actorGet = (
   {
@@ -113,7 +113,7 @@ const actorsGenderAssignedGetFn = (
             }
           );
 
-        const sentenceLead = sbd.sentences(
+        const sentenceLead = sentencesTokenizedGet(
           paragraphLead
         )[
           0

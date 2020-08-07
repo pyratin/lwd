@@ -1,6 +1,7 @@
 'use strict';
 
 import natural from 'natural';
+import escapeStringRegexp from 'escape-string-regexp';
 
 export default (
   _sentence
@@ -8,13 +9,13 @@ export default (
 
   const sentence = _sentence
     .replace(
-      /\//g,
-      ' / '
+      /(\S)\/(\S)/g,
+      '$1 / $2'
     );
 
   const tokenizer = new natural.TreebankWordTokenizer();
 
-  const words = tokenizer.tokenize(
+  let words = tokenizer.tokenize(
     sentence
   )
     .reduce(
@@ -34,6 +35,63 @@ export default (
       },
       []
     );
+
+  words = words.reduce(
+    (
+      memo,
+      word
+    ) => {
+
+      let regExpString = memo.reduce(
+        (
+          regExpStringMemo,
+          {
+            text
+          }
+        ) => {
+
+          return `
+            ${
+              regExpStringMemo
+            }\\s?${
+              escapeStringRegexp(
+                text
+              )
+            }
+          `
+            .trim();
+        },
+        ''
+      );
+
+      regExpString = `
+        ^${
+          regExpString
+        }\\s?
+      `
+        .trim();
+
+      const regExp = new RegExp(
+        regExpString
+      );
+
+      const match = _sentence.match(
+        regExp
+      );
+
+      return [
+        ...memo,
+        {
+          ...word,
+          distance: match[
+            0
+          ]
+            .length
+        }
+      ];
+    },
+    []
+  );
 
   return (
     words

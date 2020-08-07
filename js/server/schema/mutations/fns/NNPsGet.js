@@ -138,7 +138,7 @@ const NNPsGetFn = (
 
           return [
             ...memo,
-            word.text
+            word
           ];
 
         default :

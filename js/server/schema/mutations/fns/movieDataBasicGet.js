@@ -1,9 +1,9 @@
 'use strict';
 
 import cheerio from 'cheerio';
-import sbd from 'sbd';
 
 import mediawikiFetch from './mediawikiFetch';
+import sentencesTokenizedGet from './sentencesTokenizedGet';
 import sentencesGet from './sentencesGet';
 
 const titleEncodedGet = (
@@ -146,7 +146,7 @@ const castGetFn = (
       role
     ] = textMatch;
 
-    role = sbd.sentences(
+    role = sentencesTokenizedGet(
       role
     )[
       0

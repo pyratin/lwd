@@ -68,15 +68,17 @@ const actorRemove = (
     db
   )
     .then(
-      (
-        {
-          _id: actorId
-        }
+      async (
+        actor
       ) => {
 
-        return actorImagesByActorIdRemove(
-          actorId,
+        await actorImagesByActorIdRemove(
+          actor._id,
           db
+        );
+
+        return (
+          actor
         );
       }
     );

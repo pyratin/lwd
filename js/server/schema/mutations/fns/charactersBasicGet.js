@@ -23,6 +23,18 @@ const plotCharactersGet = (
             ...NNPsGet(
               sentence.text
             )
+              .map(
+                (
+                  {
+                    text
+                  }
+                ) => {
+
+                  return (
+                    text
+                  );
+                }
+              )
           ]
         )
       ];
@@ -48,7 +60,10 @@ const castCharactersFlatlistGet = (
         .reduce(
           (
             castCharacterMemo,
-            text
+            {
+              text,
+              distance
+            }
           ) => {
 
             const possessive = !!_cast.role
@@ -63,18 +78,13 @@ const castCharactersFlatlistGet = (
                 )
               );
 
-            const roleIndex = _cast.role
-              .match(
-                text
-              )?.index;
-
             return [
               ...castCharacterMemo,
               {
                 text,
                 castIndex,
                 possessive,
-                roleIndex
+                distance
               }
             ];
           },
@@ -356,15 +366,15 @@ const charactersSortedGet = (
           return -1;
 
         case (
-          a.roleIndex >
-          b.roleIndex
+          a.distance >
+          b.distance
         ) :
 
           return 1;
 
         case (
-          b.roleIndex >
-          a.roleIndex
+          b.distance >
+          a.distance
         ) :
 
           return -1;
@@ -509,7 +519,7 @@ const charactersCastDataAssignedGet = (
         character
       ) => {
 
-        delete character.roleIndex;
+        delete character.distance;
 
         return (
           character

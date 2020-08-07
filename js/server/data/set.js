@@ -101,15 +101,17 @@ const setRemove = (
     db
   )
     .then(
-      (
-        {
-          _id: setId
-        }
+      async (
+        set
       ) => {
 
-        return actorsBySetIdRemove(
-          setId,
+        await actorsBySetIdRemove(
+          set._id,
           db
+        );
+
+        return (
+          set
         );
       }
     );

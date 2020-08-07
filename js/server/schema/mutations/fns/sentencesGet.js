@@ -1,7 +1,6 @@
 'use strict';
 
-import sbd from 'sbd';
-
+import sentencesTokenizedGet from './sentencesTokenizedGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
 
@@ -438,7 +437,7 @@ const sentencesGetFn = (
   cast
 ) => {
 
-  let sentences = sbd.sentences(
+  let sentences = sentencesTokenizedGet(
     paragraph
   );
 
