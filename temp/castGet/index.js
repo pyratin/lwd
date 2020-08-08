@@ -69,17 +69,7 @@ const castTextGet = (
     .text;
 };
 
-const actorsGetFn = (
-  castLine
-) => {
-
-  const NNPs = NNPsGet(
-    castLine
-  );
-
-};
-
-const actorsGet = (
+const actorTextsGet = (
   castLines
 ) => {
 
@@ -89,13 +79,87 @@ const actorsGet = (
       castLine
     ) => {
 
-      const actor = actorsGetFn(
+      const NNPs = NNPsGet(
         castLine
       );
 
+      const actor = NNPs.find(
+        (
+          {
+            distance
+          }
+        ) => {
+
+          return (
+            distance ===
+            0
+          );
+        }
+      );
+
+      if (
+        actor
+      ) {
+
+        return [
+          ...memo,
+          actor.text
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const actorsGet = (
+  actorTexts,
+  castHtml
+) => {
+
+  return actorTexts.reduce(
+    (
+      memo,
+      actorText
+    ) => {
+
+      const regExpString = `
+      <a href="/wiki/(.*?)".*?>${
+          actorText
+        }</a>
+      `
+        .trim();
+
+      const regExp = new RegExp(
+        regExpString,
+      );
+
+      const match = castHtml.match(
+        regExp
+      );
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          {
+            text: actorText,
+            ud: match[1]
+          }
+        ];
+      }
+
       return [
         ...memo,
-        actor
+        {
+          text: actorText,
+          ud: null
+        }
       ];
     },
     []
@@ -103,11 +167,11 @@ const actorsGet = (
 };
 
 const castGet = (
-  castText
+  castHtml
 ) => {
 
   if (
-    !castText
+    !castHtml
   ) {
 
     return (
@@ -116,7 +180,7 @@ const castGet = (
   }
 
   const $ = cheerio.load(
-    castText
+    castHtml
   );
 
   const cast = $(
@@ -126,11 +190,28 @@ const castGet = (
 
   const castLines = cast.split(
     /\n/
+  )
+    .filter(
+      (
+        castLine
+      ) => {
+
+        return (
+          !!castLine
+        );
+      }
+    );
+
+  const actorTexts = actorTextsGet(
+    castLines
   );
 
   const actors = actorsGet(
-    castLines
+    actorTexts,
+    castHtml
   );
+
+  console.log(actors);
 };
 
 (
