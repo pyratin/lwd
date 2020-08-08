@@ -1,5 +1,7 @@
 'use strict';
 
+import cheerio from 'cheerio';
+
 import sentencesTokenizedGet from './sentencesTokenizedGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
@@ -438,7 +440,7 @@ const sentencesGetFn = (
   );
 };
 
-export default (
+const sentencesGet = (
   paragraphs
 ) => {
 
@@ -462,52 +464,72 @@ export default (
     []
   );
 
-  sentences = (
+  return (
     sentences
-  ) &&
-    sentences.reduce(
-      (
-        memo,
-        sentence
-      ) => {
+  );
+};
 
-        if (
-          (
-            memo.length >= 
-            3
-          ) &&
-          (
-            !memo[
-              memo.length - 1
-            ]?.text
-              .match(/\s...,$/)
-          ) &&
-          (
-            (
-              memo[
-                memo.length - 1
-              ]?.paragraphIndex !==
-              sentence.paragraphIndex
-            ) ||
-            (
-              memo.length >=
-              6
-            )
-          )
-        ) {
+export default (
+  plotText
+) => {
 
-          return (
-            memo
-          );
-        }
+  if (
+    !plotText
+  ) {
 
-        return [
-          ...memo,
-          sentence
-        ];
-      },
-      []
+    return (
+      null
     );
+  }
+
+  const $ = cheerio.load(
+    plotText
+  );
+
+  const plotEl = $(
+    'span, sup'
+  )
+    .remove()
+    .end();
+
+  let paragraphs = plotEl
+    .find(
+      'p'
+    )
+    .toArray();
+
+  if (
+    !paragraphs.length
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  paragraphs = paragraphs.reduce(
+    (
+      memo,
+      p
+    ) => {
+
+      let paragraph = $(
+        p
+      )
+        .text();
+
+      return [
+        ...memo ||
+        [],
+        paragraph
+      ];
+    },
+    null
+  );
+
+  const sentences = sentencesGet(
+    paragraphs
+  );
 
   return (
     sentences

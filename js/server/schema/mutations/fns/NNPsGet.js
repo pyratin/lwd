@@ -154,6 +154,26 @@ const NNPsGetFn = (
   );
 };
 
+const NNPsCleanedGet = (
+  words
+) => {
+
+  return words.map(
+    (
+      word
+    ) => {
+
+      delete word.token;
+
+      delete word.tag;
+
+      return (
+        word
+      );
+    }
+  );
+};
+
 export default (
   sentence,
   attachIndexZeroOverride = false
@@ -173,6 +193,10 @@ export default (
   );
 
   words = NNPsGetFn(
+    words
+  );
+
+  words = NNPsCleanedGet(
     words
   );
 

@@ -1,54 +1,40 @@
 'use strict';
 
-import path from 'path';
-import fs from 'fs';
+import minimist from 'minimist';
 import cheerio from 'cheerio';
 
+import mediawikiFetch from 
+  '~/js/server/schema/mutations/fns/mediawikiFetch';
+import movieDataBasicPlotGet from 
+  '~/js/server/schema/mutations/fns/movieDataBasicPlotGet';
+import plotNNPsGet from 
+  '~/js/server/schema/mutations/fns/plotNNPsGet';
 import NNPsGet from 
   '~/js/server/schema/mutations/fns/NNPsGet';
-import parenthesisPurgedGet from 
-  '~/js/server/schema/mutations/fns/parenthesisPurgedGet';
+import NNPCrossMatchesGet from 
+  '~/js/server/schema/mutations/fns/NNPCrossMatchesGet';
 
-const dataPathString = 'data.json';
+const titleEncodedGet = (
+  title
+) => {
 
-const dataGet = () => {
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-
-      return fs.readFile(
-        path.join(
-          process.cwd(),
-          'temp/castGet',
-          dataPathString
-        ),
-        'utf-8',
-        (
-          error,
-          res
-        ) => {
-
-          if (
-            error
-          ) {
-
-            return reject(
-              error
-            );
-          }
-
-          return resolve(
-            JSON.parse(
-              res
-            )
-          );
-        }
-      );
-    }
+  return encodeURIComponent(
+    title
   );
+};
+
+const pageMobileSectionQueryGet = (
+  title
+) => {
+
+  return `
+    https://en.wikipedia.org/api/rest_v1/page/mobile-sections/${
+      titleEncodedGet(
+        title
+      )
+    }
+  `
+    .trim();
 };
 
 const moviePageSectionTextsGetFn = (
@@ -105,37 +91,21 @@ const moviePageSectionTextsGet = (
       return [
         ...memo,
         sectionText
+          .replace(
+            /\n/g,
+            ''
+          )
       ];
     },
     []
   );
 };
 
-const castTextGet = (
-  data
-) => {
-
-  return data.remaining.sections
-    .find(
-      (
-        {
-          anchor
-        }
-      ) => {
-
-        return (
-          anchor === 'Cast'
-        );
-      }
-    )
-    .text;
-};
-
-const actorTextsGet = (
+const actorNNPsGet = (
   castLines
 ) => {
 
-  const actorTexts = castLines.reduce(
+  const NNPs = castLines.reduce(
     (
       memo,
       castLine
@@ -146,7 +116,7 @@ const actorTextsGet = (
         true
       );
 
-      const actor = NNPs.find(
+      const NNP = NNPs.find(
         (
           {
             distance
@@ -161,12 +131,12 @@ const actorTextsGet = (
       );
 
       if (
-        actor
+        NNP
       ) {
 
         return [
           ...memo,
-          actor.text
+          NNP
         ];
       }
 
@@ -178,19 +148,19 @@ const actorTextsGet = (
   );
 
   return (
-    actorTexts
+    NNPs
   );
 };
 
-const actorsGet = (
-  actorTexts,
+const actorsUdAssignedGet = (
+  _actors,
   castHtml
 ) => {
 
-  const actors = actorTexts.reduce(
+  const actors = _actors.reduce(
     (
       memo,
-      actorText
+      actor
     ) => {
 
       const hrefCatchString = '[A-Za-z0-9_()]*?';
@@ -199,7 +169,7 @@ const actorsGet = (
       <a href="/wiki/(${
         hrefCatchString
       })" [^>]*?>${
-          actorText
+          actor.text
         }</a>
       `
         .trim();
@@ -219,7 +189,7 @@ const actorsGet = (
         return [
           ...memo,
           {
-            text: actorText,
+            ...actor,
             ud: match[1]
           }
         ];
@@ -228,7 +198,7 @@ const actorsGet = (
       return [
         ...memo,
         {
-          text: actorText,
+          ...actor,
           ud: null
         }
       ];
@@ -243,50 +213,19 @@ const actorsGet = (
 
 const actorsFilteredGet = (
   _actors,
-  _plotText
+  plot
 ) => {
 
-  const plotText = parenthesisPurgedGet(
-    _plotText
+  const plotCharacters = plotNNPsGet(
+    plot
   );
 
-  const actors = _actors.reduce(
-    (
-      memo,
-      {
-        text,
-        ud
-      }
-    ) => {
-
-      const match = plotText.match(
-        text
-      );
-
-      if (
-        match &&
-        !ud
-      ) {
-
-        return (
-          memo
-        );
-      }
-
-      return [
-        ...memo,
-        {
-          text,
-          ud
-        }
-      ];
-    },
-    []
+  const characters = NNPCrossMatchesGet(
+    plotCharacters,
+    _actors
   );
+  console.log(characters);
 
-  return (
-    actors
-  );
 };
 
 const castGetFn = (
@@ -346,12 +285,12 @@ const castGetFn = (
 
 const castGet = (
   _castText,
-  plotText
+  plot
 ) => {
 
   if (
     !_castText ||
-    !plotText
+    !plot
   ) {
 
     return (
@@ -379,32 +318,46 @@ const castGet = (
       }
     );
 
-  const actorTexts = actorTextsGet(
+  let actors = actorNNPsGet(
     castLines
   );
 
-  let actors = actorsGet(
-    actorTexts,
+  actors = actorsUdAssignedGet(
+    actors,
     _castText
   );
 
   actors = actorsFilteredGet(
     actors,
-    plotText
+    plot
   );
-  console.log(actors);
 
-  const cast = castGetFn(
-    actors,
-    castLines
-  );
+  //const cast = castGetFn(
+    //actors,
+    //castLines
+  //);
 
 };
 
 (
   async () => {
+
+    const {
+      text
+    } = minimist(
+      process.argv
+        .slice(
+          2
+        )
+    );
     
-    const json = await dataGet();
+    const query = pageMobileSectionQueryGet(
+      text
+    );
+
+    const json = await mediawikiFetch(
+      query
+    );
 
     const anchorNames = [
       'Cast',
@@ -419,9 +372,13 @@ const castGet = (
       anchorNames
     );
 
+    const plot = movieDataBasicPlotGet(
+      plotText
+    );
+
     castGet(
       castText,
-      plotText
+      plot
     );
   }
 )();

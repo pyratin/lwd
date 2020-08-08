@@ -1,10 +1,8 @@
 'use strict';
 
-import cheerio from 'cheerio';
-
 import mediawikiFetch from './mediawikiFetch';
-import sentencesTokenizedGet from './sentencesTokenizedGet';
-import sentencesGet from './sentencesGet';
+import movieDataBasicPlotGet from './movieDataBasicPlotGet';
+import movieDataBasicCastGet from './movieDataBasicCastGet';
 
 const titleEncodedGet = (
   title
@@ -83,249 +81,69 @@ const moviePageSectionTextsGet = (
       return [
         ...memo,
         sectionText
+          .replace(
+            /\n/g,
+            ' '
+          )
       ];
     },
     []
   );
 };
 
-const pageTitleFromUrlGet = (
-  url
+const plotCulledGet = (
+  _plot
 ) => {
 
-  return url.split(
-    /\//
-  )
-    .slice(
-      -1
-    )[
-      0
-    ];
-};
-
-const castGetFn = (
-  castHtml
-) => {
-
-  const $ = cheerio.load(
-    castHtml
-  );
-
-  const castEl = $(
-    'span, sup'
-  )
-    .remove()
-    .end();
-
-  const castText = castEl.text();
-
-  const textRegExp = new RegExp(
-    `
-      ^(.*?)\\s+((?:as|—)(?:\\s|:)(\\n*.*)*)$
-    `
-      .trim()
-  );
-
-  const textMatch = castText.match(
-    textRegExp
-  );
-
-  let actorUd;
-
-  let actorText;
-
-  let role;
-
-  if (
-    textMatch
-  ) {
-
-    [
-      ,
-      actorText,
-      role
-    ] = textMatch;
-
-    role = sentencesTokenizedGet(
-      role
-    )[
-      0
-    ];
-
-    role = role.split(
-      ','
-    )[
-      0
-    ];
-  }
-
-  const htmlRegExp = /^<a/;
-
-  const htmlMatch = castHtml.match(
-    htmlRegExp
-  );
-
-  if (
-    actorText &&
-    role &&
-    htmlMatch
-  ) {
-
-    const actorLinkEl = $(
-      castEl
-    )
-      .find(
-        'a:first-child'
-      );
-
-    actorUd = (
-      actorLinkEl.length
-    ) ?
-      pageTitleFromUrlGet(
-        actorLinkEl.attr(
-          'href'
-        )
-      ) :
-      null;
-  }
-
-  return [
-    actorUd,
-    actorText,
-    role
-  ];
-};
-
-const castGet = (
-  castText
-) => {
-
-  if (
-    !castText
-  ) {
-
-    return (
-      null
-    );
-  }
-
-  const $ = cheerio.load(
-    castText
-  );
-
-  const cast = $(
-    'li'
-  )
-    .toArray()
-    .reduce(
+  const plot = (
+    _plot
+  ) &&
+    _plot.reduce(
       (
         memo,
-        castEl
+        sentence
       ) => {
 
-        const [
-          actorUd,
-          actorText,
-          role
-        ] = castGetFn(
-          $(castEl)
-            .html()
-        );
-
         if (
-          actorText &&
-          role
+          (
+            memo.length >= 
+            3
+          ) &&
+          (
+            !memo[
+              memo.length - 1
+            ]?.text
+              .match(/\s...,$/)
+          ) &&
+          (
+            (
+              memo[
+                memo.length - 1
+              ]?.paragraphIndex !==
+              sentence.paragraphIndex
+            ) ||
+            (
+              memo.length >=
+              6
+            )
+          )
         ) {
 
-          return [
-            ...memo ||
-            [],
-            {
-              actor: {
-                ud: actorUd,
-                text: actorText
-              },
-              role
-            }
-          ];
+          return (
+            memo
+          );
         }
 
-        return (
-          memo
-        );
+        return [
+          ...memo,
+          sentence
+        ];
       },
-      null
+      []
     );
 
   return (
-    cast
-  );
-};
-
-const plotGet = (
-  plotText
-) => {
-
-  if (
-    !plotText
-  ) {
-
-    return (
-      null
-    );
-  }
-
-  const $ = cheerio.load(
-    plotText
-  );
-
-  const plotEl = $(
-    'span, sup'
-  )
-    .remove()
-    .end();
-
-  let paragraphs = plotEl
-    .find(
-      'p'
-    )
-    .toArray();
-
-  if (
-    !paragraphs.length
-  ) {
-
-    return (
-      null
-    );
-  }
-
-  paragraphs = paragraphs.reduce(
-    (
-      memo,
-      p
-    ) => {
-
-      let paragraph = $(
-        p
-      )
-        .text();
-
-      return [
-        ...memo ||
-        [],
-        paragraph
-      ];
-    },
-    null
-  );
-
-  const sentences = sentencesGet(
-    paragraphs
-  );
-
-  return (
-    sentences
+    plot
   );
 };
 
@@ -364,12 +182,16 @@ export default async (
     anchorNames
   );
 
-  const cast = castGet(
+  let plot = movieDataBasicPlotGet(
+    plotText
+  );
+
+  const cast = movieDataBasicCastGet(
     castText
   );
 
-  const plot = plotGet(
-    plotText
+  plot = plotCulledGet(
+    plot
   );
 
   return {
