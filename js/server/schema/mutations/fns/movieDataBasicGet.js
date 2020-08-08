@@ -29,7 +29,7 @@ const pageMobileSectionQueryGet = (
     .trim();
 };
 
-const moviePageSectionTextGet = (
+const moviePageSectionTextsGetFn = (
   json,
   anchorName
 ) => {
@@ -75,7 +75,7 @@ const moviePageSectionTextsGet = (
       anchorName
     ) => {
 
-      const sectionText = moviePageSectionTextGet(
+      const sectionText = moviePageSectionTextsGetFn(
         json,
         anchorName
       );
@@ -263,13 +263,11 @@ const castGet = (
 };
 
 const plotGet = (
-  plotText,
-  cast
+  plotText
 ) => {
 
   if (
-    !plotText ||
-    !cast
+    !plotText
   ) {
 
     return (
@@ -323,8 +321,7 @@ const plotGet = (
   );
 
   const sentences = sentencesGet(
-    paragraphs,
-    cast
+    paragraphs
   );
 
   return (
@@ -372,8 +369,7 @@ export default async (
   );
 
   const plot = plotGet(
-    plotText,
-    cast
+    plotText
   );
 
   return {

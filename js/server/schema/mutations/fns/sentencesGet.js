@@ -3,6 +3,7 @@
 import sentencesTokenizedGet from './sentencesTokenizedGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
+import parenthesisPurgedGet from './parenthesisPurgedGet';
 
 const sentenceMaxLength = 100;
 
@@ -160,49 +161,12 @@ const sentenceShortenedGet = (
   );
 };
 
-const sentenceActorTextsRemove = (
-  sentence,
-  cast
-) => {
-
-  return cast.reduce(
-    (
-      memo,
-      _cast
-    ) => {
-
-      const regExp = new RegExp(
-        `
-          \\s(\\(${
-            _cast.actor.text
-          }\\))
-        `
-          .trim(),
-        'g'
-      );
-
-      return memo.replace(
-        regExp,
-        ''
-      );
-    },
-    sentence
-  );
-};
-
 const sentenceParenthesisHandle = (
-  _sentence,
-  cast
+  _sentence
 ) => {
 
-  let sentence = sentenceActorTextsRemove(
-    _sentence,
-    cast
-  );
-
-  sentence = sentence.replace(
-    /\s*\([^)]*\)(\s*)/g,
-    '$1'
+  let sentence = parenthesisPurgedGet(
+    _sentence
   );
 
   return (
@@ -211,8 +175,7 @@ const sentenceParenthesisHandle = (
 };
 
 const sentencesPreprocessedGetFn = (
-  _sentence,
-  cast
+  _sentence
 ) => {
 
   let sentence = sentenceShortenedGet(
@@ -220,8 +183,7 @@ const sentencesPreprocessedGetFn = (
   );
 
   sentence = sentenceParenthesisHandle(
-    sentence,
-    cast
+    sentence
   );
 
   return (
@@ -230,8 +192,7 @@ const sentencesPreprocessedGetFn = (
 };
 
 const sentencesPreprocessedGet = (
-  sentences,
-  cast
+  sentences
 ) => {
 
   return sentences.reduce(
@@ -241,8 +202,7 @@ const sentencesPreprocessedGet = (
     ) => {
 
       const sentence = sentencesPreprocessedGetFn(
-        _sentence,
-        cast
+        _sentence
       );
 
       return [
@@ -433,8 +393,7 @@ const sentenceNormalizedGet = (
 
 const sentencesGetFn = (
   paragraph,
-  paragraphIndex,
-  cast
+  paragraphIndex
 ) => {
 
   let sentences = sentencesTokenizedGet(
@@ -442,8 +401,7 @@ const sentencesGetFn = (
   );
 
   sentences = sentencesPreprocessedGet(
-    sentences,
-    cast
+    sentences
   );
   
   sentences = sentences.reduce(
@@ -481,8 +439,7 @@ const sentencesGetFn = (
 };
 
 export default (
-  paragraphs,
-  cast
+  paragraphs
 ) => {
 
   let sentences = paragraphs.reduce(
@@ -494,8 +451,7 @@ export default (
 
       const _sentences = sentencesGetFn(
         paragraph,
-        paragraphIndex,
-        cast
+        paragraphIndex
       );
 
       return [

@@ -4,7 +4,8 @@ import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
 
 const wordsChunk = (
-  words
+  words,
+  attachIndexZeroOverride
 ) => {
 
   const wordsChunked = words.reduce(
@@ -66,7 +67,8 @@ const wordsChunk = (
               )
           ) &&
           (
-            !!_word.index
+            !!_word.index ||
+            !!attachIndexZeroOverride
           )
         ) :
 
@@ -153,7 +155,8 @@ const NNPsGetFn = (
 };
 
 export default (
-  sentence
+  sentence,
+  attachIndexZeroOverride = false
 ) => {
 
   let words = wordsTokenizedGet(
@@ -165,7 +168,8 @@ export default (
   );
 
   words = wordsChunk(
-    words
+    words,
+    attachIndexZeroOverride
   );
 
   words = NNPsGetFn(
