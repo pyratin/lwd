@@ -18,8 +18,6 @@ badd +29 js/server/schema/mutations/fns/cardsGet.js
 badd +263 js/server/schema/mutations/fns/gifGet.js
 badd +23 js/server/schema/mutations/movieCreate/index.js
 badd +1 js/server/schema/mutations/fns/wordsTaggedGet.js
-badd +366 temp/castGet/index.js
-badd +1 temp/castGet/data.json
 badd +511 js/server/schema/mutations/fns/charactersMontageGet.js
 badd +181 js/server/schema/mutations/fns/charactersBasicGet.js
 badd +78 js/server/schema/mutations/fns/wordsTokenizedGet.js
@@ -34,10 +32,13 @@ badd +40 js/server/data/actor.js
 badd +63 js/server/data/actorImage.js
 badd +1 js/server/schema/mutations/fns/parenthesisPurgedGet.js
 badd +1 js/server/schema/mutations/fns/movieDataBasicPlotGet.js
-badd +0 js/server/schema/mutations/fns/movieDataBasicCastGet.js
-badd +0 js/server/schema/mutations/fns/plotNNPsGet.js
-badd +0 js/server/schema/mutations/fns/castNNPsGet.js
-badd +1 js/server/schema/mutations/fns/NNPCrossMatchesGet.js
+badd +1 js/server/schema/mutations/fns/movieDataBasicCastGet.js
+badd +1 js/server/schema/mutations/fns/plotNNPsGet.js
+badd +1 js/server/schema/mutations/fns/castNNPsGet.js
+badd +1 ~/Documents/Projects/lwd/temp/movieCastDataBasicGet.js/index.js
+badd +1 ~/Documents/Projects/lwd/temp/movieCastDataBasicGet.js/data.json
+badd +1 ~/Documents/Projects/lwd/temp/movieCastDataBasicGet.js/movieDataBasicCastGet.js
+badd +1 ~/Documents/Projects/lwd/js/server/schema/mutations/fns/NNPCrossMatchGet.js
 argglobal
 %argdel
 set stal=2
@@ -66,7 +67,7 @@ exe s:l
 normal! zt
 42
 normal! 06|
-tabedit temp/castGet/index.js
+tabedit ~/Documents/Projects/lwd/temp/movieCastDataBasicGet.js/index.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -85,13 +86,38 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 219 - ((8 * winheight(0) + 18) / 36)
+let s:l = 119 - ((12 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-219
-normal! 04|
-tabedit temp/castGet/data.json
+119
+normal! 010|
+tabedit ~/Documents/Projects/lwd/temp/movieCastDataBasicGet.js/movieDataBasicCastGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 336 - ((30 * winheight(0) + 18) / 36)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+336
+normal! 0
+tabedit ~/Documents/Projects/lwd/temp/movieCastDataBasicGet.js/data.json
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -335,13 +361,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 181 - ((11 * winheight(0) + 18) / 36)
+let s:l = 34 - ((26 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-181
-normal! 08|
-tabedit js/server/schema/mutations/fns/NNPCrossMatchesGet.js
+34
+normal! 014|
+tabedit ~/Documents/Projects/lwd/js/server/schema/mutations/fns/NNPCrossMatchGet.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -360,12 +386,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 18) / 36)
+let s:l = 103 - ((9 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+103
+normal! 014|
 tabedit js/server/schema/mutations/fns/castNNPsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -616,7 +642,7 @@ exe s:l
 normal! zt
 7
 normal! 06|
-tabnext 2
+tabnext 21
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

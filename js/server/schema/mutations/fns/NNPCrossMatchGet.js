@@ -99,7 +99,7 @@ const characterFragmentMatchedGet = (
     null;
 };
 
-const characterMatchRun = (
+export default (
   plotCharacter,
   castCharacter
 ) => {
@@ -164,81 +164,4 @@ const characterMatchRun = (
         }
       );
   }
-};
-
-const _charactersGetFn = (
-  plotCharacter,
-  castCharacters
-) => {
-
-  const character = castCharacters.reduce(
-    (
-      memo,
-      castCharacter
-    ) => {
-
-      const match = characterMatchRun(
-        plotCharacter.text,
-        castCharacter.text
-      );
-
-      if (
-        !memo &&
-        match
-      ) {
-
-        return {
-          ...castCharacter,
-          ...match
-        };
-      }
-
-      return (
-        memo
-      );
-    },
-    null
-  );
-
-  return (
-    character
-  );
-};
-
-export default (
-  plotCharacters,
-  castCharacters
-) => {
-
-  const characters = plotCharacters.reduce(
-    (
-      memo,
-      plotCharacter
-    ) => {
-
-      let character = _charactersGetFn(
-        plotCharacter,
-        castCharacters
-      );
-
-      if (
-        character
-      ) {
-
-        return [
-          ...memo,
-          character
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  return (
-    characters
-  );
 };

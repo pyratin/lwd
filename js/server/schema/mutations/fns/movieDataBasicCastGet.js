@@ -171,6 +171,7 @@ export default (
       },
       null
     );
+  console.log(cast);
 
   return (
     cast
