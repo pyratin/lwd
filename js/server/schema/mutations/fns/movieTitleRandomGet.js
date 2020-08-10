@@ -149,7 +149,7 @@ const movieTitleRandomGetFn = async (
 
   if (
     characterTexts.length <
-    1
+    2
   ) {
 
     return (
