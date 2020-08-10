@@ -80,11 +80,10 @@ const moviePageSectionTextsGet = (
 
       return [
         ...memo,
-        sectionText
-          .replace(
-            /\n/g,
-            ' '
-          )
+        sectionText?.replace(
+          /\n/g,
+          ' '
+        )
       ];
     },
     []
@@ -151,6 +150,9 @@ export default async (
   title
 ) => {
 
+  // eslint-disable-next-line no-console
+  console.log(title);
+
   const query = pageMobileSectionQueryGet(
     title
   );
@@ -187,7 +189,8 @@ export default async (
   );
 
   const cast = movieDataBasicCastGet(
-    castText
+    castText,
+    plot
   );
 
   plot = plotCulledGet(

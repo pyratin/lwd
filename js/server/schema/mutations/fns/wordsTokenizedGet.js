@@ -53,7 +53,7 @@ export default (
           return `
             ${
               regExpStringMemo
-            }\\s?${
+            }\\s*${
               escapeStringRegexp(
                 text
               )
@@ -67,7 +67,7 @@ export default (
       regExpString = `
         ^${
           regExpString
-        }\\s?
+        }\\s*
       `
         .trim();
 
@@ -83,7 +83,7 @@ export default (
         ...memo,
         {
           ...word,
-          distance: match[
+          distance: match?.[
             0
           ]
             .length

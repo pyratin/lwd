@@ -2,121 +2,297 @@
 
 import cheerio from 'cheerio';
 
-import sentencesTokenizedGet from './sentencesTokenizedGet';
+import plotNNPsGet from 
+  '~/js/server/schema/mutations/fns/plotNNPsGet';
+import NNPsGet from 
+  '~/js/server/schema/mutations/fns/NNPsGet';
+import NNPCrossMatchGet from 
+  '~/js/server/schema/mutations/fns/NNPCrossMatchGet';
 
-const pageTitleFromUrlGet = (
-  url
+const actorNNPsGet = (
+  castLines
 ) => {
 
-  return url.split(
-    /\//
-  )
-    .slice(
-      -1
-    )[
-      0
-    ];
+  const NNPs = castLines.reduce(
+    (
+      memo,
+      castLine
+    ) => {
+
+      const NNPs = NNPsGet(
+        castLine,
+        true
+      );
+
+      const NNP = NNPs.find(
+        (
+          {
+            distance
+          }
+        ) => {
+
+          return (
+            distance ===
+            0
+          );
+        }
+      );
+
+      if (
+        NNP
+      ) {
+
+        return [
+          ...memo,
+          NNP
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+
+  return (
+    NNPs
+  );
 };
 
-const castGetFn = (
+const actorsUdAssignedGet = (
+  _actors,
   castHtml
 ) => {
 
-  const $ = cheerio.load(
-    castHtml
-  );
+  const actors = _actors.reduce(
+    (
+      memo,
+      actor
+    ) => {
 
-  const castEl = $(
-    'span, sup'
-  )
-    .remove()
-    .end();
+      const hrefCatchString = '[^"]*?';
 
-  const castText = castEl.text();
+      const regExpString = `
+      <a href="/wiki/(${
+        hrefCatchString
+      })" [^>]*?>${
+          actor.text
+        }</a>
+      `
+        .trim();
 
-  const textRegExp = new RegExp(
-    `
-      ^(.*?)\\s+((?:as|—)(?:\\s|:)(\\n*.*)*)$
-    `
-      .trim()
-  );
-
-  const textMatch = castText.match(
-    textRegExp
-  );
-
-  let actorUd;
-
-  let actorText;
-
-  let role;
-
-  if (
-    textMatch
-  ) {
-
-    [
-      ,
-      actorText,
-      role
-    ] = textMatch;
-
-    role = sentencesTokenizedGet(
-      role
-    )[
-      0
-    ];
-
-    role = role.split(
-      ','
-    )[
-      0
-    ];
-  }
-
-  const htmlRegExp = /^<a/;
-
-  const htmlMatch = castHtml.match(
-    htmlRegExp
-  );
-
-  if (
-    actorText &&
-    role &&
-    htmlMatch
-  ) {
-
-    const actorLinkEl = $(
-      castEl
-    )
-      .find(
-        'a:first-child'
+      const regExp = new RegExp(
+        regExpString,
       );
 
-    actorUd = (
-      actorLinkEl.length
-    ) ?
-      pageTitleFromUrlGet(
-        actorLinkEl.attr(
-          'href'
-        )
-      ) :
-      null;
-  }
+      const match = castHtml.match(
+        regExp
+      );
 
-  return [
-    actorUd,
-    actorText,
-    role
-  ];
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...actor,
+            ud: match[1]
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        {
+          ...actor,
+          ud: null
+        }
+      ];
+    },
+    []
+  );
+
+  return (
+    actors
+  );
+};
+
+const actorsFilteredGetFn = (
+  plotCharacters,
+  actor
+) => {
+
+  return plotCharacters.reduce(
+    (
+      memo,
+      plotCharacter
+    ) => {
+
+      const match = NNPCrossMatchGet(
+        plotCharacter.text,
+        actor.text
+      );
+
+      if (
+        !memo &&
+        match
+      ) {
+
+        return (
+          match
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    null
+  );
+};
+
+const actorsFilteredGet = (
+  _actors,
+  plot
+) => {
+
+  const plotCharacters = plotNNPsGet(
+    plot
+  );
+
+  const actors = _actors.reduce(
+    (
+      memo,
+      actor
+    ) => {
+
+      const match = actorsFilteredGetFn(
+        plotCharacters,
+        actor
+      );
+
+      if (
+        match &&
+        !actor.ud
+      ) {
+
+        return (
+          memo
+        );
+      }
+
+      return [
+        ...memo,
+        actor
+      ];
+    },
+    []
+  );
+
+  return (
+    actors
+  );
+};
+
+const actorsCleanedGet = (
+  actors
+) => {
+
+  return actors.map(
+    (
+      actor
+    ) => {
+
+      delete actor.index;
+      delete actor.distance;
+
+      return (
+        actor
+      );
+    }
+  );
+};
+
+const castGetFn = (
+  actors,
+  castLines
+) => {
+
+  const castText = castLines.join(
+    '\n'
+  );
+
+  const cast = actors.reduce(
+    (
+      memo,
+      actor,
+      index
+    ) => {
+
+      const regExp = new RegExp(
+        `
+          ^${
+            actor.text
+          }
+        `
+          .trim(),
+        'm'
+      );
+
+      let role = castText.split(
+        regExp
+      )[
+        1
+      ];
+
+      if (
+        actors.length >
+        (
+          index + 1
+        )
+      ) {
+
+        role = role.split(
+          actors[
+            index + 1
+          ]
+            .text
+        )[
+          0
+        ];
+      }
+
+      role = role.replace(
+        /\n/g,
+        ' '
+      );
+
+      return [
+        ...memo,
+        {
+          actor,
+          role
+        }
+      ];
+    },
+    []
+  );
+
+  return (
+    cast
+  );
 };
 
 export default (
-  castText
+  _castText,
+  plot
 ) => {
 
   if (
-    !castText
+    !_castText ||
+    !plot
   ) {
 
     return (
@@ -125,55 +301,50 @@ export default (
   }
 
   const $ = cheerio.load(
-    castText
+    _castText
   );
 
-  const cast = $(
+  const castLines = $(
     'li'
   )
     .toArray()
-    .reduce(
+    .map(
       (
-        memo,
-        castEl
+        el
       ) => {
 
-        const [
-          actorUd,
-          actorText,
-          role
-        ] = castGetFn(
-          $(castEl)
-            .html()
-        );
-
-        if (
-          actorText &&
-          role
-        ) {
-
-          return [
-            ...memo ||
-            [],
-            {
-              actor: {
-                ud: actorUd,
-                text: actorText
-              },
-              role
-            }
-          ];
-        }
-
-        return (
-          memo
-        );
-      },
-      null
+        return $(
+          el
+        )
+          .text();
+      }
     );
-  console.log(cast);
+
+  let actors = actorNNPsGet(
+    castLines
+  );
+
+  actors = actorsUdAssignedGet(
+    actors,
+    _castText
+  );
+
+  actors = actorsFilteredGet(
+    actors,
+    plot
+  );
+
+  actors = actorsCleanedGet(
+    actors
+  );
+
+  const cast = castGetFn(
+    actors,
+    castLines
+  );
 
   return (
     cast
   );
 };
+

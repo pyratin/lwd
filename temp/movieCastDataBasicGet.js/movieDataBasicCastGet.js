@@ -71,7 +71,7 @@ const actorsUdAssignedGet = (
       actor
     ) => {
 
-      const hrefCatchString = '[A-Za-z0-9_().]*?';
+      const hrefCatchString = '[^"]*?';
 
       const regExpString = `
       <a href="/wiki/(${
@@ -332,7 +332,6 @@ export default (
     actors,
     castLines
   );
-  console.log(cast);
 
   return (
     cast

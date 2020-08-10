@@ -207,10 +207,19 @@ const sentencesPreprocessedGet = (
         _sentence
       );
 
-      return [
-        ...memo,
-        sentence
-      ];
+      if (
+        sentence.trim()
+      ) {
+
+        return [
+          ...memo,
+          sentence
+        ];
+      }
+
+      return (
+        memo
+      );
     },
     []
   );
