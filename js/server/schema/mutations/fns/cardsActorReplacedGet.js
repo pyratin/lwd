@@ -144,133 +144,6 @@ const starringActorsFlatlistGet = (
   );
 };
 
-const spoofActorWeightGet = (
-  spoofActor,
-  spoofActorsPrevious
-) => {
-
-  return spoofActorsPrevious.reduce(
-    (
-      memo,
-      _spoofActorsPrevious,
-      index
-    ) => {
-
-      if (
-        _spoofActorsPrevious._id.toString() ===
-        spoofActor._id.toString()
-      ) {
-
-        return {
-          count: memo.count + 1,
-          distance: spoofActorsPrevious.length - (
-            index + 1
-          )
-        };
-      }
-
-      return (
-        memo
-      );
-    },
-    {
-      count: 0,
-      distance: spoofActorsPrevious.length
-    }
-  );
-};
-
-const spoofActorWeightAssignedGet = (
-  spoofActor,
-  spoofActorsPrevious
-) => {
-
-  const weight = spoofActorWeightGet(
-    spoofActor,
-    spoofActorsPrevious
-  );
-
-  return {
-    ...spoofActor,
-    ...weight
-  };
-};
-
-const spoofActorsSortedByWeightGet = (
-  spoofActors,
-  spoofActorsPrevious
-) => {
-
-  const spoofActorsWeightAssigned = spoofActors.reduce(
-    (
-      memo,
-      spoofActor
-    ) => {
-
-      return [
-        ...memo,
-        spoofActorWeightAssignedGet(
-          spoofActor,
-          spoofActorsPrevious
-        )
-      ];
-    },
-    []
-  );
-
-  return spoofActorsWeightAssigned.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a.count >
-          b.count
-        ) :
-
-          return 1;
-
-        case (
-          b.count >
-          a.count
-        ) :
-
-          return -1;
-
-        case (
-          a.distance >
-          b.distance
-        ) :
-
-          return -1;
-
-        case (
-          b.distance >
-          a.distance
-        ) :
-
-          return 1;
-      }
-    }
-  )
-    .map(
-      (
-        spoofActor
-      ) => {
-
-        delete spoofActor.count;
-
-        return (
-          spoofActor
-        );
-      }
-    );
-};
-
 const setRandomForGenreGet = (
   genre,
   db
@@ -346,6 +219,142 @@ const actorsFind = (
   );
 };
 
+const _spoofActorWeightAssignedGetFn = (
+  spoofActor,
+  spoofActorsPrevious
+) => {
+
+  return spoofActorsPrevious.reduce(
+    (
+      memo,
+      _spoofActorsPrevious,
+      index
+    ) => {
+
+      if (
+        _spoofActorsPrevious._id.toString() ===
+        spoofActor._id.toString()
+      ) {
+
+        return {
+          count: memo.count + 1,
+          distance: spoofActorsPrevious.length - (
+            index + 1
+          )
+        };
+      }
+
+      return (
+        memo
+      );
+    },
+    {
+      count: 0,
+      distance: spoofActorsPrevious.length
+    }
+  );
+};
+
+const spoofActorWeightAssignedGetFn = (
+  spoofActor,
+  spoofActorsPrevious
+) => {
+
+  const weight = _spoofActorWeightAssignedGetFn(
+    spoofActor,
+    spoofActorsPrevious
+  );
+
+  return {
+    ...spoofActor,
+    ...weight
+  };
+};
+
+const spoofActorWeightAssignedGet = (
+  spoofActors,
+  spoofActorsPrevious
+) => {
+
+  const spoofActorsWeightAssigned = spoofActors.reduce(
+    (
+      memo,
+      spoofActor
+    ) => {
+
+      return [
+        ...memo,
+        spoofActorWeightAssignedGetFn(
+          spoofActor,
+          spoofActorsPrevious
+        )
+      ];
+    },
+    []
+  );
+
+  return (
+    spoofActorsWeightAssigned
+  );
+};
+
+const spoofActorsSortedByWeightGet = (
+  spoofActorsWeightAssigned
+) => {
+
+  return spoofActorsWeightAssigned.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a.count >
+          b.count
+        ) :
+
+          return 1;
+
+        case (
+          b.count >
+          a.count
+        ) :
+
+          return -1;
+
+        case (
+          a.distance >
+          b.distance
+        ) :
+
+          return -1;
+
+        case (
+          b.distance >
+          a.distance
+        ) :
+
+          return 1;
+      }
+    }
+  )
+    .map(
+      (
+        spoofActor
+      ) => {
+
+        delete spoofActor.count;
+
+        return (
+          spoofActor
+        );
+      }
+    );
+};
+
 const spoofActorsGetFn = async (
   starringActor,
   setRandomId,
@@ -375,6 +384,11 @@ const spoofActorsGetFn = async (
 
   spoofActors = shuffledGet(
     spoofActors
+  );
+
+  spoofActors = spoofActorWeightAssignedGet(
+    spoofActors,
+    spoofActorsPrevious
   );
 
   spoofActors = spoofActorsSortedByWeightGet(

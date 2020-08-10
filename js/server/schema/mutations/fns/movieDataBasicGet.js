@@ -151,7 +151,14 @@ export default async (
 ) => {
 
   // eslint-disable-next-line no-console
-  console.log(title);
+  console.log(
+    `
+      movieDataBasicCastGet: ${
+        title
+      }
+    `
+      .trim()
+  );
 
   const query = pageMobileSectionQueryGet(
     title
