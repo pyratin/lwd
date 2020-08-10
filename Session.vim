@@ -31,8 +31,9 @@ badd +1 temp/movieCastDataBasicGet.js/index.js
 badd +1 temp/movieCastDataBasicGet.js/data.json
 badd +1 temp/movieCastDataBasicGet.js/movieDataBasicCastGet.js
 badd +1 js/server/schema/mutations/fns/NNPCrossMatchGet.js
-badd +0 js/server/schema/mutations/fns/cardsActorReplacedGet.js
-badd +0 js/server/schema/mutations/fns/movieTitleRandomGet.js
+badd +1 js/server/schema/mutations/fns/cardsActorReplacedGet.js
+badd +1 js/server/schema/mutations/fns/movieTitleRandomGet.js
+badd +0 js/server/data/set.js
 argglobal
 %argdel
 set stal=2
@@ -136,6 +137,31 @@ exe s:l
 normal! zt
 84
 normal! 0
+tabedit js/server/data/set.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 46 - ((21 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+46
+normal! 06|
 tabedit js/server/schema/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -305,12 +331,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 386 - ((33 * winheight(0) + 17) / 34)
+let s:l = 270 - ((10 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-386
-normal! 05|
+270
+normal! 03|
 tabedit js/server/schema/mutations/fns/segmentsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -661,7 +687,7 @@ exe s:l
 normal! zt
 7
 normal! 06|
-tabnext 11
+tabnext 12
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

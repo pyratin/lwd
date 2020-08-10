@@ -8,7 +8,8 @@ import {
   genreFindOne
 } from '~/js/server/data/genre';
 import {
-  setsFind
+  setsFind,
+  setFindOne
 } from '~/js/server/data/set';
 import {
   actorsFind as actorsFindFn
@@ -201,30 +202,17 @@ const setRandomForGenreGet = (
     );
 };
 
-const actorsFind = (
-  setId,
-  gender,
+const spoofActorWeightAssignedGetFn = async (
+  spoofActor,
+  _genreId,
+  spoofActorsPrevious,
   db
 ) => {
 
-  return actorsFindFn(
-    {
-      _setId: new ObjectID(
-        setId
-      ),
-      gender
-    },
-    undefined,
-    db
-  );
-};
-
-const _spoofActorWeightAssignedGetFn = (
-  spoofActor,
-  spoofActorsPrevious
-) => {
-
-  return spoofActorsPrevious.reduce(
+  const {
+    count,
+    distance
+  } = spoofActorsPrevious.reduce(
     (
       memo,
       _spoofActorsPrevious,
@@ -253,56 +241,102 @@ const _spoofActorWeightAssignedGetFn = (
       distance: spoofActorsPrevious.length
     }
   );
-};
 
-const spoofActorWeightAssignedGetFn = (
-  spoofActor,
-  spoofActorsPrevious
-) => {
+  const genreId = (
+    await setFindOne(
+      {
+        _id: new ObjectID(
+          spoofActor._setId
+        )
+      },
+      undefined,
+      db
+    )
+  )?._genreId;
 
-  const weight = _spoofActorWeightAssignedGetFn(
-    spoofActor,
-    spoofActorsPrevious
+  const genreMatch = (
+    _genreId.toString() ===
+    genreId.toString()
+  );
+
+  const spoofActorPrevious = spoofActorsPrevious[
+    spoofActorsPrevious.length - 1
+  ];
+
+  const _setId = (
+    spoofActorPrevious
+  ) ?
+    spoofActorPrevious._setId :
+    null;
+
+  const setMatch = (
+    _setId?.toString() ===
+    spoofActor._setId
+      .toString()
   );
 
   return {
     ...spoofActor,
-    ...weight
+    count,
+    distance,
+    genreMatch,
+    setMatch
   };
 };
 
-const spoofActorWeightAssignedGet = (
-  spoofActors,
-  spoofActorsPrevious
+const spoofActorWeightAssignedGet = async (
+  _spoofActors,
+  genreId,
+  spoofActorsPrevious,
+  db
 ) => {
 
-  const spoofActorsWeightAssigned = spoofActors.reduce(
+  const spoofActors = await _spoofActors.reduce(
     (
       memo,
-      spoofActor
+      _spoofActor
     ) => {
 
-      return [
-        ...memo,
-        spoofActorWeightAssignedGetFn(
-          spoofActor,
-          spoofActorsPrevious
-        )
-      ];
+      return memo.then(
+        (
+          result
+        ) => {
+
+          return spoofActorWeightAssignedGetFn(
+            _spoofActor,
+            genreId,
+            spoofActorsPrevious,
+            db
+          )
+            .then(
+              (
+                res
+              ) => {
+
+                return [
+                  ...result,
+                  res
+                ];
+              }
+            );
+        }
+      );
     },
-    []
+    Promise.resolve(
+      []
+    )
   );
 
   return (
-    spoofActorsWeightAssigned
+    spoofActors
   );
 };
 
-const spoofActorsSortedByWeightGet = (
-  spoofActorsWeightAssigned
+const spoofActorsSortedGet = (
+  spoofActors
 ) => {
 
-  return spoofActorsWeightAssigned.sort(
+  return spoofActors.sort(
     (
       a, b
     ) => {
@@ -338,6 +372,34 @@ const spoofActorsSortedByWeightGet = (
         ) :
 
           return 1;
+
+        case (
+          a.genreMatch &&
+          !b.genreMatch
+        ) :
+
+          return -1;
+
+        case (
+          b.genreMatch &&
+          !a.genreMatch
+        ) :
+
+          return 1;
+
+        case (
+          a.setMatch &&
+          !b.setMatch
+        ) :
+
+          return -1;
+
+        case (
+          b.setMatch &&
+          !a.setMatch
+        ) :
+
+          return 1;
       }
     }
   )
@@ -357,7 +419,7 @@ const spoofActorsSortedByWeightGet = (
 
 const spoofActorsGetFn = async (
   starringActor,
-  setRandomId,
+  genreId,
   setGeneralId,
   spoofActorsPrevious,
   db
@@ -365,9 +427,18 @@ const spoofActorsGetFn = async (
 
   const gender = starringActor.gender;
 
-  let spoofActors = await actorsFind(
-    setRandomId,
-    gender,
+  let spoofActors;
+
+  spoofActors = await actorsFindFn(
+    {
+      _setId: {
+        $ne: new ObjectID(
+          setGeneralId
+        )
+      },
+      gender
+    },
+    undefined,
     db
   );
 
@@ -375,9 +446,14 @@ const spoofActorsGetFn = async (
     !spoofActors.length
   ) {
 
-    spoofActors = await actorsFind(
-      setGeneralId,
-      gender,
+    spoofActors = await actorsFindFn(
+      {
+        _setId: new ObjectID(
+          setGeneralId
+        ),
+        gender
+      },
+      undefined,
       db
     );
   }
@@ -386,12 +462,14 @@ const spoofActorsGetFn = async (
     spoofActors
   );
 
-  spoofActors = spoofActorWeightAssignedGet(
+  spoofActors = await spoofActorWeightAssignedGet(
     spoofActors,
-    spoofActorsPrevious
+    genreId,
+    spoofActorsPrevious,
+    db
   );
 
-  spoofActors = spoofActorsSortedByWeightGet(
+  spoofActors = spoofActorsSortedGet(
     spoofActors,
     spoofActorsPrevious
   );
@@ -411,10 +489,15 @@ const spoofActorsGet = async (
   db
 ) => {
 
-  const setRandomId = await setRandomForGenreGet(
-    genre,
-    db
-  );
+  const genreId = (
+    await genreFindOne(
+      {
+        text: genre
+      },
+      undefined,
+      db
+    )
+  )?._id;
 
   const setGeneralId = await setRandomForGenreGet(
     'general',
@@ -434,7 +517,7 @@ const spoofActorsGet = async (
 
           return spoofActorsGetFn(
             starringActor,
-            setRandomId,
+            genreId,
             setGeneralId,
             res,
             db
