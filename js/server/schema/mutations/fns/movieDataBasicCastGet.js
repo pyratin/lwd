@@ -222,7 +222,11 @@ const castGetFn = (
 
   const castText = castLines.join(
     '\n'
-  );
+  )
+    .replace(
+      /\s{2,}/g,
+      ' '
+    );
 
   const cast = actors.reduce(
     (
@@ -243,15 +247,18 @@ const castGetFn = (
 
       let role = castText.split(
         regExp
-      )[
+      )?.[
         1
       ];
 
       if (
-        actors.length >
         (
-          index + 1
-        )
+          actors.length >
+          (
+            index + 1
+          )
+        ) &&
+        role
       ) {
 
         role = role.split(
@@ -259,23 +266,34 @@ const castGetFn = (
             index + 1
           ]
             .text
-        )[
+        )?.[
           0
         ];
       }
 
-      role = role.replace(
-        /\n/g,
-        ' '
-      );
+      role = (role) ?
+        role.replace(
+          /\n/g,
+          ' '
+        ) :
+        null;
 
-      return [
-        ...memo,
-        {
-          actor,
-          role
-        }
-      ];
+      if (
+        role
+      ) {
+
+        return [
+          ...memo,
+          {
+            actor,
+            role
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
     },
     []
   );
