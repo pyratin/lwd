@@ -73,17 +73,24 @@ const moviePageSectionTextsGet = (
       anchorName
     ) => {
 
-      const sectionText = moviePageSectionTextsGetFn(
+      let sectionText = moviePageSectionTextsGetFn(
         json,
         anchorName
       );
 
+      sectionText = sectionText?.replace(
+        /\n/g,
+        ' '
+      );
+
+      sectionText = sectionText?.replace(
+        /\s{2,}/g,
+        ' '
+      );
+
       return [
         ...memo,
-        sectionText?.replace(
-          /\n/g,
-          ' '
-        )
+        sectionText
       ];
     },
     []

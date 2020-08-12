@@ -218,10 +218,32 @@ const findOneAndDelete = (
   );
 };
 
+const listCollections = (
+  query = {},
+  options = {},
+  db
+) => {
+
+  return db.listCollections(
+    query,
+    options
+  )
+    .toArray(
+      (
+        error,
+        res
+      ) => {
+
+        console.log(res);
+      }
+    );
+};
+
 export {
   find,
   findOne,
   countDocuments,
   findOneAndUpdate,
-  findOneAndDelete
+  findOneAndDelete,
+  listCollections
 };

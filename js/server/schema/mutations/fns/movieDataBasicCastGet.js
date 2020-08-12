@@ -222,11 +222,7 @@ const castGetFn = (
 
   const castText = castLines.join(
     '\n'
-  )
-    .replace(
-      /\s{2,}/g,
-      ' '
-    );
+  );
 
   const cast = actors.reduce(
     (
