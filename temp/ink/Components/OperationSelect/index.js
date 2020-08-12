@@ -39,14 +39,9 @@ const OperationSelect = (
     );
   };
 
-  return (
-    <Box
-      flexDirection = 'column'
-    >
-      <Text>
-        operation select:
-      </Text>
+  const inkSelectInputRender = () => {
 
+    return (
       <InkSelectInput
         items = {
           items
@@ -55,6 +50,20 @@ const OperationSelect = (
           onSelectHandle
         }
       />
+    );
+  };
+
+  return (
+    <Box
+      flexDirection = 'column'
+    >
+      <Text>
+        operation select:
+      </Text>
+
+      {
+        inkSelectInputRender()
+      }
     </Box>
   );
 };

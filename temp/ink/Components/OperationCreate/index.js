@@ -8,13 +8,11 @@ import {
 } from 'ink';
 
 import CollectionSelect from '../CollectionSelect';
-import GenreRemove from '../GenreRemove';
-import SetRemove from '../SetRemove';
+import GenreCreate from '../GenreCreate';
 
-const OperationRemove = (
+const OperationCreate = (
   {
-    db,
-    onCompleted
+    db
   }
 ) => {
 
@@ -51,29 +49,12 @@ const OperationRemove = (
       />;
   };
 
-  const genreRemoveRender = () => {
+  const genreCreateRender = () => {
 
     return (
-      <GenreRemove
+      <GenreCreate
         db = {
           db
-        }
-        onCompleted = {
-          onCompleted
-        }
-      />
-    );
-  };
-
-  const setRemoveRender = () => {
-
-    return (
-      <SetRemove
-        db = {
-          db
-        }
-        onCompleted = {
-          onCompleted
         }
       />
     );
@@ -89,19 +70,7 @@ const OperationRemove = (
         'genres'
       ) :
 
-        return genreRemoveRender();
-
-      case (
-        'sets'
-      ) :
-
-        return setRemoveRender();
-
-      default:
-
-        return (
-          null
-        );
+        return genreCreateRender();
     }
   };
 
@@ -117,4 +86,4 @@ const OperationRemove = (
   );
 };
 
-export default OperationRemove;
+export default OperationCreate;

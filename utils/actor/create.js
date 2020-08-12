@@ -613,59 +613,59 @@ const setGet = (
       db
     );
 
-    //const setFolderPathString = `
-      //${
-        //sourceFolderPathString
-      //}/${
-        //setFolderPathFragment
-      //}
-    //`
-      //.trim();
+    const setFolderPathString = `
+      ${
+        sourceFolderPathString
+      }/${
+        setFolderPathFragment
+      }
+    `
+      .trim();
 
-    //(
-      //init
-    //) &&
-      //await genresRemove(
-        //db
-      //);
+    (
+      init
+    ) &&
+      await genresRemove(
+        db
+      );
 
-    //const genre = await genreGet(
-      //genreText,
-      //genreId,
-      //db
-    //);
+    const genre = await genreGet(
+      genreText,
+      genreId,
+      db
+    );
 
-    //const set = await setGet(
-      //setText,
-      //setId,
-      //genre._id,
-      //db
-    //);
+    const set = await setGet(
+      setText,
+      setId,
+      genre._id,
+      db
+    );
 
-    //const actors = await actorsCreate(
-      //set._id,
-      //setFolderPathString,
-      //db
-    //);
+    const actors = await actorsCreate(
+      set._id,
+      setFolderPathString,
+      db
+    );
 
-    //const actorImages = await actorImagesCreate(
-      //actors,
-      //setFolderPathString,
-      //db
-    //);
+    const actorImages = await actorImagesCreate(
+      actors,
+      setFolderPathString,
+      db
+    );
 
-    //// eslint-disable-next-line no-console
-    //console.log(
-      //`
-        //collectionInit: DONE
-        //actors: ${
-          //actors.length
-        //}
-        //actorImages: ${
-          //actorImages.length
-        //}
-      //`
-        //.trim()
-    //);
+    // eslint-disable-next-line no-console
+    console.log(
+      `
+        collectionInit: DONE
+        actors: ${
+          actors.length
+        }
+        actorImages: ${
+          actorImages.length
+        }
+      `
+        .trim()
+    );
   }
 )();

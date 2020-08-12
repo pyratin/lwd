@@ -32,6 +32,7 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "ink": "^3.0.3",
     "ink-select-input": "^4.0.0",
+    "ink-spinner": "^4.0.0",
     "ink-text-input": "^4.0.0",
     "json": "^9.0.6",
     "minimist": "^1.2.5",

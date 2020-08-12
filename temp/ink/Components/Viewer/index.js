@@ -8,32 +8,60 @@ import {
 } from 'ink';
 
 import OperationSelect from '../OperationSelect';
+import OperationCreate from '../OperationCreate';
 import OperationRemove from '../OperationRemove';
 
-const Viewer = () => {
+const Viewer = (
+  {
+    db
+  }
+) => {
 
   const [
     operation,
     operationSet
   ] = useState(
-    '2'
+    null
   );
 
   const onOperationSelectHandle = (
-    value
+    operation
   ) => {
 
-    return operationSet(
-      value
+    return Promise.resolve(
+      operationSet(
+        operation
+      )
+    );
+  };
+
+  const onCompletedHandle = () => {
+
+    return Promise.resolve(
+      operationSet(
+        null
+      )
     );
   };
 
   const operationSelectRender = () => {
 
     return (
+      !operation
+    ) &&
       <OperationSelect
         onOperationSelect = {
           onOperationSelectHandle
+        }
+      />;
+  };
+
+  const operationCreateRender = () => {
+
+    return (
+      <OperationCreate
+        db = {
+          db 
         }
       />
     );
@@ -42,35 +70,48 @@ const Viewer = () => {
   const operationRemoveRender = () => {
 
     return (
-      <OperationRemove/>
+      <OperationRemove
+        db = {
+          db
+        }
+        onCompleted = {
+          onCompletedHandle
+        }
+      />
     );
   };
 
-  const operationRender = () => {
+  const switchRender = () => {
 
     switch (
       operation
     ) {
 
       case (
+        '0'
+      ) :
+
+        return operationCreateRender();
+
+      case (
         '2'
       ) :
 
         return operationRemoveRender();
+
+      default :
+
+        return (
+          null
+        );
     }
-  };
-
-  const switchRender = () => {
-
-    return (
-      !operation
-    ) ?
-      operationSelectRender() :
-      operationRender();
   };
 
   return (
     <Box>
+      {
+        operationSelectRender()
+      }
       {
         switchRender()
       }

@@ -224,19 +224,38 @@ const listCollections = (
   db
 ) => {
 
-  return db.listCollections(
-    query,
-    options
-  )
-    .toArray(
-      (
-        error,
-        res
-      ) => {
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
 
-        console.log(res);
-      }
-    );
+      return db.listCollections(
+        query,
+        options
+      )
+        .toArray(
+          (
+            error,
+            res
+          ) => {
+
+            if (
+              error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              res
+            );
+          }
+        );
+    }
+  );
 };
 
 export {
