@@ -130,7 +130,7 @@ const successHandle = async (
   );
 };
 
-const process = async (
+const processFn = async (
   text,
   genre,
   db,
@@ -196,7 +196,7 @@ const process = async (
   };
 };
 
-export default async (
+const process = async (
   text,
   genre,
   db,
@@ -207,10 +207,29 @@ export default async (
     text
   );
 
-  return process(
+  const movie = await processFn(
     title,
     genre,
     db,
     req
   );
+
+  if (
+    text.match(/^random:/) &&
+    !movie.base64
+  ) {
+
+    return process(
+      text,
+      genre,
+      db,
+      req
+    );
+  }
+
+  return (
+    movie
+  );
 };
+
+export default process;

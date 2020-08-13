@@ -119,7 +119,7 @@ const sentenceShortenedGet = (
 ) => {
 
   const sentence = _sentence.split(
-    /,/g
+    sentenceNormalizeRegExp
   )
     .reduce(
       (
