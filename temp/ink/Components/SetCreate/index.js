@@ -4,18 +4,26 @@ import React, {
   useState
 } from 'react';
 import {
-  Box,
-  Text
+  Box
 } from 'ink';
-import InkTextInput from 'ink-text-input';
-
 import {
-  setFindOne
+  ObjectID
+} from 'mongodb';
+
+import FolderSelect from '../FolderSelect';
+import GenreSelect from '../GenreSelect';
+import {
+  setCreate
 } from '~/js/server/data/set';
+import actorsCreate from '../../fns/actorsCreate';
+import actorImagesCreate from '../../fns/actorImagesCreate';
 
 const SetCreate = (
   {
-    db
+    db,
+    sourceFolderPathString,
+    operationType,
+    onCompleted
   }
 ) => {
 
@@ -27,13 +35,13 @@ const SetCreate = (
   );
 
   const [
-    error,
-    errorSet
+    genreId,
+    genreIdSet
   ] = useState(
     null
   );
 
-  const onChangeHandle = (
+  const onFolderSelectHandle = (
     setText
   ) => {
 
@@ -41,80 +49,116 @@ const SetCreate = (
       setTextSet(
         setText
       )
+    );
+  };
+
+  const onGenreSelectHandle = (
+    genreId
+  ) => {
+
+    return Promise.resolve(
+      genreIdSet(
+        genreId
+      )
     )
+      .then(
+        async () => {
+
+          const set = await setCreate(
+            {
+              _id: new ObjectID()
+            },
+            {
+              $set: {
+                _genreId: new ObjectID(
+                  genreId
+                ),
+                text: setText
+              }
+            },
+            undefined,
+            db
+          );
+
+          const setFolderPathString = `
+            ${
+              sourceFolderPathString
+            }/${
+              set.text
+            }
+          `
+            .trim();
+
+          const actors = await actorsCreate(
+            set._id,
+            setFolderPathString,
+            db
+          );
+
+          await actorImagesCreate(
+            actors,
+            setFolderPathString,
+            db
+          );
+
+          return (
+            null
+          );
+        }
+      )
       .then(
         () => {
 
-          return Promise.resolve(
-            errorSet(
-              null
-            )
-          );
+          return onCompleted();
         }
       );
   };
 
-  const onSubmitHandle = async () => {
-
-    const exists = await setFindOne(
-      {
-        text: setText
-      },
-      undefined,
-      db
-    );
-
-    console.log(exists);
-  };
-
-  const inkTextInputRender = () => {
+  const folderSelectRender = () => {
 
     return (
-      <InkTextInput
-        value = {
-          setText || ''
+      !setText &&
+      !genreId
+    ) &&
+      <FolderSelect
+        db = {
+          db
         }
-        onChange = {
-          onChangeHandle
+        sourceFolderPathString = {
+          sourceFolderPathString
         }
-        onSubmit = {
-          onSubmitHandle
+        operationType = {
+          operationType
         }
-      />
-    );
+        onFolderSelect = {
+          onFolderSelectHandle
+        }
+      />;
   };
 
-  const errorRender = () => {
+  const genreSelectRender = () => {
 
     return (
-      <Box
-        marginLeft = {1}
-      >
-        <Text
-          color = 'red'
-        >
-          {
-            error
-          }
-        </Text>
-      </Box>
-    );
+      setText &&
+      !genreId
+    ) &&
+      <GenreSelect
+        db = {
+          db
+        }
+        onGenreSelect = {
+          onGenreSelectHandle
+        }
+      />;
   };
 
   return (
     <Box>
-      <Box
-        marginRight = {1}
-      >
-        <Text>
-          set name:
-        </Text>
-      </Box>
       {
-        inkTextInputRender()
+        folderSelectRender()
       }
       {
-        errorRender()
+        genreSelectRender()
       }
     </Box>
   );

@@ -255,8 +255,8 @@ const spoofActorWeightAssignedGetFn = async (
   )?._genreId;
 
   const genreMatch = (
-    _genreId.toString() ===
-    genreId.toString()
+    _genreId?.toString() ===
+    genreId?.toString()
   );
 
   const spoofActorPrevious = spoofActorsPrevious[

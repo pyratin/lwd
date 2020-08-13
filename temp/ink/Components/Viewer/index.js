@@ -11,6 +11,8 @@ import OperationSelect from '../OperationSelect';
 import OperationCreate from '../OperationCreate';
 import OperationRemove from '../OperationRemove';
 
+const sourceFolderPathString = 'utils/actor/source';
+
 const Viewer = (
   {
     db
@@ -18,19 +20,19 @@ const Viewer = (
 ) => {
 
   const [
-    operation,
-    operationSet
+    operationType,
+    operationTypeSet
   ] = useState(
     null
   );
 
   const onOperationSelectHandle = (
-    operation
+    operationType
   ) => {
 
     return Promise.resolve(
-      operationSet(
-        operation
+      operationTypeSet(
+        operationType
       )
     );
   };
@@ -38,7 +40,7 @@ const Viewer = (
   const onCompletedHandle = () => {
 
     return Promise.resolve(
-      operationSet(
+      operationTypeSet(
         null
       )
     );
@@ -47,7 +49,7 @@ const Viewer = (
   const operationSelectRender = () => {
 
     return (
-      !operation
+      !operationType
     ) &&
       <OperationSelect
         onOperationSelect = {
@@ -63,6 +65,12 @@ const Viewer = (
         db = {
           db 
         }
+        sourceFolderPathString = {
+          sourceFolderPathString
+        }
+        operationType = {
+          operationType
+        }
         onCompleted = {
           onCompletedHandle
         }
@@ -77,6 +85,9 @@ const Viewer = (
         db = {
           db
         }
+        operationType = {
+          operationType
+        }
         onCompleted = {
           onCompletedHandle
         }
@@ -87,7 +98,7 @@ const Viewer = (
   const switchRender = () => {
 
     switch (
-      operation
+      operationType
     ) {
 
       case (
@@ -97,7 +108,7 @@ const Viewer = (
         return operationCreateRender();
 
       case (
-        '2'
+        '1'
       ) :
 
         return operationRemoveRender();

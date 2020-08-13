@@ -14,6 +14,8 @@ import SetCreate from '../SetCreate';
 const OperationCreate = (
   {
     db,
+    sourceFolderPathString,
+    operationType,
     onCompleted
   }
 ) => {
@@ -71,6 +73,12 @@ const OperationCreate = (
       <SetCreate
         db = {
           db
+        }
+        sourceFolderPathString = {
+          sourceFolderPathString
+        }
+        operationType = {
+          operationType
         }
         onCompleted = {
           onCompleted

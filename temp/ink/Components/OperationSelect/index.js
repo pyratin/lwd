@@ -13,18 +13,14 @@ const OperationSelect = (
   }
 ) => {
 
-  const items = [
+  const operationTypes = [
     {
       label: 'create',
       value: '0'
     },
     {
-      label: 'update',
-      value: '1'
-    },
-    {
       label: 'remove',
-      value: '2'
+      value: '1'
     }
   ];
 
@@ -44,7 +40,7 @@ const OperationSelect = (
     return (
       <InkSelectInput
         items = {
-          items
+          operationTypes
         }
         onSelect = {
           onSelectHandle
