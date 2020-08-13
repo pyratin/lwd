@@ -2,12 +2,9 @@
 
 import cheerio from 'cheerio';
 
-import plotNNPsGet from 
-  '~/js/server/schema/mutations/fns/plotNNPsGet';
-import NNPsGet from 
-  '~/js/server/schema/mutations/fns/NNPsGet';
-import NNPCrossMatchGet from 
-  '~/js/server/schema/mutations/fns/NNPCrossMatchGet';
+import plotNNPsGet from './plotNNPsGet';
+import NNPsGet from './NNPsGet';
+import NNPCrossMatchGet from './NNPCrossMatchGet';
 
 const actorNNPsGet = (
   castLines
@@ -352,7 +349,7 @@ export default (
     actors
   );
 
-  const cast = castGetFn(
+  let cast = castGetFn(
     actors,
     castLines
   );

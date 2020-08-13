@@ -107,6 +107,29 @@ const movieCreate = async (
   );
 };
 
+const successHandle = async (
+  title,
+  base64,
+  db,
+  req
+) => {
+
+  const movie = await movieCreate(
+    title,
+    base64,
+    db,
+    req
+  );
+
+  await movieWrite(
+    movie
+  );
+
+  return (
+    movie
+  );
+};
+
 const process = async (
   text,
   genre,
@@ -155,20 +178,22 @@ const process = async (
     cards
   );
 
-  const movie = await movieCreate(
-    movieDataBasic.title,
-    base64,
-    db,
-    req
-  );
+  if (
+    movieDataBasic.title &&
+    base64
+  ) {
 
-  await movieWrite(
-    movie
-  );
+    return successHandle(
+      movieDataBasic.title,
+      base64,
+      db,
+      req
+    );
+  }
 
-  return (
-    movie
-  );
+  return {
+    title: movieDataBasic.base64
+  };
 };
 
 export default async (
