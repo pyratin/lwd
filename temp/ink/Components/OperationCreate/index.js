@@ -9,10 +9,12 @@ import {
 
 import CollectionSelect from '../CollectionSelect';
 import GenreCreate from '../GenreCreate';
+import SetCreate from '../SetCreate';
 
 const OperationCreate = (
   {
-    db
+    db,
+    onCompleted
   }
 ) => {
 
@@ -56,6 +58,23 @@ const OperationCreate = (
         db = {
           db
         }
+        onCompleted = {
+          onCompleted
+        }
+      />
+    );
+  };
+
+  const setCreateRender = () => {
+
+    return (
+      <SetCreate
+        db = {
+          db
+        }
+        onCompleted = {
+          onCompleted
+        }
       />
     );
   };
@@ -71,6 +90,12 @@ const OperationCreate = (
       ) :
 
         return genreCreateRender();
+
+      case (
+        'sets'
+      ) :
+
+        return setCreateRender();
     }
   };
 

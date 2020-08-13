@@ -63,6 +63,9 @@ const Viewer = (
         db = {
           db 
         }
+        onCompleted = {
+          onCompletedHandle
+        }
       />
     );
   };

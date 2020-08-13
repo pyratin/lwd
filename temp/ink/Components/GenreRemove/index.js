@@ -4,10 +4,8 @@ import React, {
   useState
 } from 'react';
 import {
-  Box,
-  Text
+  Box
 } from 'ink';
-import InkSpinner from 'ink-spinner';
 import {
   ObjectID
 } from 'mongodb';
@@ -31,13 +29,6 @@ const GenreRemove = (
     null
   );
 
-  const [
-    loading,
-    loadingSet
-  ] = useState(
-    false
-  );
-
   const onGenreSelectHandle = (
     genreId
   ) => {
@@ -50,16 +41,6 @@ const GenreRemove = (
       .then(
         () => {
 
-          return Promise.resolve(
-            loadingSet(
-              true
-            )
-          );
-        }
-      )
-      .then(
-        () => {
-
           return genreRemove(
             {
               _id: new ObjectID(
@@ -68,37 +49,6 @@ const GenreRemove = (
             },
             undefined,
             db
-          );
-        }
-      )
-      .then(
-        () => {
-
-          return new Promise(
-            (
-              resolve
-            ) => {
-
-              return setTimeout(
-                () => {
-
-                  return resolve(
-                    null
-                  );
-                },
-                1000
-              );
-            }
-          );
-        }
-      )
-      .then(
-        () => {
-
-          return Promise.resolve(
-            loadingSet(
-              false
-            )
           );
         }
       )
@@ -125,28 +75,10 @@ const GenreRemove = (
       />;
   };
 
-  const loadingRender = () => {
-
-    return (
-      loading
-    ) &&
-      <Box
-        width = '100%'
-        justifyContent = 'center'
-      >
-        <Text>
-          <InkSpinner/>
-        </Text>
-      </Box>;
-  };
-
   return (
     <Box>
       {
         genreSelectRender()
-      }
-      {
-        loadingRender()
       }
     </Box>
   );

@@ -4,13 +4,11 @@ import React, {
   useState
 } from 'react';
 import {
-  Box,
-  Text
+  Box
 } from 'ink';
 import {
   ObjectID
 } from 'mongodb';
-import InkSpinner from 'ink-spinner';
 
 import SetSelect from '../SetSelect';
 import {
@@ -31,13 +29,6 @@ const SetRemove = (
     null
   );
 
-  const [
-    loading,
-    loadingSet
-  ] = useState(
-    false
-  );
-
   const onSelectHandle = (
     setId
   ) => {
@@ -50,16 +41,6 @@ const SetRemove = (
       .then(
         () => {
 
-          return Promise.resolve(
-            loadingSet(
-              true
-            )
-          );
-        }
-      )
-      .then(
-        () => {
-
           return setRemove(
             {
               _id: new ObjectID(
@@ -68,37 +49,6 @@ const SetRemove = (
             },
             undefined,
             db
-          );
-        }
-      )
-      .then(
-        () => {
-
-          return new Promise(
-            (
-              resolve
-            ) => {
-
-              return setTimeout(
-                () => {
-
-                  return resolve(
-                    null
-                  );
-                },
-                1000
-              );
-            }
-          );
-        }
-      )
-      .then(
-        () => {
-
-          return Promise.resolve(
-            loadingSet(
-              false
-            )
           );
         }
       )
@@ -125,28 +75,10 @@ const SetRemove = (
       />;
   };
 
-  const loadingRender = () => {
-
-    return (
-      loading
-    ) &&
-      <Box
-        width = '100%'
-        justifyContent = 'center'
-      >
-        <Text>
-          <InkSpinner/>
-        </Text>
-      </Box>;
-  };
-
   return (
     <Box>
       {
         setSelectRender()
-      }
-      {
-        loadingRender()
       }
     </Box>
   );

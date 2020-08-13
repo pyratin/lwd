@@ -8,25 +8,20 @@ import {
   Text
 } from 'ink';
 import InkTextInput from 'ink-text-input';
-import {
-  ObjectID
-} from 'mongodb';
 
 import {
-  genreFindOne,
-  genreCreate
-} from '~/js/server/data/genre';
+  setFindOne
+} from '~/js/server/data/set';
 
-const GenreCreate = (
+const SetCreate = (
   {
-    db,
-    onCompleted
+    db
   }
 ) => {
 
   const [
-    genreText,
-    genreTextSet
+    setText,
+    setTextSet
   ] = useState(
     null
   );
@@ -39,12 +34,12 @@ const GenreCreate = (
   );
 
   const onChangeHandle = (
-    genreText
+    setText
   ) => {
 
     return Promise.resolve(
-      genreTextSet(
-        genreText
+      setTextSet(
+        setText
       )
     )
       .then(
@@ -61,41 +56,15 @@ const GenreCreate = (
 
   const onSubmitHandle = async () => {
 
-    const exists = await genreFindOne(
+    const exists = await setFindOne(
       {
-        text: genreText
+        text: setText
       },
       undefined,
       db
     );
 
-    if (
-      exists
-    ) {
-
-      return errorSet(
-        'exists'
-      );
-    }
-
-    return genreCreate(
-      {
-        _id: new ObjectID()
-      },
-      {
-        $set: {
-          text: genreText
-        }
-      },
-      undefined,
-      db
-    )
-      .then(
-        () => {
-
-          return onCompleted();
-        }
-      );
+    console.log(exists);
   };
 
   const inkTextInputRender = () => {
@@ -103,7 +72,7 @@ const GenreCreate = (
     return (
       <InkTextInput
         value = {
-          genreText || ''
+          setText || ''
         }
         onChange = {
           onChangeHandle
@@ -134,12 +103,11 @@ const GenreCreate = (
 
   return (
     <Box>
-
       <Box
         marginRight = {1}
       >
         <Text>
-          genre name:
+          set name:
         </Text>
       </Box>
       {
@@ -152,4 +120,4 @@ const GenreCreate = (
   );
 };
 
-export default GenreCreate;
+export default SetCreate;
