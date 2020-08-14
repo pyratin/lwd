@@ -15,6 +15,7 @@ import OperationSync from '../OperationSync';
 const Viewer = (
   {
     dbLocal,
+    dbRemote,
     sourceFolderPathString
   }
 ) => {
@@ -23,7 +24,7 @@ const Viewer = (
     operationType,
     operationTypeSet
   ] = useState(
-    null
+    '2'
   );
 
   const onOperationSelectHandle = (
@@ -101,6 +102,9 @@ const Viewer = (
       <OperationSync
         dbLocal = {
           dbLocal
+        }
+        dbRemote = {
+          dbRemote
         }
         onCompleted = {
           onCompletedHandle

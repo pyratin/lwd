@@ -2,7 +2,7 @@
 
 const find = (
   query = {},
-  options,
+  options = {},
   collectionName,
   db
 ) => {

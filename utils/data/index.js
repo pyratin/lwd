@@ -8,7 +8,8 @@ import {
 import mongoClientConnect from 
   '~/js/server/fns/mongoClientConnect';
 import {
-  mongoLocalUriGet
+  mongoLocalUriGet,
+  mongoRemoteUriGet
 } from '~/js/server/fns/variable';
 import Viewer from './Components/Viewer';
 
@@ -21,10 +22,17 @@ const sourceFolderPathString = 'temp/source';
       mongoLocalUriGet()
     );
 
+    const dbRemote = await mongoClientConnect(
+      mongoRemoteUriGet()
+    );
+
     render(
       <Viewer
         dbLocal = {
           dbLocal
+        }
+        dbRemote = {
+          dbRemote
         }
         sourceFolderPathString = {
           sourceFolderPathString
