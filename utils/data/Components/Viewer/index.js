@@ -24,7 +24,7 @@ const Viewer = (
     operationType,
     operationTypeSet
   ] = useState(
-    '2'
+    null
   );
 
   const onOperationSelectHandle = (

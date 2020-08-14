@@ -9,7 +9,7 @@ import {
   find,
   findOne,
   findOneAndUpdate,
-  findOneAndDelete
+  deleteMany
 } from '~/js/server/data';
 
 const collectionNamesMask = [
@@ -160,29 +160,10 @@ const idsToRemoveGet = (
   );
 };
 
-const removeRunFn = (
-  id,
-  collectionName,
-  dbRemote
-) => {
-
-  return findOneAndDelete(
-    {
-      _id: new ObjectID(
-        id
-      )
-    },
-    undefined,
-    collectionName,
-    dbRemote
-  );
-};
-
 const removeRun = (
   idsLocal,
   idsRemote,
   collectionName,
-  dbLocal,
   dbRemote
 ) => {
 
@@ -191,39 +172,24 @@ const removeRun = (
     idsRemote
   );
 
-  return ids.reduce(
-    (
-      memo,
-      id
-    ) => {
+  return deleteMany(
+    {
+      _id: {
+        $in: ids.map(
+          (
+            id
+          ) => {
 
-      return memo.then(
-        (
-          res
-        ) => {
-
-          return removeRunFn(
-            id,
-            collectionName,
-            dbRemote
-          )
-            .then(
-              (
-                result
-              ) => {
-
-                return [
-                  ...res,
-                  result
-                ];
-              }
+            return new ObjectID(
+              id
             );
-        }
-      );
+          }
+        )
+      }
     },
-    Promise.resolve(
-      []
-    )
+    undefined,
+    collectionName,
+    dbRemote
   );
 };
 
@@ -375,7 +341,6 @@ const syncRunFn = async (
     idsLocal,
     idsRemote,
     collectionName,
-    dbLocal,
     dbRemote
   );
 

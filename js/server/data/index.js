@@ -1,5 +1,45 @@
 'use strict';
 
+const listCollections = (
+  query = {},
+  options = {},
+  db
+) => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      return db.listCollections(
+        query,
+        options
+      )
+        .toArray(
+          (
+            error,
+            res
+          ) => {
+
+            if (
+              error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              res
+            );
+          }
+        );
+    }
+  );
+};
+
 const find = (
   query = {},
   options = {},
@@ -218,9 +258,10 @@ const findOneAndDelete = (
   );
 };
 
-const listCollections = (
-  query = {},
+const deleteMany = (
+  filter = {},
   options = {},
+  collectionName,
   db
 ) => {
 
@@ -230,11 +271,12 @@ const listCollections = (
       reject
     ) => {
 
-      return db.listCollections(
-        query,
-        options
+      return db.collection(
+        collectionName
       )
-        .toArray(
+        .deleteMany(
+          filter,
+          options,
           (
             error,
             res
@@ -259,10 +301,11 @@ const listCollections = (
 };
 
 export {
+  listCollections,
   find,
   findOne,
   countDocuments,
   findOneAndUpdate,
   findOneAndDelete,
-  listCollections
+  deleteMany
 };
