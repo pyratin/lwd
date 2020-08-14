@@ -9,6 +9,10 @@ exports.setsByGenreIdRemove = exports.setRemove = exports.setCreate = exports.se
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _mongodb = require("mongodb");
 
 var _index = require("./index");
@@ -63,10 +67,30 @@ var setRemove = function setRemove(filter) {
     returnOriginal: true
   };
   var db = arguments.length > 2 ? arguments[2] : undefined;
-  return (0, _index.findOneAndDelete)(filter, options, setCollectionName, db).then(function (_ref) {
-    var setId = _ref._id;
-    return (0, _actor.actorsBySetIdRemove)(setId, db);
-  });
+  return (0, _index.findOneAndDelete)(filter, options, setCollectionName, db).then( /*#__PURE__*/function () {
+    var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(set) {
+      return _regenerator["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return (0, _actor.actorsBySetIdRemove)(set._id, db);
+
+            case 2:
+              return _context.abrupt("return", set);
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
 };
 
 exports.setRemove = setRemove;

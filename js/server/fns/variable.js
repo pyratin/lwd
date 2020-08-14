@@ -59,10 +59,47 @@ const hostUrlGet = (
     .trim();
 };
 
+const mongoLocalUriGet = () => {
+
+  return (
+    process.env.npm_package_config_MONGO_LOCAL_URI
+  );
+};
+
+const mongoRemoteUriGet = () => {
+
+  return (
+    process.env.npm_package_config_MONGO_REMOTE_URI
+  );
+};
+
+const mongoUriGet = () => {
+
+  switch (
+    process.env.NODE_ENV
+  ) {
+
+    case (
+      'development'
+    ) :
+
+      return mongoLocalUriGet();
+
+    case (
+      'production'
+    ) :
+
+      return mongoRemoteUriGet();
+  }
+};
+
 export {
   titleGet,
   portGet,
   nodeEnvGet,
   outputResGet,
-  hostUrlGet
+  hostUrlGet,
+  mongoLocalUriGet,
+  mongoRemoteUriGet,
+  mongoUriGet
 };

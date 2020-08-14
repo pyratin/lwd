@@ -15,11 +15,11 @@ var outputFolderPathString = 'media/output';
 
 var _default = function _default(_ref) {
   var movieId = _ref._id,
-      gif = _ref.gif;
+      base64 = _ref.base64;
   return new Promise(function (resolve, reject) {
     var outputPath = _path["default"].join(process.cwd(), outputFolderPathString, "\n            ".concat(movieId, ".gif\n          ").trim());
 
-    return _fs["default"].writeFile(outputPath, gif.replace(/^data:image\/gif;base64,/, ''), 'base64', function (error, res) {
+    return _fs["default"].writeFile(outputPath, base64.replace(/^data:image\/gif;base64,/, ''), 'base64', function (error, res) {
       if (error) {
         return reject(error);
       }

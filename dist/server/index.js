@@ -20,6 +20,8 @@ var _mongoClientConnect = _interopRequireDefault(require("./fns/mongoClientConne
 
 var _mediaOutputFolderInit = _interopRequireDefault(require("./fns/mediaOutputFolderInit"));
 
+var _movieOutputGifRouteHandle = _interopRequireDefault(require("./fns/movieOutputGifRouteHandle"));
+
 (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
   var db, port;
   return _regenerator["default"].wrap(function _callee2$(_context2) {
@@ -31,7 +33,7 @@ var _mediaOutputFolderInit = _interopRequireDefault(require("./fns/mediaOutputFo
 
         case 2:
           _context2.next = 4;
-          return (0, _mongoClientConnect["default"])();
+          return (0, _mongoClientConnect["default"])((0, _variable.mongoUriGet)());
 
         case 4:
           db = _context2.sent;
@@ -63,7 +65,9 @@ var _mediaOutputFolderInit = _interopRequireDefault(require("./fns/mediaOutputFo
             return function (_x, _x2) {
               return _ref2.apply(this, arguments);
             };
-          }()).get('*', function (req, res) {
+          }()).get('/output/:movieGif(\\w{24}.gif)', function (req, res) {
+            return (0, _movieOutputGifRouteHandle["default"])(db, req, res);
+          }).get('*', function (req, res) {
             return res.render('index', {
               title: (0, _variable.titleGet)()
             });

@@ -4,7 +4,9 @@ import {
   MongoClient
 } from 'mongodb';
 
-export default () => {
+export default (
+  mongoUri
+) => {
 
   return new Promise(
     (
@@ -12,9 +14,7 @@ export default () => {
       reject
     ) => {
 
-      const mongoUrl = process.env.MONGO_URL;
-
-      const dbName = mongoUrl.split(
+      const dbName = mongoUri.split(
         /\//
       )
         .slice(
@@ -24,7 +24,7 @@ export default () => {
         ];
 
       return new MongoClient.connect(
-        mongoUrl,
+        mongoUri,
         {
           useUnifiedTopology: true
         },
@@ -46,7 +46,7 @@ export default () => {
           console.log(
             `
               mongoClientConnect: ${
-                mongoUrl
+                mongoUri
               }
             `
               .trim()

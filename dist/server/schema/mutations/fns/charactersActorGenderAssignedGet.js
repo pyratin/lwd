@@ -19,9 +19,9 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
 
 var _cheerio = _interopRequireDefault(require("cheerio"));
 
-var _sbd = _interopRequireDefault(require("sbd"));
-
 var _mediawikiFetch = _interopRequireDefault(require("./mediawikiFetch"));
+
+var _sentencesTokenizedGet = _interopRequireDefault(require("./sentencesTokenizedGet"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -63,7 +63,7 @@ var actorsGenderAssignedGetFn = function actorsGenderAssignedGetFn(actorUd) {
         _$$toArray$map2 = (0, _slicedToArray2["default"])(_$$toArray$map, 1),
         paragraphLead = _$$toArray$map2[0];
 
-    var sentenceLead = _sbd["default"].sentences(paragraphLead)[0];
+    var sentenceLead = (0, _sentencesTokenizedGet["default"])(paragraphLead)[0];
 
     switch (true) {
       case !!sentenceLead.match(/(actor|comedian)/):

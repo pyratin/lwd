@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.findOneAndDelete = exports.findOneAndUpdate = exports.countDocuments = exports.findOne = exports.find = void 0;
+exports.listCollections = exports.findOneAndDelete = exports.findOneAndUpdate = exports.countDocuments = exports.findOne = exports.find = void 0;
 
 var find = function find() {
   var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -86,4 +86,21 @@ var findOneAndDelete = function findOneAndDelete(filter, options, collectionName
 };
 
 exports.findOneAndDelete = findOneAndDelete;
+
+var listCollections = function listCollections() {
+  var query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var db = arguments.length > 2 ? arguments[2] : undefined;
+  return new Promise(function (resolve, reject) {
+    return db.listCollections(query, options).toArray(function (error, res) {
+      if (error) {
+        return reject(error);
+      }
+
+      return resolve(res);
+    });
+  });
+};
+
+exports.listCollections = listCollections;
 //# sourceMappingURL=index.js.map

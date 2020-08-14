@@ -1,5 +1,4 @@
 node_modules
 media/output
+temp/source
 temp/data
-utils/actor/source
-utils/actor/source_min

@@ -7,7 +7,8 @@ import expressGraphql from 'express-graphql';
 import {
   titleGet,
   portGet,
-  nodeEnvGet
+  nodeEnvGet,
+  mongoUriGet
 } from './fns/variable';
 import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
@@ -21,7 +22,9 @@ import movieOutputGifRouteHandle from
 
     await mediaOutputFolderInit();
 
-    const db = await mongoClientConnect();
+    const db = await mongoClientConnect(
+      mongoUriGet()
+    );
 
     const port = portGet();
 

@@ -34,33 +34,39 @@ badd +160 js/server/schema/mutations/fns/NNPCrossMatchGet.js
 badd +614 js/server/schema/mutations/fns/cardsActorReplacedGet.js
 badd +152 js/server/schema/mutations/fns/movieTitleRandomGet.js
 badd +1 js/server/data/set.js
-badd +616 utils/actor/create.js
-badd +41 temp/ink/index.js
+badd +1 utils/actor/create.js
+badd +17 temp/ink/index.js
 badd +2 .babelrc
 badd +50 .eslintrc.json
-badd +1 temp/ink/Components/Viewer/index.js
+badd +19 temp/ink/Components/Viewer/index.js
 badd +1 temp/ink/Components/OperationSelect/index.js
-badd +1 temp/ink/Components/OperationRemove/index.js
+badd +16 temp/ink/Components/OperationRemove/index.js
 badd +15 temp/ink/Components/OperationRemoveSelect/index.js
 badd +1 js/server/data/index.js
-badd +1 temp/ink/Components/CollectionSelect/index.js
-badd +48 temp/ink/Components/SetSelect/index.js
-badd +1 temp/ink/Components/SetRemove/index.js
-badd +1 temp/ink/Components/GenreRemove/index.js
+badd +20 temp/ink/Components/CollectionSelect/index.js
+badd +20 temp/ink/Components/SetSelect/index.js
+badd +20 temp/ink/Components/SetRemove/index.js
+badd +11 temp/ink/Components/GenreRemove/index.js
 badd +1 temp/ink/Components/InkConfirmInput/index.js
-badd +56 temp/ink/Components/GenreSelect/index.js
+badd +20 temp/ink/Components/GenreSelect/index.js
 badd +1 js/server/data/genre.js
-badd +1 temp/ink/Components/OperationCreate/index.js
-badd +1 temp/ink/Components/GenreCreate.js
+badd +16 temp/ink/Components/OperationCreate/index.js
+badd +13 temp/ink/Components/GenreCreate.js
 badd +122 js/server/schema/mutations/fns/sentencesGet.js
 badd +77 js/server/schema/mutations/fns/base64FilterAppliedGet.js
 badd +92 js/server/schema/mutations/fns/cardsGifyAssignedGet.js
-badd +1 temp/ink/Components/SetCreate/index.js
-badd +142 temp/ink/Components/FolderSelect/index.js
+badd +11 temp/ink/Components/SetCreate/index.js
+badd +22 temp/ink/Components/FolderSelect/index.js
 badd +56 utils/actor/fns/actor.js
-badd +0 temp/ink/fns/actorsCreate.js
-badd +0 utils/actor/fns/actorImage.js
-badd +0 temp/ink/fns/actorImagesCreate.js
+badd +7 temp/ink/fns/actorsCreate.js
+badd +1 utils/actor/fns/actorImage.js
+badd +8 temp/ink/fns/actorImagesCreate.js
+badd +3 temp/ink/Components/OperationSync/index.js
+badd +0 js/server/fns/mongoClientConnect.js
+badd +0 js/server/fns/variable.js
+badd +0 utils/data/index.js
+badd +0 utils/data/Components/Viewer/index.js
+badd +0 ~/Documents/Projects/lwd/.gitignore
 argglobal
 %argdel
 set stal=2
@@ -83,13 +89,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 36 - ((18 * winheight(0) + 18) / 36)
+let s:l = 15 - ((14 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-36
+15
 normal! 05|
-tabedit temp/ink/index.js
+tabedit ~/Documents/Projects/lwd/.gitignore
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -108,13 +114,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 23 - ((21 * winheight(0) + 18) / 36)
+let s:l = 1 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-23
+1
 normal! 0
-tabedit temp/ink/Components/Viewer/index.js
+tabedit utils/data/index.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -133,188 +139,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 111 - ((27 * winheight(0) + 18) / 36)
+let s:l = 30 - ((29 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-111
-normal! 010|
-tabedit temp/ink/Components/OperationCreate/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 55 - ((17 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-55
-normal! 0
-tabedit temp/ink/Components/SetCreate/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 103 - ((35 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-103
-normal! 0
-tabedit temp/ink/fns/actorsCreate.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 101 - ((35 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-101
-normal! 02|
-tabedit temp/ink/fns/actorImagesCreate.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 365 - ((11 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-365
-normal! 015|
-tabedit temp/ink/Components/FolderSelect/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 200 - ((35 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-200
-normal! 0
-tabedit temp/ink/Components/GenreCreate.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 56 - ((0 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-56
-normal! 07|
-tabedit temp/ink/Components/OperationRemove/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 31 - ((0 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-31
-normal! 0
-tabedit temp/ink/Components/GenreRemove/index.js
+30
+normal! 032|
+tabedit utils/data/Components/Viewer/index.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -338,132 +169,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 64
-normal! 0
-tabedit temp/ink/Components/GenreSelect/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 80 - ((7 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-80
-normal! 04|
-tabedit temp/ink/Components/SetRemove/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 45 - ((34 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-45
-normal! 0
-tabedit temp/ink/Components/SetSelect/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 113 - ((35 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-113
-normal! 03|
-tabedit temp/ink/Components/CollectionSelect/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 143 - ((35 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-143
-normal! 09|
-tabedit temp/ink/Components/OperationSelect/index.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 21 - ((12 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-21
-normal! 05|
+normal! 022|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -483,11 +189,61 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 14 - ((13 * winheight(0) + 18) / 36)
+let s:l = 6 - ((1 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-14
+6
+normal! 0
+tabedit js/server/fns/mongoClientConnect.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 16 - ((15 * winheight(0) + 18) / 36)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+16
+normal! 0
+tabedit js/server/fns/variable.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 58 - ((0 * winheight(0) + 18) / 36)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+58
 normal! 0
 tabedit js/server/data/index.js
 set splitbelow splitright
@@ -533,7 +289,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 93 - ((35 * winheight(0) + 18) / 36)
+let s:l = 93 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -558,7 +314,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 86 - ((4 * winheight(0) + 18) / 36)
+let s:l = 86 - ((4 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -583,7 +339,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 231 - ((30 * winheight(0) + 18) / 36)
+let s:l = 231 - ((28 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -608,7 +364,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 36 - ((30 * winheight(0) + 18) / 36)
+let s:l = 36 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -633,7 +389,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 171 - ((29 * winheight(0) + 18) / 36)
+let s:l = 171 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -658,7 +414,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 340 - ((30 * winheight(0) + 18) / 36)
+let s:l = 340 - ((28 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -683,7 +439,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 22 - ((17 * winheight(0) + 18) / 36)
+let s:l = 22 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -708,7 +464,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 282 - ((35 * winheight(0) + 18) / 36)
+let s:l = 282 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -758,7 +514,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((7 * winheight(0) + 10) / 20)
+let s:l = 20 - ((12 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -783,13 +539,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 84 - ((10 * winheight(0) + 10) / 20)
+let s:l = 84 - ((17 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 84
 normal! 08|
-tabnext 16
+tabnext 2
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

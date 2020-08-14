@@ -9,19 +9,17 @@ exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
-var _cheerio = _interopRequireDefault(require("cheerio"));
-
-var _sbd = _interopRequireDefault(require("sbd"));
-
 var _mediawikiFetch = _interopRequireDefault(require("./mediawikiFetch"));
 
-var _sentencesGet = _interopRequireDefault(require("./sentencesGet"));
+var _movieDataBasicPlotGet = _interopRequireDefault(require("./movieDataBasicPlotGet"));
+
+var _movieDataBasicCastGet = _interopRequireDefault(require("./movieDataBasicCastGet"));
 
 var titleEncodedGet = function titleEncodedGet(title) {
   return encodeURIComponent(title);
@@ -31,128 +29,63 @@ var pageMobileSectionQueryGet = function pageMobileSectionQueryGet(title) {
   return "\n    https://en.wikipedia.org/api/rest_v1/page/mobile-sections/".concat(titleEncodedGet(title), "\n  ").trim();
 };
 
-var moviePageSectionTextGet = function moviePageSectionTextGet(json, anchorName) {
+var moviePageSectionTextsGetFn = function moviePageSectionTextsGetFn(json, anchorName) {
   var section = json.remaining.sections.find(function (_ref) {
     var anchor = _ref.anchor;
-    return anchor === anchorName;
+    return anchor.match(new RegExp("\n                ".concat(anchorName, "\n              ").trim(), 'i'));
   });
   return section && section.text;
 };
 
 var moviePageSectionTextsGet = function moviePageSectionTextsGet(json, anchorNames) {
   return anchorNames.reduce(function (memo, anchorName) {
-    var sectionText = moviePageSectionTextGet(json, anchorName);
+    var _sectionText, _sectionText2;
+
+    var sectionText = moviePageSectionTextsGetFn(json, anchorName);
+    sectionText = (_sectionText = sectionText) === null || _sectionText === void 0 ? void 0 : _sectionText.replace(/\n/g, ' ');
+    sectionText = (_sectionText2 = sectionText) === null || _sectionText2 === void 0 ? void 0 : _sectionText2.replace(/\s{2,}/g, ' ');
     return [].concat((0, _toConsumableArray2["default"])(memo), [sectionText]);
   }, []);
 };
 
-var pageTitleFromUrlGet = function pageTitleFromUrlGet(url) {
-  return url.split(/\//).slice(-1)[0];
-};
+var plotCulledGet = function plotCulledGet(_plot) {
+  var plot = _plot && _plot.reduce(function (memo, sentence) {
+    var _memo, _memo2;
 
-var castGetFn = function castGetFn(castHtml) {
-  var $ = _cheerio["default"].load(castHtml);
-
-  var castEl = $('span, sup').remove().end();
-  var castText = castEl.text();
-  var textRegExp = new RegExp("\n      ^(.*?)\\s+((?:as|\u2014)(?:\\s|:)(\\n*.*)*)$\n    ".trim());
-  var textMatch = castText.match(textRegExp);
-  var actorUd;
-  var actorText;
-  var role;
-
-  if (textMatch) {
-    var _textMatch = (0, _slicedToArray2["default"])(textMatch, 3);
-
-    actorText = _textMatch[1];
-    role = _textMatch[2];
-    role = _sbd["default"].sentences(role)[0];
-    role = role.split(',')[0];
-  }
-
-  var htmlRegExp = /^<a/;
-  var htmlMatch = castHtml.match(htmlRegExp);
-
-  if (actorText && role && htmlMatch) {
-    var actorLinkEl = $(castEl).find('a:first-child');
-    actorUd = actorLinkEl.length ? pageTitleFromUrlGet(actorLinkEl.attr('href')) : null;
-  }
-
-  return [actorUd, actorText, role];
-};
-
-var castGet = function castGet(castText) {
-  if (!castText) {
-    return null;
-  }
-
-  var $ = _cheerio["default"].load(castText);
-
-  var cast = $('li').toArray().reduce(function (memo, castEl) {
-    var _castGetFn = castGetFn($(castEl).html()),
-        _castGetFn2 = (0, _slicedToArray2["default"])(_castGetFn, 3),
-        actorUd = _castGetFn2[0],
-        actorText = _castGetFn2[1],
-        role = _castGetFn2[2];
-
-    if (actorText && role) {
-      return [].concat((0, _toConsumableArray2["default"])(memo || []), [{
-        actor: {
-          ud: actorUd,
-          text: actorText
-        },
-        role: role
-      }]);
+    if (memo.length >= 3 && !((_memo = memo[memo.length - 1]) === null || _memo === void 0 ? void 0 : _memo.text.match(/\s...,$/)) && (((_memo2 = memo[memo.length - 1]) === null || _memo2 === void 0 ? void 0 : _memo2.paragraphIndex) !== sentence.paragraphIndex || memo.length >= 6)) {
+      return memo;
     }
 
-    return memo;
-  }, null);
-  return cast;
-};
+    return [].concat((0, _toConsumableArray2["default"])(memo), [sentence]);
+  }, []);
 
-var plotGet = function plotGet(plotText) {
-  if (!plotText) {
-    return null;
-  }
-
-  var $ = _cheerio["default"].load(plotText);
-
-  var plotEl = $('span, sup').remove().end();
-  var paragraphs = plotEl.find('p').toArray();
-
-  if (!paragraphs.length) {
-    return null;
-  }
-
-  paragraphs = paragraphs.reduce(function (memo, p) {
-    var paragraph = $(p).text();
-    return [].concat((0, _toConsumableArray2["default"])(memo || []), [paragraph]);
-  }, null);
-  var sentences = (0, _sentencesGet["default"])(paragraphs);
-  return sentences;
+  return plot;
 };
 
 var _default = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(title) {
     var _json$lead;
 
-    var query, json, poster, anchorNames, _moviePageSectionText, _moviePageSectionText2, castText, plotText, cast, plot;
+    var query, json, poster, anchorNames, _moviePageSectionText, _moviePageSectionText2, castText, plotText, plot, cast;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            // eslint-disable-next-line no-console
+            console.log("\n      movieDataBasicCastGet: ".concat(title, "\n    ").trim());
             query = pageMobileSectionQueryGet(title);
-            _context.next = 3;
+            _context.next = 4;
             return (0, _mediawikiFetch["default"])(query);
 
-          case 3:
+          case 4:
             json = _context.sent;
             poster = ((_json$lead = json.lead) === null || _json$lead === void 0 ? void 0 : _json$lead.image) ? Object.values(json.lead.image.urls)[0] : null;
             anchorNames = ['Cast', 'Plot'];
             _moviePageSectionText = moviePageSectionTextsGet(json, anchorNames), _moviePageSectionText2 = (0, _slicedToArray2["default"])(_moviePageSectionText, 2), castText = _moviePageSectionText2[0], plotText = _moviePageSectionText2[1];
-            cast = castGet(castText);
-            plot = plotGet(plotText);
+            plot = (0, _movieDataBasicPlotGet["default"])(plotText);
+            cast = (0, _movieDataBasicCastGet["default"])(castText, plot);
+            plot = plotCulledGet(plot);
             return _context.abrupt("return", {
               title: title,
               poster: poster,
@@ -162,7 +95,7 @@ var _default = /*#__PURE__*/function () {
               plotText: plotText
             });
 
-          case 10:
+          case 12:
           case "end":
             return _context.stop();
         }

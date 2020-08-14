@@ -10,12 +10,13 @@ import {
 import OperationSelect from '../OperationSelect';
 import OperationCreate from '../OperationCreate';
 import OperationRemove from '../OperationRemove';
+import OperationSync from '../OperationSync';
 
 const sourceFolderPathString = 'utils/actor/source';
 
 const Viewer = (
   {
-    db
+    dbLocal
   }
 ) => {
 
@@ -62,8 +63,8 @@ const Viewer = (
 
     return (
       <OperationCreate
-        db = {
-          db 
+        dbLocal = {
+          dbLocal
         }
         sourceFolderPathString = {
           sourceFolderPathString
@@ -82,11 +83,25 @@ const Viewer = (
 
     return (
       <OperationRemove
-        db = {
-          db
+        dbLocal = {
+          dbLocal
         }
         operationType = {
           operationType
+        }
+        onCompleted = {
+          onCompletedHandle
+        }
+      />
+    );
+  };
+
+  const operationSyncRender = () => {
+
+    return (
+      <OperationSync
+        dbLocal = {
+          dbLocal
         }
         onCompleted = {
           onCompletedHandle
@@ -112,6 +127,12 @@ const Viewer = (
       ) :
 
         return operationRemoveRender();
+
+      case (
+        '2'
+      ) :
+
+        return operationSyncRender();
 
       default :
 

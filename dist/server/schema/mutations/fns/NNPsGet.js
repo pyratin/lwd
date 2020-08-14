@@ -19,7 +19,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var wordsChunk = function wordsChunk(words) {
+var wordsChunk = function wordsChunk(words, attachIndexZeroOverride) {
   var wordsChunked = words.reduce(function (memo, word) {
     var _word = memo.slice(-1)[0];
 
@@ -29,7 +29,7 @@ var wordsChunk = function wordsChunk(words) {
 
       case _word.tag === 'NNP' && word.tag === 'NNP':
       case _word.tag === 'NNP' && !!word.text.match(/^[A-Z]/):
-      case word.tag === 'NNP' && !!_word.text.match(/^[A-Z]/) && !!_word.index:
+      case word.tag === 'NNP' && !!_word.text.match(/^[A-Z]/) && (!!_word.index || !!attachIndexZeroOverride):
         return [].concat((0, _toConsumableArray2["default"])(memo.slice(0, -1)), [_objectSpread(_objectSpread({}, _word), {}, {
           text: "\n                ".concat(_word.text, " ").concat(word.text, "\n              ").trim(),
           tag: 'NNP'
@@ -51,7 +51,7 @@ var NNPsGetFn = function NNPsGetFn(words) {
   return words.reduce(function (memo, word) {
     switch (true) {
       case word.tag === 'NNP':
-        return [].concat((0, _toConsumableArray2["default"])(memo), [word.text]);
+        return [].concat((0, _toConsumableArray2["default"])(memo), [word]);
 
       default:
         return memo;
@@ -59,11 +59,21 @@ var NNPsGetFn = function NNPsGetFn(words) {
   }, []);
 };
 
+var NNPsCleanedGet = function NNPsCleanedGet(words) {
+  return words.map(function (word) {
+    delete word.token;
+    delete word.tag;
+    return word;
+  });
+};
+
 var _default = function _default(sentence) {
+  var attachIndexZeroOverride = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var words = (0, _wordsTokenizedGet["default"])(sentence);
   words = (0, _wordsTaggedGet["default"])(words);
-  words = wordsChunk(words);
+  words = wordsChunk(words, attachIndexZeroOverride);
   words = NNPsGetFn(words);
+  words = NNPsCleanedGet(words);
   return words;
 };
 

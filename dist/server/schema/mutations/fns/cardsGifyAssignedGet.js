@@ -23,7 +23,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var cardsForGifyGet = function cardsForGifyGet(cards) {
   return cards.reduce(function (cardMemo, card, cardIndex) {
-    if (!card.character) {
+    var _card$character;
+
+    if (!(card === null || card === void 0 ? void 0 : (_card$character = card.character) === null || _card$character === void 0 ? void 0 : _card$character.text)) {
       return [].concat((0, _toConsumableArray2["default"])(cardMemo), [_objectSpread(_objectSpread({}, card), {}, {
         cardIndex: cardIndex
       })]);

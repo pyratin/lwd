@@ -7,19 +7,25 @@ import {
 
 import mongoClientConnect from 
   '~/js/server/fns/mongoClientConnect';
+import {
+  mongoLocalUriGet
+} from '~/js/server/fns/variable';
 import Viewer from './Components/Viewer';
 
 (
   async () => {
+    console.log(mongoLocalUriGet());
 
-    const db = await mongoClientConnect();
+    //const dbLocal = await mongoClientConnect(
+      //mongoLocalUriGet()
+    //);
 
-    render(
-      <Viewer
-        db = {
-          db
-        }
-      />
-    );
+    //render(
+      //<Viewer
+        //dbLocal = {
+          //dbLocal
+        //}
+      ///>
+    //);
   }
 )();

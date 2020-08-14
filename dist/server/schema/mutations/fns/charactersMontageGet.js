@@ -29,16 +29,15 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var charactersGet = function charactersGet(characters, cards) {
+var charactersBase64AssignedGet = function charactersBase64AssignedGet(characters, cards) {
   return characters.reduce(function (memo, character) {
     var card = cards.find(function (card) {
-      return card.character === character.text;
-    });
-    var exists = memo.find(function (_memo) {
-      return character.text.match(_memo.text) || _memo.text.match(character.text);
+      var _card$character;
+
+      return (card === null || card === void 0 ? void 0 : (_card$character = card.character) === null || _card$character === void 0 ? void 0 : _card$character.text) === character.text;
     });
 
-    if (card && !exists) {
+    if (card) {
       return [].concat((0, _toConsumableArray2["default"])(memo), [_objectSpread(_objectSpread({}, character), {}, {
         base64: card.base64
       })]);
@@ -60,9 +59,10 @@ var characterTextShortenedGet = function characterTextShortenedGet(_text, length
 
     return memo;
   }, '');
+  text = text.slice(0, lengthMax);
 
   if (text.length < _text.length) {
-    text = "\n      ".concat(text, " ...\n    ").trim();
+    text = "\n      ".concat(text, "..\n    ").trim();
   }
 
   return text;
@@ -79,27 +79,30 @@ var charactersConcatedGet = function charactersConcatedGet(_characters) {
   }, []);
 
   characters = characters.reduce(function (memo, character) {
-    var characterIndex = memo.findIndex(function (_memo) {
-      return _memo.actor.text === character.actor.text;
-    });
+    var dualRoleIndex = character.dualRoleIndex;
 
-    if (characterIndex >= 0) {
-      var _lengthMax = 5;
-      var text = "\n          ".concat(characterTextShortenedGet(memo[characterIndex].text, _lengthMax), " / ").concat(characterTextShortenedGet(character.text, _lengthMax), "\n        ").trim();
-      return [].concat((0, _toConsumableArray2["default"])(memo.slice(0, characterIndex)), [_objectSpread(_objectSpread({}, memo[characterIndex]), {}, {
+    if (dualRoleIndex >= 0) {
+      var text = "\n          ".concat(memo[dualRoleIndex].text, " / ").concat(character.text, "\n        ").trim();
+      return [].concat((0, _toConsumableArray2["default"])(memo.slice(0, dualRoleIndex)), [_objectSpread(_objectSpread({}, memo[dualRoleIndex]), {}, {
         text: text
-      })], (0, _toConsumableArray2["default"])(memo.slice(characterIndex + 1)));
+      })], (0, _toConsumableArray2["default"])(memo.slice(dualRoleIndex + 1)), [_objectSpread(_objectSpread({}, character), {}, {
+        remove: true
+      })]);
     }
 
     return [].concat((0, _toConsumableArray2["default"])(memo), [character]);
   }, []);
+  characters = characters.filter(function (_ref2) {
+    var remove = _ref2.remove;
+    return !remove;
+  });
   return characters;
 };
 
 var characterBase64sGet = function characterBase64sGet(characters) {
   return characters.reduce(function (memo, character) {
     return memo.then(function (res) {
-      return (0, _base64TextCompositedGet["default"])(character.base64, "\n              ".concat(character.text, "\n            ").trim(), (0, _variable.outputResGet)() / 3.5, 50, 10).then(function (result) {
+      return (0, _base64TextCompositedGet["default"])(character.base64, "\n              ".concat(character.text, "\n            ").trim(), (0, _variable.outputResGet)() / 3.5, 46, 5).then(function (result) {
         return [].concat((0, _toConsumableArray2["default"])(res), [result]);
       });
     });
@@ -125,7 +128,7 @@ var charactersCompositedBase64Get = function charactersCompositedBase64Get(chara
 };
 
 var charactersMontageGet = /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(characters) {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(characters) {
     var characterBase64s, characterRows, characterRowStreams, characterRowCompositedBase64s, characterRowCompositedStreams, charactersCompositedBase64;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -194,18 +197,18 @@ var charactersMontageGet = /*#__PURE__*/function () {
   }));
 
   return function charactersMontageGet(_x) {
-    return _ref2.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }();
 
 var _default = /*#__PURE__*/function () {
-  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(_characters, cards) {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(_characters, cards) {
     var characters, charactersMontageBase64;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            characters = charactersGet(_characters, cards);
+            characters = charactersBase64AssignedGet(_characters, cards);
             characters = charactersConcatedGet(characters);
             _context2.next = 4;
             return charactersMontageGet(characters);
@@ -223,7 +226,7 @@ var _default = /*#__PURE__*/function () {
   }));
 
   return function (_x2, _x3) {
-    return _ref3.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 

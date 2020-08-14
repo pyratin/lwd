@@ -9,16 +9,17 @@ exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
-var _sbd = _interopRequireDefault(require("sbd"));
+var _sentencesTokenizedGet = _interopRequireDefault(require("./sentencesTokenizedGet"));
 
 var _wordsTokenizedGet = _interopRequireDefault(require("./wordsTokenizedGet"));
 
 var _wordsTaggedGet = _interopRequireDefault(require("./wordsTaggedGet"));
 
-var sentenceMaxLength = 100;
+var _parenthesisPurgedGet = _interopRequireDefault(require("./parenthesisPurgedGet"));
+
 var sentenceNormalizeRegExp = /,\s/;
 
-var sentenceCCReplace = function sentenceCCReplace(_sentence) {
+var _sentenceShortenedGetFn = function _sentenceShortenedGetFn(_sentence) {
   var words = (0, _wordsTokenizedGet["default"])(_sentence);
   words = (0, _wordsTaggedGet["default"])(words);
   words = words.reduce(function (memo, _ref) {
@@ -32,25 +33,57 @@ var sentenceCCReplace = function sentenceCCReplace(_sentence) {
     return memo;
   }, []);
   var sentence = words.reduce(function (memo, word) {
-    return memo.replace(new RegExp("\n            \\s".concat(word, "(\\s)\n          ").trim(), 'g'), "\n          , ".concat(word, "$1\n        ").trim());
+    return memo.replace(new RegExp("\n            ,*\\s".concat(word, "(\\s)\n          ").trim(), 'g'), "\n          , ".concat(word, "$1\n        ").trim());
   }, _sentence);
   return sentence;
 };
 
-var sentencesPreprocessedGetFn = function sentencesPreprocessedGetFn(_sentence) {
-  var sentence = sentenceCCReplace(_sentence);
+var sentenceShortenedGetFn = function sentenceShortenedGetFn(_sentence) {
+  var sentence = _sentenceShortenedGetFn(_sentence);
+
   sentence = sentence.replace(/\swhich(\s)/g, ', which$1');
   return sentence;
 };
 
-var sentencesPreprocessedGet = function sentencesPreprocessedGet(sentences) {
-  return sentences.reduce(function (memo, _sentence) {
-    var sentence = sentencesPreprocessedGetFn(_sentence);
+var sentenceShortenedGet = function sentenceShortenedGet(_sentence, sentenceMaxLength) {
+  var sentence = _sentence.split(sentenceNormalizeRegExp).reduce(function (memo, __sentence) {
+    var sentence = __sentence.trim();
+
+    if (sentence.length > sentenceMaxLength) {
+      sentence = sentenceShortenedGetFn(sentence);
+      return [].concat((0, _toConsumableArray2["default"])(memo), [sentence]);
+    }
+
     return [].concat((0, _toConsumableArray2["default"])(memo), [sentence]);
+  }, []).join(', ');
+
+  return sentence;
+};
+
+var sentenceParenthesisHandle = function sentenceParenthesisHandle(_sentence) {
+  var sentence = (0, _parenthesisPurgedGet["default"])(_sentence);
+  return sentence;
+};
+
+var sentencesPreprocessedGetFn = function sentencesPreprocessedGetFn(_sentence, sentenceMaxLength) {
+  var sentence = sentenceShortenedGet(_sentence, sentenceMaxLength);
+  sentence = sentenceParenthesisHandle(sentence);
+  return sentence;
+};
+
+var sentencesPreprocessedGet = function sentencesPreprocessedGet(sentences, sentenceMaxLength) {
+  return sentences.reduce(function (memo, _sentence) {
+    var sentence = sentencesPreprocessedGetFn(_sentence, sentenceMaxLength);
+
+    if (sentence.trim()) {
+      return [].concat((0, _toConsumableArray2["default"])(memo), [sentence]);
+    }
+
+    return memo;
   }, []);
 };
 
-var sentenceNormalizedGetFn = function sentenceNormalizedGetFn(text) {
+var sentenceNormalizedGetFn = function sentenceNormalizedGetFn(text, sentenceMaxLength) {
   var joinString = ', ';
   return text.split(sentenceNormalizeRegExp).reduce(function (memo, _text) {
     switch (true) {
@@ -69,11 +102,11 @@ var sentenceNormalizedGetFn = function sentenceNormalizedGetFn(text) {
   }, []);
 };
 
-var sentenceNormalizedGet = function sentenceNormalizedGet(text) {
+var sentenceNormalizedGet = function sentenceNormalizedGet(text, sentenceMaxLength) {
   var texts = [text];
 
   while (texts[texts.length - 1].length > sentenceMaxLength && !!texts[texts.length - 1].match(sentenceNormalizeRegExp)) {
-    var sentenceNormalized = sentenceNormalizedGetFn(texts[texts.length - 1]);
+    var sentenceNormalized = sentenceNormalizedGetFn(texts[texts.length - 1], sentenceMaxLength);
     texts = [].concat((0, _toConsumableArray2["default"])(texts.slice(0, -1)), (0, _toConsumableArray2["default"])(sentenceNormalized));
   }
 
@@ -87,36 +120,11 @@ var sentenceNormalizedGet = function sentenceNormalizedGet(text) {
   return texts;
 };
 
-var sentencesGetFn = function sentencesGetFn(paragraph, paragraphIndex) {
-  var sentences = _sbd["default"].sentences(paragraph);
-
-  sentences = sentencesPreprocessedGet(sentences);
+var _default = function _default(paragraph, sentenceMaxLength) {
+  var sentences = (0, _sentencesTokenizedGet["default"])(paragraph);
+  sentences = sentencesPreprocessedGet(sentences, sentenceMaxLength);
   sentences = sentences.reduce(function (memo, text) {
-    return [].concat((0, _toConsumableArray2["default"])(memo), (0, _toConsumableArray2["default"])(sentenceNormalizedGet(text)));
-  }, []).map(function (text, sentenceIndex) {
-    return {
-      text: text,
-      paragraphIndex: paragraphIndex,
-      sentenceIndex: sentenceIndex
-    };
-  });
-  return sentences;
-};
-
-var _default = function _default(paragraphs) {
-  var sentences = paragraphs.reduce(function (memo, _paragraph, paragraphIndex) {
-    var paragraph = _paragraph.replace(/\s*\([^)]*\)(\s*)/g, '$1');
-
-    var _sentences = sentencesGetFn(paragraph, paragraphIndex);
-
-    return [].concat((0, _toConsumableArray2["default"])(memo), (0, _toConsumableArray2["default"])(_sentences));
-  }, []);
-  sentences = sentences && sentences.reduce(function (memo, sentence) {
-    if (memo.length >= 5 && !memo[memo.length - 1].text.match(/\s...,$/)) {
-      return memo;
-    }
-
-    return [].concat((0, _toConsumableArray2["default"])(memo), [sentence]);
+    return [].concat((0, _toConsumableArray2["default"])(memo), (0, _toConsumableArray2["default"])(sentenceNormalizedGet(text, sentenceMaxLength)));
   }, []);
   return sentences;
 };

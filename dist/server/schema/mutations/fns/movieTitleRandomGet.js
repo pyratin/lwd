@@ -89,7 +89,7 @@ var movieTitleRandomGetFn = /*#__PURE__*/function () {
 
             console.log("\n      title: ".concat(title, ", cast: ").concat(!!movieDataBasic.cast, ", plot: ").concat(!!movieDataBasic.plot, ", characters: ").concat(characterTexts.length, "\n    ").trim());
 
-            if (!(characterTexts.length < 1)) {
+            if (!(characterTexts.length < 3)) {
               _context.next = 16;
               break;
             }

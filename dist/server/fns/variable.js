@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.hostUrlGet = exports.outputResGet = exports.nodeEnvGet = exports.portGet = exports.titleGet = void 0;
+exports.mongoUriGet = exports.mongoRemoteUriGet = exports.mongoLocalUriGet = exports.hostUrlGet = exports.outputResGet = exports.nodeEnvGet = exports.portGet = exports.titleGet = void 0;
 
 var titleGet = function titleGet() {
   return process.env.npm_package_name;
@@ -40,4 +40,30 @@ var hostUrlGet = function hostUrlGet(req) {
 };
 
 exports.hostUrlGet = hostUrlGet;
+
+var mongoLocalUriGet = function mongoLocalUriGet() {
+  return process.env.npm_package_config_MONGO_LOCAL_URI;
+};
+
+exports.mongoLocalUriGet = mongoLocalUriGet;
+
+var mongoRemoteUriGet = function mongoRemoteUriGet() {
+  return process.env.npm_package_config_MONGO_REMOTE_URI;
+};
+
+exports.mongoRemoteUriGet = mongoRemoteUriGet;
+
+var mongoUriGet = function mongoUriGet() {
+  console.log(process.env.NODE_ENV);
+
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      return mongoLocalUriGet();
+
+    case 'production':
+      return mongoRemoteUriGet();
+  }
+};
+
+exports.mongoUriGet = mongoUriGet;
 //# sourceMappingURL=variable.js.map

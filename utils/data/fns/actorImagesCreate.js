@@ -279,7 +279,7 @@ const actorImagesGet = (
 const _actorImagesCreateFn = (
   actorImages,
   actorId,
-  db
+  dbLocal
 ) => {
 
   return actorImages.reduce(
@@ -306,7 +306,7 @@ const _actorImagesCreateFn = (
               }
             },
             undefined,
-            db
+            dbLocal
           )
             .then(
               (
@@ -331,7 +331,7 @@ const _actorImagesCreateFn = (
 const actorImagesCreateFn = async (
   actorId,
   setFolderPath,
-  db
+  dbLocal
 ) => {
 
   const actorImagePaths = [
@@ -358,14 +358,14 @@ const actorImagesCreateFn = async (
   return _actorImagesCreateFn(
     actorImages,
     actorId,
-    db
+    dbLocal
   );
 };
 
-const actorImagesCreate = (
+export default (
   actors,
   setFolderPathString,
-  db
+  dbLocal
 ) => {
 
   return actors.reduce(
@@ -391,7 +391,7 @@ const actorImagesCreate = (
           return actorImagesCreateFn(
             actorId,
             setFolderPath,
-            db
+            dbLocal
           )
             .then(
               (
@@ -411,8 +411,4 @@ const actorImagesCreate = (
       []
     )
   );
-};
-
-export {
-  actorImagesCreate
 };

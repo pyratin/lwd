@@ -15,6 +15,16 @@ var _path = _interopRequireDefault(require("path"));
 
 var _child_process = require("child_process");
 
+var filtersGet = function filtersGet(filterType) {
+  switch (filterType) {
+    case 'giphy':
+      return ['vintage3', 'vignette3'];
+
+    case 'dualRole':
+      return ['huemap -h 0,20 -t 60,60'];
+  }
+};
+
 var base64FilterAppliedGetFn = function base64FilterAppliedGetFn(base64, filter) {
   return new Promise(function (resolve, reject) {
     var buffer = new Buffer.from(base64.replace(/^data:image\/(jpeg|png);base64,/, ''), 'base64');
@@ -36,23 +46,22 @@ var base64FilterAppliedGetFn = function base64FilterAppliedGetFn(base64, filter)
 };
 
 var _default = /*#__PURE__*/function () {
-  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(_base64) {
-    var base64;
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(_ref) {
+    var _base64, filterType, filters, base64;
+
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
-            return ['vintage3', 'vignette3'].reduce(function (memo, filter) {
+            _base64 = _ref.base64, filterType = _ref.filterType;
+            filters = filtersGet(filterType);
+            base64 = filters.reduce(function (memo, filter) {
               return memo.then(function (res) {
                 return base64FilterAppliedGetFn(res, filter).then(function (result) {
                   return result;
                 });
               });
             }, Promise.resolve(_base64));
-
-          case 2:
-            base64 = _context.sent;
             return _context.abrupt("return", base64);
 
           case 4:
@@ -64,7 +73,7 @@ var _default = /*#__PURE__*/function () {
   }));
 
   return function (_x) {
-    return _ref.apply(this, arguments);
+    return _ref2.apply(this, arguments);
   };
 }();
 

@@ -29,7 +29,7 @@ const actorTextsGet = (
 const actorsCreateFn = (
   actorText,
   setId,
-  db
+  dbLocal
 ) => {
 
   return actorCreate(
@@ -50,14 +50,14 @@ const actorsCreateFn = (
       }
     },
     undefined,
-    db
+    dbLocal
   );
 };
 
-const actorsCreate = (
+export default (
   setId,
   setFolderPathString,
-  db
+  dbLocal
 ) => {
 
   const actorTexts = actorTextsGet(
@@ -78,7 +78,7 @@ const actorsCreate = (
           return actorsCreateFn(
             actorText,
             setId,
-            db
+            dbLocal
           )
             .then(
               (
@@ -98,8 +98,4 @@ const actorsCreate = (
       []
     )
   );
-};
-
-export {
-  actorsCreate
 };

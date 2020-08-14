@@ -26,10 +26,12 @@ var __fragmentsGetFn = function __fragmentsGetFn(fragment, character) {
     }, fragment);
 
     if (index) {
+      var text = character.matchIndex === 1 ? character.levenMatchText : character.text;
+
       var actorFragment = _objectSpread(_objectSpread({}, fragment), {}, {
         type: 'actor',
         actor: character.actor,
-        text: character.text,
+        text: text,
         castIndex: character.castIndex
       });
 

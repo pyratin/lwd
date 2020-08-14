@@ -67,7 +67,7 @@ var _charactersCategoryAssignedGetFn = function _charactersCategoryAssignedGetFn
 };
 
 var charactersCategoryAssignedGetFn = function charactersCategoryAssignedGetFn(characterUd) {
-  return (0, _mediawikiFetch["default"])(pageCategoriesQueryGet(characterUd)).then(function (res) {
+  return (0, _mediawikiFetch["default"])(pageCategoriesQueryGet(encodeURIComponent(characterUd))).then(function (res) {
     var pageId = Object.keys(res.query.pages)[0];
     var categoryTitles = res.query.pages[pageId].categories.map(function (_ref) {
       var title = _ref.title;

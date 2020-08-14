@@ -6,15 +6,17 @@
   "config": {
     "PORT": 3000,
     "GIFY_API_KEY": "aJT6CDc1W7E5g5S38tj6STaddrUa75Xx",
-    "OUTPUT_RES": 320
+    "OUTPUT_RES": 320,
+    "MONGO_LOCAL_URI": "mongodb://localhost:27017/lwd",
+    "MONGO_REMOTE_URI": "mongodb://pyratin:didi1234@ds233806.mlab.com:33806/lwd"
   },
   "scripts": {
-    "dev:server": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
-    "utils:actor:create": "env NODE_ENV=development MONGO_URL=mongodb://localhost:27017/lwd node_modules/nodemon/bin/nodemon.js -I -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/actor -e js utils/actor/create.js",
+    "dev:server": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
+    "utils:data": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -I -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/data -e js utils/data",
     "build:server": "env NODE_ENV=development node_modules/@babel/cli/bin/babel.js js/server --out-dir dist/server --source-maps",
     "prebuild": "rm -Rrf dist",
     "build": "npm run build:server",
-    "start": "env NODE_ENV=production MONGO_URL=mongodb://pyratin:didi1234@ds233806.mlab.com:33806/lwd node_modules/forever/bin/forever -c node dist/server"
+    "start": "env NODE_ENV=production node_modules/forever/bin/forever -c node dist/server"
   },
   "author": "",
   "license": "ISC",

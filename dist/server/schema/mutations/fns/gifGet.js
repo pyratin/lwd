@@ -17,51 +17,73 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
 
 var _child_process = require("child_process");
 
+var _cardsRenderedGet = _interopRequireDefault(require("./cardsRenderedGet"));
+
 var _splashGet = _interopRequireDefault(require("./splashGet"));
 
-var _base64TextCompositedGet = _interopRequireDefault(require("./base64TextCompositedGet"));
-
 var _base64MiffStreamsConcatedGet = _interopRequireDefault(require("./base64MiffStreamsConcatedGet"));
-
-var _base64FilterAppliedGet = _interopRequireDefault(require("./base64FilterAppliedGet"));
-
-var _variable = require("../../../fns/variable");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var cardsFilterAppliedGet = function cardsFilterAppliedGet(cards) {
+var charactersFromCardsGet = function charactersFromCardsGet(cards) {
   return cards.reduce(function (memo, card) {
-    return memo.then(function (res) {
-      if (!card.character) {
-        return (0, _base64FilterAppliedGet["default"])(card.base64).then(function (result) {
-          return [].concat((0, _toConsumableArray2["default"])(res), [_objectSpread(_objectSpread({}, card), {}, {
-            base64: result
-          })]);
-        });
-      }
+    var _card$character2;
 
-      return [].concat((0, _toConsumableArray2["default"])(res), [card]);
+    var exists = memo.find(function (_memo) {
+      var _card$character;
+
+      var characterText = card === null || card === void 0 ? void 0 : (_card$character = card.character) === null || _card$character === void 0 ? void 0 : _card$character.text;
+      return characterText && (characterText.match(_memo.text) || _memo.text.match(characterText));
     });
-  }, Promise.resolve([]));
+
+    if ((card === null || card === void 0 ? void 0 : (_card$character2 = card.character) === null || _card$character2 === void 0 ? void 0 : _card$character2.text) && !exists) {
+      return [].concat((0, _toConsumableArray2["default"])(memo), [card.character]);
+    }
+
+    return memo;
+  }, []);
 };
 
-var cardsRenderedGet = function cardsRenderedGet(cards) {
-  return cards.reduce(function (memo, card) {
-    return memo.then(function (res) {
-      var character = card.character;
-      var text = card.text;
-
-      if (character) {
-        text = text.replace(new RegExp(character), "\n                <b>".concat(character, "</b>\n              ").trim());
-      }
-
-      return (0, _base64TextCompositedGet["default"])(card.base64, text, (0, _variable.outputResGet)(), 20, 10).then(function (result) {
-        return [].concat((0, _toConsumableArray2["default"])(res), [result]);
-      });
+var charactersDualRoleIndexAssignedGet = function charactersDualRoleIndexAssignedGet(_characters) {
+  var characters = _characters.reduce(function (memo, _character) {
+    var dualRoleIndex = memo.findIndex(function (_memo) {
+      return _memo.dualRoleIndex === -1 && _memo.actor.text === _character.actor.text;
     });
-  }, Promise.resolve([]));
+
+    if (dualRoleIndex >= 0) {
+      return [].concat((0, _toConsumableArray2["default"])(memo), [_objectSpread(_objectSpread({}, _character), {}, {
+        dualRoleIndex: dualRoleIndex
+      })]);
+    }
+
+    return [].concat((0, _toConsumableArray2["default"])(memo), [_objectSpread(_objectSpread({}, _character), {}, {
+      dualRoleIndex: -1
+    })]);
+  }, []);
+
+  return characters;
+};
+
+var cardsDualRoleIndexAssignedGet = function cardsDualRoleIndexAssignedGet(_cards, characters) {
+  var cards = _cards.reduce(function (memo, _card) {
+    var character = characters.find(function (character) {
+      var _card$character3;
+
+      return character.text === (_card === null || _card === void 0 ? void 0 : (_card$character3 = _card.character) === null || _card$character3 === void 0 ? void 0 : _card$character3.text);
+    });
+
+    if (character) {
+      return [].concat((0, _toConsumableArray2["default"])(memo), [_objectSpread(_objectSpread({}, _card), {}, {
+        dualRoleIndex: character.dualRoleIndex
+      })]);
+    }
+
+    return [].concat((0, _toConsumableArray2["default"])(memo), [_card]);
+  }, []);
+
+  return cards;
 };
 
 var gifGetFn = function gifGetFn(miffStreamsConcated) {
@@ -135,29 +157,27 @@ var gifGet = /*#__PURE__*/function () {
 }();
 
 var _default = /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(movieTitle, moviePoster, characters, _cards) {
-    var cards, base64s, splash, gif;
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(movieTitle, moviePoster, _cards) {
+    var characters, cards, cardBase64s, splash, gif;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return cardsFilterAppliedGet(_cards);
-
-          case 2:
-            cards = _context2.sent;
+            characters = charactersFromCardsGet(_cards);
+            characters = charactersDualRoleIndexAssignedGet(characters);
+            cards = cardsDualRoleIndexAssignedGet(_cards, characters);
             _context2.next = 5;
-            return cardsRenderedGet(cards);
+            return (0, _cardsRenderedGet["default"])(cards);
 
           case 5:
-            base64s = _context2.sent;
+            cardBase64s = _context2.sent;
             _context2.next = 8;
             return (0, _splashGet["default"])(movieTitle, moviePoster, characters, cards);
 
           case 8:
             splash = _context2.sent;
             _context2.next = 11;
-            return gifGet(splash, base64s);
+            return gifGet(splash, cardBase64s);
 
           case 11:
             gif = _context2.sent;
@@ -171,7 +191,7 @@ var _default = /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function (_x3, _x4, _x5, _x6) {
+  return function (_x3, _x4, _x5) {
     return _ref2.apply(this, arguments);
   };
 }();

@@ -7,11 +7,10 @@ exports["default"] = void 0;
 
 var _mongodb = require("mongodb");
 
-var _default = function _default() {
+var _default = function _default(mongoUri) {
   return new Promise(function (resolve, reject) {
-    var mongoUrl = process.env.MONGO_URL;
-    var dbName = mongoUrl.split(/\//).slice(-1)[0];
-    return new _mongodb.MongoClient.connect(mongoUrl, {
+    var dbName = mongoUri.split(/\//).slice(-1)[0];
+    return new _mongodb.MongoClient.connect(mongoUri, {
       useUnifiedTopology: true
     }, function (error, client) {
       if (error) {
@@ -19,7 +18,7 @@ var _default = function _default() {
       } // eslint-disable-next-line no-console
 
 
-      console.log("\n              mongoClientConnect: ".concat(mongoUrl, "\n            ").trim());
+      console.log("\n              mongoClientConnect: ".concat(mongoUri, "\n            ").trim());
       return resolve(client.db(dbName));
     });
   });
