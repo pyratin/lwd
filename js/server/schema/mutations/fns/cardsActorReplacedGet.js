@@ -402,19 +402,7 @@ const spoofActorsSortedGet = (
           return 1;
       }
     }
-  )
-    .map(
-      (
-        spoofActor
-      ) => {
-
-        delete spoofActor.count;
-
-        return (
-          spoofActor
-        );
-      }
-    );
+  );
 };
 
 const spoofActorsGetFn = async (
