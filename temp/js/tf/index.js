@@ -4,6 +4,7 @@ import path from 'path';
 import * as canvas from 'canvas';
 import * as faceapi from 'face-api.js';
 import shelljs from 'shelljs';
+import padLeft from 'pad-left';
 
 const {
   Canvas,
@@ -13,7 +14,10 @@ const {
 
 const weightsPathString = 'temp/js/tf/weights';
 
-const sourceFolderPathString = 'temp/js/tf/source';
+const tinyFaceDetectorOptions = {
+  inputSize: 160,
+  scoreThreshold: 0.5
+};
 
 const faceapiInit = async () => {
 
@@ -41,71 +45,15 @@ const faceapiInit = async () => {
   await faceapi.nets.ageGenderNet.loadFromDisk(
     weights
   );
+
+  await faceapi.nets.faceRecognitionNet.loadFromDisk(
+    weights
+  );
 };
 
-const processRunFn = async (
-  filename
+const imagesGet = (
+  sourceFolderPath
 ) => {
-
-  const image = await canvas.loadImage(
-    path.join(
-      process.cwd(),
-      sourceFolderPathString,
-      filename
-    )
-  );
-
-  const detections = await faceapi.detectAllFaces(
-    image,
-    new faceapi.TinyFaceDetectorOptions(
-      {
-        inputSize: 256,
-        scoreThreshold: 0.5
-      }
-    )
-  );
-
-  let detection = (
-    detections.length === 1
-  ) ?
-    detections[
-      0
-    ] :
-    null;
-
-  detection = (
-    detection &&
-    (
-      (
-        detection._box._width /
-        detection._imageDims._width
-      ) *
-      100
-    ) > 25
-  ) ?
-    detection :
-    null;
-
-  if (
-    detection
-  ) {
-
-    return (
-      filename
-    );
-  }
-
-  return (
-    null
-  );
-};
-
-const processRun = () => {
-
-  const sourceFolderPath = path.join(
-    process.cwd(),
-    sourceFolderPathString
-  );
 
   return shelljs.ls(
     sourceFolderPath
@@ -160,7 +108,102 @@ const processRun = () => {
             return -1;
         }
       }
+    );
+};
+
+const imageGet = (
+  filename,
+  sourceFolderPath
+) => {
+
+  return canvas.loadImage(
+    path.join(
+      sourceFolderPath,
+      filename
     )
+  );
+};
+
+const detectAllFacesRun = (
+  image
+) => {
+
+  return faceapi.detectAllFaces(
+    image,
+    new faceapi.TinyFaceDetectorOptions(
+      tinyFaceDetectorOptions
+    )
+  );
+};
+
+const detectSingleFaceRun = (
+  image
+) => {
+
+  return faceapi.detectSingleFace(
+    image,
+    new faceapi.TinyFaceDetectorOptions(
+      tinyFaceDetectorOptions
+    )
+  );
+};
+
+const discardRunFn = async (
+  filename,
+  sourceFolderPath
+) => {
+
+  const image = await imageGet(
+    filename,
+    sourceFolderPath
+  );
+
+  const detections = await detectAllFacesRun(
+    image
+  );
+
+  let detection = (
+    detections.length === 1
+  ) ?
+    detections[
+      0
+    ] :
+    null;
+
+  detection = (
+    detection &&
+    (
+      (
+        detection._box._width /
+        detection._imageDims._width
+      ) *
+      100
+    ) > 25
+  ) ?
+    detection :
+    null;
+
+  if (
+    detection
+  ) {
+
+    return (
+      filename
+    );
+  }
+
+  return (
+    null
+  );
+};
+
+const discardRun = (
+  sourceFolderPath
+) => {
+
+  return imagesGet(
+    sourceFolderPath
+  )
     .reduce(
       (
         memo,
@@ -172,8 +215,9 @@ const processRun = () => {
             res
           ) => {
 
-            return processRunFn(
-              filename
+            return discardRunFn(
+              filename,
+              sourceFolderPath
             )
               .then(
                 (
@@ -216,19 +260,396 @@ const processRun = () => {
     ); 
 };
 
+const filenamesFilteredGet = (
+  _filenames,
+  filenames
+) => {
+
+  return filenames.reduce(
+    (
+      memo,
+      filename
+    ) => {
+
+      const exists = _filenames.find(
+        (
+          _filename
+        ) => {
+
+          return (
+            _filename ===
+            filename
+          );
+        }
+      );
+
+      if (
+        !exists
+      ) {
+
+        return [
+          ...memo,
+          filename
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const __groupRunFn = async (
+  faceMatcher,
+  filename,
+  sourceFolderPath
+) => {
+
+  const image = await imageGet(
+    filename,
+    sourceFolderPath
+  );
+
+  const faceDescriptor = await detectSingleFaceRun(
+    image
+  )
+    .withFaceLandmarks(
+      true
+    )
+    .withFaceDescriptor();
+
+  const match = faceMatcher.findBestMatch(
+    faceDescriptor.descriptor
+  );
+
+  return (
+    match &&
+    (
+      match.distance <
+      0.4
+    )
+  ) ?
+    true :
+    false;
+};
+
+const _groupRunFn = (
+  faceMatcher,
+  filenames,
+  sourceFolderPath
+) => {
+
+  return filenames.reduce(
+    (
+      memo,
+      filename
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          return __groupRunFn(
+            faceMatcher,
+            filename,
+            sourceFolderPath
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                if (
+                  result
+                ) {
+
+                  return [
+                    ...res,
+                    filename
+                  ];
+                }
+
+                return (
+                  res
+                );
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
+const groupsCountGet = (
+  gender,
+  sourceFolderPath
+) => {
+
+  return shelljs.ls(
+    sourceFolderPath
+  )
+    .filter(
+      (
+        filename
+      ) => {
+
+        return (
+          filename.match(
+            new RegExp(
+              `
+                ^${
+                  gender
+                }
+              `
+                .trim(),
+              'i'
+            )
+          )
+        );
+      }
+    )
+    .length;
+};
+
+const filePathsGet = (
+  filenames,
+  sourceFolderPath
+) => {
+
+  return filenames.map(
+    (
+      filename
+    ) => {
+
+      return path.join(
+        sourceFolderPath,
+        filename
+      );
+    }
+  );
+};
+
+const groupCreate = (
+  filenames,
+  _gender,
+  sourceFolderPath
+) => {
+
+  const gender = (
+    _gender === 'male'
+  ) ?
+    'man' :
+    'woman';
+
+  const count = groupsCountGet(
+    gender,
+    sourceFolderPath
+  ) + 1;
+
+  const countString = `
+    ${
+      padLeft(
+        `
+          ${
+            count
+          }
+        `
+          .trim(),
+        2,
+        '0'
+      )
+    }
+  `
+    .trim();
+
+  const folderName = `
+    ${
+      gender
+    }-${
+      countString
+    }
+  `
+    .trim();
+
+  const folderPath = path.join(
+    sourceFolderPath,
+    folderName
+  );
+
+  shelljs.mkdir(
+    folderPath
+  );
+
+  const filePaths = filePathsGet(
+    filenames,
+    sourceFolderPath
+  );
+
+  shelljs.mv(
+    filePaths,
+    folderPath
+  );
+
+  return (
+    null
+  );
+};
+
+const groupRunFn = async (
+  filename,
+  filenames,
+  sourceFolderPath
+) => {
+
+  const image = await imageGet(
+    filename,
+    sourceFolderPath
+  );
+
+  const detectionPromise = detectSingleFaceRun(
+    image
+  );
+
+  const faceLandmarksPromise = detectionPromise
+    .withFaceLandmarks(
+      true
+    );
+
+  const faceDescriptor = await faceLandmarksPromise
+    .withFaceDescriptor();
+
+  const faceMatcher = await new faceapi.FaceMatcher(
+    faceDescriptor
+  );
+
+  let matches;
+
+  matches = await _groupRunFn(
+    faceMatcher,
+    filenames,
+    sourceFolderPath
+  );
+
+  matches = [
+    filename,
+    ...matches
+  ];
+
+  const gender = (
+    await faceLandmarksPromise.withAgeAndGender()
+  ).gender;
+
+  groupCreate(
+    matches,
+    gender,
+    sourceFolderPath
+  );
+
+  return (
+    matches
+  );
+};
+
+const groupRun = (
+  sourceFolderPath
+) => {
+
+  const filenames = imagesGet(
+    sourceFolderPath
+  );
+
+  return filenames.reduce(
+    (
+      memo,
+      filename
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          if (
+            !res.includes(
+              filename
+            ) 
+          ) {
+
+            return (
+              res
+            );
+          }
+
+          return groupRunFn(
+            filename,
+            res.filter(
+              (
+                _filename
+              ) => {
+
+                return (
+                  _filename !==
+                  filename
+                );
+              }
+            ),
+            sourceFolderPath
+          )
+            .then(
+              (
+                result
+              ) => {
+
+                const _res = filenamesFilteredGet(
+                  result,
+                  res
+                );
+
+                return (
+                  _res
+                );
+              }
+            );
+        }
+      );
+    },
+    Promise.resolve(
+      filenames
+    )
+  );
+};
+
 (
   async () => {
 
+    const sourceFolderPathString = 'temp/js/tf/source';
+
+    const sourceFolderPath = path.join(
+      process.cwd(),
+      sourceFolderPathString
+    );
+
     shelljs.mkdir(
       path.join(
-        process.cwd(),
-        sourceFolderPathString,
+        sourceFolderPath,
         'discard'
       )
     );
 
     await faceapiInit();
 
-    await processRun();
+    await discardRun(
+      sourceFolderPath
+    );
+
+    await groupRun(
+      sourceFolderPath
+    );
   }
 )();
