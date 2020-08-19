@@ -4,16 +4,12 @@ import React, {
   useState
 } from 'react';
 import {
-  Box
+  Box,
+  Text
 } from 'ink';
-import {
-  ObjectID
-} from 'mongodb';
 
 import SetSelect from '../SetSelect';
-import {
-  setRemove
-} from '~/js/server/data/set';
+import setRemove from '../../fns/setRemove';
 
 const SetRemove = (
   {
@@ -29,26 +25,48 @@ const SetRemove = (
     null
   );
 
+  const [
+    loading,
+    loadingSet
+  ] = useState(
+    false
+  );
+
   const onSelectHandle = (
     setId
   ) => {
 
     return Promise.resolve(
-      setIdSet(
-        setId
+      loadingSet(
+        true
       )
     )
       .then(
         () => {
 
+          return Promise.resolve(
+            setIdSet(
+              setId
+            )
+          );
+        }
+      )
+      .then(
+        () => {
+
           return setRemove(
-            {
-              _id: new ObjectID(
-                setId
-              )
-            },
-            undefined,
+            setId,
             dbLocal
+          );
+        }
+      )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            loadingSet(
+              false
+            )
           );
         }
       )
@@ -75,10 +93,23 @@ const SetRemove = (
       />;
   };
 
+  const loadingRender = () => {
+
+    return (
+      loading
+    ) &&
+      <Text>
+        running ...
+      </Text>;
+  };
+
   return (
     <Box>
       {
         setSelectRender()
+      }
+      {
+        loadingRender()
       }
     </Box>
   );

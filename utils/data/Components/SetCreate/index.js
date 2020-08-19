@@ -4,19 +4,13 @@ import React, {
   useState
 } from 'react';
 import {
-  Box
+  Box,
+  Text
 } from 'ink';
-import {
-  ObjectID
-} from 'mongodb';
 
 import FolderSelect from '../FolderSelect';
 import GenreSelect from '../GenreSelect';
-import {
-  setCreate
-} from '~/js/server/data/set';
-import actorsCreate from '../../fns/actorsCreate';
-import actorImagesCreate from '../../fns/actorImagesCreate';
+import setCreate from '../../fns/setCreate';
 
 const SetCreate = (
   {
@@ -41,6 +35,13 @@ const SetCreate = (
     null
   );
 
+  const [
+    loading,
+    loadingSet
+  ] = useState(
+    false
+  );
+
   const onFolderSelectHandle = (
     setText
   ) => {
@@ -57,52 +58,38 @@ const SetCreate = (
   ) => {
 
     return Promise.resolve(
-      genreIdSet(
-        genreId
+      loadingSet(
+        true
       )
     )
       .then(
-        async () => {
+        () => {
 
-          const set = await setCreate(
-            {
-              _id: new ObjectID()
-            },
-            {
-              $set: {
-                _genreId: new ObjectID(
-                  genreId
-                ),
-                text: setText
-              }
-            },
-            undefined,
-            dbLocal
+          return Promise.resolve(
+            genreIdSet(
+              genreId
+            )
           );
+        }
+      )
+      .then(
+        () => {
 
-          const setFolderPathString = `
-            ${
-              sourceFolderPathString
-            }/${
-              set.text
-            }
-          `
-            .trim();
-
-          const actors = await actorsCreate(
-            set._id,
-            setFolderPathString,
-            dbLocal
+          return setCreate(
+            genreId,
+            setText,
+            dbLocal,
+            sourceFolderPathString
           );
+        }
+      )
+      .then(
+        () => {
 
-          await actorImagesCreate(
-            actors,
-            setFolderPathString,
-            dbLocal
-          );
-
-          return (
-            null
+          return Promise.resolve(
+            loadingSet(
+              false
+            )
           );
         }
       )
@@ -152,13 +139,30 @@ const SetCreate = (
       />;
   };
 
+  const loadingRender = () => {
+
+    return (
+      loading
+    ) &&
+      <Text>
+        running ...
+      </Text>;
+  };
+
   return (
-    <Box>
+    <Box
+      flexDirection = 'column'
+    >
+      <Box>
+        {
+          folderSelectRender()
+        }
+        {
+          genreSelectRender()
+        }
+      </Box>
       {
-        folderSelectRender()
-      }
-      {
-        genreSelectRender()
+        loadingRender()
       }
     </Box>
   );

@@ -103,6 +103,15 @@ const FolderSelect = (
   const folderNamesFetch = useCallback(
     async () => {
 
+      if (
+        folderNames
+      ) {
+
+        return (
+          null
+        );
+      }
+
       const _folderNames = shelljs.ls(
         path.join(
           process.cwd(),

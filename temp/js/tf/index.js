@@ -15,8 +15,8 @@ const {
 const weightsPathString = 'temp/js/tf/weights';
 
 const tinyFaceDetectorOptions = {
-  inputSize: 160,
-  scoreThreshold: 0.5
+  inputSize: 256,
+  scoreThreshold: 0.75
 };
 
 const faceapiInit = async () => {

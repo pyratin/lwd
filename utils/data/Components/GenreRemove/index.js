@@ -4,16 +4,12 @@ import React, {
   useState
 } from 'react';
 import {
-  Box
+  Box,
+  Text
 } from 'ink';
-import {
-  ObjectID
-} from 'mongodb';
 
 import GenreSelect from '../GenreSelect';
-import {
-  genreRemove
-} from '~/js/server/data/genre';
+import genreRemove from '../../fns/genreRemove';
 
 const GenreRemove = (
   {
@@ -29,26 +25,48 @@ const GenreRemove = (
     null
   );
 
+  const [
+    loading,
+    loadingSet
+  ] = useState(
+    false
+  );
+
   const onGenreSelectHandle = (
     genreId
   ) => {
 
     return Promise.resolve(
-      genreIdSet(
-        genreId
+      loadingSet(
+        true
       )
     )
       .then(
         () => {
 
+          return Promise.resolve(
+            genreIdSet(
+              genreId
+            )
+          );
+        }
+      )
+      .then(
+        () => {
+
           return genreRemove(
-            {
-              _id: new ObjectID(
-                genreId
-              )
-            },
-            undefined,
+            genreId,
             dbLocal
+          );
+        }
+      )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            loadingSet(
+              false
+            )
           );
         }
       )
@@ -75,10 +93,23 @@ const GenreRemove = (
       />;
   };
 
+  const loadingRender = () => {
+
+    return (
+      loading
+    ) &&
+      <Text>
+        running ...
+      </Text>;
+  };
+
   return (
     <Box>
       {
         genreSelectRender()
+      }
+      {
+        loadingRender()
       }
     </Box>
   );

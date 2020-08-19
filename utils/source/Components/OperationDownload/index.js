@@ -8,19 +8,20 @@ import {
   Text
 } from 'ink';
 import InkTextInput from 'ink-text-input';
+import escapeStringRegexp from 'escape-string-regexp';
 
-import genreCreate from '../../fns/genreCreate';
+import download from '../../fns/download';
 
-const GenreCreate = (
+const OperationDownload = (
   {
-    dbLocal,
+    videosFolderPathString,
     onCompleted
   }
 ) => {
 
   const [
-    genreText,
-    genreTextSet
+    link,
+    linkSet
   ] = useState(
     null
   );
@@ -33,19 +34,19 @@ const GenreCreate = (
   );
 
   const [
-    loading,
-    loadingSet
+    downloading,
+    downloadingSet
   ] = useState(
-    false
+    null
   );
 
   const onChangeHandle = (
-    genreText
+    link
   ) => {
 
     return Promise.resolve(
-      genreTextSet(
-        genreText
+      linkSet(
+        link.trim()
       )
     )
       .then(
@@ -60,19 +61,51 @@ const GenreCreate = (
       );
   };
 
-  const onSubmitHandle = async () => {
+  const onSubmitHandle = () => {
+
+    if (
+      !link ||
+      (
+        !link.match(
+          `
+            ^(http|https)${
+              escapeStringRegexp(
+                '://www.youtube.com/watch?v='
+              )
+            }
+          `
+            .trim()
+        )
+      )
+    ) {
+
+      return Promise.resolve(
+        errorSet(
+          'invalid'
+        )
+      );
+    }
+
+    else if (
+      downloading ||
+      error
+    ) {
+
+      return Promise.resolve(
+        null
+      );
+    }
 
     return Promise.resolve(
-      loadingSet(
+      downloadingSet(
         true
       )
     )
       .then(
         () => {
-
-          return genreCreate(
-            genreText,
-            dbLocal
+          return download(
+            link,
+            videosFolderPathString
           );
         }
       )
@@ -80,7 +113,7 @@ const GenreCreate = (
         () => {
 
           return Promise.resolve(
-            loadingSet(
+            downloadingSet(
               false
             )
           );
@@ -89,21 +122,7 @@ const GenreCreate = (
       .then(
         () => {
 
-          return Promise.resolve(
-            onCompleted()
-          );
-        }
-      )
-      .catch(
-        (
-          error
-        ) => {
-
-          return Promise.resolve(
-            errorSet(
-              error
-            )
-          );
+          return onCompleted();
         }
       );
   };
@@ -113,7 +132,7 @@ const GenreCreate = (
     return (
       <InkTextInput
         value = {
-          genreText || ''
+          link || ''
         }
         onChange = {
           onChangeHandle
@@ -142,13 +161,13 @@ const GenreCreate = (
     );
   };
 
-  const loadingRender = () => {
+  const downloadingRender = () => {
 
     return (
-      loading
+      downloading
     ) &&
       <Text>
-        running ...
+        downloading ...
       </Text>;
   };
 
@@ -161,7 +180,7 @@ const GenreCreate = (
           marginRight = {1}
         >
           <Text>
-            genre name:
+            link:
           </Text>
         </Box>
         {
@@ -172,10 +191,10 @@ const GenreCreate = (
         }
       </Box>
       {
-        loadingRender()
+        downloadingRender()
       }
     </Box>
   );
 };
 
-export default GenreCreate;
+export default OperationDownload;
