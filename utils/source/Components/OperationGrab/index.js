@@ -4,10 +4,12 @@ import React, {
   useState
 } from 'react';
 import {
-  Box
+  Box,
+  Text
 } from 'ink';
 
 import VideoSelect from '../VideoSelect';
+import grab from '../../fns/grab';
 
 const OperationGrab = (
   {
@@ -17,27 +19,56 @@ const OperationGrab = (
 ) => {
 
   const [
-    sourceFolderName,
-    sourceFolderNameSet
+    videoName,
+    videoNameSet
   ] = useState(
     null
   );
 
+  const [
+    loading,
+    loadingSet
+  ] = useState(
+    false
+  );
+
   const onVideoSelectHandle = (
+    videoName,
     sourceFolderName
   ) => {
 
     return Promise.resolve(
-      sourceFolderNameSet(
-        sourceFolderName
+      loadingSet(
+        true
       )
-    );
+    )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            videoNameSet(
+              videoName
+            )
+          );
+        }
+      )
+      .then(
+        () => {
+
+          return grab(
+            videoName,
+            sourceFolderName,
+            videosFolderPathString,
+            sourceFolderPathString
+          );
+        }
+      );
   };
 
   const videoSelectRender = () => {
 
     return (
-      !sourceFolderName
+      !videoName
     ) &&
       <VideoSelect
         videosFolderPathString = {
@@ -52,12 +83,27 @@ const OperationGrab = (
       />;
   };
 
+  const loadingRender = () => {
+
+    return (
+      loading
+    ) &&
+      <Box>
+        <Text>
+          running ...
+        </Text>
+      </Box>;
+  };
+
   return (
     <Box
       flexDirection = 'column'
     >
       {
         videoSelectRender()
+      }
+      {
+        loadingRender()
       }
     </Box>
   );

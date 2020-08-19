@@ -14,6 +14,7 @@ import {
 import InkSelectInput from 'ink-select-input';
 import shelljs from 'shelljs';
 
+const videoRegExp = /(.+)\.mp4$/;
 
 const VideoSelect = (
   {
@@ -43,10 +44,8 @@ const VideoSelect = (
         ) => {
 
           const match = videoName.match(
-            /(.+)\.mp4$/
-          )?.[
-            1
-          ];
+            videoRegExp 
+          );
 
           const exists = sourceFolderNames.find(
             (
@@ -55,7 +54,9 @@ const VideoSelect = (
 
               return (
                 sourceFolderName ===
-                match
+                match?.[
+                  1
+                ]
               );
             }
           );
@@ -66,7 +67,7 @@ const VideoSelect = (
 
             return [
               ...memo,
-              match
+              videoName
             ];
           }
 
@@ -144,9 +145,16 @@ const VideoSelect = (
       } 
     ) => {
 
+      const match = value.match(
+        videoRegExp
+      );
+
       return Promise.resolve(
         onVideoSelect(
-          value
+          value,
+          match?.[
+            1
+          ]
         )
       );
     }
