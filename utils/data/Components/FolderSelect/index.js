@@ -180,7 +180,7 @@ const FolderSelect = (
   const inkSelectInputRender = () => {
 
     return (
-      folderNames
+      !!folderNames?.length
     ) &&
       <InkSelectInput
         items = {
@@ -192,6 +192,16 @@ const FolderSelect = (
       />;
   };
 
+  const emptyRender = () => {
+
+    return (
+      !folderNames?.length
+    ) &&
+      <Text>
+        no new source
+      </Text>;
+  };
+
   return (
     <Box
       flexDirection = 'column'
@@ -201,6 +211,9 @@ const FolderSelect = (
       </Text>
       {
         inkSelectInputRender()
+      }
+      {
+        emptyRender()
       }
     </Box>
   );

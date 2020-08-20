@@ -12,6 +12,7 @@
   },
   "scripts": {
     "dev:server": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
+    "utils:source": "node node_modules/nodemon/bin/nodemon.js -I -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/source -e js utils/source",
     "utils:data": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -I -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/data -e js utils/data",
     "build:server": "env NODE_ENV=development node_modules/@babel/cli/bin/babel.js js/server --out-dir dist/server --source-maps",
     "prebuild": "rm -Rrf dist",

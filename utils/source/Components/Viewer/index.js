@@ -11,6 +11,7 @@ import {
 import OperationSelect from '../OperationSelect';
 import OperationDownload from '../OperationDownload';
 import OperationGrab from '../OperationGrab';
+import OperationGroup from '../OperationGroup';
 
 const Viewer = (
   {
@@ -23,7 +24,7 @@ const Viewer = (
     operationType,
     operationTypeSet
   ] = useState(
-    '1'
+    null
   );
 
   const onOperationSelectHandle = (
@@ -58,7 +59,7 @@ const Viewer = (
       />;
   };
 
-  const opearationDownloadRender = () => {
+  const operationDownloadRender = () => {
 
     return (
       <OperationDownload
@@ -82,6 +83,23 @@ const Viewer = (
         sourceFolderPathString = {
           sourceFolderPathString
         }
+        onCompleted = {
+          onCompletedHandle
+        }
+      />
+    );
+  };
+
+  const operationGroupRender = () => {
+
+    return (
+      <OperationGroup
+        sourceFolderPathString = {
+          sourceFolderPathString
+        }
+        onCompleted = {
+          onCompletedHandle
+        }
       />
     );
   };
@@ -96,13 +114,19 @@ const Viewer = (
         '0'
       ) :
 
-        return opearationDownloadRender();
+        return operationDownloadRender();
 
       case (
         '1'
       ) :
 
         return operationGrabRender();
+
+      case (
+        '2'
+      ) :
+
+        return operationGroupRender();
     }
   };
 

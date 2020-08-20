@@ -163,7 +163,7 @@ const VideoSelect = (
   const inkSelectInputRender = () => {
 
     return (
-      videoNames
+      !!videoNames?.length
     ) &&
       <InkSelectInput
         items = {
@@ -175,6 +175,16 @@ const VideoSelect = (
       />;
   };
 
+  const emptyRender = () => {
+
+    return (
+      !videoNames?.length
+    ) &&
+      <Text>
+        no new video
+      </Text>;
+  };
+
   return (
     <Box
       flexDirection = 'column'
@@ -184,6 +194,9 @@ const VideoSelect = (
       </Text>
       {
         inkSelectInputRender()
+      }
+      {
+        emptyRender()
       }
     </Box>
   );

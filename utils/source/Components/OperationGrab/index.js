@@ -14,7 +14,8 @@ import grab from '../../fns/grab';
 const OperationGrab = (
   {
     videosFolderPathString,
-    sourceFolderPathString
+    sourceFolderPathString,
+    onCompleted
   }
 ) => {
 
@@ -60,6 +61,24 @@ const OperationGrab = (
             sourceFolderName,
             videosFolderPathString,
             sourceFolderPathString
+          );
+        }
+      )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            loadingSet(
+              false
+            )
+          );
+        }
+      )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            onCompleted()
           );
         }
       );

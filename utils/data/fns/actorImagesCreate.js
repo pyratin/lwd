@@ -14,104 +14,6 @@ import {
   actorImageCreate
 } from '~/js/server/data/actorImage';
 
-const imageFormatGet = (
-  imagePath
-) => {
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-
-      return exec(
-        `
-          identify ${
-            imagePath
-          }
-        `
-          .trim(),
-        (
-          error,
-          stdout
-        ) => {
-
-          if (
-            error
-          ) {
-            return reject(
-              error
-            );
-          }
-
-          return resolve(
-            stdout.split(
-              /\s/
-            )[
-              1
-            ]
-              .toLowerCase()
-          );
-        }
-      );
-    }
-  );
-};
-
-const imageJpegGet = (
-  base64,
-  format
-) => {
-
-  const buffer = new Buffer.from(
-    base64,
-    'base64'
-  );
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-
-      const proc = exec(
-        `
-          convert ${
-            format
-          }:- jpeg:-
-        `,
-        {
-          encoding: 'base64'
-        },
-        (
-          error,
-          stdout
-        ) => {
-
-          if (
-            error
-          ) {
-
-            return reject(
-              error
-            );
-          }
-
-          return resolve(
-            stdout
-          );
-        }
-      );
-
-      proc.stdin.write(
-        buffer
-      );
-
-      proc.stdin.end();
-    }
-  );
-};
-
 const imageResize = (
   base64
 ) => {
@@ -201,22 +103,7 @@ const actorImagesGetFn = (
             );
           }
 
-          const format = await imageFormatGet(
-            actorImagePath
-          );
-
           let _base64 = res;
-
-          if (
-            format !==
-            'jpeg'
-          ) {
-
-            _base64 = await imageJpegGet(
-              _base64,
-              format
-            );
-          }
 
           _base64 = await imageResize(
             _base64

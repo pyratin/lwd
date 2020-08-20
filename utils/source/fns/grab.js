@@ -6,6 +6,8 @@ import {
 } from 'child_process';
 import shelljs from 'shelljs';
 
+const grabThreshold = 0.3;
+
 const escapedGet = (
   pathString  
 ) => {
@@ -46,7 +48,9 @@ export default (
     escapedGet(
       videoFilePath
     )
-   } -filter_complex "select='gt(scene,0.3)',metadata=print:file=time.txt" -vsync vfr ${
+   } -filter_complex "select='gt(scene,${
+    grabThreshold
+   })',metadata=print:file=time.txt" -vsync vfr ${
     escapedGet(
       sourceFolderPath
     )
