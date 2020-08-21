@@ -33,7 +33,7 @@ const ssdMobilenetv1Options = {
 
 const faceWidthThreshold = 25;
 
-const faceMatchDistanceThreshold = 0.5;
+const faceMatchDistanceThreshold = 0.4;
 
 const tinyFaceDetectorWeightsLoad = async () => {
 
