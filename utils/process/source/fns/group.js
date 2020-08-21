@@ -22,7 +22,7 @@ const weightsPath = path.join(
 const faceDetectionNetType = 'tinyFaceDetector';
 
 const tinyFaceDetectorOptions = {
-  inputSize: 160,
+  inputSize: 256,
   scoreThreshold: 0.5
 };
 

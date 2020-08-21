@@ -51,39 +51,7 @@ const queryGet = (
     .trim();
 };
 
-const _base64AssignedGetFn = (
-  url
-) => {
-
-  return nodeFetch(
-    url
-  )
-    .then(
-      (
-        res
-      ) => {
-
-        return res.buffer();
-      }
-    )
-    .then(
-      (
-        buffer
-      ) => {
-
-        return `
-          data:image/jpeg;base64,${
-            buffer.toString(
-              'base64'
-            )
-          }
-        `
-          .trim();
-      }
-    );
-};
-
-const cardsFlatlistGifyBase64AssignedGetFn = (
+const cardsFlatlistGifyUrlAssignedGetFn = (
   {
     text
   }
@@ -109,40 +77,40 @@ const cardsFlatlistGifyBase64AssignedGetFn = (
         json
       ) => {
 
-        const url = json.data.images?.[
+        const gifyUrl = json.data.images?.[
           '480w_still'
         ]
           .url;
 
         if (
-          !url
+          !gifyUrl
         ) {
 
           //eslint-disable-next-line no-console
           console.log(
             `
-              cardsFlatlistGifyBase64AssignedGetFn: ${
+              cardsFlatlistGifyUrlAssignedGetFn: ${
                 text
               }
             `
               .trim()
           );
 
-          return cardsFlatlistGifyBase64AssignedGetFn(
+          return cardsFlatlistGifyUrlAssignedGetFn(
             {
               text
             }
           );
         }
 
-        return _base64AssignedGetFn(
-          url
+        return (
+          gifyUrl
         );
       }
     );
 };
 
-const cardsFlatlistGifyBase64AssignedGet = (
+const cardsFlatlistGifyUrlAssignedGet = (
   cards
 ) => {
 
@@ -157,19 +125,19 @@ const cardsFlatlistGifyBase64AssignedGet = (
           res
         ) => {
 
-          return cardsFlatlistGifyBase64AssignedGetFn(
+          return cardsFlatlistGifyUrlAssignedGetFn(
             card
           )
             .then(
               (
-                base64
+                result
               ) => {
 
                 return [
                   ...res,
                   {
                     ...card,
-                    base64
+                    gifyUrl: result
                   }
                 ];
               }
@@ -201,7 +169,7 @@ const cardByIndexGet = (
   );
 };
 
-const cardsGifyBase64AssignedGet = (
+const cardsGifyUrlAssignedGet = (
   cardsFlatlist,
   cards
 ) => {
@@ -226,7 +194,7 @@ const cardsGifyBase64AssignedGet = (
           ...memo,
           {
             ...card,
-            base64: _cardsFlatlist.base64
+            gifyUrl: _cardsFlatlist.gifyUrl
           }
         ];
       }
@@ -248,11 +216,11 @@ export default async (
     _cards
   );
 
-  cardsFlatlist = await cardsFlatlistGifyBase64AssignedGet(
+  cardsFlatlist = await cardsFlatlistGifyUrlAssignedGet(
     cardsFlatlist
   );
 
-  const cards = cardsGifyBase64AssignedGet(
+  const cards = cardsGifyUrlAssignedGet(
     cardsFlatlist,
     _cards
   );

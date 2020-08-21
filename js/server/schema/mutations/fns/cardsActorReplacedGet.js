@@ -14,8 +14,7 @@ import {
   actorsFind as actorsFindFn
 } from '~/js/server/data/actor';
 import {
-  actorImagesFind,
-  actorImageFindOne
+  actorImagesFind
 } from '~/js/server/data/actorImage';
 
 const shuffledGet = (
@@ -725,7 +724,7 @@ const actorImageIdsSortedByWeightGet = (
     );
 };
 
-const charactersActorImageAssignedGetFn = async (
+const charactersActorImageIdAssignedGetFn = async (
   character,
   charactersPrevious,
   db
@@ -784,25 +783,12 @@ const charactersActorImageAssignedGetFn = async (
     0
   ];
 
-  const {
-    base64
-  } = await actorImageFindOne(
-    {
-      _id: new ObjectID(
-        actorImageId
-      )
-    },
-    undefined,
-    db
+  return (
+    actorImageId
   );
-
-  return {
-    actorImageId,
-    base64
-  };
 };
 
-const charactersActorImageAssignedGet = (
+const charactersActorImageIdAssignedGet = (
   characters,
   db
 ) => {
@@ -818,7 +804,7 @@ const charactersActorImageAssignedGet = (
           res
         ) => {
 
-          return charactersActorImageAssignedGetFn(
+          return charactersActorImageIdAssignedGetFn(
             character,
             res,
             db
@@ -832,7 +818,7 @@ const charactersActorImageAssignedGet = (
                   ...res,
                   {
                     ...character,
-                    ...result
+                    actorImageId: result
                   }
                 ];
               }
@@ -889,7 +875,7 @@ const cardsCharacterAssignedGet = (
           ...memo,
           {
             ...card,
-            base64: character.base64,
+            actorImageId: character.actorImageId,
             character: {
               text: character.text,
               actor: character.actor
@@ -932,7 +918,7 @@ export default async (
     spoofActors
   );
 
-  characters = await charactersActorImageAssignedGet(
+  characters = await charactersActorImageIdAssignedGet(
     characters,
     db
   );

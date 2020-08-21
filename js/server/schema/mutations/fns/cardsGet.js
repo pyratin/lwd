@@ -1,8 +1,8 @@
 'use strict';
 
 import cardsBasicGet from './cardsBasicGet';
-import cardsActorReplacedGet from './cardsActorReplacedGet';
-import cardsGifyAssignedGet from './cardsGifyAssignedGet';
+import cardsImageDataAssignedGet from 
+  './cardsImageDataAssignedGet';
 
 export default async (
   segments,
@@ -14,14 +14,10 @@ export default async (
     segments
   );
 
-  cards = await cardsActorReplacedGet(
+  cards = await cardsImageDataAssignedGet(
     cards,
     genre,
     db
-  );
-
-  cards = await cardsGifyAssignedGet(
-    cards
   );
 
   return (

@@ -4,6 +4,8 @@ import {
   exec
 } from 'child_process';
 
+import cardsBase64AssignedGet from 
+  './cardsBase64AssignedGet';
 import cardsRenderedGet from './cardsRenderedGet';
 import splashGet from './splashGet';
 import base64MiffStreamsConcatedGet from 
@@ -304,19 +306,25 @@ const gifGet = async (
 export default async (
   movieTitle,
   moviePoster,
-  _cards
+  _cards,
+  db
 ) => {
 
+  let cards = await cardsBase64AssignedGet(
+    _cards,
+    db
+  );
+
   let characters = charactersFromCardsGet(
-    _cards
+    cards
   );
 
   characters = charactersDualRoleIndexAssignedGet(
     characters
   );
 
-  const cards = cardsDualRoleIndexAssignedGet(
-    _cards,
+  cards = cardsDualRoleIndexAssignedGet(
+    cards,
     characters
   );
 

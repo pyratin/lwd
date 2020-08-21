@@ -175,7 +175,8 @@ const processFn = async (
   const base64 = await gifGet(
     movieDataBasic.title,
     movieDataBasic.poster,
-    cards
+    cards,
+    db
   );
 
   if (
