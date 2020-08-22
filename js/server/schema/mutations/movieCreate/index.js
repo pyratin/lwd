@@ -6,7 +6,6 @@ import {
 
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 import charactersGet from '../fns/charactersGet';
-import segmentsGet from '../fns/segmentsGet';
 import cardsGet from '../fns/cardsGet';
 import gifGet from '../fns/gifGet';
 import {
@@ -43,31 +42,6 @@ const titleGet = async (
 
   return (
     title
-  );
-};
-
-const charactersPostSegmentsGet = (
-  characters
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const text = character.levenMatchText ||
-        character.text;
-
-      return [
-        ...memo,
-        {
-          ...character,
-          text
-        }
-      ];
-    },
-    []
   );
 };
 
@@ -157,20 +131,13 @@ const processFn = async (
     movieDataBasic.plotText
   );
 
-  const segments = segmentsGet(
-    movieDataBasic.plot,
-    characters
-  );
-
-  characters = charactersPostSegmentsGet(
-    characters
-  );
-
   const cards = await cardsGet(
-    segments,
+    movieDataBasic.plot,
+    characters,
     genre,
     db
   );
+  console.log(cards);
 
   const base64 = await gifGet(
     movieDataBasic.title,
@@ -193,7 +160,7 @@ const processFn = async (
   }
 
   return {
-    title: movieDataBasic.base64
+    title: movieDataBasic.title
   };
 };
 

@@ -5,61 +5,6 @@ import cheerio from 'cheerio';
 import mediawikiFetch from './mediawikiFetch';
 import sentencesTokenizedGet from './sentencesTokenizedGet';
 
-const actorGet = (
-  {
-    ud: actorUd
-  },
-  actors
-) => {
-
-  return actors.find(
-    (
-      {
-        ud: _actorUd
-      }
-    ) => {
-
-      return (
-        _actorUd ===
-        actorUd
-      );
-    }
-  );
-};
-
-const actorsUniqueGet = (
-  characters
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      {
-        actor
-      }
-    ) => {
-
-      if (
-        !actorGet(
-          actor,
-          memo
-        )
-      ) {
-
-        return [
-          ...memo,
-          actor
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
 const queryGet = (
   actorUd
 ) => {
@@ -153,7 +98,7 @@ const actorsGenderAssignedGetFn = (
     );
 };
 
-const actorsGenderAssignedGet = (
+export default (
   actors
 ) => {
 
@@ -204,69 +149,5 @@ const actorsGenderAssignedGet = (
     Promise.resolve(
       []
     )
-  );
-};
-
-const charactersActorGenderAssignedGetFn = (
-  character,
-  actors
-) => {
-
-  const actor = actorGet(
-    character.actor,
-    actors
-  );
-
-  return {
-    ...character,
-    actor: {
-      ...character.actor,
-      gender: actor.gender
-    }
-  };
-};
-
-const charactersActorGenderAssignedGet = (
-  characters,
-  actors
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      return [
-        ...memo,
-        charactersActorGenderAssignedGetFn(
-          character,
-          actors
-        )
-      ];
-    },
-    []
-  );
-};
-
-export default async (
-  _characters
-) => {
-
-  let actors = actorsUniqueGet(
-    _characters
-  );
-
-  actors = await actorsGenderAssignedGet(
-    actors
-  );
-
-  const characters = charactersActorGenderAssignedGet(
-    _characters,
-    actors
-  );
-
-  return (
-    characters
   );
 };

@@ -4,6 +4,8 @@ import {
   ObjectID
 } from 'mongodb';
 
+import actorsGenderAssignedGet from 
+  './actorsGenderAssignedGet';
 import {
   genreFindOne
 } from '~/js/server/data/genre';
@@ -899,8 +901,12 @@ export default async (
   db
 ) => {
 
-  const starringActors = starringActorsFlatlistGet(
+  let starringActors = starringActorsFlatlistGet(
     _cards
+  );
+
+  starringActors = await actorsGenderAssignedGet(
+    starringActors
   );
 
   const spoofActors = await spoofActorsGet(

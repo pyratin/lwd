@@ -4,10 +4,9 @@ import moment from 'moment';
 
 import mediawikiFetch from './mediawikiFetch';
 import movieDataBasicGet from './movieDataBasicGet';
-import charactersBasicGet from './charactersBasicGet';
-import segmentsGet from '../fns/segmentsGet';
-import cardsBasicGet from
-  './cardsBasicGet';
+import charactersSyncGet from './charactersSyncGet';
+import cardsSyncGet from
+  './cardsSyncGet';
 
 const categoryGet = (
   _category
@@ -89,18 +88,14 @@ const movieTitleRandomGetFn = async (
     );
   }
 
-  const characters = charactersBasicGet(
+  const characters = charactersSyncGet(
     movieDataBasic.cast,
     movieDataBasic.plot
   );
 
-  const segments = segmentsGet(
+  const cards = cardsSyncGet(
     movieDataBasic.plot,
     characters
-  );
-
-  const cards = cardsBasicGet(
-    segments
   );
 
   const characterTexts = cards.reduce(

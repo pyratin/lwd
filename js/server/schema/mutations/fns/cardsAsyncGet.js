@@ -1,6 +1,7 @@
 'use strict';
 
-import cardsActorReplacedGet from './cardsActorReplacedGet';
+import cardsActorImageIdAssignedGet from
+  './cardsActorImageIdAssignedGet';
 import cardsGifyUrlAssignedGet from 
   './cardsGifyUrlAssignedGet';
 
@@ -10,7 +11,7 @@ export default async (
   db
 ) => {
 
-  let cards = await cardsActorReplacedGet(
+  let cards = await cardsActorImageIdAssignedGet(
     _cards,
     genre,
     db

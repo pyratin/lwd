@@ -1,10 +1,8 @@
 'use strict';
 
+import charactersSyncGet from './charactersSyncGet';
 import charactersCategoryAssignedGet from 
   './charactersCategoryAssignedGet';
-import charactersActorGenderAssignedGet from
-  './charactersActorGenderAssignedGet';
-import charactersBasicGet from './charactersBasicGet';
 
 export default async (
   cast,
@@ -12,7 +10,7 @@ export default async (
   plotText
 ) => {
 
-  let characters = charactersBasicGet(
+  let characters = charactersSyncGet(
     cast, 
     plot
   );
@@ -20,10 +18,6 @@ export default async (
   characters = await charactersCategoryAssignedGet(
     characters,
     plotText
-  );
-
-  characters = await charactersActorGenderAssignedGet(
-    characters
   );
 
   return (

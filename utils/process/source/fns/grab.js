@@ -6,7 +6,7 @@ import {
 } from 'child_process';
 import shelljs from 'shelljs';
 
-const grabThreshold = 0.3;
+const grabThreshold = 0.25;
 
 export default (
   videoName,

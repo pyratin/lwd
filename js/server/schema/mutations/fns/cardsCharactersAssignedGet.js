@@ -232,7 +232,7 @@ const segmentsGetFn = (
     );
 };
 
-export default (
+const segmentsGet = (
   plot,
   characters
 ) => {
@@ -248,5 +248,157 @@ export default (
 
   return (
     segments
+  );
+};
+
+const charactersAssignedGetFn = (
+  fragments
+) => {
+
+  return fragments.reduce(
+    (
+      memo,
+      {
+        type,
+        text,
+        actor,
+        castIndex
+      }
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          type !==
+          'actor'
+        ) :
+        case (
+          !!memo.find(
+            (
+              _memo
+            ) => {
+
+              return (
+                _memo.text ===
+                text
+              );
+            }
+          )
+        ) :
+
+          return (
+            memo
+          );
+
+        default :
+
+          return [
+            ...memo,
+            {
+              text,
+              actor: {
+                ud: actor.ud,
+                text: actor.text,
+                gender: actor.gender,
+              },
+              castIndex
+            }
+          ];
+      }
+    },
+    []
+  );
+};
+
+const charactersAssignedGet = (
+  segments
+) => {
+
+  return segments.reduce(
+    (
+      memo,
+      segment
+    ) => {
+
+      return [
+        ...memo,
+        {
+          text: segment,
+          characters: charactersAssignedGetFn(
+            segment
+          )
+        }
+      ];
+    },
+    []
+  );
+};
+
+const cardsTextCollapsedGetFn = (
+  card
+) => {
+
+  const text = card.text.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      return `${memo}${fragment.text}`;
+    },
+    ''
+  );
+
+  return {
+    ...card,
+    text
+  };
+};
+
+const cardsTextCollapsedGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      return [
+        ...memo,
+        {
+          ...cardsTextCollapsedGetFn(
+            card
+          )
+        }
+      ];
+    },
+    []
+  );
+};
+
+export default (
+  plot,
+  characters
+) => {
+
+  const segments = segmentsGet(
+    plot,
+    characters
+  );
+
+  let cards = charactersAssignedGet(
+    segments
+  );
+
+  cards = cardsTextCollapsedGet(
+    cards
+  );
+
+  return (
+    cards
   );
 };

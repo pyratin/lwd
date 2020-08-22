@@ -1,90 +1,5 @@
 'use strict';
 
-const charactersAssignedGetFn = (
-  fragments
-) => {
-
-  return fragments.reduce(
-    (
-      memo,
-      {
-        type,
-        text,
-        actor,
-        castIndex
-      }
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          type !==
-          'actor'
-        ) :
-        case (
-          !!memo.find(
-            (
-              _memo
-            ) => {
-
-              return (
-                _memo.text ===
-                text
-              );
-            }
-          )
-        ) :
-
-          return (
-            memo
-          );
-
-        default :
-
-          return [
-            ...memo,
-            {
-              text,
-              actor: {
-                ud: actor.ud,
-                text: actor.text,
-                gender: actor.gender,
-              },
-              castIndex
-            }
-          ];
-      }
-    },
-    []
-  );
-};
-
-const charactersAssignedGet = (
-  segments
-) => {
-
-  return segments.reduce(
-    (
-      memo,
-      segment
-    ) => {
-
-      return [
-        ...memo,
-        {
-          text: segment,
-          characters: charactersAssignedGetFn(
-            segment
-          )
-        }
-      ];
-    },
-    []
-  );
-};
-
 const charactersPreviousGet = (
   cards
 ) => {
@@ -266,7 +181,7 @@ const characterAssignedGetFn = (
   };
 };
 
-const characterAssignedGet = (
+export default (
   cards
 ) => {
 
@@ -291,22 +206,5 @@ const characterAssignedGet = (
       ];
     },
     []
-  );
-};
-
-export default (
-  segments
-) => {
-
-  let cards = charactersAssignedGet(
-    segments
-  );
-
-  cards = characterAssignedGet(
-    cards
-  );
-
-  return (
-    cards
   );
 };

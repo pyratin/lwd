@@ -1,20 +1,21 @@
 'use strict';
 
-import cardsBasicGet from './cardsBasicGet';
-import cardsImageDataAssignedGet from 
-  './cardsImageDataAssignedGet';
+import cardsSyncGet from './cardsSyncGet';
+import cardsAsyncGet from './cardsAsyncGet';
 
 export default async (
-  segments,
+  plot,
+  characters,
   genre,
   db
 ) => {
 
-  let cards = cardsBasicGet(
-    segments
+  let cards = cardsSyncGet(
+    plot,
+    characters
   );
 
-  cards = await cardsImageDataAssignedGet(
+  cards = await cardsAsyncGet(
     cards,
     genre,
     db
