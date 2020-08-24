@@ -8,18 +8,31 @@ import cardsGifyUrlAssignedGet from
 export default async (
   _cards,
   genre,
-  db
+  db,
+  gifyUrlsAssign = true
 ) => {
 
-  let cards = await cardsActorImageIdAssignedGet(
-    _cards,
-    genre,
-    db
-  );
+  let cards = _cards;
 
-  cards = await cardsGifyUrlAssignedGet(
-    cards
-  );
+  if (
+    genre
+  ) {
+
+    cards = await cardsActorImageIdAssignedGet(
+      _cards,
+      genre,
+      db
+    );
+  }
+
+  if (
+    gifyUrlsAssign
+  ) {
+
+    cards = await cardsGifyUrlAssignedGet(
+      cards
+    );
+  }
 
   return (
     cards

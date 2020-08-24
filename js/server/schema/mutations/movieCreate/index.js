@@ -137,7 +137,6 @@ const processFn = async (
     genre,
     db
   );
-  console.log(cards);
 
   const base64 = await gifGet(
     movieDataBasic.title,

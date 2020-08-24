@@ -4,37 +4,76 @@ import mediawikiFetch from '../fns/mediawikiFetch';
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 
 const movieSearchQueryGetFn = (
-  text
+  _text,
+  fuzzy
 ) => {
 
-  return text
-    .trim()
-    .replace(
-      /\s+/g,
-      '~%20'
+  const fuzzySuffix = (
+    fuzzy
+  ) ?
+    '~' : 
+    '';
+
+  let text = _text.split(
+    /\s+/g
+  )
+    .map(
+      (
+        __text
+      ) => {
+
+        return `
+          ${
+            __text
+          }${
+            fuzzySuffix
+          }
+        `
+          .trim();
+      }
+    )
+    .join(
+      ' '
     );
+
+  text = encodeURIComponent(
+    text
+  );
+
+  return (
+    text
+  );
 };
 
 const movieSearchQueryGet = (
-  text
+  text,
+  limit,
+  fuzzy
 ) => {
 
   return `
     https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=intitle:${
       movieSearchQueryGetFn(
-        text
+        text,
+        fuzzy
       )
-    }+incategory:tamil-language_films|hindi-language_films|English-language_films&srlimit=5&format=json
+    }+incategory:tamil-language_films|hindi-language_films|English-language_films&srlimit=${
+      limit
+    }&format=json
   `
     .trim();
 };
 
 const movieSearchResultsGet = async (
-  text
+  text,
+  limit,
+  fuzzy
 ) => {
 
   const query = movieSearchQueryGet(
-    text
+    text,
+    limit,
+    fuzzy
   );
 
   const json = await mediawikiFetch(
@@ -127,11 +166,15 @@ const movieSearchResultsFilteredGet = (
 };
 
 export default async (
-  text
+  text,
+  limit = 5,
+  fuzzy = true
 ) => {
 
   let results = await movieSearchResultsGet(
-    text
+    text,
+    limit,
+    fuzzy
   );
 
   results = await movieSearchResultsFilteredGet(

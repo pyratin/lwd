@@ -556,6 +556,10 @@ const charactersActorAssignedGet = (
           ...memo,
           {
             ...character,
+            actor: {
+              ...character.actor,
+              gender: spoofActor.gender
+            },
             _actor: spoofActor
           }
         ];
@@ -873,15 +877,14 @@ const cardsCharacterAssignedGet = (
         character
       ) {
 
+        delete character._actor;
+
         return [
           ...memo,
           {
             ...card,
             actorImageId: character.actorImageId,
-            character: {
-              text: character.text,
-              actor: character.actor
-            }
+            character
           }
         ];
       }

@@ -27,10 +27,29 @@ const mongoClientConnectRemote = () => {
   );
 };
 
-const videosFolderPathString = 'temp/videos';
+const processFolderPathString = 'temp/process';
 
-const sourceFolderPathString = 'temp/source';
+const videoFolderName = 'videos';
 
+const sourceFolderName = 'source';
+
+const videosFolderPathString = `
+  ${
+    processFolderPathString
+  }/${
+    videoFolderName
+  }
+`
+  .trim();
+
+const sourceFolderPathString = `
+  ${
+    processFolderPathString
+  }/${
+    sourceFolderName
+  }
+`
+  .trim();
 
 (
   async() => {

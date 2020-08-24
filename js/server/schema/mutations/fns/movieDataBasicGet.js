@@ -98,7 +98,8 @@ const moviePageSectionTextsGet = (
 };
 
 const plotCulledGet = (
-  _plot
+  _plot,
+  cull
 ) => {
 
   const plot = (
@@ -112,6 +113,7 @@ const plotCulledGet = (
 
         if (
           (
+            cull &&
             memo.length >= 
             3
           ) &&
@@ -154,7 +156,8 @@ const plotCulledGet = (
 };
 
 export default async (
-  title
+  title,
+  cull = true
 ) => {
 
   // eslint-disable-next-line no-console
@@ -208,7 +211,8 @@ export default async (
   );
 
   plot = plotCulledGet(
-    plot
+    plot,
+    cull
   );
 
   return {

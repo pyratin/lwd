@@ -7,7 +7,8 @@ export default async (
   plot,
   characters,
   genre,
-  db
+  db,
+  gifyUrlsAssign
 ) => {
 
   let cards = cardsSyncGet(
@@ -18,7 +19,8 @@ export default async (
   cards = await cardsAsyncGet(
     cards,
     genre,
-    db
+    db,
+    gifyUrlsAssign
   );
 
   return (

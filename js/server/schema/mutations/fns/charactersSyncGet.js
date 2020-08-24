@@ -4,12 +4,12 @@ import plotNNPsGet from './plotNNPsGet';
 import castNNPsGet from './castNNPsGet';
 import NNPCrossMatchGet from './NNPCrossMatchGet';
 
-const _charactersGetFn = (
+const NNPCrossMatchesGetFn = (
   plotCharacter,
   castCharacters
 ) => {
 
-  const character = castCharacters.reduce(
+  const matches = castCharacters.reduce(
     (
       memo,
       castCharacter
@@ -21,14 +21,17 @@ const _charactersGetFn = (
       );
 
       if (
-        !memo &&
         match
       ) {
 
-        return {
-          ...castCharacter,
-          ...match
-        };
+        return [
+          ...memo ||
+          [],
+          {
+            ...castCharacter,
+            ...match
+          }
+        ];
       }
 
       return (
@@ -39,7 +42,7 @@ const _charactersGetFn = (
   );
 
   return (
-    character
+    matches
   );
 };
 
@@ -48,24 +51,24 @@ const NNPCrossMatchesGet = (
   castCharacters
 ) => {
 
-  const characters = plotCharacters.reduce(
+  const matches = plotCharacters.reduce(
     (
       memo,
       plotCharacter
     ) => {
 
-      let character = _charactersGetFn(
+      let matches = NNPCrossMatchesGetFn(
         plotCharacter,
         castCharacters
       );
 
       if (
-        character
+        matches
       ) {
 
         return [
           ...memo,
-          character
+          ...matches
         ];
       }
 
@@ -77,7 +80,7 @@ const NNPCrossMatchesGet = (
   );
 
   return (
-    characters
+    matches
   );
 };
 const charactersSortedGet = (

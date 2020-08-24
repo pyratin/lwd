@@ -171,7 +171,8 @@ const characterAssignedGetFn = (
   ) ?
     {
       text: character.text,
-      actor: character.actor
+      actor: character.actor,
+      castIndex: character.castIndex
     } :
     null;
 

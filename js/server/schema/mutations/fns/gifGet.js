@@ -6,68 +6,12 @@ import {
 
 import cardsBase64AssignedGet from 
   './cardsBase64AssignedGet';
+import charactersFromCardsGet 
+  from './charactersFromCardsGet';
 import cardsRenderedGet from './cardsRenderedGet';
 import splashGet from './splashGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
-
-const charactersFromCardsGet = (
-  cards
-) => {
-
-  return cards.reduce(
-    (
-      memo,
-      card
-    ) => {
-
-      const exists = memo.find(
-        (
-          _memo
-        ) => {
-
-          const characterText = card?.character?.text;
-
-          return (
-            (
-              characterText
-            ) &&
-            (
-              (
-                characterText
-                  .match(
-                    _memo.text
-                  )
-              ) ||
-              (
-                _memo.text
-                  .match(
-                    characterText
-                  )
-              )
-            )
-          );
-        }
-      );
-
-      if (
-        card?.character?.text &&
-        !exists
-      ) {
-
-        return [
-          ...memo,
-          card.character
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
 
 const charactersDualRoleIndexAssignedGet = (
   _characters
