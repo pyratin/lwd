@@ -6,7 +6,6 @@ import {
   ObjectID
 } from 'mongodb';
 import puppeteer from 'puppeteer';
-import cheerio from 'cheerio';
 
 import {
   mongoUriGet
@@ -28,8 +27,10 @@ import {
   semiCreate as semiCreateFn,
   semiFindOne
 } from '~/js/server/data/semi';
-import NNPCrossMatchGet
-  from '~/js/server/schema/mutations/fns/NNPCrossMatchGet';
+import NNPsGet 
+  from '~/js/server/schema/mutations/fns/NNPsGet';
+import NNPCrossMatchesGet
+  from '~/js/server/schema/mutations/fns/NNPCrossMatchesGet';
 
 const dataFilename = 'tmdb_5000_movies';
 
@@ -106,7 +107,7 @@ const titleMatchGet = (
     );
 };
 
-const semiDataGet = async (
+const tmdb5000movieSemiDataGetFn = async (
   title,
   db
 ) => {
@@ -131,7 +132,6 @@ const semiDataGet = async (
   );
 
   return {
-    title: movieDataBasic.title,
     poster: movieDataBasic.poster,
     cards
   };
@@ -159,38 +159,113 @@ const romanticLeadGet = (
   );
 };
 
-const NNPCrossMatchesGet = (
-  characterText,
+const charactersFilteredGet = (
+  characters,
+  _characters
+) => {
+
+  return _characters.filter(
+    (
+      {
+        text
+      }
+    ) => {
+
+      const exists = characters.find(
+        (
+          character
+        ) => {
+
+          return (
+            text === 
+            character?.text
+          );
+        }
+      );
+
+      return (
+        !exists
+      );
+    }
+  );
+};
+
+const antagonistGetFn = (
+  text,
   characters
 ) => {
 
-  return characters.reduce(
+  const NNPs = NNPsGet(
+    text
+  );
+
+  let matches = characters.reduce(
     (
       memo,
       character
     ) => {
 
-      const match = NNPCrossMatchGet(
-        characterText,
-        character.text
+      const matches = NNPCrossMatchesGet(
+        character,
+        NNPs
       );
 
       if (
-        !memo &&
-        match
+        matches
       ) {
 
-        return (
-          character
-        );
+        return [
+          ...memo,
+          ...matches.map(
+            (
+              match
+            ) => {
+
+              return {
+                ...match,
+                character
+              };
+            }
+          )
+        ];
       }
 
       return (
         memo
       );
     },
-    null
+    []
   );
+
+  matches = matches.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a.distance >
+          b.distance
+        ) :
+
+          return 1;
+
+        case (
+          b.distance >
+          a.distance
+        ) :
+
+          return -1;
+      }
+    }
+  );
+
+  return matches?.[
+    0
+  ]?.character;
 };
 
 const antagonistGet = async (
@@ -224,8 +299,14 @@ const antagonistGet = async (
     }
   );
 
-  await page.click(
-    'input[type="submit"]'
+  await page.evaluate(
+    () => {
+
+      document.querySelector(
+        'input[type="submit"]'
+      )
+        .click();
+    }
   );
 
   const selector = '#search';
@@ -234,7 +315,7 @@ const antagonistGet = async (
     selector
   );
 
-  const html = (
+  const text = (
     await page.evaluate(
       (
         selector
@@ -245,38 +326,29 @@ const antagonistGet = async (
         );
 
         return (
-          el.innerHTML
+          el.innerText
         );
       },
       selector
     )
   );
 
-  const $ = cheerio.load(
-    html
-  );
+  if (
+    !text
+  ) {
 
-  const attr = 'data-tts-text';
-
-  const characterText = $(
-    `
-      div[${
-        attr
-      }]
-    `
-      .trim()
-  )
-    .attr(
-      attr
+    return (
+      null
     );
+  }
 
-  const character = NNPCrossMatchesGet(
-    characterText,
+  const antagonist = antagonistGetFn(
+    text,
     characters
   );
 
   return (
-    character
+    antagonist
   );
 };
 
@@ -293,20 +365,26 @@ const rolesCleanedGet = (
         key
       ) => {
 
-        const {
-          text,
-          actor
-        } = roles[
+        const value = roles[
           key
         ];
 
-        return {
-          ...memo,
-          [key]: {
-            text,
-            actor
-          }
-        };
+        if (
+          value
+        ) {
+
+          return {
+            ...memo,
+            [key]: {
+              text: value.text,
+              actor: value.actor
+            }
+          };
+        }
+
+        return (
+          memo
+        );
       },
       {}
     );
@@ -318,7 +396,7 @@ const rolesGet = async (
   cards
 ) => {
 
-  const characters = charactersFromCardsGet(
+  let characters = charactersFromCardsGet(
     cards
   );
 
@@ -331,11 +409,37 @@ const rolesGet = async (
     characters
   );
 
+  characters = charactersFilteredGet(
+    [
+      protagonist,
+      romanticLead
+    ],
+    characters
+  );
+
   const antagonist = await antagonistGet(
     'antagonist',
     title,
     page,
-    characters
+    characters.filter(
+      (
+        {
+          text
+        }
+      ) => {
+
+        return (
+          (
+            text !== 
+            protagonist.text
+          ) &&
+          (
+            text !==
+            romanticLead.text
+          )
+        );
+      }
+    )
   );
 
   let roles = {
@@ -353,31 +457,15 @@ const rolesGet = async (
   );
 };
 
-const semiCreate = (
-  semiData,
-  db
-) => {
-
-  return semiCreateFn(
-    {
-      _id: new ObjectID()
-    },
-    {
-      $set: semiData
-    },
-    undefined,
-    db
-  );
-};
-
-const tmdb5000movieSemiCreate = async (
+const tmdb5000movieSemiGet = async (
   {
     title: _title,
     tagline,
-    genres,
-    keywords,
+    genres: _genres,
+    keywords: _keywords,
     overview
   },
+  tmdb5000moviesIndex,
   page,
   db
 ) => {
@@ -427,58 +515,126 @@ const tmdb5000movieSemiCreate = async (
     );
   }
 
-  const semiData = await semiDataGet(
+  const semiData = await tmdb5000movieSemiDataGetFn(
     title,
     db
   );
 
   const roles = await rolesGet(
-    _title,
+    title,
     page,
     semiData.cards
   );
 
-  return semiCreate(
+  const genres = JSON.parse(
+    _genres
+  )
+    .map(
+      (
+        {
+          name
+        }
+      ) => {
+
+        return (
+          name
+        );
+      }
+    );
+
+  const keywords = JSON.parse(
+    _keywords
+  )
+    .map(
+      (
+        {
+          name
+        }
+      ) => {
+
+        return (
+          name
+        );
+      }
+    );
+
+  return {
+    source: 'tmdb5000movies',
+    title,
+    _title,
+    tagline,
+    overview,
+    genres,
+    keywords,
+    tmdb5000moviesIndex,
+    ...semiData,
+    roles
+  };
+};
+
+const tmdb5000movieSemiCreateFn = (
+  semiData,
+  db
+) => {
+
+  return semiCreateFn(
     {
-      ...semiData,
-      _title,
-      tagline,
-      genres: JSON.parse(
-        genres
-      )
-        .map(
-          (
-            {
-              name
-            }
-          ) => {
-
-            return (
-              name
-            );
-          }
-        ),
-      keywords: JSON.parse(
-        keywords
-      )
-        .map(
-          (
-            {
-              name
-            }
-          ) => {
-
-            return (
-              name
-            );
-          }
-        ),
-      overview,
-      source: 'tmdb5000movies',
-      roles
+      _id: new ObjectID()
     },
+    {
+      $set: semiData
+    },
+    undefined,
     db
   );
+};
+
+const tmdb5000movieSemiCreate = (
+  _data,
+  tmdb5000moviesIndex,
+  page,
+  db
+) => {
+
+  return tmdb5000movieSemiGet(
+    _data,
+    tmdb5000moviesIndex,
+    page,
+    db
+  )
+    .then(
+      (
+        semiData
+      ) => {
+
+        if (
+          !semiData.roles.protagonist ||
+          !semiData.roles.romanticLead ||
+          !semiData.roles.antagonist
+        ) {
+
+          return (
+            null
+          );
+        }
+
+        return tmdb5000movieSemiCreateFn(
+          semiData,
+          db
+        );
+      }
+    )
+    .catch(
+      (
+        error
+      ) => {
+
+        // eslint-disable-next-line no-console
+        console.log(
+          error
+        );
+      }
+    );
 };
 
 const tmdb5000moviesSemisCreateFn = async (
@@ -500,7 +656,8 @@ const tmdb5000moviesSemisCreateFn = async (
     .reduce(
       (
         memo,
-        _data
+        _data,
+        tmdb5000moviesIndex
       ) => {
 
         return memo.then(
@@ -510,6 +667,7 @@ const tmdb5000moviesSemisCreateFn = async (
 
             return tmdb5000movieSemiCreate(
               _data,
+              tmdb5000moviesIndex,
               page,
               db
             )

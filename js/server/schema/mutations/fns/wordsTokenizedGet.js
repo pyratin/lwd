@@ -3,8 +3,29 @@
 import natural from 'natural';
 import escapeStringRegexp from 'escape-string-regexp';
 
+const tokenizerGet = (
+  tokenizerType
+) => {
+
+  switch (
+    tokenizerType
+  ) {
+
+    case (
+      'wordPunct'
+    ) :
+
+      return new natural.WordPunctTokenizer();
+
+    default:
+
+      return new natural.TreebankWordTokenizer();
+  }
+};
+
 export default (
-  _sentence
+  _sentence,
+  tokenizerType = 'treebank'
 ) => {
 
   const sentence = _sentence
@@ -13,7 +34,9 @@ export default (
       '$1 / $2'
     );
 
-  const tokenizer = new natural.TreebankWordTokenizer();
+  const tokenizer = tokenizerGet(
+    tokenizerType
+  );
 
   let words = tokenizer.tokenize(
     sentence

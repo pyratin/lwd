@@ -54,7 +54,29 @@ const characterTokenizedGet = (
     );
 };
 
-const characterFragmentMatchedGet = (
+const characterPunctTokenizedGet = (
+  character
+) => {
+
+  return wordsTokenizedGet(
+    character,
+    'wordPunct'
+  )
+    .map(
+      (
+        {
+          text
+        }
+      ) => {
+
+        return (
+          text
+        );
+      }
+    );
+};
+
+const characterTokensMatchedGet = (
   character,
   _character
 ) => {
@@ -99,6 +121,50 @@ const characterFragmentMatchedGet = (
     null;
 };
 
+const characterPunctTokensMatchedGet = (
+  character,
+  _character
+) => {
+
+  const characterTokenCombinations = combinations(
+    characterPunctTokenizedGet(
+      _character
+    )
+  )
+    .reduce(
+      (
+        memo,
+        characterTokenCombination
+      ) => {
+
+        return [
+          ...memo,
+          characterTokenCombination.join(
+            ' '
+          )
+        ];
+      },
+      []
+    );
+
+  const characterToken = characterTokenCombinations.find(
+    (
+      characterToken
+    ) => {
+
+      return (
+        characterToken ===
+        character
+      );
+    }
+  );
+
+  return (
+    characterToken
+  ) ?
+    '3' :
+    null;
+};
 export default (
   plotCharacter,
   castCharacter
@@ -130,7 +196,7 @@ export default (
     ) :
     case (
       (
-        matchIndexString = characterFragmentMatchedGet(
+        matchIndexString = characterTokensMatchedGet(
           plotCharacter,
           castCharacter,
         )
@@ -139,9 +205,27 @@ export default (
     ) :
     case (
       (
-        matchIndexString = characterFragmentMatchedGet(
+        matchIndexString = characterTokensMatchedGet(
           castCharacter,
           plotCharacter,
+        )
+      ) &&
+      !!matchIndexString
+    ) :
+    case (
+      (
+        matchIndexString = characterPunctTokensMatchedGet(
+          plotCharacter,
+          castCharacter
+        )
+      ) &&
+      !!matchIndexString
+    ) :
+    case (
+      (
+        matchIndexString = characterPunctTokensMatchedGet(
+          castCharacter,
+          plotCharacter
         )
       ) &&
       !!matchIndexString

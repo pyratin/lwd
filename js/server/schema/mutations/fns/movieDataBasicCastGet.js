@@ -5,6 +5,7 @@ import cheerio from 'cheerio';
 import plotNNPsGet from './plotNNPsGet';
 import NNPsGet from './NNPsGet';
 import NNPCrossMatchGet from './NNPCrossMatchGet';
+import sentencesTokenizedGet from './sentencesTokenizedGet';
 
 const actorNNPsGet = (
   castLines
@@ -296,6 +297,27 @@ const castGetFn = (
   );
 };
 
+const castRoleCulledGet = (
+  cast
+) => {
+
+  return cast.map(
+    (
+      _cast
+    ) => {
+
+      return {
+        ..._cast,
+        role: sentencesTokenizedGet(
+          _cast.role
+        )[
+          0
+        ]
+      };
+    }
+  );
+};
+
 export default (
   _castText,
   plot
@@ -352,6 +374,10 @@ export default (
   let cast = castGetFn(
     actors,
     castLines
+  );
+
+  cast = castRoleCulledGet(
+    cast
   );
 
   return (

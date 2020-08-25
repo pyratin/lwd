@@ -6,7 +6,7 @@ export default (
   cast
 ) => {
 
-  return cast.reduce(
+  const castNNPs = cast.reduce(
     (
       _castMemo,
       _cast,
@@ -56,5 +56,9 @@ export default (
       ];
     },
     []
+  );
+
+  return (
+    castNNPs
   );
 };
