@@ -67,7 +67,7 @@ const wordsChunk = (
               )
           ) &&
           (
-            !!_word.index ||
+            !!_word.tokenIndex ||
             !!attachIndexZeroOverride
           )
         ) :

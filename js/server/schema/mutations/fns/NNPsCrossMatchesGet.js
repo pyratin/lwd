@@ -3,19 +3,19 @@
 import NNPCrossMatchesGet from './NNPCrossMatchesGet';
 
 export default (
-  plotCharacters,
-  castCharacters
+  NNPs,
+  _NNPs
 ) => {
 
-  const matches = plotCharacters.reduce(
+  const matches = NNPs.reduce(
     (
       memo,
-      plotCharacter
+      NNP
     ) => {
 
       let matches = NNPCrossMatchesGet(
-        plotCharacter,
-        castCharacters
+        NNP,
+        _NNPs
       );
 
       if (

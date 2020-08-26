@@ -3,19 +3,19 @@
 import NNPCrossMatchGet from './NNPCrossMatchGet';
 
 export default (
-  plotCharacter,
-  castCharacters
+  NNP,
+  _NNPs
 ) => {
 
-  const matches = castCharacters.reduce(
+  const matches = _NNPs.reduce(
     (
       memo,
-      castCharacter
+      _NNP
     ) => {
 
       const match = NNPCrossMatchGet(
-        plotCharacter.text,
-        castCharacter.text
+        NNP.text,
+        _NNP.text
       );
 
       if (
@@ -26,14 +26,9 @@ export default (
           ...memo ||
           [],
           {
-            ...castCharacter,
             ...match,
-            characterMarkers: {
-              paragraphIndex: plotCharacter.paragraphIndex,
-              sentenceIndex: plotCharacter.sentenceIndex,
-              tokenIndex: plotCharacter.index,
-              distance: plotCharacter.distance
-            }
+            NNPIndex: NNP.index,
+            _NNPIndex: _NNP.index
           }
         ];
       }

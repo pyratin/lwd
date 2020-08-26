@@ -1,12 +1,13 @@
 'use strict';
 
 import NNPsGet from './NNPsGet';
+import NNPsUniqueGet from './NNPsUniqueGet';
 
 export default (
   plot
 ) => {
 
-  return plot.reduce(
+  let plotNNPs = plot.reduce(
     (
       memo,
       sentence
@@ -37,5 +38,26 @@ export default (
       ];
     },
     []
+  );
+
+  plotNNPs = NNPsUniqueGet(
+    plotNNPs
+  );
+
+  plotNNPs = plotNNPs.map(
+    (
+      plotNNP,
+      index
+    ) => {
+
+      return {
+        ...plotNNP,
+        index
+      };
+    }
+  );
+
+  return (
+    plotNNPs
   );
 };

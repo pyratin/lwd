@@ -45,14 +45,14 @@ export default (
       (
         memo,
         word,
-        index
+        tokenIndex
       ) => {
 
         return [
           ...memo,
           {
             text: word,
-            index
+            tokenIndex
           }
         ];
       },

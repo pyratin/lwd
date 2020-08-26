@@ -4,11 +4,50 @@ import plotNNPsGet from './plotNNPsGet';
 import castNNPsGet from './castNNPsGet';
 import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
 
-const charactersSortedGet = (
-  castCharacters
+const matchesDataAssignedGet = (
+  matches,
+  _NNPs,
+  __NNPs,
+  cast
 ) => {
 
-  return castCharacters.sort(
+  return matches.reduce(
+    (
+      memo,
+      _cross
+    ) => {
+
+      const NNP = _NNPs[
+        _cross.NNPIndex
+      ];
+
+      const _NNP = __NNPs[
+        _cross._NNPIndex
+      ];
+
+      const _cast = cast[
+        _NNP.castIndex
+      ];
+
+      return [
+        ...memo,
+        {
+          _cross,
+          NNP,
+          _NNP,
+          _cast
+        }
+      ];
+    },
+    []
+  );
+};
+
+const matchesSortedGet = (
+  matches
+) => {
+
+  return matches.sort(
     (
       a, b
     ) => {
@@ -18,43 +57,43 @@ const charactersSortedGet = (
       ) {
 
         case (
-          a.possessive &&
-          !b.possessive
+          a._NNP.distance >
+          b._NNP.distance
         ) :
 
           return 1;
 
         case (
-          b.possessive &&
-          !a.possessive
+          b._NNP.distance >
+          a._NNP.distance
         ) :
 
           return -1;
 
         case (
-          a.distance >
-          b.distance
+          a._NNP.castIndex >
+          b._NNP.castIndex
         ) :
 
           return 1;
 
         case (
-          b.distance >
-          a.distance
+          b._NNP.castIndex >
+          a._NNP.castIndex
         ) :
 
           return -1;
 
         case (
-          a.castIndex >
-          b.castIndex
+          a._NNP.possessive &&
+          !b._NNP.possessive
         ) :
 
           return 1;
 
         case (
-          b.castIndex >
-          a.castIndex
+          b._NNP.possessive &&
+          !a._NNP.possessive
         ) :
 
           return -1;
@@ -63,168 +102,61 @@ const charactersSortedGet = (
   );
 };
 
-const characterExistsGet = (
-  character,
-  characters
+const matchExistsGet = (
+  match,
+  _matches
 ) => {
 
-  return characters.findIndex(
+  return _matches.find(
     (
-      _character
+      _match
     ) => {
 
+      const _matchText = _match._cross._text ||
+        _match._cross.text;
+
+      const matchText = match._cross._text ||
+        match._cross.text;
+
       return (
-        _character.text ===
-        character.text
+        _matchText ===
+        matchText
       );
     }
   );
 };
 
-const charactersUniqueMatchesGet = (
-  castCharacters
+const matchesUniqueGet = (
+  matches
 ) => {
 
-  return castCharacters.reduce(
+  return matches.reduce(
     (
       memo,
-      castCharacter
+      match
     ) => {
 
-      const matchIndex = characterExistsGet(
-        castCharacter,
+      const exists = matchExistsGet(
+        match,
         memo
       );
 
       if (
-        matchIndex === 
-        -1
+        !exists
       ) {
 
         return [
           ...memo,
-          {
-            ...castCharacter,
-            characterMarkers: [
-              castCharacter.characterMarkers
-            ]
-          }
+          match
         ];
       }
 
-      return [
-        ...memo.slice(
-          0, matchIndex
-        ),
-        {
-          ...memo[
-            matchIndex
-          ],
-          characterMarkers: [
-            ...memo[
-              matchIndex
-            ]
-              .characterMarkers,
-            castCharacter.characterMarkers
-          ]
-        },
-        ...memo.slice(
-          matchIndex + 1
-        )
-      ];
+      return (
+        memo
+      );
     },
     []
   );
-};
-
-const characterMarkersUniqueSet = (
-  castCharacters
-) => {
-
-  return castCharacters.reduce(
-    (
-      memo,
-      castCharacter
-    ) => {
-
-      let characterMarkerStrings = castCharacter
-        .characterMarkers
-        .map(
-          (
-            characterMarker
-          ) => {
-
-            return JSON.stringify(
-              characterMarker
-            );
-          }
-        );
-
-      characterMarkerStrings = [
-        ...new Set(
-          characterMarkerStrings
-        )
-      ];
-
-      const characterMarkers = characterMarkerStrings
-        .map(
-          (
-            characterMarkerString
-          ) => {
-
-            return JSON.parse(
-              characterMarkerString
-            );
-          }
-        );
-
-      return [
-        ...memo,
-        {
-          ...castCharacter,
-          characterMarkers
-        }
-      ];
-    },
-    []
-  );
-};
-
-const charactersCastDataAssignedGet = (
-  characters,
-  cast
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      return [
-        ...memo,
-        {
-          ...character,
-          ...cast[
-            character.castIndex
-          ]
-        }
-      ];
-    },
-    []
-  )
-    .map(
-      (
-        character
-      ) => {
-
-        delete character.distance;
-
-        return (
-          character
-        );
-      }
-    );
 };
 
 export default (
@@ -232,45 +164,35 @@ export default (
   plot
 ) => {
 
-  const plotCharacters = plotNNPsGet(
+  const NNPs = plotNNPsGet(
     plot
   );
 
-  const castCharacters = castNNPsGet(
+  const _NNPs = castNNPsGet(
     cast
   );
 
-  let characters = NNPsCrossMatchesGet(
-    plotCharacters,
-    castCharacters
+  let matches = NNPsCrossMatchesGet(
+    NNPs,
+    _NNPs
   );
 
-  characters = charactersSortedGet(
-    characters
-  );
-
-  characters = charactersUniqueMatchesGet(
-    characters
-  );
-
-  characters = characterMarkersUniqueSet(
-    characters
-  );
-
-  console.log(
-    JSON.stringify(
-      characters,
-      null,
-      2
-    )
-  );
-
-  characters = charactersCastDataAssignedGet(
-    characters,
+  matches = matchesDataAssignedGet(
+    matches,
+    NNPs,
+    _NNPs,
     cast
+  );
+
+  matches = matchesSortedGet(
+    matches
+  );
+
+  matches = matchesUniqueGet(
+    matches
   );
 
   return (
-    characters
+    matches
   );
 };

@@ -6,27 +6,27 @@ import combinations from 'combinations';
 import wordsTokenizedGet from './wordsTokenizedGet';
 
 const characterStringMatchedGet = (
-  plotCharacter,
-  castCharacter
+  character,
+  _character
 ) => {
 
   return (
-    plotCharacter ===
-    castCharacter
+    character ===
+    _character
   ) ?
     '0' :
     null;
 };
 
 const characterLevenMatchedGet = (
-  plotCharacter,
-  castCharacter
+  character,
+  _character
 ) => {
 
   return (
     leven(
-      plotCharacter,
-      castCharacter
+      character,
+      _character
     ) === 1
   ) ?
     '1' :
@@ -165,12 +165,13 @@ const characterPunctTokensMatchedGet = (
     '3' :
     null;
 };
+
 export default (
-  plotCharacter,
-  castCharacter
+  character,
+  _character
 ) => {
 
-  let matchIndexString;
+  let NNPmatchIndexString;
 
   switch (
     true
@@ -178,72 +179,72 @@ export default (
 
     case (
       (
-        matchIndexString = characterStringMatchedGet(
-          plotCharacter,
-          castCharacter
+        NNPmatchIndexString = characterStringMatchedGet(
+          character,
+          _character
         )
       ) &&
-      !!matchIndexString
+      !!NNPmatchIndexString
     ) :
     case (
       (
-        matchIndexString = characterLevenMatchedGet(
-          plotCharacter,
-          castCharacter
+        NNPmatchIndexString = characterLevenMatchedGet(
+          character,
+          _character
         )
       ) &&
-      !!matchIndexString
+      !!NNPmatchIndexString
     ) :
     case (
       (
-        matchIndexString = characterTokensMatchedGet(
-          plotCharacter,
-          castCharacter,
+        NNPmatchIndexString = characterTokensMatchedGet(
+          character,
+          _character
         )
       ) &&
-      !!matchIndexString
+      !!NNPmatchIndexString
     ) :
     case (
       (
-        matchIndexString = characterTokensMatchedGet(
-          castCharacter,
-          plotCharacter,
+        NNPmatchIndexString = characterTokensMatchedGet(
+          _character,
+          character
         )
       ) &&
-      !!matchIndexString
+      !!NNPmatchIndexString
     ) :
     case (
       (
-        matchIndexString = characterPunctTokensMatchedGet(
-          plotCharacter,
-          castCharacter
+        NNPmatchIndexString = characterPunctTokensMatchedGet(
+          character,
+          _character
         )
       ) &&
-      !!matchIndexString
+      !!NNPmatchIndexString
     ) :
     case (
       (
-        matchIndexString = characterPunctTokensMatchedGet(
-          castCharacter,
-          plotCharacter
+        NNPmatchIndexString = characterPunctTokensMatchedGet(
+          _character,
+          character
         )
       ) &&
-      !!matchIndexString
+      !!NNPmatchIndexString
     ) :
 
       return (
         {
-          text: plotCharacter,
-          matchIndex: parseInt(
-            matchIndexString
+          text: character,
+          NNPmatchIndex: parseInt(
+            NNPmatchIndexString
           ),
-          levenMatchText: (
+          _text: (
             parseInt(
-              matchIndexString
+              NNPmatchIndexString
             ) === 
             1
           ) ?
-            castCharacter :
+            _character :
             null
         }
       );

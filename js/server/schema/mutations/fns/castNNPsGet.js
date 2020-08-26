@@ -1,12 +1,13 @@
 'use strict';
 
 import NNPsGet from './NNPsGet';
+import NNPsUniqueGet from './NNPsUniqueGet';
 
 export default (
   cast
 ) => {
 
-  const castNNPs = cast.reduce(
+  let castNNPs = cast.reduce(
     (
       _castMemo,
       _cast,
@@ -56,6 +57,23 @@ export default (
       ];
     },
     []
+  );
+
+  castNNPs = NNPsUniqueGet(
+    castNNPs
+  );
+
+  castNNPs = castNNPs.map(
+    (
+      castNNP,
+      index
+    ) => {
+  
+      return {
+        ...castNNP,
+        index
+      };
+    }
   );
 
   return (
