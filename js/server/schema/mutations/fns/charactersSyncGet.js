@@ -68,32 +68,16 @@ const characterExistsGet = (
   characters
 ) => {
 
-  return characters.reduce(
+  return characters.findIndex(
     (
-      memo,
       _character
     ) => {
 
-      const exists = (
-        character.text ===
-        _character.text
-      );
-
-      if (
-        !memo &&
-        exists
-      ) {
-
-        return (
-          true
-        );
-      }
-
       return (
-        memo
+        _character.text ===
+        character.text
       );
-    },
-    false
+    }
   );
 };
 
@@ -107,24 +91,100 @@ const charactersUniqueMatchesGet = (
       castCharacter
     ) => {
 
-      const exists = characterExistsGet(
+      const matchIndex = characterExistsGet(
         castCharacter,
         memo
       );
 
       if (
-        !exists
+        matchIndex === 
+        -1
       ) {
 
         return [
           ...memo,
-          castCharacter
+          {
+            ...castCharacter,
+            characterMarkers: [
+              castCharacter.characterMarkers
+            ]
+          }
         ];
       }
 
-      return (
-        memo
-      );
+      return [
+        ...memo.slice(
+          0, matchIndex
+        ),
+        {
+          ...memo[
+            matchIndex
+          ],
+          characterMarkers: [
+            ...memo[
+              matchIndex
+            ]
+              .characterMarkers,
+            castCharacter.characterMarkers
+          ]
+        },
+        ...memo.slice(
+          matchIndex + 1
+        )
+      ];
+    },
+    []
+  );
+};
+
+const characterMarkersUniqueSet = (
+  castCharacters
+) => {
+
+  return castCharacters.reduce(
+    (
+      memo,
+      castCharacter
+    ) => {
+
+      let characterMarkerStrings = castCharacter
+        .characterMarkers
+        .map(
+          (
+            characterMarker
+          ) => {
+
+            return JSON.stringify(
+              characterMarker
+            );
+          }
+        );
+
+      characterMarkerStrings = [
+        ...new Set(
+          characterMarkerStrings
+        )
+      ];
+
+      const characterMarkers = characterMarkerStrings
+        .map(
+          (
+            characterMarkerString
+          ) => {
+
+            return JSON.parse(
+              characterMarkerString
+            );
+          }
+        );
+
+      return [
+        ...memo,
+        {
+          ...castCharacter,
+          characterMarkers
+        }
+      ];
     },
     []
   );
@@ -191,6 +251,18 @@ export default (
 
   characters = charactersUniqueMatchesGet(
     characters
+  );
+
+  characters = characterMarkersUniqueSet(
+    characters
+  );
+
+  console.log(
+    JSON.stringify(
+      characters,
+      null,
+      2
+    )
   );
 
   characters = charactersCastDataAssignedGet(

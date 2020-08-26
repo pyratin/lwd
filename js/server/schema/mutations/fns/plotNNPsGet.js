@@ -25,9 +25,11 @@ export default (
                   NNP
                 ) => {
 
-                  return (
-                    NNP
-                  );
+                  return {
+                    ...NNP,
+                    paragraphIndex: sentence.paragraphIndex,
+                    sentenceIndex: sentence.sentenceIndex
+                  };
                 }
               )
           ]

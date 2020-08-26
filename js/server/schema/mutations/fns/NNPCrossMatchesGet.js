@@ -27,7 +27,13 @@ export default (
           [],
           {
             ...castCharacter,
-            ...match
+            ...match,
+            characterMarkers: {
+              paragraphIndex: plotCharacter.paragraphIndex,
+              sentenceIndex: plotCharacter.sentenceIndex,
+              tokenIndex: plotCharacter.index,
+              distance: plotCharacter.distance
+            }
           }
         ];
       }

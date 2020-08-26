@@ -340,15 +340,21 @@ const cardsTextCollapsedGetFn = (
   card
 ) => {
 
-  const text = card.text.reduce(
+  const {
+    text
+  } = card.text.reduce(
     (
       memo,
       fragment
     ) => {
 
-      return `${memo}${fragment.text}`;
+      return {
+        text: `${memo.text}${fragment.text}`
+      };
     },
-    ''
+    {
+      text: ''
+    }
   );
 
   return {
