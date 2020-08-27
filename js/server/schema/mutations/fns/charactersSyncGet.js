@@ -207,7 +207,8 @@ const charactersGet = (
         actor: cast[
           castIndex
         ]
-          .actor
+          .actor,
+        castIndex
       };
 
       return [
