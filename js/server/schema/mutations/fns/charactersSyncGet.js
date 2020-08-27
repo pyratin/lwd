@@ -50,6 +50,20 @@ const matchesSortedGet = (
         true
       ) {
 
+        case (
+          a._NNP.possessive &&
+          !b._NNP.possessive
+        ) :
+
+          return 1;
+
+        case (
+          b._NNP.possessive &&
+          !a._NNP.possessive
+        ) :
+
+          return -1;
+
         case(
           a._NNP.sentenceIndex >
           b._NNP.sentenceIndex
@@ -77,20 +91,6 @@ const matchesSortedGet = (
         ) :
 
           return -1;
-
-        case (
-          a._NNP.possessive &&
-          !b._NNP.possessive
-        ) :
-
-          return 1;
-
-        case (
-          b._NNP.possessive &&
-          !a._NNP.possessive
-        ) :
-
-          return -1;
       }
     }
   );
@@ -106,15 +106,15 @@ const matchExistsGet = (
       _match
     ) => {
 
-      const _matchText = _match._cross._text ||
-        _match._cross.text;
+      const matchText = match._cross.text;
 
-      const matchText = match._cross._text ||
-        match._cross.text;
+      const _matchText = _match._cross.text;
 
       return (
-        _matchText ===
-        matchText
+        (
+          _matchText ===
+          matchText
+        )
       );
     }
   );
@@ -194,8 +194,7 @@ const charactersGet = (
       memo,
       {
         _cross: {
-          text,
-          _text
+          text
         },
         _NNP: {
           castIndex
@@ -205,7 +204,6 @@ const charactersGet = (
 
       const character = {
         text,
-        _text,
         actor: cast[
           castIndex
         ]
@@ -260,13 +258,6 @@ export default (
   const characters = charactersGet(
     matches,
     cast
-  );
-  console.log(
-    JSON.stringify(
-      characters,
-      null,
-      2
-    )
   );
 
   return (

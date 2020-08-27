@@ -1,6 +1,5 @@
 'use strict';
 
-import leven from 'leven';
 import combinations from 'combinations';
 
 import wordsTokenizedGet from './wordsTokenizedGet';
@@ -151,31 +150,6 @@ const characterPunctTokensMatchedGet = (
     null;
 };
 
-const characterLevenMatchedGet = (
-  character,
-  _character
-) => {
-
-  return (
-    (
-      character.length > 
-      3
-    ) &&
-    (
-      _character.length >
-      3
-    ) &&
-    (
-      leven(
-        character,
-        _character
-      ) === 1
-    )
-  ) ?
-    '3' :
-    null;
-};
-
 export default (
   character,
   _character
@@ -232,30 +206,13 @@ export default (
       ) &&
       !!NNPmatchIndexString
     ) :
-    case (
-      (
-        NNPmatchIndexString = characterLevenMatchedGet(
-          character,
-          _character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
 
       return (
         {
           text: character,
           NNPmatchIndex: parseInt(
             NNPmatchIndexString
-          ),
-          _text: (
-            parseInt(
-              NNPmatchIndexString
-            ) === 
-            3
-          ) ?
-            _character :
-            null
+          )
         }
       );
   }
