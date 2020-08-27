@@ -4,7 +4,8 @@ import NNPsGet from './NNPsGet';
 import NNPsUniqueGet from './NNPsUniqueGet';
 
 export default (
-  plot
+  plot,
+  uniqueFlag = false
 ) => {
 
   let plotNNPs = plot.reduce(
@@ -14,35 +15,36 @@ export default (
     ) => {
 
       return [
-        ...new Set(
-          [
-            ...memo,
-            ...NNPsGet(
-              sentence.text,
-              false
-            )
-              .map(
-                (
-                  NNP
-                ) => {
-
-                  return {
-                    ...NNP,
-                    paragraphIndex: sentence.paragraphIndex,
-                    sentenceIndex: sentence.sentenceIndex
-                  };
-                }
-              )
-          ]
+        ...memo,
+        ...NNPsGet(
+          sentence.text,
+          false
         )
+          .map(
+            (
+              NNP
+            ) => {
+
+              return {
+                ...NNP,
+                paragraphIndex: sentence.paragraphIndex,
+                sentenceIndex: sentence.sentenceIndex
+              };
+            }
+          )
       ];
     },
     []
   );
 
-  plotNNPs = NNPsUniqueGet(
-    plotNNPs
-  );
+  if (
+    uniqueFlag
+  ) {
+
+    plotNNPs = NNPsUniqueGet(
+      plotNNPs
+    );
+  }
 
   plotNNPs = plotNNPs.map(
     (

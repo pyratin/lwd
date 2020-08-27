@@ -18,49 +18,12 @@ const characterStringMatchedGet = (
     null;
 };
 
-const characterLevenMatchedGet = (
-  character,
-  _character
-) => {
-
-  return (
-    leven(
-      character,
-      _character
-    ) === 1
-  ) ?
-    '1' :
-    null;
-};
-
 const characterTokenizedGet = (
   character
 ) => {
 
   return wordsTokenizedGet(
     character
-  )
-    .map(
-      (
-        {
-          text
-        }
-      ) => {
-
-        return (
-          text
-        );
-      }
-    );
-};
-
-const characterPunctTokenizedGet = (
-  character
-) => {
-
-  return wordsTokenizedGet(
-    character,
-    'wordPunct'
   )
     .map(
       (
@@ -117,8 +80,30 @@ const characterTokensMatchedGet = (
   return (
     characterToken
   ) ?
-    '2' :
+    '1' :
     null;
+};
+
+const characterPunctTokenizedGet = (
+  character
+) => {
+
+  return wordsTokenizedGet(
+    character,
+    'wordPunct'
+  )
+    .map(
+      (
+        {
+          text
+        }
+      ) => {
+
+        return (
+          text
+        );
+      }
+    );
 };
 
 const characterPunctTokensMatchedGet = (
@@ -162,6 +147,31 @@ const characterPunctTokensMatchedGet = (
   return (
     characterToken
   ) ?
+    '2' :
+    null;
+};
+
+const characterLevenMatchedGet = (
+  character,
+  _character
+) => {
+
+  return (
+    (
+      character.length > 
+      3
+    ) &&
+    (
+      _character.length >
+      3
+    ) &&
+    (
+      leven(
+        character,
+        _character
+      ) === 1
+    )
+  ) ?
     '3' :
     null;
 };
@@ -188,45 +198,45 @@ export default (
     ) :
     case (
       (
+        NNPmatchIndexString = characterTokensMatchedGet(
+          character,
+          _character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      (
+        NNPmatchIndexString = characterTokensMatchedGet(
+          _character,
+          character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      (
+        NNPmatchIndexString = characterPunctTokensMatchedGet(
+          character,
+          _character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      (
+        NNPmatchIndexString = characterPunctTokensMatchedGet(
+          _character,
+          character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      (
         NNPmatchIndexString = characterLevenMatchedGet(
           character,
           _character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
-    case (
-      (
-        NNPmatchIndexString = characterTokensMatchedGet(
-          character,
-          _character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
-    case (
-      (
-        NNPmatchIndexString = characterTokensMatchedGet(
-          _character,
-          character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
-    case (
-      (
-        NNPmatchIndexString = characterPunctTokensMatchedGet(
-          character,
-          _character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
-    case (
-      (
-        NNPmatchIndexString = characterPunctTokensMatchedGet(
-          _character,
-          character
         )
       ) &&
       !!NNPmatchIndexString
@@ -242,7 +252,7 @@ export default (
             parseInt(
               NNPmatchIndexString
             ) === 
-            1
+            3
           ) ?
             _character :
             null

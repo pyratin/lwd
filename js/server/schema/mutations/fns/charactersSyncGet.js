@@ -7,8 +7,7 @@ import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
 const matchesDataAssignedGet = (
   matches,
   _NNPs,
-  __NNPs,
-  cast
+  __NNPs
 ) => {
 
   return matches.reduce(
@@ -25,17 +24,12 @@ const matchesDataAssignedGet = (
         _cross._NNPIndex
       ];
 
-      const _cast = cast[
-        _NNP.castIndex
-      ];
-
       return [
         ...memo,
         {
           _cross,
           NNP,
-          _NNP,
-          _cast
+          _NNP
         }
       ];
     },
@@ -56,6 +50,20 @@ const matchesSortedGet = (
         true
       ) {
 
+        case(
+          a._NNP.sentenceIndex >
+          b._NNP.sentenceIndex
+        ) :
+
+          return 1;
+
+        case (
+          b._NNP.sentenceIndex >
+          a._NNP.sentenceIndex
+        ) :
+
+          return -1;
+
         case (
           a._NNP.distance >
           b._NNP.distance
@@ -66,20 +74,6 @@ const matchesSortedGet = (
         case (
           b._NNP.distance >
           a._NNP.distance
-        ) :
-
-          return -1;
-
-        case (
-          a._NNP.castIndex >
-          b._NNP.castIndex
-        ) :
-
-          return 1;
-
-        case (
-          b._NNP.castIndex >
-          a._NNP.castIndex
         ) :
 
           return -1;
@@ -159,6 +153,74 @@ const matchesUniqueGet = (
   );
 };
 
+const matchesUniqueSortedGet = (
+  matches
+) => {
+
+  return matches.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a._NNP.castIndex >
+          b._NNP.castIndex
+        ) :
+
+          return 1;
+
+        case (
+          b._NNP.castIndex >
+          a._NNP.castIndex
+        ) :
+
+          return -1;
+      }
+    }
+  );
+};
+
+const charactersGet = (
+  matches,
+  cast
+) => {
+
+  return matches.reduce(
+    (
+      memo,
+      {
+        _cross: {
+          text,
+          _text
+        },
+        _NNP: {
+          castIndex
+        }
+      }
+    ) => {
+
+      const character = {
+        text,
+        _text,
+        actor: cast[
+          castIndex
+        ]
+          .actor
+      };
+
+      return [
+        ...memo,
+        character
+      ];
+    },
+    []
+  );
+};
+
 export default (
   cast,
   plot
@@ -180,8 +242,7 @@ export default (
   matches = matchesDataAssignedGet(
     matches,
     NNPs,
-    _NNPs,
-    cast
+    _NNPs
   );
 
   matches = matchesSortedGet(
@@ -192,7 +253,23 @@ export default (
     matches
   );
 
-  return (
+  matches = matchesUniqueSortedGet(
     matches
+  );
+
+  const characters = charactersGet(
+    matches,
+    cast
+  );
+  console.log(
+    JSON.stringify(
+      characters,
+      null,
+      2
+    )
+  );
+
+  return (
+    characters
   );
 };

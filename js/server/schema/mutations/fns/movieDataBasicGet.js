@@ -1,5 +1,7 @@
 'use strict';
 
+import latinize from 'latinize';
+
 import mediawikiFetch from './mediawikiFetch';
 import movieDataBasicPlotGet from './movieDataBasicPlotGet';
 import movieDataBasicCastGet from './movieDataBasicCastGet';
@@ -62,6 +64,29 @@ const moviePageSectionTextsGetFn = (
     section.text;
 };
 
+const sectionTextCleanedGet = (
+  sectionText
+) => {
+
+  sectionText = sectionText?.replace(
+    /\n/g,
+    ' '
+  );
+
+  sectionText = sectionText?.replace(
+    /\s{2,}/g,
+    ' '
+  );
+
+  sectionText = latinize(
+    sectionText
+  );
+
+  return (
+    sectionText
+  );
+};
+
 const moviePageSectionTextsGet = (
   json,
   anchorNames
@@ -78,14 +103,8 @@ const moviePageSectionTextsGet = (
         anchorName
       );
 
-      sectionText = sectionText?.replace(
-        /\n/g,
-        ' '
-      );
-
-      sectionText = sectionText?.replace(
-        /\s{2,}/g,
-        ' '
+      sectionText = sectionTextCleanedGet(
+        sectionText
       );
 
       return [

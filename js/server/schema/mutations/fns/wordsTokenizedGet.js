@@ -28,15 +28,15 @@ export default (
   tokenizerType = 'treebank'
 ) => {
 
+  const tokenizer = tokenizerGet(
+    tokenizerType
+  );
+
   const sentence = _sentence
     .replace(
       /(\S)\/(\S)/g,
       '$1 / $2'
     );
-
-  const tokenizer = tokenizerGet(
-    tokenizerType
-  );
 
   let words = tokenizer.tokenize(
     sentence

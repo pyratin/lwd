@@ -5,7 +5,6 @@ import cheerio from 'cheerio';
 import plotNNPsGet from './plotNNPsGet';
 import NNPsGet from './NNPsGet';
 import NNPCrossMatchGet from './NNPCrossMatchGet';
-import sentencesTokenizedGet from './sentencesTokenizedGet';
 
 const actorNNPsGet = (
   castLines
@@ -18,8 +17,7 @@ const actorNNPsGet = (
     ) => {
 
       const NNPs = NNPsGet(
-        castLine,
-        true
+        castLine
       );
 
       const NNP = NNPs.find(
@@ -205,11 +203,27 @@ const actorsCleanedGet = (
 
       delete actor.index;
       delete actor.distance;
+      delete actor.tokenIndex;
 
       return (
         actor
       );
     }
+  );
+};
+
+const actorRegExpGet = (
+  actorText
+) => {
+
+  return new RegExp(
+    `
+      ^${
+        actorText
+      }
+    `
+      .trim(),
+    'm'
   );
 };
 
@@ -229,18 +243,10 @@ const castGetFn = (
       index
     ) => {
 
-      const regExp = new RegExp(
-        `
-          ^${
-            actor.text
-          }
-        `
-          .trim(),
-        'm'
-      );
-
       let role = castText.split(
-        regExp
+        actorRegExpGet(
+          actor.text
+        )
       )?.[
         1
       ];
@@ -256,10 +262,12 @@ const castGetFn = (
       ) {
 
         role = role.split(
-          actors[
-            index + 1
-          ]
-            .text
+          actorRegExpGet(
+            actors[
+              index + 1
+            ]
+              .text
+          )
         )?.[
           0
         ];
@@ -280,7 +288,14 @@ const castGetFn = (
           ...memo,
           {
             actor,
-            role
+            role: `
+              ${
+                actor.text
+              } ${
+                role.trim()
+              }
+            `
+              .trim()
           }
         ];
       }
@@ -294,27 +309,6 @@ const castGetFn = (
 
   return (
     cast
-  );
-};
-
-const castRoleCulledGet = (
-  cast
-) => {
-
-  return cast.map(
-    (
-      _cast
-    ) => {
-
-      return {
-        ..._cast,
-        role: sentencesTokenizedGet(
-          _cast.role
-        )[
-          0
-        ]
-      };
-    }
   );
 };
 
@@ -343,12 +337,15 @@ export default (
     .toArray()
     .map(
       (
-        el
+        _el
       ) => {
 
-        return $(
-          el
-        )
+        const el = $(_el)
+          .find('span.mw-reflink-text')
+          .remove()
+          .end();
+
+        return $(el)
           .text();
       }
     );
@@ -374,10 +371,6 @@ export default (
   let cast = castGetFn(
     actors,
     castLines
-  );
-
-  cast = castRoleCulledGet(
-    cast
   );
 
   return (
