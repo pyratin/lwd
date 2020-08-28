@@ -20,18 +20,8 @@ const charactersFromCardsGet = (
           return (
             characterText &&
             (
-              (
-                characterText
-                  .match(
-                    _memo.text
-                  )
-              ) ||
-              (
-                _memo.text
-                  .match(
-                    characterText
-                  )
-              )
+              _memo.text ===
+              characterText
             )
           );
         }

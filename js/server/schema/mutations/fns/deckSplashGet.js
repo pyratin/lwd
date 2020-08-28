@@ -3,6 +3,7 @@
 import charactersFromCardsGet 
   from './charactersFromCardsGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
+import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
 
 const charactersDualRoleIndexAssignedGet = (
   _characters
@@ -62,7 +63,7 @@ const charactersDualRoleIndexAssignedGet = (
   );
 };
 
-const characterTextShortenedGet = (
+const charactersRenderTextAssignedGetFn = (
   _text,
   lengthMax
 ) => {
@@ -133,27 +134,27 @@ const characterTextShortenedGet = (
   );
 };
 
-const charactersRenderAssignedGet = (
-  _characters
+const charactersRenderTextAssignedGet = (
+  characters
 ) => {
 
   const lengthMax = 10;
 
-  let characters = _characters.reduce(
+  return characters.reduce(
     (
       memo,
-      _character
+      character
     ) => {
 
-      const renderText = characterTextShortenedGet(
-        _character.text,
+      const renderText = charactersRenderTextAssignedGetFn(
+        character.text,
         lengthMax
       );
 
       return [
         ...memo,
         {
-          ..._character,
+          ...character,
           renderText
         }
       ];
@@ -161,7 +162,99 @@ const charactersRenderAssignedGet = (
     []
   );
 
-  characters = characters.reduce(
+};
+
+const _NNPsGet = (
+  characters
+) => {
+
+  return characters.map(
+    (
+      {
+        text
+      },
+      index
+    ) => {
+
+      return {
+        text,
+        index
+      };
+    }
+  );
+};
+
+const characterExistsGet = (
+  character,
+  characters
+) => {
+
+  const NNPs = [
+    {
+      text: character.text,
+      index: 0
+    }
+  ];
+
+  const _NNPs = _NNPsGet(
+    characters
+  );
+
+  const matches = NNPsCrossMatchesGet(
+    NNPs,
+    _NNPs
+  );
+
+  return (
+    !!matches.length
+  );
+};
+
+const charactersRenderAssignedGet = (
+  characters 
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const exists = characterExistsGet(
+        character,
+        memo
+      );
+
+      if (
+        !exists
+      ) {
+        
+        return [
+          ...memo,
+          {
+            ...character,
+            render: true
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        {
+          ...character,
+          render: false
+        }
+      ];
+    },
+    []
+  );
+};
+
+const charactersConcatedGet = (
+  _characters
+) => {
+
+  let characters = _characters.reduce(
     (
       memo,
       character
@@ -170,8 +263,11 @@ const charactersRenderAssignedGet = (
       const dualRoleIndex = character.dualRoleIndex;
 
       if (
-        dualRoleIndex >=
-        0
+        character.render &&
+        (
+          dualRoleIndex >=
+          0
+        )
       ) {
 
         const renderText = `
@@ -208,10 +304,7 @@ const charactersRenderAssignedGet = (
 
       return [
         ...memo,
-        {
-          ...character,
-          render: true
-        }
+        character,
       ];
     },
     []
@@ -235,9 +328,16 @@ export default (
   characters = charactersDualRoleIndexAssignedGet(
     characters
   );
-  console.log(characters);
+
+  characters = charactersRenderTextAssignedGet(
+    characters
+  );
 
   characters = charactersRenderAssignedGet(
+    characters
+  );
+
+  characters = charactersConcatedGet(
     characters
   );
 

@@ -42,9 +42,9 @@ badd +22 package.json
 badd +198 utils/datasets/fns/tmdb5000moviesSemisCreate.js
 badd +48 js/server/schema/mutations/fns/wordsTaggedGet.js
 badd +1 js/server/schema/mutations/fns/charactersMontageGet.js
-badd +0 js/server/schema/mutations/fns/deckGet.js
+badd +1 js/server/schema/mutations/fns/deckGet.js
 badd +57 js/server/schema/mutations/fns/deckCardsGet.js
-badd +15 js/server/schema/mutations/fns/deckSplashGet.js
+badd +229 js/server/schema/mutations/fns/deckSplashGet.js
 badd +1 js/server/schema/mutations/fns/splashRenderedGet.js
 badd +1 js/server/schema/mutations/fns/gifRenderedGet.js
 argglobal
@@ -69,7 +69,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 22 - ((6 * winheight(0) + 17) / 34)
+let s:l = 22 - ((6 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -94,7 +94,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 137 - ((30 * winheight(0) + 17) / 34)
+let s:l = 137 - ((32 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -119,7 +119,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((18 * winheight(0) + 17) / 34)
+let s:l = 20 - ((19 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -144,7 +144,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 250 - ((1 * winheight(0) + 17) / 34)
+let s:l = 250 - ((1 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -169,7 +169,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((15 * winheight(0) + 17) / 34)
+let s:l = 19 - ((16 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -194,7 +194,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 49 - ((33 * winheight(0) + 17) / 34)
+let s:l = 49 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -244,7 +244,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 11 - ((10 * winheight(0) + 17) / 34)
+let s:l = 11 - ((9 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -294,12 +294,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 240 - ((25 * winheight(0) + 17) / 34)
+let s:l = 341 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-240
-normal! 014|
+341
+normal! 0
+tabedit js/server/schema/mutations/fns/charactersFromCardsGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 25 - ((16 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+25
+normal! 0
 tabedit js/server/schema/mutations/fns/deckCardsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -319,11 +344,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 139 - ((27 * winheight(0) + 17) / 34)
+let s:l = 136 - ((24 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-139
+136
 normal! 0
 tabedit js/server/schema/mutations/fns/gifRenderedGet.js
 set splitbelow splitright
@@ -369,7 +394,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 17) / 34)
+let s:l = 13 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -444,7 +469,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 17) / 34)
+let s:l = 17 - ((15 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -469,7 +494,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 11 - ((10 * winheight(0) + 17) / 34)
+let s:l = 11 - ((9 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -519,11 +544,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 72 - ((33 * winheight(0) + 17) / 34)
+let s:l = 53 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-72
+53
 normal! 0
 tabedit js/server/schema/mutations/fns/cardsCharacterAssignedGet.js
 set splitbelow splitright
@@ -544,7 +569,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 176 - ((25 * winheight(0) + 17) / 34)
+let s:l = 176 - ((26 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -569,7 +594,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 21 - ((16 * winheight(0) + 17) / 34)
+let s:l = 21 - ((17 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -594,7 +619,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 643 - ((0 * winheight(0) + 17) / 34)
+let s:l = 643 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -619,7 +644,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 120 - ((31 * winheight(0) + 17) / 34)
+let s:l = 120 - ((33 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -644,7 +669,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((13 * winheight(0) + 17) / 34)
+let s:l = 15 - ((14 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -669,7 +694,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 237 - ((26 * winheight(0) + 17) / 34)
+let s:l = 237 - ((28 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -694,7 +719,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 211 - ((24 * winheight(0) + 17) / 34)
+let s:l = 211 - ((25 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -719,7 +744,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((17 * winheight(0) + 17) / 34)
+let s:l = 19 - ((18 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -744,7 +769,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((15 * winheight(0) + 17) / 34)
+let s:l = 20 - ((16 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -769,7 +794,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 143 - ((0 * winheight(0) + 17) / 34)
+let s:l = 143 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -794,7 +819,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 82 - ((16 * winheight(0) + 17) / 34)
+let s:l = 82 - ((17 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -819,7 +844,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 218 - ((0 * winheight(0) + 17) / 34)
+let s:l = 218 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
