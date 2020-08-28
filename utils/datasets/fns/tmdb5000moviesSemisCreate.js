@@ -127,8 +127,7 @@ const tmdb5000movieSemiDataGetFn = async (
     movieDataBasic.plot,
     characters,
     'general',
-    db,
-    false
+    db
   );
 
   return {

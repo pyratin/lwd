@@ -6,119 +6,10 @@ import {
 
 import cardsBase64AssignedGet from 
   './cardsBase64AssignedGet';
-import charactersFromCardsGet 
-  from './charactersFromCardsGet';
 import cardsRenderedGet from './cardsRenderedGet';
-import splashGet from './splashGet';
+import splashRenderedGet from './splashRenderedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
-
-const charactersDualRoleIndexAssignedGet = (
-  _characters
-) => {
-
-  const characters = _characters.reduce(
-    (
-      memo,
-      _character
-    ) => {
-
-      const dualRoleIndex = memo.findIndex(
-        (
-          _memo
-        ) => {
-
-          return (
-            (
-              _memo.dualRoleIndex === 
-              -1
-            ) &&
-            (
-              _memo.actor.text ===
-              _character.actor.text
-            )
-          );
-        }
-      );
-
-      if (
-        dualRoleIndex >=
-        0
-      ) {
-
-        return [
-          ...memo,
-          {
-            ..._character,
-            dualRoleIndex
-          }
-        ];
-      }
-
-      return [
-        ...memo,
-        {
-          ..._character,
-          dualRoleIndex: -1
-        }
-      ];
-    },
-    []
-  );
-
-  return (
-    characters
-  );
-};
-
-const cardsDualRoleIndexAssignedGet = (
-  _cards,
-  characters
-) => {
-
-  const cards = _cards.reduce(
-    (
-      memo,
-      _card
-    ) => {
-
-      const character = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.text ===
-            _card?.character?.text
-          );
-        }
-      );
-
-      if (
-        character
-      ) {
-
-        return [
-          ...memo,
-          {
-            ..._card,
-            dualRoleIndex: character.dualRoleIndex
-          }
-        ];
-      }
-
-      return [
-        ...memo,
-        _card
-      ];
-    },
-    []
-  );
-
-  return (
-    cards
-  );
-};
 
 const gifGetFn = (
   miffStreamsConcated
@@ -248,10 +139,9 @@ const gifGet = async (
 };
 
 export default async (
-  movieTitle,
-  moviePoster,
   {
-    cards: _cards
+    cards: _cards,
+    splash: _splash
   },
   db
 ) => {
@@ -261,28 +151,13 @@ export default async (
     db
   );
 
-  let characters = charactersFromCardsGet(
-    cards
-  );
-
-  characters = charactersDualRoleIndexAssignedGet(
-    characters
-  );
-
-  cards = cardsDualRoleIndexAssignedGet(
-    cards,
-    characters
-  );
-
   const cardBase64s = await cardsRenderedGet(
     cards
   );
 
-  const splash = await splashGet(
-    movieTitle,
-    moviePoster,
-    characters,
-    cards
+  const splash = await splashRenderedGet(
+    _splash,
+    db
   );
 
   const gif = await gifGet(

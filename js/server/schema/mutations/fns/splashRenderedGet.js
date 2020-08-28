@@ -283,24 +283,26 @@ const finalCompositedGet = async (
 };
 
 export default async (
-  movieTitle,
-  moviePoster,
-  _characters,
-  cards
+  {
+    title,
+    poster,
+    characters: _characters
+  },
+  db
 ) => {
 
   const moviePosterBase64 = await moviePosterBase64Get(
-    moviePoster
+    poster
   );
 
   const charactersMontageBase64 = 
     await charactersMontageGet(
       _characters,
-      cards
+      db
     );
 
   const splash = await finalCompositedGet(
-    movieTitle,
+    title,
     moviePosterBase64,
     charactersMontageBase64
   );
