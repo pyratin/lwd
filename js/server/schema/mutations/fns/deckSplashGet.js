@@ -3,7 +3,51 @@
 import charactersFromCardsGet 
   from './charactersFromCardsGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
-import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
+import NNPCrossMatchesGet from './NNPCrossMatchesGet';
+
+const _NNPsGet = (
+  characters
+) => {
+
+  return characters.map(
+    (
+      {
+        text
+      },
+      index
+    ) => {
+
+      return {
+        text,
+        index
+      };
+    }
+  );
+};
+
+const characterExistsGet = (
+  character,
+  characters
+) => {
+
+  const NNP = {
+    text: character.text,
+    index: 0
+  };
+
+  const _NNPs = _NNPsGet(
+    characters
+  );
+
+  const matches = NNPCrossMatchesGet(
+    NNP,
+    _NNPs
+  );
+
+  return matches?.[
+    0
+  ];
+};
 
 const charactersDualRoleIndexAssignedGet = (
   _characters
@@ -14,6 +58,27 @@ const charactersDualRoleIndexAssignedGet = (
       memo,
       _character
     ) => {
+
+      const match = characterExistsGet(
+        _character,
+        memo
+      );
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          {
+            ..._character,
+            dualRoleIndex: memo[
+              match._NNPIndex
+            ]
+              .dualRoleIndex
+          }
+        ];
+      }
 
       const dualRoleIndex = memo.findIndex(
         (
@@ -164,52 +229,6 @@ const charactersRenderTextAssignedGet = (
 
 };
 
-const _NNPsGet = (
-  characters
-) => {
-
-  return characters.map(
-    (
-      {
-        text
-      },
-      index
-    ) => {
-
-      return {
-        text,
-        index
-      };
-    }
-  );
-};
-
-const characterExistsGet = (
-  character,
-  characters
-) => {
-
-  const NNPs = [
-    {
-      text: character.text,
-      index: 0
-    }
-  ];
-
-  const _NNPs = _NNPsGet(
-    characters
-  );
-
-  const matches = NNPsCrossMatchesGet(
-    NNPs,
-    _NNPs
-  );
-
-  return (
-    !!matches.length
-  );
-};
-
 const charactersRenderAssignedGet = (
   characters 
 ) => {
@@ -328,6 +347,7 @@ export default (
   characters = charactersDualRoleIndexAssignedGet(
     characters
   );
+  console.log(characters);
 
   characters = charactersRenderTextAssignedGet(
     characters

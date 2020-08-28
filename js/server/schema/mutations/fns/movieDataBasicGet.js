@@ -176,7 +176,7 @@ const plotCulledGet = (
 
 export default async (
   title,
-  cull = true
+  cullFlag = true
 ) => {
 
   // eslint-disable-next-line no-console
@@ -231,7 +231,7 @@ export default async (
 
   plot = plotCulledGet(
     plot,
-    cull
+    cullFlag
   );
 
   return {

@@ -15,18 +15,12 @@ import mongoClientConnect
 import jsonFromCsvGet from './jsonFromCsvGet';
 import movieSearch from 
   '~/js/server/schema/mutations/movieSearch';
-import movieDataBasicGet from
-  '~/js/server/schema/mutations/fns/movieDataBasicGet';
-import charactersGet from 
-  '~/js/server/schema/mutations/fns/charactersGet';
-import cardsGet from 
-  '~/js/server/schema/mutations/fns/cardsGet';
-import charactersFromCardsGet from 
-  '~/js/server/schema/mutations/fns/charactersFromCardsGet';
+import movieCreate from 
+  '~/js/server/schema/mutations/movieCreate';
 import {
-  semiCreate as semiCreateFn,
-  semiFindOne
-} from '~/js/server/data/semi';
+  deckCreate as deckCreateFn,
+  deckFindOne
+} from '~/js/server/data/deck';
 import NNPsGet 
   from '~/js/server/schema/mutations/fns/NNPsGet';
 import NNPCrossMatchesGet
@@ -107,33 +101,19 @@ const titleMatchGet = (
     );
 };
 
-const tmdb5000movieSemiDataGetFn = async (
+const deckGetFn = async (
   title,
   db
 ) => {
 
-  let movieDataBasic = await movieDataBasicGet(
+  return movieCreate(
     title,
+    'general',
+    db,
+    null,
+    false,
     false
   );
-
-  let characters = await charactersGet(
-    movieDataBasic.cast,
-    movieDataBasic.plot,
-    movieDataBasic.plotText
-  );
-
-  const cards = await cardsGet(
-    movieDataBasic.plot,
-    characters,
-    'general',
-    db
-  );
-
-  return {
-    poster: movieDataBasic.poster,
-    cards
-  };
 };
 
 const romanticLeadGet = (
@@ -392,14 +372,12 @@ const rolesCleanedGet = (
 const rolesGet = async (
   title,
   page,
-  cards
+  deck
 ) => {
 
-  let characters = charactersFromCardsGet(
-    cards
-  );
+  let characters = deck.splash.characters;
 
-  const protagonist = characters[
+  const protagonist = characters?.[
     0
   ];
 
@@ -420,25 +398,7 @@ const rolesGet = async (
     'antagonist',
     title,
     page,
-    characters.filter(
-      (
-        {
-          text
-        }
-      ) => {
-
-        return (
-          (
-            text !== 
-            protagonist.text
-          ) &&
-          (
-            text !==
-            romanticLead.text
-          )
-        );
-      }
-    )
+    characters
   );
 
   let roles = {
@@ -456,7 +416,7 @@ const rolesGet = async (
   );
 };
 
-const tmdb5000movieSemiGet = async (
+const deckGet = async (
   {
     title: _title,
     tagline,
@@ -464,12 +424,12 @@ const tmdb5000movieSemiGet = async (
     keywords: _keywords,
     overview
   },
-  tmdb5000moviesIndex,
+  index,
   page,
   db
 ) => {
 
-  let exists = await semiFindOne(
+  let exists = await deckFindOne(
     {
       _title
     },
@@ -497,7 +457,7 @@ const tmdb5000movieSemiGet = async (
     return Promise.resolve();
   }
 
-  exists = await semiFindOne(
+  exists = await deckFindOne(
     {
       title
     },
@@ -514,7 +474,7 @@ const tmdb5000movieSemiGet = async (
     );
   }
 
-  const semiData = await tmdb5000movieSemiDataGetFn(
+  const deck = await deckGetFn(
     title,
     db
   );
@@ -522,7 +482,7 @@ const tmdb5000movieSemiGet = async (
   const roles = await rolesGet(
     title,
     page,
-    semiData.cards
+    deck
   );
 
   const genres = JSON.parse(
@@ -565,51 +525,51 @@ const tmdb5000movieSemiGet = async (
     overview,
     genres,
     keywords,
-    tmdb5000moviesIndex,
-    ...semiData,
+    index,
+    ...deck,
     roles
   };
 };
 
-const tmdb5000movieSemiCreateFn = (
-  semiData,
+const _decksCreateFn = (
+  deck,
   db
 ) => {
 
-  return semiCreateFn(
+  return deckCreateFn(
     {
       _id: new ObjectID()
     },
     {
-      $set: semiData
+      $set: deck
     },
     undefined,
     db
   );
 };
 
-const tmdb5000movieSemiCreate = (
+const decksCreateFn = (
   _data,
-  tmdb5000moviesIndex,
+  index,
   page,
   db
 ) => {
 
-  return tmdb5000movieSemiGet(
+  return deckGet(
     _data,
-    tmdb5000moviesIndex,
+    index,
     page,
     db
   )
     .then(
       (
-        semiData
+        deck
       ) => {
 
         if (
-          !semiData.roles.protagonist ||
-          !semiData.roles.romanticLead ||
-          !semiData.roles.antagonist
+          !deck?.roles.protagonist ||
+          !deck?.roles.romanticLead ||
+          !deck?.roles.antagonist
         ) {
 
           return (
@@ -617,8 +577,8 @@ const tmdb5000movieSemiCreate = (
           );
         }
 
-        return tmdb5000movieSemiCreateFn(
-          semiData,
+        return _decksCreateFn(
+          deck,
           db
         );
       }
@@ -636,7 +596,7 @@ const tmdb5000movieSemiCreate = (
     );
 };
 
-const tmdb5000moviesSemisCreateFn = async (
+const decksCreate = async (
   data,
   db
 ) => {
@@ -656,7 +616,7 @@ const tmdb5000moviesSemisCreateFn = async (
       (
         memo,
         _data,
-        tmdb5000moviesIndex
+        index
       ) => {
 
         return memo.then(
@@ -664,9 +624,9 @@ const tmdb5000moviesSemisCreateFn = async (
             res
           ) => {
 
-            return tmdb5000movieSemiCreate(
+            return decksCreateFn(
               _data,
-              tmdb5000moviesIndex,
+              index,
               page,
               db
             )
@@ -690,7 +650,7 @@ const tmdb5000moviesSemisCreateFn = async (
     );
 };
 
-const tmdb5000moviesSemisCreate = async () => {
+const tmdb5000movieDecksCreate = async () => {
 
   const db = await mongoClientConnect(
     mongoUriGet()
@@ -717,8 +677,8 @@ const tmdb5000moviesSemisCreate = async () => {
     jsonFilePath
   );
 
-  const tmdb5000moviesSemis = 
-    await tmdb5000moviesSemisCreateFn(
+  const decks = 
+    await decksCreate(
       data,
       db
     );
@@ -726,8 +686,8 @@ const tmdb5000moviesSemisCreate = async () => {
   // eslint-disable-next-line no-console
   console.log(
     `
-      tmdb5000moviesSemisCreate: ${
-        tmdb5000moviesSemis.length
+      tmdb5000movieDecksCreate: ${
+        decks.length
       }
     `
       .trim()
@@ -739,7 +699,7 @@ if (
   !module.parent
 ) {
 
-  tmdb5000moviesSemisCreate();
+  tmdb5000movieDecksCreate();
 }
 
-export default tmdb5000moviesSemisCreate;
+export default tmdb5000movieDecksCreate;

@@ -105,15 +105,48 @@ const successHandle = async (
   );
 };
 
-const processFn = async (
-  text,
-  genre,
+const render = async (
+  title,
+  deck,
   db,
   req
 ) => {
 
+  const base64 = await gifRenderedGet(
+    deck,
+    db
+  );
+
+  if (
+    title &&
+    base64
+  ) {
+
+    return successHandle(
+      title,
+      base64,
+      db,
+      req
+    );
+  }
+
+  return {
+    title
+  };
+};
+
+const processFn = async (
+  text,
+  genre,
+  db,
+  req,
+  cullFlag,
+  renderFlag
+) => {
+
   let movieDataBasic = await movieDataBasicGet(
-    text
+    text,
+    cullFlag
   );
 
   if (
@@ -145,34 +178,30 @@ const processFn = async (
     cards
   );
 
-  const base64 = await gifRenderedGet(
-    deck,
-    db
-  );
-
   if (
-    movieDataBasic.title &&
-    base64
+    renderFlag
   ) {
 
-    return successHandle(
+    return render(
       movieDataBasic.title,
-      base64,
+      deck,
       db,
       req
     );
   }
 
-  return {
-    title: movieDataBasic.title
-  };
+  return (
+    deck
+  );
 };
 
-const process = async (
+export default async (
   text,
   genre,
   db,
-  req
+  req,
+  cullFlag = true,
+  renderFlag = true
 ) => {
 
   let title = await titleGet(
@@ -183,7 +212,9 @@ const process = async (
     title,
     genre,
     db,
-    req
+    req,
+    cullFlag,
+    renderFlag
   );
 
   if (
@@ -195,7 +226,9 @@ const process = async (
       text,
       genre,
       db,
-      req
+      req,
+      cullFlag,
+      renderFlag
     );
   }
 
@@ -203,5 +236,3 @@ const process = async (
     movie
   );
 };
-
-export default process;

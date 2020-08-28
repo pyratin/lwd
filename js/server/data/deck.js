@@ -5,9 +5,9 @@ import {
   findOneAndUpdate
 } from './index';
 
-const semiCollectionName = 'semis';
+const deckCollectionName = 'decks';
 
-const semiFindOne = (
+const deckFindOne = (
   query,
   options = {
     projection: {},
@@ -19,12 +19,12 @@ const semiFindOne = (
   return findOne(
     query,
     options,
-    semiCollectionName,
+    deckCollectionName,
     db
   );
 };
 
-const semiCreate = (
+const deckCreate = (
   filter,
   update,
   options = {
@@ -38,12 +38,12 @@ const semiCreate = (
     filter,
     update,
     options,
-    semiCollectionName,
+    deckCollectionName,
     db
   );
 };
 
 export {
-  semiFindOne,
-  semiCreate
+  deckFindOne,
+  deckCreate
 };

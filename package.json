@@ -13,7 +13,7 @@
   "scripts": {
     "dev:server": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
     "utils:process": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -I -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/process -e js utils/process",
-    "utils:tmdb5000movies": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/datasets/fns/tmdb5000moviesSemisCreate.js -e js utils/datasets/fns/tmdb5000moviesSemisCreate.js",
+    "utils:tmdb5000movies": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w utils/datasets/fns/tmdb5000movieDecksCreate.js -e js utils/datasets/fns/tmdb5000movieDecksCreate.js",
     "build:server": "env NODE_ENV=development node_modules/@babel/cli/bin/babel.js js/server --out-dir dist/server --source-maps",
     "prebuild": "rm -Rrf dist",
     "build": "npm run build:server",
