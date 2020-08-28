@@ -50,7 +50,7 @@ const charactersWeightedGetFn = (
         return {
           ...memo,
           count: memo.count + 1,
-          distance: charactersPrevious.length - (
+          nearest: charactersPrevious.length - (
             index + 1
           )
         };
@@ -63,7 +63,7 @@ const charactersWeightedGetFn = (
     {
       ...character,
       count: 0,
-      distance: charactersPrevious.length
+      nearest: charactersPrevious.length
     }
   );
 };
@@ -105,15 +105,15 @@ const _characterAssignedGetFn = (
       ) {
 
         case (
-          a.distance >
-          b.distance
+          a.nearest >
+          b.nearest
         ) :
 
           return -1;
 
         case (
-          b.distance >
-          a.distance
+          b.nearest >
+          a.nearest
         ) :
 
           return 1;
@@ -172,7 +172,8 @@ const characterAssignedGetFn = (
     {
       text: character.text,
       actor: character.actor,
-      castIndex: character.castIndex
+      castIndex: character.castIndex,
+      distance: character.distance
     } :
     null;
 

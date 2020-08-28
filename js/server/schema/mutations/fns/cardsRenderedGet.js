@@ -138,30 +138,9 @@ const cardsRenderedGet = (
           res
         ) => {
 
-          const characterText = card?.character?.text;
-
-          let text = card.text;
-
-          if (
-            characterText
-          ) {
-
-            text = text.replace(
-              new RegExp(
-                characterText
-              ),
-              `
-                <b>${
-                  characterText
-                }</b>
-              `
-                .trim()
-            );
-          }
-
           return base64TextCompositedGet(
             card.base64,
-            text,
+            card.text,
             outputResGet(),
             20,
             10

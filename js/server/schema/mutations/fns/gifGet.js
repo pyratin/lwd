@@ -250,7 +250,9 @@ const gifGet = async (
 export default async (
   movieTitle,
   moviePoster,
-  _cards,
+  {
+    cards: _cards
+  },
   db
 ) => {
 

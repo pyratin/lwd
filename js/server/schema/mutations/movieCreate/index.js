@@ -7,6 +7,7 @@ import {
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
+import deckGet from '../fns/deckGet';
 import gifGet from '../fns/gifGet';
 import {
   movieCreate as movieCreateFn
@@ -138,10 +139,14 @@ const processFn = async (
     db
   );
 
+  const deck = deckGet(
+    cards
+  );
+
   const base64 = await gifGet(
     movieDataBasic.title,
     movieDataBasic.poster,
-    cards,
+    deck,
     db
   );
 

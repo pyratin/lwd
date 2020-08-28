@@ -4,7 +4,8 @@ import NNPCrossMatchesGet from './NNPCrossMatchesGet';
 
 export default (
   NNPs,
-  _NNPs
+  _NNPs,
+  strict
 ) => {
 
   const matches = NNPs.reduce(
@@ -15,7 +16,8 @@ export default (
 
       let matches = NNPCrossMatchesGet(
         NNP,
-        _NNPs
+        _NNPs,
+        strict
       );
 
       if (

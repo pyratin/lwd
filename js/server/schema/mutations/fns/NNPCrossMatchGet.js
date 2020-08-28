@@ -152,7 +152,8 @@ const characterPunctTokensMatchedGet = (
 
 export default (
   character,
-  _character
+  _character,
+  strict = false
 ) => {
 
   let NNPmatchIndexString;
@@ -171,6 +172,7 @@ export default (
       !!NNPmatchIndexString
     ) :
     case (
+      !strict &&
       (
         NNPmatchIndexString = characterTokensMatchedGet(
           character,
@@ -180,6 +182,7 @@ export default (
       !!NNPmatchIndexString
     ) :
     case (
+      !strict &&
       (
         NNPmatchIndexString = characterTokensMatchedGet(
           _character,
@@ -189,6 +192,7 @@ export default (
       !!NNPmatchIndexString
     ) :
     case (
+      !strict &&
       (
         NNPmatchIndexString = characterPunctTokensMatchedGet(
           character,
@@ -198,6 +202,7 @@ export default (
       !!NNPmatchIndexString
     ) :
     case (
+      !strict &&
       (
         NNPmatchIndexString = characterPunctTokensMatchedGet(
           _character,

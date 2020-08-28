@@ -40,7 +40,8 @@ const cardGet = (
 
   const matches = NNPsCrossMatchesGet(
     NNPs,
-    _NNPs
+    _NNPs,
+    true
   );
 
 
@@ -68,7 +69,7 @@ export default (
   _characters
 ) => {
 
-  return plot.reduce(
+  const cards = plot.reduce(
     (
       memo,
       sentence
@@ -90,5 +91,9 @@ export default (
       ];
     },
     []
+  );
+
+  return (
+    cards
   );
 };
