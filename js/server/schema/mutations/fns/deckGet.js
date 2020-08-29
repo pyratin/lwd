@@ -2,11 +2,13 @@
 
 import deckSplashGet from './deckSplashGet';
 import deckCardsGet from './deckCardsGet';
+import deckCulledGet from './deckCulledGet';
 
 export default (
   title,
   poster,
-  _cards
+  _cards,
+  cullFlag
 ) => {
 
   const splash = deckSplashGet(
@@ -15,13 +17,22 @@ export default (
     _cards
   );
 
-  let cards = deckCardsGet(
+  const cards = deckCardsGet(
     _cards,
     splash.characters
   );
 
-  return {
+  let deck = {
     splash,
     cards
   };
+
+  deck = deckCulledGet(
+    deck,
+    cullFlag
+  );
+
+  return (
+    deck
+  );
 };

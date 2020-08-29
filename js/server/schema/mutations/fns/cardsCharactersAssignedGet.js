@@ -81,7 +81,7 @@ export default (
       );
 
       const card = {
-        text: sentence.text,
+        ...sentence,
         characters
       };
 

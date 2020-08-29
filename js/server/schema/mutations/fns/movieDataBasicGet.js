@@ -116,67 +116,8 @@ const moviePageSectionTextsGet = (
   );
 };
 
-const plotCulledGet = (
-  _plot,
-  cull
-) => {
-
-  const plot = (
-    _plot
-  ) &&
-    _plot.reduce(
-      (
-        memo,
-        sentence
-      ) => {
-
-        if (
-          (
-            cull &&
-            memo.length >= 
-            3
-          ) &&
-          (
-            !memo[
-              memo.length - 1
-            ]?.text
-              .match(/\s...,$/)
-          ) &&
-          (
-            (
-              memo[
-                memo.length - 1
-              ]?.paragraphIndex !==
-              sentence.paragraphIndex
-            ) ||
-            (
-              memo.length >=
-              6
-            )
-          )
-        ) {
-
-          return (
-            memo
-          );
-        }
-
-        return [
-          ...memo,
-          sentence
-        ];
-      },
-      []
-    );
-
-  return (
-    plot
-  );
-};
-
 export default async (
-  title,
-  cullFlag = true
+  title
 ) => {
 
   // eslint-disable-next-line no-console
@@ -227,11 +168,6 @@ export default async (
   const cast = movieDataBasicCastGet(
     castText,
     plot
-  );
-
-  plot = plotCulledGet(
-    plot,
-    cullFlag
   );
 
   return {

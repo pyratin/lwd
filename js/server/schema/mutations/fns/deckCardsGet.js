@@ -7,26 +7,26 @@ const cardTextGet = (
   }
 ) => {
 
-  let text = _text;
+  let renderText = _text;
 
   if (
     !character
   ) {
 
     return (
-      text
+      renderText
     );
   }
 
-  text = `
+  renderText = `
     ${
-      text.slice(
+      renderText.slice(
         0, character.distance
       )
     }<b>${
       character.text
     }</b>${
-      text.slice(
+      renderText.slice(
         character.distance +
         character.text.length
       )
@@ -35,7 +35,7 @@ const cardTextGet = (
     .trim();
 
   return (
-    text
+    renderText
   );
 };
 
@@ -43,13 +43,13 @@ const cardGet = (
   card
 ) => {
 
-  const text = cardTextGet(
+  const renderText = cardTextGet(
     card
   );
 
   return {
     ...card,
-    text
+    renderText
   };
 };
 

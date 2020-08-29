@@ -140,7 +140,7 @@ const cardsRenderedGet = (
 
           return base64TextCompositedGet(
             card.base64,
-            card.text,
+            card.renderText,
             outputResGet(),
             20,
             10

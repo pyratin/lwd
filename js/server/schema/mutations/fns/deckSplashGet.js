@@ -347,7 +347,6 @@ export default (
   characters = charactersDualRoleIndexAssignedGet(
     characters
   );
-  console.log(characters);
 
   characters = charactersRenderTextAssignedGet(
     characters

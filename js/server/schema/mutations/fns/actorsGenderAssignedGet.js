@@ -17,6 +17,92 @@ const queryGet = (
     .trim();
 };
 
+const sentenceLeadGet = (
+  $
+) => {
+
+  const [
+    paragraphLead
+  ] = $(
+    'p'
+  )
+    .toArray()
+    .map(
+      (
+        el
+      ) => {
+
+        return $(el)
+          .text();
+      }
+    );
+
+  const sentenceLead = (
+    paragraphLead
+  ) ?
+    sentencesTokenizedGet(
+      paragraphLead
+    )[
+      0
+    ] :
+    '';
+
+  return (
+    sentenceLead
+  );
+};
+
+const occupationGet = (
+  $
+) => {
+
+  const occupation = $(
+    'th:contains(Occupation)'
+  )
+    .parent()
+    .find('td')
+    .text();
+
+  return (
+    occupation
+  );
+};
+
+const textGet = (
+  res
+) => {
+
+  const sectionLeadText = res.sections[
+    0
+  ]
+    .text;
+
+  const $ = cheerio.load(
+    sectionLeadText
+  );
+
+  const sentenceLead = sentenceLeadGet(
+    $
+  );
+
+  const occupation = occupationGet(
+    $
+  );
+
+  const text =  `
+    ${
+      sentenceLead
+    } ${
+      occupation
+    }
+  `
+    .trim();
+
+  return (
+    text
+  );
+};
+
 const actorsGenderAssignedGetFn = (
   actorUd
 ) => {
@@ -33,59 +119,32 @@ const actorsGenderAssignedGetFn = (
         res
       ) => {
 
-        const sectionLeadText = res.sections[
-          0
-        ]
-          .text;
-
-        const $ = cheerio.load(
-          sectionLeadText
+        const text = textGet(
+          res
         );
-
-        const [
-          paragraphLead
-        ] = $(
-          'p'
-        )
-          .toArray()
-          .map(
-            (
-              el
-            ) => {
-
-              return $(el)
-                .text();
-            }
-          );
-
-        const sentenceLead = sentencesTokenizedGet(
-          paragraphLead
-        )[
-          0
-        ];
 
         switch (
           true
         ) {
 
           case (
-            !!sentenceLead.match(
-              /(actor|comedian)/
-            )
-          ) :
-
-            return (
-              'man'
-            );
-
-          case (
-            !!sentenceLead.match(
-              /actress/
+            !!text.match(
+              /actress/i
             )
           ) :
 
             return (
               'woman'
+            );
+
+          case (
+            !!text.match(
+              /(actor|comedian)/i
+            )
+          ) :
+
+            return (
+              'man'
             );
 
           default :

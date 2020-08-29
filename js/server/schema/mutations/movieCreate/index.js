@@ -145,8 +145,7 @@ const processFn = async (
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
-    text,
-    cullFlag
+    text
   );
 
   if (
@@ -175,7 +174,8 @@ const processFn = async (
   const deck = deckGet(
     movieDataBasic.title,
     movieDataBasic.poster,
-    cards
+    cards,
+    cullFlag
   );
 
   if (

@@ -166,28 +166,23 @@ const characterAssignedGetFn = (
     charactersWeighted
   );
 
-  character = (
-    character
-  ) ?
-    {
-      text: character.text,
-      actor: character.actor,
-      castIndex: character.castIndex,
-      distance: character.distance
-    } :
-    null;
+  delete character?.count;
+
+  delete character?.nearest;
+
+  delete card?.characters;
 
   return {
-    text: card.text,
+    ...card,
     character
   };
 };
 
 export default (
-  cards
+  _cards
 ) => {
 
-  return cards.reduce(
+  const cards = _cards.reduce(
     (
       memo,
       _card
@@ -208,5 +203,9 @@ export default (
       ];
     },
     []
+  );
+
+  return (
+    cards
   );
 };
