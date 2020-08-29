@@ -171,7 +171,7 @@ const processFn = async (
     db
   );
 
-  const deck = deckGet(
+  const deck = await deckGet(
     movieDataBasic.title,
     movieDataBasic.poster,
     cards,

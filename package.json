@@ -42,7 +42,6 @@
     "json": "^9.0.6",
     "nodemon": "^2.0.4",
     "pad-left": "^2.1.0",
-    "puppeteer": "^5.2.1",
     "react": "^16.13.1",
     "shelljs": "^0.8.4",
     "ytdl-core": "^3.2.1"

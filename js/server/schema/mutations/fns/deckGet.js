@@ -4,7 +4,7 @@ import deckSplashGet from './deckSplashGet';
 import deckCardsGet from './deckCardsGet';
 import deckCulledGet from './deckCulledGet';
 
-export default (
+export default async (
   title,
   poster,
   _cards,
