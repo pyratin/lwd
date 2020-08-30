@@ -335,8 +335,6 @@ const charactersConcatedGet = (
 };
 
 export default (
-  title,
-  poster,
   cards
 ) => {
 
@@ -360,9 +358,7 @@ export default (
     characters
   );
 
-  return {
-    title,
-    poster,
+  return (
     characters
-  };
+  );
 };

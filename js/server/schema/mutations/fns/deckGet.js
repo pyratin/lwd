@@ -1,38 +1,65 @@
 'use strict';
 
-import deckSplashGet from './deckSplashGet';
+import deckSplashCharactersGet from 
+  './deckSplashCharactersGet';
 import deckCardsGet from './deckCardsGet';
-import deckCulledGet from './deckCulledGet';
+import deckCardsCulledGet from './deckCardsCulledGet';
+import deckSplashCharactersCulledGet 
+  from './deckSplashCharactersCulledGet';
+import charactersActorImageIdAssignedGet from
+  './charactersActorImageIdAssignedGet';
+import cardsActorImageIdAssignedGet 
+  from './cardsActorImageIdAssignedGet';
+import cardsGifyUrlAssignedGet from 
+  './cardsGifyUrlAssignedGet';
 
 export default async (
   title,
   poster,
   _cards,
-  cullFlag
+  genre,
+  db
 ) => {
 
-  const splash = deckSplashGet(
-    title,
-    poster,
+  let characters = deckSplashCharactersGet(
     _cards
   );
 
-  const cards = deckCardsGet(
+  let cards = deckCardsGet(
     _cards,
-    splash.characters
+    characters
   );
 
-  let deck = {
-    splash,
+  cards = deckCardsCulledGet(
+    cards
+  );
+
+  characters = deckSplashCharactersCulledGet(
+    characters,
+    cards
+  );
+
+  characters = await charactersActorImageIdAssignedGet(
+    characters,
+    genre,
+    db
+  );
+
+  cards = cardsActorImageIdAssignedGet(
+    cards,
+    characters
+  );
+
+  cards = await cardsGifyUrlAssignedGet(
+    cards
+  );
+
+  return {
+    splash: {
+      title,
+      poster,
+      characters
+    },
     cards
   };
-
-  deck = deckCulledGet(
-    deck,
-    cullFlag
-  );
-
-  return (
-    deck
-  );
 };

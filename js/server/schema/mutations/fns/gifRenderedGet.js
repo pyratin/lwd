@@ -140,8 +140,8 @@ const gifGet = async (
 
 export default async (
   {
-    cards: _cards,
-    splash: _splash
+    splash: _splash,
+    cards: _cards
   },
   db
 ) => {

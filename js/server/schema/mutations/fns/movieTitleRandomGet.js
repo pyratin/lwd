@@ -4,9 +4,6 @@ import moment from 'moment';
 
 import mediawikiFetch from './mediawikiFetch';
 import movieDataBasicGet from './movieDataBasicGet';
-import charactersSyncGet from './charactersSyncGet';
-import cardsSyncGet from
-  './cardsSyncGet';
 
 const categoryGet = (
   _category
@@ -81,70 +78,6 @@ const movieTitleRandomGetFn = async (
   if (
     !movieDataBasic?.plot ||
     !movieDataBasic?.cast
-  ) {
-
-    return (
-      null
-    );
-  }
-
-  const characters = charactersSyncGet(
-    movieDataBasic.cast,
-    movieDataBasic.plot
-  );
-
-  const cards = cardsSyncGet(
-    movieDataBasic.plot,
-    characters
-  );
-
-  const characterTexts = cards.reduce(
-    (
-      memo,
-      card
-    ) => {
-
-      if (
-        card.character &&
-        card.character.text
-      ) {
-
-        return[
-          ...new Set(
-            [
-              ...memo,
-              card.character.text
-            ]
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  //eslint-disable-next-line
-  console.log(
-    `
-      title: ${
-        title
-      }, cast: ${
-        !!movieDataBasic.cast
-      }, plot: ${
-        !!movieDataBasic.plot
-      }, characters: ${
-        characterTexts.length
-      }
-    `
-      .trim()
-  );
-
-  if (
-    characterTexts.length <
-    3
   ) {
 
     return (

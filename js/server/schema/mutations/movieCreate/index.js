@@ -140,7 +140,6 @@ const processFn = async (
   genre,
   db,
   req,
-  cullFlag,
   renderFlag
 ) => {
 
@@ -175,7 +174,8 @@ const processFn = async (
     movieDataBasic.title,
     movieDataBasic.poster,
     cards,
-    cullFlag
+    genre,
+    db
   );
 
   if (
@@ -200,7 +200,6 @@ export default async (
   genre,
   db,
   req,
-  cullFlag = true,
   renderFlag = true
 ) => {
 
@@ -213,7 +212,6 @@ export default async (
     genre,
     db,
     req,
-    cullFlag,
     renderFlag
   );
 
@@ -227,7 +225,6 @@ export default async (
       genre,
       db,
       req,
-      cullFlag,
       renderFlag
     );
   }

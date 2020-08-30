@@ -1,27 +1,25 @@
 'use strict';
 
-import cardsSyncGet from './cardsSyncGet';
-import cardsAsyncGet from './cardsAsyncGet';
+import cardsCharactersAssignedGet from 
+  './cardsCharactersAssignedGet';
+import cardsCharacterAssignedGet from 
+  './cardsCharacterAssignedGet';
 
 export default async (
   plot,
   characters,
-  genre,
-  db,
-  gifyUrlsAssign
 ) => {
 
-  let cards = cardsSyncGet(
+  let cards = cardsCharactersAssignedGet(
     plot,
     characters
   );
 
-  cards = await cardsAsyncGet(
+  cards = cardsCharacterAssignedGet(
     cards,
-    genre,
-    db,
-    gifyUrlsAssign
+    characters
   );
+
 
   return (
     cards
