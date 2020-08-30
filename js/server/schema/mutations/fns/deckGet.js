@@ -6,12 +6,16 @@ import deckCardsGet from './deckCardsGet';
 import deckCardsCulledGet from './deckCardsCulledGet';
 import deckSplashCharactersCulledGet 
   from './deckSplashCharactersCulledGet';
+import deckSplashCharactersRenderDetailsAssignedGet
+  from './deckSplashCharactersRenderDetailsAssignedGet';
 import deckCardsActorImageIdAssignedGet 
   from './deckCardsActorImageIdAssignedGet';
-import deckCharactersActorImageIdAssignedGet from
-  './deckCharactersActorImageIdAssignedGet';
-import cardsGifyUrlAssignedGet from 
-  './cardsGifyUrlAssignedGet';
+import deckSplashCharactersActorImageIdAssignedGet from
+  './deckSplashCharactersActorImageIdAssignedGet';
+import deckCardsRenderDetailsAssignedGet
+  from './deckCardsRenderDetailsAssignedGet';
+import deckCardsGifyUrlAssignedGet from 
+  './deckCardsGifyUrlAssignedGet';
 
 export default async (
   title,
@@ -45,13 +49,21 @@ export default async (
     db
   );
 
-  characters = deckCharactersActorImageIdAssignedGet(
+  characters = deckSplashCharactersActorImageIdAssignedGet(
     characters,
     cards
   );
 
+  characters = deckSplashCharactersRenderDetailsAssignedGet(
+    characters
+  );
 
-  cards = await cardsGifyUrlAssignedGet(
+  cards = deckCardsRenderDetailsAssignedGet(
+    cards,
+    characters
+  );
+
+  cards = await deckCardsGifyUrlAssignedGet(
     cards
   );
 
