@@ -97,10 +97,10 @@ const starringActorExistsGet = (
 };
 
 const starringActorsFlatlistGetFn = (
-  character
+  card
 ) => {
 
-  const actor = character?.actor;
+  const actor = card.character?.actor;
 
   return (
     actor
@@ -110,17 +110,17 @@ const starringActorsFlatlistGetFn = (
 };
 
 const starringActorsFlatlistGet = (
-  characters
+  cards
 ) => {
 
-  return characters.reduce(
+  return cards.reduce(
     (
       memo,
-      character
+      card
     ) => {
 
       const starringActor = starringActorsFlatlistGetFn(
-        character
+        card
       );
 
       if (
@@ -478,6 +478,40 @@ const spoofActorsGet = async (
   );
 };
 
+const cardCharactersGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card,
+      cardIndex
+    ) => {
+
+      const cardCharacter = card.character;
+
+      if (
+        cardCharacter
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...cardCharacter,
+            cardIndex
+          }
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const spoofActorByTextGet = (
   actorText,
   spoofActors
@@ -804,14 +838,74 @@ const charactersActorImageIdAssignedGet = (
   );
 };
 
+const characterByCardIndexGet = (
+  characters,
+  cardIndex
+) => {
+
+  return characters.find(
+    (
+      character
+    ) => {
+
+      return (
+        character.cardIndex ===
+        cardIndex
+      );
+    }
+  );
+};
+
+const cardsCharacterAssignedGet = (
+  characters,
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card,
+      cardIndex
+    ) => {
+
+      const character = characterByCardIndexGet(
+        characters,
+        cardIndex
+      );
+
+      if (
+        character
+      ) {
+
+        delete character._actor;
+
+        return [
+          ...memo,
+          {
+            ...card,
+            actorImageId: character.actorImageId,
+            character
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        card
+      ];
+    },
+    []
+  );
+};
+
 export default async (
-  _characters,
+  _cards,
   genre,
   db
 ) => {
 
   let starringActors = starringActorsFlatlistGet(
-    _characters
+    _cards
   );
 
   starringActors = await actorsGenderAssignedGet(
@@ -824,8 +918,12 @@ export default async (
     db
   );
 
-  let characters = charactersActorAssignedGet(
-    _characters,
+  let characters = cardCharactersGet(
+    _cards
+  );
+
+  characters = charactersActorAssignedGet(
+    characters,
     spoofActors
   );
 
@@ -834,7 +932,12 @@ export default async (
     db
   );
 
+  const cards = cardsCharacterAssignedGet(
+    characters,
+    _cards
+  ); 
+
   return (
-    characters
+    cards
   );
 };
