@@ -15,20 +15,15 @@ const charactersFromCardsGetFn = (
           _memo
         ) => {
 
-          const characterText = card?.character?.text;
-
           return (
-            characterText &&
-            (
-              _memo.text ===
-              characterText
-            )
+            _memo.text ===
+            card.character?.text
           );
         }
       );
 
       if (
-        card?.character?.text &&
+        card.character &&
         !exists
       ) {
 

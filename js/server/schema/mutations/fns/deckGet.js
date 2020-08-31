@@ -30,8 +30,7 @@ export default async (
   );
 
   let cards = deckCardsGet(
-    _cards,
-    characters
+    _cards
   );
 
   cards = deckCardsCulledGet(

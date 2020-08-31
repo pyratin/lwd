@@ -53,7 +53,7 @@ const cardGet = (
   };
 };
 
-const cardsRenderTextAssignedGet = (
+export default (
   cards
 ) => {
 
@@ -73,73 +73,5 @@ const cardsRenderTextAssignedGet = (
       ];
     },
     []
-  );
-};
-
-const cardsDualRoleIndexAssignedGet = (
-  _cards,
-  characters
-) => {
-
-  const cards = _cards.reduce(
-    (
-      memo,
-      _card
-    ) => {
-
-      const character = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.text ===
-            _card?.character?.text
-          );
-        }
-      );
-
-      if (
-        character
-      ) {
-
-        return [
-          ...memo,
-          {
-            ..._card,
-            dualRoleIndex: character.dualRoleIndex
-          }
-        ];
-      }
-
-      return [
-        ...memo,
-        _card
-      ];
-    },
-    []
-  );
-
-  return (
-    cards
-  );
-};
-
-export default (
-  _cards,
-  characters
-) => {
-
-  let cards = cardsRenderTextAssignedGet(
-    _cards
-  );
-
-  cards = cardsDualRoleIndexAssignedGet(
-    cards,
-    characters
-  );
-
-  return (
-    cards
   );
 };
