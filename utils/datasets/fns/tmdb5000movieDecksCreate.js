@@ -5,7 +5,6 @@ import fs from 'fs';
 import {
   ObjectID
 } from 'mongodb';
-import puppeteer from 'puppeteer';
 
 import {
   mongoUriGet
@@ -21,16 +20,10 @@ import {
   deckCreate as deckCreateFn,
   deckFindOne
 } from '~/js/server/data/deck';
-import NNPsGet 
-  from '~/js/server/schema/mutations/fns/NNPsGet';
-import NNPCrossMatchesGet
-  from '~/js/server/schema/mutations/fns/NNPCrossMatchesGet';
 
 const dataFilename = 'tmdb_5000_movies';
 
 const datasetsFolderPathString = 'temp/datasets';
-
-const googleUrl = 'https://google.com';
 
 const dataGet = (
   jsonFilePath
@@ -116,306 +109,6 @@ const deckGetFn = async (
   );
 };
 
-const romanticLeadGet = (
-  protagonist,
-  characters
-) => {
-
-  return characters.find(
-    (
-      {
-        actor: {
-          gender
-        }
-      }
-    ) => {
-
-      return (
-        gender !==
-        protagonist.actor.gender
-      );
-    }
-  );
-};
-
-const charactersFilteredGet = (
-  characters,
-  _characters
-) => {
-
-  return _characters.filter(
-    (
-      {
-        text
-      }
-    ) => {
-
-      const exists = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            text === 
-            character?.text
-          );
-        }
-      );
-
-      return (
-        !exists
-      );
-    }
-  );
-};
-
-const antagonistGetFn = (
-  text,
-  characters
-) => {
-
-  const NNPs = NNPsGet(
-    text
-  );
-
-  let matches = characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const matches = NNPCrossMatchesGet(
-        character,
-        NNPs
-      );
-
-      if (
-        matches
-      ) {
-
-        return [
-          ...memo,
-          ...matches.map(
-            (
-              match
-            ) => {
-
-              return {
-                ...match,
-                character
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  matches = matches.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a.distance >
-          b.distance
-        ) :
-
-          return 1;
-
-        case (
-          b.distance >
-          a.distance
-        ) :
-
-          return -1;
-      }
-    }
-  );
-
-  return matches?.[
-    0
-  ]?.character;
-};
-
-const antagonistGet = async (
-  role,
-  title,
-  page,
-  characters
-) => {
-
-  await page.goto(
-    googleUrl,
-    {
-      waitUntil: 'networkidle0'
-    }
-  );
-
-  const searchString =`
-    ${
-      title
-    } ${
-      role
-    }
-  `
-    .trim();
-
-  await page.type(
-    'input[name=q]',
-    searchString,
-    {
-      delay: 100
-    }
-  );
-
-  await page.evaluate(
-    () => {
-
-      document.querySelector(
-        'input[type="submit"]'
-      )
-        .click();
-    }
-  );
-
-  const selector = '#search';
-
-  await page.waitForSelector(
-    selector
-  );
-
-  const text = (
-    await page.evaluate(
-      (
-        selector
-      ) => {
-
-        const el = document.querySelector(
-          selector
-        );
-
-        return (
-          el.innerText
-        );
-      },
-      selector
-    )
-  );
-
-  if (
-    !text
-  ) {
-
-    return (
-      null
-    );
-  }
-
-  const antagonist = antagonistGetFn(
-    text,
-    characters
-  );
-
-  return (
-    antagonist
-  );
-};
-
-const rolesCleanedGet = (
-  roles
-) => {
-
-  return Object.keys(
-    roles
-  )
-    .reduce(
-      (
-        memo,
-        key
-      ) => {
-
-        const value = roles[
-          key
-        ];
-
-        if (
-          value
-        ) {
-
-          return {
-            ...memo,
-            [key]: {
-              text: value.text,
-              actor: value.actor
-            }
-          };
-        }
-
-        return (
-          memo
-        );
-      },
-      {}
-    );
-};
-
-const rolesGet = async (
-  title,
-  page,
-  deck
-) => {
-
-  let characters = deck.splash.characters;
-
-  const protagonist = characters?.[
-    0
-  ];
-
-  const romanticLead = romanticLeadGet(
-    protagonist,
-    characters
-  );
-
-  characters = charactersFilteredGet(
-    [
-      protagonist,
-      romanticLead
-    ],
-    characters
-  );
-
-  const antagonist = await antagonistGet(
-    'antagonist',
-    title,
-    page,
-    characters
-  );
-
-  let roles = {
-    protagonist,
-    romanticLead,
-    antagonist
-  };
-
-  roles = rolesCleanedGet(
-    roles
-  );
-
-  return (
-    roles
-  );
-};
-
 const deckGet = async (
   {
     title: _title,
@@ -425,7 +118,6 @@ const deckGet = async (
     overview
   },
   index,
-  page,
   db
 ) => {
 
@@ -479,12 +171,6 @@ const deckGet = async (
     db
   );
 
-  const roles = await rolesGet(
-    title,
-    page,
-    deck
-  );
-
   const genres = JSON.parse(
     _genres
   )
@@ -526,8 +212,7 @@ const deckGet = async (
     genres,
     keywords,
     index,
-    ...deck,
-    roles
+    ...deck
   };
 };
 
@@ -551,14 +236,12 @@ const _decksCreateFn = (
 const decksCreateFn = (
   _data,
   index,
-  page,
   db
 ) => {
 
   return deckGet(
     _data,
     index,
-    page,
     db
   )
     .then(
@@ -601,16 +284,6 @@ const decksCreate = async (
   db
 ) => {
 
-  const browser = await puppeteer.launch(
-    {
-      args: [
-        '--no-sandbox'
-      ]
-    }
-  );
-
-  const page = await browser.newPage();
-
   return data
     .reduce(
       (
@@ -627,7 +300,6 @@ const decksCreate = async (
             return decksCreateFn(
               _data,
               index,
-              page,
               db
             )
               .then(

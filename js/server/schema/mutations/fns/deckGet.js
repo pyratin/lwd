@@ -3,6 +3,7 @@
 import deckSplashCharactersGet from 
   './deckSplashCharactersGet';
 import deckCardsGet from './deckCardsGet';
+import deckRolesGet from './deckRolesGet';
 import deckCardsCulledGet from './deckCardsCulledGet';
 import deckSplashCharactersCulledGet 
   from './deckSplashCharactersCulledGet';
@@ -33,8 +34,14 @@ export default async (
     _cards
   );
 
+  let roles = await deckRolesGet(
+    title,
+    characters
+  );
+
   cards = deckCardsCulledGet(
-    cards
+    cards,
+    roles
   );
 
   characters = deckSplashCharactersCulledGet(
@@ -72,6 +79,7 @@ export default async (
       poster,
       characters
     },
-    cards
+    cards,
+    roles
   };
 };

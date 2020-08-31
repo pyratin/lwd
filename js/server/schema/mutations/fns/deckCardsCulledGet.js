@@ -1,7 +1,19 @@
 'use strict';
 
-export default (
-  _cards
+const rolesFlagInitializedGet = (
+  roles
+) => {
+
+  return (
+    roles
+  ) ?
+    false :
+    true;
+};
+
+const rolesFlagUpdatedGet = (
+  _cards,
+  roles
 ) => {
 
   const cards = _cards.reduce(
@@ -11,6 +23,56 @@ export default (
     ) => {
 
       if (
+        (
+          _card.character?.text ===
+          roles?.protagonist.text
+        ) ||
+        (
+          _card.character?.text ===
+          roles?.romanticLead.text
+        ) ||
+        (
+          _card.character?.text ===
+          roles?.antagonist.text
+        )
+      ) {
+
+        return [
+          ...memo,
+          _card
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+
+  return (
+    cards?.length ===
+    roles?.length
+  );
+};
+
+export default (
+  _cards,
+  roles
+) => {
+
+  let rolesFlag = rolesFlagInitializedGet(
+    roles
+  );
+
+  const cards = _cards.reduce(
+    (
+      memo,
+      _card
+    ) => {
+
+      if (
+        rolesFlag &&
         (
           memo.length >= 
           3
@@ -39,6 +101,15 @@ export default (
           memo
         );
       }
+
+      rolesFlag = rolesFlagUpdatedGet(
+        [
+          ...memo,
+          _card
+        ],
+        roles
+      );
+      console.log(rolesFlag);
 
       return [
         ...memo,

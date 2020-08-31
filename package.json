@@ -62,6 +62,7 @@
     "mongodb": "^3.5.9",
     "natural": "^2.1.5",
     "node-fetch": "^2.6.0",
+    "puppeteer": "^5.2.1",
     "sbd": "^1.0.18",
     "streamcat": "^2.6.4"
   }
