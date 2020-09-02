@@ -5,6 +5,8 @@ import deckSplashCharactersGet from
 import deckCardsGet from './deckCardsGet';
 import deckRolesGet from './deckRolesGet';
 import deckCardsCulledGet from './deckCardsCulledGet';
+import deckCardsNonPeopleCulledGet
+  from './deckCardsNonPeopleCulledGet';
 import deckSplashCharactersCulledGet 
   from './deckSplashCharactersCulledGet';
 import deckSplashCharactersRenderDetailsAssignedGet
@@ -23,6 +25,7 @@ export default async (
   poster,
   _cards,
   genre,
+  plotText,
   db
 ) => {
 
@@ -42,6 +45,11 @@ export default async (
   cards = deckCardsCulledGet(
     cards,
     roles
+  );
+
+  cards = await deckCardsNonPeopleCulledGet(
+    cards,
+    plotText
   );
 
   characters = deckSplashCharactersCulledGet(

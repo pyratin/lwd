@@ -2,6 +2,36 @@
 
 import mediawikiFetch from './mediawikiFetch';
 
+const charactersFlatlistGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      {
+        character
+      }
+    ) => {
+
+      if (
+        character
+      ) {
+
+        return [
+          ...memo,
+          character
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const charactersUdAssignedGetFn = (
   plotText,
   character
@@ -232,7 +262,7 @@ const charactersCategoryAssignedGet = (
             )
               .then(
                 (
-                  category
+                  result
                 ) => {
 
                   return [
@@ -240,9 +270,9 @@ const charactersCategoryAssignedGet = (
                     {
                       ...character,
                       category: (
-                        category
+                        result
                       ) ?
-                        category :
+                        result :
                         null
                     }
                   ];
@@ -304,7 +334,7 @@ const charactersFilteredGet = (
     );
 };
 
-export default async (
+const charactersNonPeopleCulledGet = async (
   _characters,
   plotText
 ) => {
@@ -325,5 +355,74 @@ export default async (
 
   return (
     characters
+  );
+};
+
+const cardsNonPeopleCulledGet = (
+  cards,
+  characters
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      const exists = characters.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.text ===
+            card.character?.text
+          );
+        }
+      );
+
+      if (
+        exists
+      ) {
+
+        return [
+          ...memo,
+          card
+        ];
+      }
+
+      return [
+        ...memo,
+        {
+          ...card,
+          character: null
+        }
+      ];
+    },
+    []
+  );
+};
+
+export default async (
+  _cards,
+  plotText
+) => {
+
+  let characters = charactersFlatlistGet(
+    _cards
+  );
+
+  characters = await charactersNonPeopleCulledGet(
+    characters,
+    plotText
+  );
+
+  let cards = cardsNonPeopleCulledGet(
+    _cards,
+    characters
+  );
+
+  return (
+    cards
   );
 };

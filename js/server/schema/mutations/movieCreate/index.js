@@ -175,6 +175,7 @@ const processFn = async (
     movieDataBasic.poster,
     cards,
     genre,
+    movieDataBasic.plotText,
     db
   );
 

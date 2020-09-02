@@ -72,7 +72,10 @@ export default (
     ) => {
 
       if (
-        rolesFlag &&
+        (
+          memo.length > 5 ||
+          rolesFlag
+        ) &&
         (
           memo.length >= 
           3
@@ -109,7 +112,6 @@ export default (
         ],
         roles
       );
-      console.log(rolesFlag);
 
       return [
         ...memo,
