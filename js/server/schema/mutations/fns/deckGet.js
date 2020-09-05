@@ -6,8 +6,8 @@ import cardsGet from '../fns/cardsGet';
 import deckRolesGet from './deckRolesGet';
 import deckCulledByLimitGet 
   from './deckCulledByLimitGet';
-import deckNonPeopleCulledGet
-  from './deckNonPeopleCulledGet';
+import deckCulledByCategoryGet
+  from './deckCulledByCategoryGet';
 import deckActorImageIdsAssignedGet 
   from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
@@ -82,7 +82,7 @@ export default async (
       splash: {
         characters
       }
-    } = await deckNonPeopleCulledGet(
+    } = await deckCulledByCategoryGet(
       cards,
       movieDataBasic.plotText,
       characters

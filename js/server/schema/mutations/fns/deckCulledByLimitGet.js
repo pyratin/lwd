@@ -90,6 +90,20 @@ const rolesFlagUpdatedGet = (
   );
 };
 
+const textTerminatedGet = (
+  memo
+) => {
+
+  return (
+    !memo[
+      memo.length - 1
+    ]
+      .text.match(
+        /\s...,$/
+      )
+  );
+};
+
 const cardsCulledByLimitGet = (
   _cards,
   roles,
@@ -124,11 +138,17 @@ const cardsCulledByLimitGet = (
           (
             memo.length >=
             deckHardLimit
-          ) 
+          ) &&
+          textTerminatedGet(
+            memo
+          )
         ) :
         case (
           !!deckLimitByRolesFlag &&
-          !!rolesFlag
+          !!rolesFlag &&
+          textTerminatedGet(
+            memo
+          )
         ) :
 
           return (

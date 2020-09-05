@@ -3,6 +3,47 @@
 import wordsTokenizedGet from './wordsTokenizedGet';
 import NNPCrossMatchesGet from './NNPCrossMatchesGet';
 
+const charactersSortedByCardIndex = (
+  characters,
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      const character = characters.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.text ===
+            card.character?.text
+          );
+        }
+      );
+
+      if (
+        character
+      ) {
+
+        return [
+          ...memo,
+          character
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const _NNPsGet = (
   characters
 ) => {
@@ -334,11 +375,17 @@ const charactersConcatedGet = (
 
 
 const charactersRenderDetailAssignedGet = (
-  _characters
+  _characters,
+  cards
 ) => {
 
-  let characters = charactersDualRoleIndexAssignedGet(
-    _characters
+  let characters = charactersSortedByCardIndex(
+    _characters,
+    cards
+  );
+
+  characters = charactersDualRoleIndexAssignedGet(
+    characters
   );
 
   characters = charactersRenderTextAssignedGet(
@@ -409,7 +456,8 @@ export default (
 ) => {
 
   const characters = charactersRenderDetailAssignedGet(
-    _characters
+    _characters,
+    _cards
   );
 
   const cards = cardsRenderDetailAssignedGet(

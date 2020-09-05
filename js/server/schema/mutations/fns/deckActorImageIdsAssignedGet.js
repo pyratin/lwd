@@ -786,6 +786,8 @@ const charactersActorImageIdAssignedGet = (
                 result
               ) => {
 
+                delete character._actor;
+
                 return [
                   ...res,
                   {
