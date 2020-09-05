@@ -478,40 +478,6 @@ const spoofActorsGet = async (
   );
 };
 
-const cardCharactersGet = (
-  cards
-) => {
-
-  return cards.reduce(
-    (
-      memo,
-      card,
-      cardIndex
-    ) => {
-
-      const cardCharacter = card.character;
-
-      if (
-        cardCharacter
-      ) {
-
-        return [
-          ...memo,
-          {
-            ...cardCharacter,
-            cardIndex
-          }
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
 const spoofActorByTextGet = (
   actorText,
   spoofActors
@@ -838,24 +804,6 @@ const charactersActorImageIdAssignedGet = (
   );
 };
 
-const characterByCardIndexGet = (
-  characters,
-  cardIndex
-) => {
-
-  return characters.find(
-    (
-      character
-    ) => {
-
-      return (
-        character.cardIndex ===
-        cardIndex
-      );
-    }
-  );
-};
-
 const cardsCharacterAssignedGet = (
   characters,
   cards
@@ -864,27 +812,30 @@ const cardsCharacterAssignedGet = (
   return cards.reduce(
     (
       memo,
-      card,
-      cardIndex
+      card
     ) => {
 
-      const character = characterByCardIndexGet(
-        characters,
-        cardIndex
+      const character = characters.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.text ===
+            card.character?.text
+          );
+        }
       );
 
       if (
         character
       ) {
 
-        delete character._actor;
-
         return [
           ...memo,
           {
             ...card,
-            actorImageId: character.actorImageId,
-            character
+            actorImageId: character.actorImageId
           }
         ];
       }
@@ -901,7 +852,8 @@ const cardsCharacterAssignedGet = (
 export default async (
   _cards,
   genre,
-  db
+  db,
+  _characters
 ) => {
 
   let starringActors = starringActorsFlatlistGet(
@@ -918,12 +870,8 @@ export default async (
     db
   );
 
-  let characters = cardCharactersGet(
-    _cards
-  );
-
-  characters = charactersActorAssignedGet(
-    characters,
+  let characters = charactersActorAssignedGet(
+    _characters,
     spoofActors
   );
 
@@ -937,7 +885,10 @@ export default async (
     _cards
   ); 
 
-  return (
-    cards
-  );
+  return {
+    cards,
+    splash: {
+      characters
+    }
+  };
 };

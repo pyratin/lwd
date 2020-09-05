@@ -110,7 +110,7 @@ export default (
   const genderUnknown = 'unknown';
 
   if (
-    !actor.ud
+    !actor?.ud
   ) {
 
     return Promise.resolve(

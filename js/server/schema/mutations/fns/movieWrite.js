@@ -7,10 +7,7 @@ const outputFolderPathString = 'media/output';
 
 export default (
   (
-    {
-      _id: movieId,
-      base64
-    }
+    movie
   ) => {
 
     return new Promise(
@@ -24,7 +21,7 @@ export default (
           outputFolderPathString,
           `
             ${
-              movieId
+              movie._id
             }.gif
           `
             .trim()
@@ -32,14 +29,13 @@ export default (
 
         return fs.writeFile(
           outputPath,
-          base64.replace(
+          movie.base64.replace(
             /^data:image\/gif;base64,/,
             ''
           ),
           'base64',
           (
-            error,
-            res
+            error
           ) => {
 
             if (
@@ -52,7 +48,7 @@ export default (
             }
 
             return resolve(
-              res
+              movie
             );
           }
         );

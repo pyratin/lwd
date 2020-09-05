@@ -123,7 +123,7 @@ export default async (
   // eslint-disable-next-line no-console
   console.log(
     `
-      movieDataBasicCastGet: ${
+      movieDataBasicGet: ${
         title
       }
     `

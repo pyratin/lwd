@@ -2,9 +2,6 @@
 
 import path from 'path';
 import fs from 'fs';
-import {
-  ObjectID
-} from 'mongodb';
 
 import {
   mongoUriGet
@@ -17,7 +14,6 @@ import movieSearch from
 import movieCreate from 
   '~/js/server/schema/mutations/movieCreate';
 import {
-  deckCreate as deckCreateFn,
   deckFindOne
 } from '~/js/server/data/deck';
 
@@ -94,36 +90,15 @@ const titleMatchGet = (
     );
 };
 
-const deckGetFn = async (
-  title,
-  db
-) => {
-
-  return movieCreate(
-    title,
-    'general',
-    db,
-    null,
-    false,
-    false
-  );
-};
-
-const deckGet = async (
-  {
-    title: _title,
-    tagline,
-    genres: _genres,
-    keywords: _keywords,
-    overview
-  },
+const decksCreateFn = async (
+  _data,
   index,
   db
 ) => {
 
   let exists = await deckFindOne(
     {
-      _title
+      _title: _data.title
     },
     undefined,
     db
@@ -139,7 +114,7 @@ const deckGet = async (
   }
 
   const title = await titleMatchGet(
-    _title
+    _data.title
   );
 
   if (
@@ -166,117 +141,16 @@ const deckGet = async (
     );
   }
 
-  const deck = await deckGetFn(
+  return movieCreate(
     title,
-    db
+    'general',
+    db,
+    null,
+    false,
+    false,
+    'deck',
+    true
   );
-
-  const genres = JSON.parse(
-    _genres
-  )
-    .map(
-      (
-        {
-          name
-        }
-      ) => {
-
-        return (
-          name
-        );
-      }
-    );
-
-  const keywords = JSON.parse(
-    _keywords
-  )
-    .map(
-      (
-        {
-          name
-        }
-      ) => {
-
-        return (
-          name
-        );
-      }
-    );
-
-  return {
-    source: 'tmdb5000movies',
-    title,
-    _title,
-    tagline,
-    overview,
-    genres,
-    keywords,
-    index,
-    ...deck
-  };
-};
-
-const _decksCreateFn = (
-  deck,
-  db
-) => {
-
-  return deckCreateFn(
-    {
-      _id: new ObjectID()
-    },
-    {
-      $set: deck
-    },
-    undefined,
-    db
-  );
-};
-
-const decksCreateFn = (
-  _data,
-  index,
-  db
-) => {
-
-  return deckGet(
-    _data,
-    index,
-    db
-  )
-    .then(
-      (
-        deck
-      ) => {
-
-        if (
-          !deck?.roles.protagonist ||
-          !deck?.roles.romanticLead ||
-          !deck?.roles.antagonist
-        ) {
-
-          return (
-            null
-          );
-        }
-
-        return _decksCreateFn(
-          deck,
-          db
-        );
-      }
-    )
-    .catch(
-      (
-        error
-      ) => {
-
-        // eslint-disable-next-line no-console
-        console.log(
-          error
-        );
-      }
-    );
 };
 
 const decksCreate = async (

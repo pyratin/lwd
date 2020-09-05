@@ -1,9 +1,9 @@
 'use strict';
 
-import cardsCharactersAssignedGet from 
-  './cardsCharactersAssignedGet';
-import cardsCharacterAssignedGet from 
-  './cardsCharacterAssignedGet';
+import cardsCharactersAssignedGet 
+  from './cardsCharactersAssignedGet';
+import cardsCharacterAssignedGet 
+  from './cardsCharacterAssignedGet';
 
 export default async (
   plot,
@@ -19,7 +19,6 @@ export default async (
     cards,
     characters
   );
-
 
   return (
     cards

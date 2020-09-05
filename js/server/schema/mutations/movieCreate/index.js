@@ -4,51 +4,71 @@ import {
   ObjectID
 } from 'mongodb';
 
-import movieDataBasicGet from '../fns/movieDataBasicGet';
-import charactersGet from '../fns/charactersGet';
-import cardsGet from '../fns/cardsGet';
-import deckGet from '../fns/deckGet';
+import movieTitleRandomGet from 
+  '../fns/movieTitleRandomGet';
+import deckGetFn from '../fns/deckGet';
 import gifRenderedGet from '../fns/gifRenderedGet';
+import {
+  hostUrlGet
+} from '~/js/server/fns/variable';
+import {
+  deckFind,
+  deckCountDocuments,
+  deckCreate as deckCreateFn
+} from '~/js/server/data/deck';
 import {
   movieCreate as movieCreateFn
 } from '~/js/server/data/movie';
 import movieWrite from '../fns/movieWrite';
-import movieTitleRandomGet from 
-  '../fns/movieTitleRandomGet';
-import {
-  hostUrlGet
-} from '~/js/server/fns/variable';
+
+const deckLocalRandomGet = async (
+  db
+) => {
+
+  const count = await deckCountDocuments(
+    {},
+    undefined,
+    db
+  );
+
+  const skip = Math.floor(
+    Math.random() *
+    count
+  );
+
+  const deck = (
+    await deckFind(
+      {},
+      {
+        skip,
+        limit: 1
+      },
+      db
+    )
+  )[
+    0
+  ];
+
+  return (
+    deck
+  );
+};
 
 const titleGet = async (
   text
 ) => {
 
-  const match = text.match(
-    /^random:(english|hindi|tamil)$/
-  );
-
-  const title = (
-    match
-  ) ?
-    await movieTitleRandomGet(
-      text.split(
-        /:/
-      )[
-        1
-      ]
-    ) :
-    Promise.resolve(
-      text
-    );
-
-  return (
-    title
+  return await movieTitleRandomGet(
+    text.split(
+      /:/
+    )[
+      1
+    ]
   );
 };
 
 const movieCreate = async (
-  title,
-  base64,
+  movie,
   db,
   req
 ) => {
@@ -72,8 +92,7 @@ const movieCreate = async (
     },
     {
       $set: {
-        title,
-        base64,
+        ...movie,
         path
       }
     },
@@ -82,118 +101,166 @@ const movieCreate = async (
   );
 };
 
-const successHandle = async (
-  title,
-  base64,
-  db,
-  req
-) => {
-
-  const movie = await movieCreate(
-    title,
-    base64,
-    db,
-    req
-  );
-
-  await movieWrite(
-    movie
-  );
-
-  return (
-    movie
-  );
-};
-
-const render = async (
-  title,
-  deck,
-  db,
-  req
-) => {
-
-  const base64 = await gifRenderedGet(
-    deck,
-    db
-  );
-
-  if (
-    title &&
-    base64
-  ) {
-
-    return successHandle(
-      title,
-      base64,
-      db,
-      req
-    );
-  }
-
-  return {
-    title
-  };
-};
-
-const processFn = async (
+const deckGet = async (
   text,
   genre,
   db,
-  req,
-  renderFlag
+  deckHardLimit,
+  deckLimitByRolesFlag
 ) => {
 
-  let movieDataBasic = await movieDataBasicGet(
-    text
-  );
-
-  if (
-    !movieDataBasic?.plot ||
-    !movieDataBasic?.cast
+  switch (
+    true
   ) {
 
-    return (
-      {}
-    );
+    case (
+      !!text.match(
+        /^random:local$/
+      )
+    ) :
+
+      return deckLocalRandomGet(
+        db
+      );
+
+    case (
+      !!text.match(
+        /^random:(english|hindi|tamil)$/
+      )
+    ) :
+
+      return titleGet(
+        text
+      )
+        .then(
+          (
+            title
+          ) => {
+          
+            return deckGetFn(
+              title,
+              genre,
+              db,
+              deckHardLimit,
+              deckLimitByRolesFlag
+            );
+          }
+        );
+
+    default :
+
+      return deckGetFn(
+        text,
+        genre,
+        db,
+        deckHardLimit,
+        deckLimitByRolesFlag
+      );
   }
+};
 
-  let characters = await charactersGet(
-    movieDataBasic.cast,
-    movieDataBasic.plot,
-    movieDataBasic.plotText
-  );
-
-  const cards = await cardsGet(
-    movieDataBasic.plot,
-    characters,
-    genre,
-    db
-  );
+const outputGet = async (
+  text,
+  genre,
+  db,
+  deckHardLimit,
+  deckLimitByRolesFlag,
+  outputType
+) => {
 
   const deck = await deckGet(
-    movieDataBasic.title,
-    movieDataBasic.poster,
-    cards,
+    text,
     genre,
-    movieDataBasic.plotText,
-    db
+    db,
+    deckHardLimit,
+    deckLimitByRolesFlag
   );
 
-  if (
-    renderFlag
+  switch (
+    true
   ) {
 
-    return render(
-      movieDataBasic.title,
-      deck,
-      db,
-      req
-    );
-  }
+    case (
+      outputType === 
+      'deck'
+    ) :
 
-  return (
-    deck
-  );
+      return Promise.resolve(
+        deck
+      );
+
+    default :
+
+      return gifRenderedGet(
+        deck,
+        db
+      )
+        .then(
+          (
+            base64
+          ) => {
+
+            return {
+              title: text,
+              base64
+            };
+          }
+        );
+  }
+};
+
+const outputCreatedGet = (
+  output,
+  db,
+  req,
+  createFlag
+) => {
+
+  switch (
+    true
+  ) {
+
+    case (
+      !createFlag
+    ) :
+
+      return Promise.resolve(
+        output
+      );
+
+    case (
+      !!output.base64
+    ) :
+
+      return movieCreate(
+        output,
+        db,
+        req
+      )
+        .then(
+          (
+            movie
+          ) => {
+
+            return movieWrite(
+              movie
+            );
+          }
+        );
+
+    default :
+
+      return deckCreateFn(
+        {
+          _id: new ObjectID()
+        },
+        {
+          $set: output
+        },
+        undefined,
+        db
+      );
+  }
 };
 
 export default async (
@@ -201,36 +268,29 @@ export default async (
   genre,
   db,
   req,
-  renderFlag = true
+  deckHardLimit = 5,
+  deckLimitByRolesFlag = false,
+  outputType = 'movie',
+  createFlag = true
 ) => {
 
-  let title = await titleGet(
-    text
-  );
-
-  const movie = await processFn(
-    title,
+  let output = await outputGet(
+    text,
     genre,
     db,
-    req,
-    renderFlag
+    deckHardLimit,
+    deckLimitByRolesFlag,
+    outputType
   );
 
-  if (
-    text.match(/^random:/) &&
-    !movie.base64
-  ) {
-
-    return process(
-      text,
-      genre,
-      db,
-      req,
-      renderFlag
-    );
-  }
+  output = await outputCreatedGet(
+    output,
+    db,
+    req,
+    createFlag
+  );
 
   return (
-    movie
+    output
   );
 };

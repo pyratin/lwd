@@ -1,11 +1,27 @@
 'use strict';
 
 import {
+  find,
   findOne,
+  countDocuments,
   findOneAndUpdate
 } from './index';
 
 const deckCollectionName = 'decks';
+
+const deckFind = (
+  query,
+  options,
+  db
+) => {
+
+  return find(
+    query,
+    options,
+    deckCollectionName,
+    db
+  );
+};
 
 const deckFindOne = (
   query,
@@ -17,6 +33,20 @@ const deckFindOne = (
 ) => {
 
   return findOne(
+    query,
+    options,
+    deckCollectionName,
+    db
+  );
+};
+
+const deckCountDocuments = (
+  query,
+  options,
+  db
+) => {
+
+  return countDocuments(
     query,
     options,
     deckCollectionName,
@@ -44,6 +74,8 @@ const deckCreate = (
 };
 
 export {
+  deckFind,
   deckFindOne,
+  deckCountDocuments,
   deckCreate
 };

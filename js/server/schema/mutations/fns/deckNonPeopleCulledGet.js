@@ -2,36 +2,6 @@
 
 import mediawikiFetch from './mediawikiFetch';
 
-const charactersFlatlistGet = (
-  cards
-) => {
-
-  return cards.reduce(
-    (
-      memo,
-      {
-        character
-      }
-    ) => {
-
-      if (
-        character
-      ) {
-
-        return [
-          ...memo,
-          character
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
 const charactersUdAssignedGetFn = (
   plotText,
   character
@@ -405,15 +375,12 @@ const cardsNonPeopleCulledGet = (
 
 export default async (
   _cards,
-  plotText
+  plotText,
+  _characters
 ) => {
 
-  let characters = charactersFlatlistGet(
-    _cards
-  );
-
-  characters = await charactersNonPeopleCulledGet(
-    characters,
+  let characters = await charactersNonPeopleCulledGet(
+    _characters,
     plotText
   );
 
@@ -422,7 +389,10 @@ export default async (
     characters
   );
 
-  return (
-    cards
-  );
+  return {
+    cards,
+    splash: {
+      characters
+    }
+  };
 };

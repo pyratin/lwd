@@ -333,7 +333,7 @@ const charactersConcatedGet = (
 };
 
 
-export default (
+const charactersRenderDetailAssignedGet = (
   _characters
 ) => {
 
@@ -356,4 +356,71 @@ export default (
   return (
     characters
   );
+};
+
+const cardsRenderDetailAssignedGet = (
+  cards,
+  characters
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      const character = characters.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.text ===
+            card.character?.text
+          );
+        }
+      );
+
+      if (
+        character
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...card,
+            dualRoleIndex: character.dualRoleIndex
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        card
+      ];
+    },
+    []
+  );
+};
+
+export default (
+  _characters,
+  _cards
+) => {
+
+  const characters = charactersRenderDetailAssignedGet(
+    _characters
+  );
+
+  const cards = cardsRenderDetailAssignedGet(
+    _cards,
+    characters
+  );
+
+  return {
+    cards,
+    splash: {
+      characters
+    }
+  };
 };

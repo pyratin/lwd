@@ -27,7 +27,8 @@
       {
         "SwitchCase": 1,
         "ignoredNodes": [
-          "TemplateLiteral *"
+          "TemplateLiteral *",
+          "Property"
         ]
       }
     ],

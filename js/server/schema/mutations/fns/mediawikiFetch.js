@@ -25,6 +25,31 @@ const fnDelay = (
   ); 
 };
 
+const fnDelayFn = (
+  query
+) => {
+
+  // eslint-disable-next-line no-console
+  console.log(
+    `
+      mediawikiFetch: ${
+        query
+      }
+    `
+      .trim()
+  );
+
+  return fnDelay(
+    () => {
+
+      return mediawikiFetch(
+        query
+      );
+    },
+    2000
+  );
+};
+
 const mediawikiFetch = (
   query
 ) => {
@@ -38,34 +63,24 @@ const mediawikiFetch = (
       ) => {
 
         if (
-          res.status ===
-          429
+          res.status !==
+          200
         ) {
 
-          // eslint-disable-next-line no-console
-          console.log(
-            `
-              mediawikiFetch: ${
-                res.status
-              } ${
-                query
-              }
-            `
-              .trim()
-          );
-
-          return fnDelay(
-            () => {
-
-              return mediawikiFetch(
-                query
-              );
-            },
-            2000
+          return fnDelayFn(
+            query
           );
         }
 
         return res.json();
+      }
+    )
+    .catch(
+      () => {
+
+        return fnDelayFn(
+          query
+        );
       }
     );
 };
