@@ -5,6 +5,8 @@ import cheerio from 'cheerio';
 import plotNNPsGet from './plotNNPsGet';
 import NNPsGet from './NNPsGet';
 import NNPCrossMatchGet from './NNPCrossMatchGet';
+import sentencesTokenizedGet
+  from './sentencesTokenizedGet';
 
 const actorNNPsGet = (
   castLines
@@ -128,7 +130,8 @@ const actorsFilteredGetFn = (
 
       const match = NNPCrossMatchGet(
         plotCharacter.text,
-        actor.text
+        actor.text,
+        false
       );
 
       if (
@@ -280,6 +283,21 @@ const castGetFn = (
         ) :
         null;
 
+      role = `
+        ${
+          actor.text
+        } ${
+          role.trim()
+        }
+      `
+        .trim();
+
+      role = sentencesTokenizedGet(
+        role
+      )[
+        0
+      ];
+
       if (
         role
       ) {
@@ -288,14 +306,7 @@ const castGetFn = (
           ...memo,
           {
             actor,
-            role: `
-              ${
-                actor.text
-              } ${
-                role.trim()
-              }
-            `
-              .trim()
+            role
           }
         ];
       }

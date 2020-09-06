@@ -80,7 +80,8 @@ const characterExistsGet = (
 
   const matches = NNPCrossMatchesGet(
     NNP,
-    _NNPs
+    _NNPs,
+    false
   );
 
   return matches?.[
@@ -373,6 +374,36 @@ const charactersConcatedGet = (
   );
 };
 
+const charactersSortedByCastIndexGet = (
+  characters
+) => {
+
+  return characters.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a.castIndex >
+          b.castIndex
+        ) :
+
+          return 1;
+
+        case (
+          b.castIndex >
+          a.castIndex
+        ) :
+
+          return -1;
+      }
+    }
+  );
+};
 
 const charactersRenderDetailAssignedGet = (
   _characters,
@@ -397,6 +428,10 @@ const charactersRenderDetailAssignedGet = (
   );
 
   characters = charactersConcatedGet(
+    characters
+  );
+
+  characters = charactersSortedByCastIndexGet(
     characters
   );
 
@@ -450,24 +485,105 @@ const cardsRenderDetailAssignedGet = (
   );
 };
 
-export default (
-  _characters,
-  _cards
+const cardTextGet = (
+  {
+    text: _text,
+    character
+  }
 ) => {
 
-  const characters = charactersRenderDetailAssignedGet(
-    _characters,
-    _cards
-  );
+  let renderText = _text;
 
-  const cards = cardsRenderDetailAssignedGet(
-    _cards,
-    characters
+  if (
+    !character
+  ) {
+
+    return (
+      renderText
+    );
+  }
+
+  renderText = `
+    ${
+      renderText.slice(
+        0, character.distance
+      )
+    }<b>${
+      character.text
+    }</b>${
+      renderText.slice(
+        character.distance +
+        character.text.length
+      )
+    }
+  `
+    .trim();
+
+  return (
+    renderText
+  );
+};
+
+const cardGet = (
+  card
+) => {
+
+  const renderText = cardTextGet(
+    card
   );
 
   return {
+    ...card,
+    renderText
+  };
+};
+
+const cardsRenderTextAssignedGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      _card
+    ) => {
+
+      const card = cardGet(
+        _card
+      );
+
+      return [
+        ...memo,
+        card
+      ];
+    },
+    []
+  );
+};
+
+export default (
+  deck
+) => {
+
+  let characters = charactersRenderDetailAssignedGet(
+    deck.splash.characters,
+    deck.cards
+  );
+
+  let cards = cardsRenderDetailAssignedGet(
+    deck.cards,
+    characters
+  );
+
+  cards = cardsRenderTextAssignedGet(
+    cards
+  );
+
+  return {
+    ...deck,
     cards,
     splash: {
+      ...deck.splash,
       characters
     }
   };

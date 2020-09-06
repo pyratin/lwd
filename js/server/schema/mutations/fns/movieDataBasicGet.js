@@ -117,7 +117,8 @@ const moviePageSectionTextsGet = (
 };
 
 export default async (
-  title
+  title,
+  plotLimit
 ) => {
 
   // eslint-disable-next-line no-console
@@ -162,7 +163,8 @@ export default async (
   );
 
   let plot = movieDataBasicPlotGet(
-    plotText
+    plotText,
+    plotLimit
   );
 
   const cast = movieDataBasicCastGet(

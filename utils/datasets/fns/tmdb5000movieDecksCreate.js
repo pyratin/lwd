@@ -96,23 +96,6 @@ const decksCreateFn = async (
   db
 ) => {
 
-  let exists = await deckFindOne(
-    {
-      _title: _data.title
-    },
-    undefined,
-    db
-  );
-
-  if (
-    exists
-  ) {
-
-    return Promise.resolve(
-      null
-    );
-  }
-
   const title = await titleMatchGet(
     _data.title
   );
@@ -124,9 +107,9 @@ const decksCreateFn = async (
     return Promise.resolve();
   }
 
-  exists = await deckFindOne(
+  let exists = await deckFindOne(
     {
-      title
+      'splash.title': title
     },
     undefined,
     db
@@ -146,8 +129,8 @@ const decksCreateFn = async (
     'general',
     db,
     null,
-    false,
-    false,
+    10,
+    5,
     'deck',
     true
   );

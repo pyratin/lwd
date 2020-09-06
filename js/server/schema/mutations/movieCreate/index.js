@@ -13,16 +13,50 @@ import {
 } from '~/js/server/fns/variable';
 import {
   deckFind,
+  deckFindOne,
   deckCountDocuments,
   deckCreate as deckCreateFn
 } from '~/js/server/data/deck';
+import deckCulledByLimitGet 
+  from '../fns/deckCulledByLimitGet';
+import deckActorImageIdsAssignedGet 
+  from '../fns/deckActorImageIdsAssignedGet';
 import {
   movieCreate as movieCreateFn
 } from '~/js/server/data/movie';
 import movieWrite from '../fns/movieWrite';
 
+const deckLocalPreRenderHandledGet = (
+  deck,
+  genre,
+  db,
+  deckHardLimit
+) => {
+
+  return Promise.resolve(
+    deckCulledByLimitGet(
+      deck,
+      deckHardLimit
+    )
+  )
+    .then(
+      (
+        deck
+      ) => {
+
+        return deckActorImageIdsAssignedGet(
+          deck,
+          genre,
+          db
+        );
+      }
+    );
+};
+
 const deckLocalRandomGet = async (
-  db
+  genre,
+  db,
+  deckHardLimit
 ) => {
 
   const count = await deckCountDocuments(
@@ -36,7 +70,7 @@ const deckLocalRandomGet = async (
     count
   );
 
-  const deck = (
+  let deck = (
     await deckFind(
       {},
       {
@@ -48,6 +82,13 @@ const deckLocalRandomGet = async (
   )[
     0
   ];
+
+  deck = await deckLocalPreRenderHandledGet(
+    deck,
+    genre,
+    db,
+    deckHardLimit
+  );
 
   return (
     deck
@@ -105,13 +146,36 @@ const deckGet = async (
   text,
   genre,
   db,
-  deckHardLimit,
-  deckLimitByRolesFlag
+  plotLimit,
+  deckHardLimit
 ) => {
+
+  let deck;
 
   switch (
     true
   ) {
+
+    case (
+      (
+        deck = await deckFindOne(
+          {
+            'splash.title': text
+          },
+          undefined,
+          db
+        )
+      ) &&
+      !!deck
+    ) :
+
+      return deckLocalPreRenderHandledGet(
+        deck,
+        genre,
+        db,
+        5,
+        false
+      );
 
     case (
       !!text.match(
@@ -120,7 +184,10 @@ const deckGet = async (
     ) :
 
       return deckLocalRandomGet(
-        db
+        genre,
+        db,
+        5,
+        false
       );
 
     case (
@@ -141,8 +208,8 @@ const deckGet = async (
               title,
               genre,
               db,
-              deckHardLimit,
-              deckLimitByRolesFlag
+              plotLimit,
+              deckHardLimit
             );
           }
         );
@@ -153,8 +220,8 @@ const deckGet = async (
         text,
         genre,
         db,
-        deckHardLimit,
-        deckLimitByRolesFlag
+        plotLimit,
+        deckHardLimit
       );
   }
 };
@@ -163,8 +230,8 @@ const outputGet = async (
   text,
   genre,
   db,
+  plotLimit,
   deckHardLimit,
-  deckLimitByRolesFlag,
   outputType
 ) => {
 
@@ -172,8 +239,8 @@ const outputGet = async (
     text,
     genre,
     db,
-    deckHardLimit,
-    deckLimitByRolesFlag
+    plotLimit,
+    deckHardLimit
   );
 
   switch (
@@ -201,7 +268,7 @@ const outputGet = async (
           ) => {
 
             return {
-              title: text,
+              title: deck.splash.title,
               base64
             };
           }
@@ -268,8 +335,8 @@ export default async (
   genre,
   db,
   req,
+  plotLimit = 10,
   deckHardLimit = 5,
-  deckLimitByRolesFlag = false,
   outputType = 'movie',
   createFlag = true
 ) => {
@@ -278,8 +345,8 @@ export default async (
     text,
     genre,
     db,
+    plotLimit,
     deckHardLimit,
-    deckLimitByRolesFlag,
     outputType
   );
 

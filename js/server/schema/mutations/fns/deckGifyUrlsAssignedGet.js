@@ -2,6 +2,8 @@
 
 import nodeFetch from 'node-fetch';
 
+import fnDelayRunFn from './fnDelayRun';
+
 const cardsForGifyGet = (
   cards
 ) => {
@@ -51,6 +53,25 @@ const queryGet = (
     .trim();
 };
 
+const fnDelayRun = (
+  text
+) => {
+
+  return fnDelayRunFn(
+    cardsFlatlistGifyUrlAssignedGetFn,
+    2000,
+    `
+      deckCardsGifyUrlAssignedGet: ${
+        text
+      }
+    `
+      .trim(),
+    {
+      text
+    }
+  );
+};
+
 const cardsFlatlistGifyUrlAssignedGetFn = (
   {
     text
@@ -86,25 +107,21 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
           !gifyUrl
         ) {
 
-          //eslint-disable-next-line no-console
-          console.log(
-            `
-              cardsFlatlistGifyUrlAssignedGetFn: ${
-                text
-              }
-            `
-              .trim()
-          );
-
-          return cardsFlatlistGifyUrlAssignedGetFn(
-            {
-              text
-            }
+          return fnDelayRun(
+            text
           );
         }
 
         return (
           gifyUrl
+        );
+      }
+    )
+    .catch(
+      () => {
+
+        return fnDelayRun(
+          text
         );
       }
     );
@@ -209,11 +226,11 @@ const cardsGifyUrlAssignedGet = (
 };
 
 export default async (
-  _cards
+  deck
 ) => {
 
   let cardsFlatlist = cardsForGifyGet(
-    _cards
+    deck.cards
   );
 
   cardsFlatlist = await cardsFlatlistGifyUrlAssignedGet(
@@ -222,10 +239,11 @@ export default async (
 
   const cards = cardsGifyUrlAssignedGet(
     cardsFlatlist,
-    _cards
+    deck.cards
   );
 
-  return (
+  return {
+    ...deck,
     cards
-  );
+  };
 };

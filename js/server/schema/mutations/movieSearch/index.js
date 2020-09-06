@@ -109,7 +109,8 @@ const movieSearchResultCheck = async (
     cast,
     plot
   } = await movieDataBasicGet(
-    result.title
+    result.title,
+    5
   );
 
   return (

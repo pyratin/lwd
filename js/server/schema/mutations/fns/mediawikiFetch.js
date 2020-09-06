@@ -2,51 +2,22 @@
 
 import nodeFetch from 'node-fetch';
 
-const fnDelay = (
-  fn,
-  delay
-) => {
+import fnDelayRunFn from './fnDelayRun';
 
-  return new Promise(
-    (
-      resolve
-    ) => {
-
-      return setTimeout(
-        () => {
-
-          return resolve(
-            fn()
-          );
-        },
-        delay
-      );
-    }
-  ); 
-};
-
-const fnDelayFn = (
+const fnDelayRun = (
   query
 ) => {
 
-  // eslint-disable-next-line no-console
-  console.log(
+  return fnDelayRunFn(
+    mediawikiFetch,
+    2000,
     `
       mediawikiFetch: ${
         query
       }
     `
-      .trim()
-  );
-
-  return fnDelay(
-    () => {
-
-      return mediawikiFetch(
-        query
-      );
-    },
-    2000
+      .trim(),
+    query
   );
 };
 
@@ -67,7 +38,7 @@ const mediawikiFetch = (
           200
         ) {
 
-          return fnDelayFn(
+          return fnDelayRun(
             query
           );
         }
@@ -78,7 +49,7 @@ const mediawikiFetch = (
     .catch(
       () => {
 
-        return fnDelayFn(
+        return fnDelayRun(
           query
         );
       }

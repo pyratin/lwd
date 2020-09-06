@@ -3,30 +3,26 @@
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
-import deckRolesGet from './deckRolesGet';
 import deckCulledByLimitGet 
   from './deckCulledByLimitGet';
-import deckCulledByCategoryGet
-  from './deckCulledByCategoryGet';
 import deckActorImageIdsAssignedGet 
   from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
-import deckCardsGifyUrlAssignedGet from 
-  './deckCardsGifyUrlAssignedGet';
-import cardsRenderTextAssignedGet 
-  from './cardsRenderTextAssignedGet';
+import deckGifyUrlsAssignedGet from 
+  './deckGifyUrlsAssignedGet';
 
 export default async (
   title,
   genre,
   db,
-  deckHardLimit,
-  deckLimitByRolesFlag
+  plotLimit,
+  deckHardLimit
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
-    title
+    title,
+    plotLimit
   );
 
   if (
@@ -43,7 +39,7 @@ export default async (
 
   let characters;
 
-  characters = charactersGet(
+  characters = await charactersGet(
     movieDataBasic.cast,
     movieDataBasic.plot,
     movieDataBasic.plotText
@@ -56,80 +52,35 @@ export default async (
     db
   );
 
-  let roles = await deckRolesGet(
-    title,
-    characters
-  );
-
-  (
-    {
-      cards,
-      splash: {
-        characters
-      }
-    }  = deckCulledByLimitGet(
-      cards,
-      null,
-      deckHardLimit,
-      deckLimitByRolesFlag,
-      characters
-    )
-  );
-
-  (
-    {
-      cards,
-      splash: {
-        characters
-      }
-    } = await deckCulledByCategoryGet(
-      cards,
-      movieDataBasic.plotText,
-      characters
-    )
-  );
-
-  (
-    {
-      cards,
-      splash: {
-        characters
-      }
-    } = await deckActorImageIdsAssignedGet(
-      cards,
-      genre,
-      db,
-      characters
-    )
-  );
-
-  (
-    {
-      cards,
-      splash: {
-        characters
-      }
-    } = deckRenderDetailsAssignedGet(
-      characters,
-      cards
-    )
-  );
-
-  cards = await deckCardsGifyUrlAssignedGet(
-    cards
-  );
-
-  cards = cardsRenderTextAssignedGet(
-    cards
-  );
-
-  return {
+  let deck = {
     splash: {
       title: movieDataBasic.title,
       poster: movieDataBasic.poster,
       characters
     },
-    cards,
-    roles
+    cards
   };
+
+  deck = deckCulledByLimitGet(
+    deck,
+    deckHardLimit
+  );
+
+  deck = await deckActorImageIdsAssignedGet(
+    deck,
+    genre,
+    db
+  );
+
+  deck = deckRenderDetailsAssignedGet(
+    deck
+  );
+
+  deck = await deckGifyUrlsAssignedGet(
+    deck
+  );
+
+  return (
+    deck
+  );
 };

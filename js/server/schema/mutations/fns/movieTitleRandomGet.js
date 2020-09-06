@@ -72,7 +72,8 @@ const movieTitleRandomGetFn = async (
   }
 
   const movieDataBasic = await movieDataBasicGet(
-    title
+    title,
+    5
   );
 
   if (

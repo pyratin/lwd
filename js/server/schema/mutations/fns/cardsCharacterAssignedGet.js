@@ -170,8 +170,6 @@ const characterAssignedGetFn = (
 
   delete character?.nearest;
 
-  delete card?.characters;
-
   return {
     ...card,
     character

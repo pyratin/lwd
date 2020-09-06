@@ -47,7 +47,8 @@ const sentencesGetFn = (
 };
 
 export default (
-  plotText
+  plotText,
+  plotLimit
 ) => {
 
   if (
@@ -104,8 +105,12 @@ export default (
     null
   );
 
-  const sentences = sentencesGetFn(
+  let sentences = sentencesGetFn(
     paragraphs
+  );
+
+  sentences = sentences.slice(
+    0, plotLimit
   );
 
   return (

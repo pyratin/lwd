@@ -4,8 +4,6 @@ import {
   ObjectID
 } from 'mongodb';
 
-import actorsGenderAssignedGet from 
-  './actorsGenderAssignedGet';
 import {
   genreFindOne
 } from '~/js/server/data/genre';
@@ -852,18 +850,13 @@ const cardsCharacterAssignedGet = (
 };
 
 export default async (
-  _cards,
+  deck,
   genre,
-  db,
-  _characters
+  db
 ) => {
 
   let starringActors = starringActorsFlatlistGet(
-    _cards
-  );
-
-  starringActors = await actorsGenderAssignedGet(
-    starringActors
+    deck.cards
   );
 
   const spoofActors = await spoofActorsGet(
@@ -873,7 +866,7 @@ export default async (
   );
 
   let characters = charactersActorAssignedGet(
-    _characters,
+    deck.splash.characters,
     spoofActors
   );
 
@@ -884,12 +877,14 @@ export default async (
 
   const cards = cardsCharacterAssignedGet(
     characters,
-    _cards
+    deck.cards
   ); 
 
   return {
+    ...deck,
     cards,
     splash: {
+      ...deck.splash,
       characters
     }
   };

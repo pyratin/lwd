@@ -1,95 +1,5 @@
 'use strict';
 
-const rolesFlagInitializedGet = (
-  roles,
-  deckLimitByRolesFlag
-) => {
-
-  return (
-    roles &&
-    (
-      Object.keys(
-        roles
-      )
-        .length
-    ) &&
-    deckLimitByRolesFlag
-  ) ?
-    false :
-    true;
-};
-
-const rolesFlagUpdatedGet = (
-  card,
-  cards,
-  roles,
-  rolesFlag
-) => {
-
-  if (
-    rolesFlag
-  ) {
-
-    return (
-      rolesFlag
-    );
-  }
-
-  const matches = Object.keys(
-    roles
-  )
-    .reduce(
-      (
-        memo,
-        roleKey
-      ) => {
-
-        const match = [
-          ...cards,
-          card
-        ].find(
-          (
-            card
-          ) => {
-
-            return (
-              card.character?.text ===
-              roles[
-                roleKey
-              ]
-                .text
-            );
-          }
-        );
-
-        if (
-          match
-        ) {
-
-          return [
-            ...memo,
-            roles[
-              roleKey
-            ]
-          ];
-        }
-
-        return (
-          memo
-        );
-      },
-      []
-    );
-
-  return (
-    Object.keys(
-      roles
-    )
-      .length ===
-    matches.length
-  );
-};
-
 const textTerminatedGet = (
   memo
 ) => {
@@ -97,8 +7,7 @@ const textTerminatedGet = (
   return (
     !memo[
       memo.length - 1
-    ]
-      .text.match(
+    ]?.text.match(
         /\s...,$/
       )
   );
@@ -107,27 +16,14 @@ const textTerminatedGet = (
 const cardsCulledByLimitGet = (
   _cards,
   roles,
-  deckHardLimit,
-  deckLimitByRolesFlag
+  deckHardLimit
 ) => {
-
-  let rolesFlag = rolesFlagInitializedGet(
-    roles,
-    deckLimitByRolesFlag
-  );
 
   const cards = _cards.reduce(
     (
       memo,
       _card
     ) => {
-
-      rolesFlag = rolesFlagUpdatedGet(
-        _card,
-        memo,
-        roles,
-        rolesFlag
-      );
 
       switch (
         true
@@ -139,13 +35,6 @@ const cardsCulledByLimitGet = (
             memo.length >=
             deckHardLimit
           ) &&
-          textTerminatedGet(
-            memo
-          )
-        ) :
-        case (
-          !!deckLimitByRolesFlag &&
-          !!rolesFlag &&
           textTerminatedGet(
             memo
           )
@@ -213,28 +102,28 @@ const charactersCulledGet = (
 };
 
 export default (
-  _cards,
-  roles,
+  deck,
   deckHardLimit,
-  deckLimitByRolesFlag,
-  _characters
+  deckLimitByRolesFlag
 ) => {
 
   const cards = cardsCulledByLimitGet(
-    _cards,
-    roles,
+    deck.cards,
+    deck.roles,
     deckHardLimit,
     deckLimitByRolesFlag
   );
 
   const characters = charactersCulledGet(
-    _characters,
+    deck.splash.characters,
     cards
   );
 
   return {
+    ...deck,
     cards, 
     splash: {
+      ...deck.splash,
       characters
     }
   };

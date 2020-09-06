@@ -304,7 +304,7 @@ const charactersFilteredGet = (
     );
 };
 
-const charactersNonPeopleCulledGet = async (
+export default async (
   _characters,
   plotText
 ) => {
@@ -326,73 +326,4 @@ const charactersNonPeopleCulledGet = async (
   return (
     characters
   );
-};
-
-const cardsNonPeopleCulledGet = (
-  cards,
-  characters
-) => {
-
-  return cards.reduce(
-    (
-      memo,
-      card
-    ) => {
-
-      const exists = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.text ===
-            card.character?.text
-          );
-        }
-      );
-
-      if (
-        exists
-      ) {
-
-        return [
-          ...memo,
-          card
-        ];
-      }
-
-      return [
-        ...memo,
-        {
-          ...card,
-          character: null
-        }
-      ];
-    },
-    []
-  );
-};
-
-export default async (
-  _cards,
-  plotText,
-  _characters
-) => {
-
-  let characters = await charactersNonPeopleCulledGet(
-    _characters,
-    plotText
-  );
-
-  let cards = cardsNonPeopleCulledGet(
-    _cards,
-    characters
-  );
-
-  return {
-    cards,
-    splash: {
-      characters
-    }
-  };
 };
