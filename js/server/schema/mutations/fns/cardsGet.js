@@ -5,7 +5,7 @@ import cardsCharactersAssignedGet
 import cardsCharacterAssignedGet 
   from './cardsCharacterAssignedGet';
 
-export default async (
+export default (
   plot,
   characters,
 ) => {

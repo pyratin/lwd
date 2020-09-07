@@ -131,6 +131,7 @@ const decksCreateFn = async (
     null,
     10,
     5,
+    false,
     'deck',
     true
   );

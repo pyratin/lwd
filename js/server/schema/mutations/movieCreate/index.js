@@ -19,6 +19,7 @@ import {
 } from '~/js/server/data/deck';
 import deckCulledByLimitGet 
   from '../fns/deckCulledByLimitGet';
+import deckSpoofedGet from '../fns/deckSpoofedGet';
 import deckActorImageIdsAssignedGet 
   from '../fns/deckActorImageIdsAssignedGet';
 import {
@@ -30,7 +31,8 @@ const deckLocalPreRenderHandledGet = (
   deck,
   genre,
   db,
-  deckHardLimit
+  deckHardLimit,
+  spoofFlag
 ) => {
 
   return Promise.resolve(
@@ -39,6 +41,17 @@ const deckLocalPreRenderHandledGet = (
       deckHardLimit
     )
   )
+    .then(
+      (
+        deck
+      ) => {
+
+        return deckSpoofedGet(
+          deck,
+          spoofFlag
+        );
+      }
+    )
     .then(
       (
         deck
@@ -56,7 +69,8 @@ const deckLocalPreRenderHandledGet = (
 const deckLocalRandomGet = async (
   genre,
   db,
-  deckHardLimit
+  deckHardLimit,
+  spoofFlag
 ) => {
 
   const count = await deckCountDocuments(
@@ -87,7 +101,8 @@ const deckLocalRandomGet = async (
     deck,
     genre,
     db,
-    deckHardLimit
+    deckHardLimit,
+    spoofFlag
   );
 
   return (
@@ -147,7 +162,8 @@ const deckGet = async (
   genre,
   db,
   plotLimit,
-  deckHardLimit
+  deckHardLimit,
+  spoofFlag
 ) => {
 
   let deck;
@@ -174,7 +190,7 @@ const deckGet = async (
         genre,
         db,
         5,
-        false
+        spoofFlag
       );
 
     case (
@@ -187,7 +203,7 @@ const deckGet = async (
         genre,
         db,
         5,
-        false
+        spoofFlag
       );
 
     case (
@@ -209,7 +225,8 @@ const deckGet = async (
               genre,
               db,
               plotLimit,
-              deckHardLimit
+              deckHardLimit,
+              spoofFlag
             );
           }
         );
@@ -221,7 +238,8 @@ const deckGet = async (
         genre,
         db,
         plotLimit,
-        deckHardLimit
+        deckHardLimit,
+        spoofFlag
       );
   }
 };
@@ -232,6 +250,7 @@ const outputGet = async (
   db,
   plotLimit,
   deckHardLimit,
+  spoofFlag,
   outputType
 ) => {
 
@@ -240,7 +259,8 @@ const outputGet = async (
     genre,
     db,
     plotLimit,
-    deckHardLimit
+    deckHardLimit,
+    spoofFlag
   );
 
   switch (
@@ -337,6 +357,7 @@ export default async (
   req,
   plotLimit = 10,
   deckHardLimit = 5,
+  spoofFlag = true,
   outputType = 'movie',
   createFlag = true
 ) => {
@@ -347,6 +368,7 @@ export default async (
     db,
     plotLimit,
     deckHardLimit,
+    spoofFlag,
     outputType
   );
 

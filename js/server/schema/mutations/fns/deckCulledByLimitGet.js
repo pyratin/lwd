@@ -60,9 +60,9 @@ const cardsCulledByLimitGet = (
   );
 };
 
-const charactersCulledGet = (
+const cardCharactersGetFn = (
   characters,
-  cards
+  _characters
 ) => {
 
   return characters.reduce(
@@ -71,13 +71,82 @@ const charactersCulledGet = (
       character
     ) => {
 
-      const exists = cards.find(
+      const exists = _characters.find(
         (
-          card
+          _character
         ) => {
 
           return (
-            card.character?.text ===
+            _character.text ===
+            character.text
+          );
+        }
+      );
+
+      if (
+        !exists
+      ) {
+
+        return [
+          ...memo,
+          character
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
+const cardCharactersGet = (
+  cards
+) => {
+
+  return cards.reduce(
+    (
+      memo,
+      card
+    ) => {
+
+      const characters = cardCharactersGetFn(
+        card.characters,
+        memo
+      );
+
+      return [
+        ...memo,
+        ...characters
+      ];
+    },
+    []
+  );
+};
+
+const charactersCulledGet = (
+  characters,
+  cards
+) => {
+
+  const cardCharacters = cardCharactersGet(
+    cards
+  );
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      const exists = cardCharacters.find(
+        (
+          _character
+        ) => {
+
+          return (
+            _character.text ===
             character.text
           );
         }

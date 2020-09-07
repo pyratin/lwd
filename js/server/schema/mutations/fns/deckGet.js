@@ -5,6 +5,7 @@ import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
 import deckCulledByLimitGet 
   from './deckCulledByLimitGet';
+import deckSpoofedGet from './deckSpoofedGet';
 import deckActorImageIdsAssignedGet 
   from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
@@ -17,7 +18,8 @@ export default async (
   genre,
   db,
   plotLimit,
-  deckHardLimit
+  deckHardLimit,
+  spoofFlag
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
@@ -45,7 +47,7 @@ export default async (
     movieDataBasic.plotText
   );
 
-  cards = await cardsGet(
+  cards = cardsGet(
     movieDataBasic.plot,
     characters,
     genre,
@@ -64,6 +66,11 @@ export default async (
   deck = deckCulledByLimitGet(
     deck,
     deckHardLimit
+  );
+
+  deck = deckSpoofedGet(
+    deck,
+    spoofFlag
   );
 
   deck = await deckActorImageIdsAssignedGet(
