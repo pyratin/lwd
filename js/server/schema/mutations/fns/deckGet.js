@@ -68,10 +68,10 @@ export default async (
     deckHardLimit
   );
 
-  deck = deckSpoofedGet(
-    deck,
-    spoofFlag
-  );
+  //deck = deckSpoofedGet(
+    //deck,
+    //spoofFlag
+  //);
 
   deck = await deckActorImageIdsAssignedGet(
     deck,

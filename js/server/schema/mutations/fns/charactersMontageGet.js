@@ -22,6 +22,15 @@ const charactersBase64AssignedGetFn = (
   db
 ) => {
 
+  if (
+    !character.render
+  ) {
+
+    return Promise.resolve(
+      null
+    );
+  }
+
   return actorImageFindOne(
     {
       _id: new ObjectID(
@@ -70,12 +79,22 @@ const charactersBase64AssignedGet = (
                 result
               ) => {
 
+                if (
+                  result
+                ) {
+
+                  return [
+                    ...res,
+                    {
+                      ...character,
+                      base64: result
+                    }
+                  ];
+                }
+
                 return [
                   ...res,
-                  {
-                    ...character,
-                    base64: result
-                  }
+                  character
                 ];
               }
             );

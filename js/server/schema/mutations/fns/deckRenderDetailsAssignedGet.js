@@ -3,44 +3,56 @@
 import wordsTokenizedGet from './wordsTokenizedGet';
 import NNPCrossMatchesGet from './NNPCrossMatchesGet';
 
-const charactersSortedByCardIndex = (
-  characters,
-  cards
+const charactersSortedByStarringCardIndexesGet = (
+  characters
 ) => {
 
-  return cards.reduce(
+  return characters.sort(
     (
-      memo,
-      card
+      a, b
     ) => {
 
-      const character = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.text ===
-            card.character?.text
-          );
-        }
-      );
-
-      if (
-        character
+      switch (
+        true
       ) {
 
-        return [
-          ...memo,
-          character
-        ];
-      }
+        case (
+          a.starringCardIndexes &&
+          !b.starringCardIndexes
+        ) :
 
-      return (
-        memo
-      );
-    },
-    []
+          return -1;
+
+        case (
+          b.starringCardIndexes &&
+          !a.starringCardIndexes
+        ) :
+
+          return 1;
+
+        case (
+          a.starringCardIndexes?.[
+            0
+          ] >
+          b.starringCardIndexes?.[
+            0
+          ]
+        ) :
+
+          return 1;
+
+        case (
+          b.starringCardIndexes?.[
+            0
+          ] >
+          a.starringCardIndexes?.[
+            0
+          ]
+        ) :
+
+          return -1;
+      }
+    }
   );
 };
 
@@ -285,6 +297,7 @@ const charactersRenderAssignedGet = (
       );
 
       if (
+        character.starringCardIndexes &&
         !exists
       ) {
         
@@ -406,13 +419,11 @@ const charactersSortedByCastIndexGet = (
 };
 
 const charactersRenderDetailAssignedGet = (
-  _characters,
-  cards
+  _characters
 ) => {
 
-  let characters = charactersSortedByCardIndex(
-    _characters,
-    cards
+  let characters = charactersSortedByStarringCardIndexesGet(
+    _characters
   );
 
   characters = charactersDualRoleIndexAssignedGet(
@@ -566,8 +577,7 @@ export default (
 ) => {
 
   let characters = charactersRenderDetailAssignedGet(
-    deck.splash.characters,
-    deck.cards
+    deck.splash.characters
   );
 
   let cards = cardsRenderDetailAssignedGet(
