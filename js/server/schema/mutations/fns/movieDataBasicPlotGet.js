@@ -109,9 +109,13 @@ export default (
     paragraphs
   );
 
-  sentences = sentences.slice(
-    0, plotLimit
-  );
+  sentences = (
+    plotLimit
+  ) ?
+    sentences.slice(
+      0, plotLimit
+    ) :
+    sentences;
 
   return (
     sentences

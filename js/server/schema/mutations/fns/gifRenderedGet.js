@@ -4,8 +4,6 @@ import {
   exec
 } from 'child_process';
 
-import cardsBase64AssignedGet from 
-  './cardsBase64AssignedGet';
 import cardsRenderedGet from './cardsRenderedGet';
 import splashRenderedGet from './splashRenderedGet';
 import base64MiffStreamsConcatedGet from 
@@ -146,13 +144,9 @@ export default async (
   db
 ) => {
 
-  let cards = await cardsBase64AssignedGet(
+  const cardBase64s = await cardsRenderedGet(
     _cards,
     db
-  );
-
-  const cardBase64s = await cardsRenderedGet(
-    cards
   );
 
   const splash = await splashRenderedGet(

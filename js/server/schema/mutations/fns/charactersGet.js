@@ -3,8 +3,6 @@
 import plotNNPsGet from './plotNNPsGet';
 import castNNPsGet from './castNNPsGet';
 import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
-import actorsGenderAssignedGet 
-  from './actorsGenderAssignedGet';
 import charactersCulledByCategoryGet
   from './charactersCulledByCategoryGet';
 
@@ -224,84 +222,6 @@ const charactersGet = (
   );
 };
 
-const actorsFlatlistGet = (
-  characters
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const exists = memo.find(
-        (
-          _memo
-        ) => {
-
-          return (
-            _memo.text ===
-            character.actor.text
-          );
-        }
-      );
-
-      if (
-        !exists
-      ) {
-
-        return [
-          ...memo,
-          character.actor
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
-const charactersActorGenderAssignedGet = (
-  characters,
-  actors
-) => {
-
-  return characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const actor = actors.find(
-        (
-          actor
-        ) => {
-
-          return (
-            actor.text ===
-            character.actor.text
-          );
-        }
-      );
-
-      return [
-        ...memo,
-        {
-          ...character,
-          actor: {
-            ...character.actor,
-            gender: actor.gender
-          }
-        }
-      ];
-    },
-    []
-  );
-};
-
 export default async (
   cast,
   plot,
@@ -343,19 +263,6 @@ export default async (
   let characters = charactersGet(
     matches,
     cast
-  );
-
-  let actors = actorsFlatlistGet(
-    characters
-  );
-
-  actors = await actorsGenderAssignedGet(
-    actors
-  );
-
-  characters = charactersActorGenderAssignedGet(
-    characters,
-    actors
   );
 
   characters = await charactersCulledByCategoryGet(

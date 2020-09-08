@@ -162,6 +162,7 @@ const deckGet = async (
   genre,
   db,
   plotLimit,
+  castRoleLimit,
   deckHardLimit,
   spoofFlag
 ) => {
@@ -225,6 +226,7 @@ const deckGet = async (
               genre,
               db,
               plotLimit,
+              castRoleLimit,
               deckHardLimit,
               spoofFlag
             );
@@ -238,6 +240,7 @@ const deckGet = async (
         genre,
         db,
         plotLimit,
+        castRoleLimit,
         deckHardLimit,
         spoofFlag
       );
@@ -249,6 +252,7 @@ const outputGet = async (
   genre,
   db,
   plotLimit,
+  castRoleLimit,
   deckHardLimit,
   spoofFlag,
   outputType
@@ -259,6 +263,7 @@ const outputGet = async (
     genre,
     db,
     plotLimit,
+    castRoleLimit,
     deckHardLimit,
     spoofFlag
   );
@@ -356,6 +361,7 @@ export default async (
   db,
   req,
   plotLimit = 10,
+  castRoleLimit = true,
   deckHardLimit = 5,
   spoofFlag = true,
   outputType = 'movie',
@@ -367,6 +373,7 @@ export default async (
     genre,
     db,
     plotLimit,
+    castRoleLimit,
     deckHardLimit,
     spoofFlag,
     outputType

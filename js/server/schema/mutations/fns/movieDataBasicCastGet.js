@@ -232,7 +232,8 @@ const actorRegExpGet = (
 
 const castGetFn = (
   actors,
-  castLines
+  castLines,
+  castRoleLimit
 ) => {
 
   const castText = castLines.join(
@@ -292,11 +293,15 @@ const castGetFn = (
       `
         .trim();
 
-      role = sentencesTokenizedGet(
-        role
-      )[
-        0
-      ];
+      role = (
+        castRoleLimit
+      ) ?
+        sentencesTokenizedGet(
+          role
+        )[
+          0
+        ] :
+        role;
 
       if (
         role
@@ -325,7 +330,8 @@ const castGetFn = (
 
 export default (
   _castText,
-  plot
+  plot,
+  castRoleLimit
 ) => {
 
   if (
@@ -381,7 +387,8 @@ export default (
 
   let cast = castGetFn(
     actors,
-    castLines
+    castLines,
+    castRoleLimit
   );
 
   return (

@@ -1,5 +1,7 @@
 'use strict';
 
+import cardsBase64AssignedGet from 
+  './cardsBase64AssignedGet';
 import base64FilterAppliedGet from 
   './base64FilterAppliedGet';
 import base64TextCompositedGet from 
@@ -166,11 +168,17 @@ const cardsRenderedGet = (
 };
 
 export default async (
-  _cards
+  _cards,
+  db
 ) => {
 
-  let cards = cardsFilterTypeAssignedGet(
-    _cards
+  let cards = await cardsBase64AssignedGet(
+    _cards,
+    db
+  );
+
+  cards = cardsFilterTypeAssignedGet(
+    cards
   );
 
   cards = await cardsFilterAppliedGet(

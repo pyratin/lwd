@@ -5,9 +5,9 @@ import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
 import deckCulledByLimitGet 
   from './deckCulledByLimitGet';
+import deckAsyncDataAssignedGet 
+  from './deckAsyncDataAssignedGet';
 import deckSpoofedGet from './deckSpoofedGet';
-import deckActorImageIdsAssignedGet 
-  from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
 import deckGifyUrlsAssignedGet from 
@@ -18,13 +18,15 @@ export default async (
   genre,
   db,
   plotLimit,
+  castRoleLimit,
   deckHardLimit,
   spoofFlag
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
     title,
-    plotLimit
+    plotLimit,
+    castRoleLimit
   );
 
   if (
@@ -68,16 +70,16 @@ export default async (
     deckHardLimit
   );
 
-  //deck = deckSpoofedGet(
-    //deck,
-    //spoofFlag
-  //);
-
-  deck = await deckActorImageIdsAssignedGet(
+  deck = await deckAsyncDataAssignedGet(
     deck,
     genre,
     db
   );
+
+  //deck = deckSpoofedGet(
+    //deck,
+    //spoofFlag
+  //);
 
   deck = deckRenderDetailsAssignedGet(
     deck
