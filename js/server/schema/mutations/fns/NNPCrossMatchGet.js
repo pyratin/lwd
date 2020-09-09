@@ -156,6 +156,16 @@ export default (
   strict = false
 ) => {
 
+  if (
+    !character ||
+    !_character
+  ) {
+
+    return (
+      null
+    );
+  }
+
   let NNPmatchIndexString;
 
   switch (

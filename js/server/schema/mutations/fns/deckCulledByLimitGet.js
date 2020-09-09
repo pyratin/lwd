@@ -225,7 +225,11 @@ const starringCharactersGet = (
                   .starringCardIndexes,
                 cardIndex
               ]
-            }
+            },
+            ...memo.slice(
+              starringCardIndex + 
+              1
+            )
           ];
 
         default :

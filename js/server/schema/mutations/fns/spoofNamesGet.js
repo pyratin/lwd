@@ -13,26 +13,26 @@ export default () => {
         'Nayantara'
       ],
       man: [
-        'Issac',
-        'Jackson',
-        'Sumo',
-        'Mr.White',
-        'Steve-Waugh',
-        'Peter',
-        'Charlie'
+        'Ramu',
+        'Gaja',
+        'Muthu',
+        'Vetri',
+        'Pari',
+        'Gopu',
+        'Selva'
       ],
       woman: [
-        'Rita', 
-        'Stella', 
-        'Roise', 
-        'Lilly', 
-        'Julie', 
-        'Mona',
-        'Sona'
+        'Uma', 
+        'Selvi', 
+        'Vena', 
+        'Radha', 
+        'Getha', 
+        'Akila',
+        'Mena'
       ],
       unknown: [
         'Bucket',
-        'Duet', 
+        'Drum', 
         'Socks',
         'Scooter',
         'Umberlla'

@@ -66,30 +66,16 @@ const matchesSortedGet = (
 
           return -1;
 
-        case(
-          a._NNP.sentenceIndex >
-          b._NNP.sentenceIndex
+        case (
+          a._NNP.castIndex >
+          b._NNP.castIndex
         ) :
 
           return 1;
 
         case (
-          b._NNP.sentenceIndex >
-          a._NNP.sentenceIndex
-        ) :
-
-          return -1;
-
-        case (
-          a._NNP.distance >
-          b._NNP.distance
-        ) :
-
-          return 1;
-
-        case (
-          b._NNP.distance >
-          a._NNP.distance
+          b._NNP.castIndex >
+          a._NNP.castIndex
         ) :
 
           return -1;
@@ -152,37 +138,6 @@ const matchesUniqueGet = (
       );
     },
     []
-  );
-};
-
-const matchesUniqueSortedGet = (
-  matches
-) => {
-
-  return matches.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a._NNP.castIndex >
-          b._NNP.castIndex
-        ) :
-
-          return 1;
-
-        case (
-          b._NNP.castIndex >
-          a._NNP.castIndex
-        ) :
-
-          return -1;
-      }
-    }
   );
 };
 
@@ -253,10 +208,6 @@ export default async (
   );
 
   matches = matchesUniqueGet(
-    matches
-  );
-
-  matches = matchesUniqueSortedGet(
     matches
   );
 

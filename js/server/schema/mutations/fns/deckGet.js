@@ -12,6 +12,8 @@ import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
 import deckGifyUrlsAssignedGet from 
   './deckGifyUrlsAssignedGet';
+import deckSpoofableAssignedGet 
+  from './deckSpoofableAssignedGet';
 
 export default async (
   title,
@@ -76,16 +78,20 @@ export default async (
     db
   );
 
-  //deck = deckSpoofedGet(
-    //deck,
-    //spoofFlag
-  //);
+  deck = deckSpoofedGet(
+    deck,
+    spoofFlag
+  );
 
   deck = deckRenderDetailsAssignedGet(
     deck
   );
 
   deck = await deckGifyUrlsAssignedGet(
+    deck
+  );
+
+  deck = deckSpoofableAssignedGet(
     deck
   );
 

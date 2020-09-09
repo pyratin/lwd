@@ -2,6 +2,7 @@
 
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
+import NNPBlacklistGet from './NNPBlacklistGet';
 
 const wordsChunk = (
   words,
@@ -119,6 +120,24 @@ const wordsChunk = (
   );
 };
 
+const NNPBlacklistMatch = (
+  text
+) => {
+
+  return NNPBlacklistGet()
+    .find(
+      (
+        _NNPBlacklist
+      ) => {
+
+        return (
+          _NNPBlacklist ===
+          text
+        );
+      }
+    );
+};
+
 const NNPsGetFn = (
   words
 ) => {
@@ -132,6 +151,16 @@ const NNPsGetFn = (
       switch (
         true
       ) {
+
+        case (
+          !!NNPBlacklistMatch(
+            word.text
+          )
+        ) :
+
+          return (
+            memo
+          );
 
         case (
           word.tag === 

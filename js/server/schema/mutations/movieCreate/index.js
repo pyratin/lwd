@@ -22,6 +22,8 @@ import deckCulledByLimitGet
 import deckSpoofedGet from '../fns/deckSpoofedGet';
 import deckActorImageIdsAssignedGet 
   from '../fns/deckActorImageIdsAssignedGet';
+import deckGifyUrlsAssignedGet 
+  from '../fns/deckGifyUrlsAssignedGet';
 import {
   movieCreate as movieCreateFn
 } from '~/js/server/data/movie';
@@ -61,6 +63,16 @@ const deckLocalPreRenderHandledGet = (
           deck,
           genre,
           db
+        );
+      }
+    )
+    .then(
+      (
+        deck
+      ) => {
+
+        return deckGifyUrlsAssignedGet(
+          deck
         );
       }
     );
@@ -104,6 +116,18 @@ const deckLocalRandomGet = async (
     deckHardLimit,
     spoofFlag
   );
+
+  if (
+    !deck.splash.spoofable
+  ) {
+
+    return deckLocalRandomGet(
+      genre,
+      db,
+      deckHardLimit,
+      spoofFlag
+    );
+  }
 
   return (
     deck

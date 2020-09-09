@@ -300,7 +300,12 @@ const castGetFn = (
           role
         )[
           0
-        ] :
+        ]
+          .split(
+            /[:,]/
+          )[
+            0
+          ]:
         role;
 
       if (
