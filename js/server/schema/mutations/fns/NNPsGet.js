@@ -2,7 +2,44 @@
 
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
+import NNPWhitelistGet from './NNPWhitelistGet';
 import NNPBlacklistGet from './NNPBlacklistGet';
+
+const NNPWhitelistMatch = (
+  text
+) => {
+
+  return NNPWhitelistGet()
+    .find(
+      (
+        _NNPWhitelist
+      ) => {
+
+        return (
+          _NNPWhitelist ===
+          text
+        );
+      }
+    );
+};
+
+const NNPBlacklistMatch = (
+  text
+) => {
+
+  return NNPBlacklistGet()
+    .find(
+      (
+        _NNPBlacklist
+      ) => {
+
+        return (
+          _NNPBlacklist ===
+          text
+        );
+      }
+    );
+};
 
 const wordsChunk = (
   words,
@@ -24,6 +61,30 @@ const wordsChunk = (
       switch (
         true
       ) {
+
+        case (
+          !!NNPWhitelistMatch(
+            word.text
+          )
+        ) :
+
+          return [
+            ...memo,
+            {
+              ...word,
+              tag: 'NNP'
+            }
+          ];
+
+        case (
+          !!NNPBlacklistMatch(
+            word.text
+          )
+        ) :
+
+          return (
+            memo
+          );
 
         case (
           !_word
@@ -120,24 +181,6 @@ const wordsChunk = (
   );
 };
 
-const NNPBlacklistMatch = (
-  text
-) => {
-
-  return NNPBlacklistGet()
-    .find(
-      (
-        _NNPBlacklist
-      ) => {
-
-        return (
-          _NNPBlacklist ===
-          text
-        );
-      }
-    );
-};
-
 const NNPsGetFn = (
   words
 ) => {
@@ -151,16 +194,6 @@ const NNPsGetFn = (
       switch (
         true
       ) {
-
-        case (
-          !!NNPBlacklistMatch(
-            word.text
-          )
-        ) :
-
-          return (
-            memo
-          );
 
         case (
           word.tag === 

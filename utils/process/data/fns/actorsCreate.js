@@ -42,7 +42,7 @@ const actorsCreateFn = (
         _setId: new ObjectID(
           setId
         ),
-        gender: actorText.split(
+        role: actorText.split(
           /-/
         )[
           0

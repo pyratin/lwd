@@ -16,10 +16,12 @@ export default () => {
         'Ramu',
         'Gaja',
         'Muthu',
-        'Vetri',
         'Pari',
-        'Gopu',
-        'Selva'
+        'Gopal',
+        'Selva',
+        'Babu',
+        'Raju',
+        'Mani'
       ],
       woman: [
         'Uma', 

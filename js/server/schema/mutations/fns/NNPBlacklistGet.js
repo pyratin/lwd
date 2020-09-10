@@ -3,6 +3,14 @@
 export default () => {
 
   return [
-    'M'
+    'King',
+    'Locksley',
+    'Skynet',
+    'Terminator',
+    'Big Z Memorial',
+    'Aunt',
+    'Uncle',
+    'CEO',
+    'General'
   ];
 };

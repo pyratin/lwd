@@ -2,6 +2,8 @@
 
 import plotNNPsGet from './plotNNPsGet';
 import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
+import cardsCharactersAssignedGet
+  from './cardsCharactersAssignedGet';
 
 const _NNPsGet = (
   characters
@@ -25,7 +27,7 @@ const _NNPsGet = (
   );
 };
 
-const deckCardsSpoofedGetFn = (
+const cardsSpoofedGetFn = (
   card,
   characters
 ) => {
@@ -90,13 +92,39 @@ const deckCardsSpoofedGetFn = (
     card.text
   );
 
-  console.log('---------------');
-  console.log(text);
+  return {
+    ...card,
+    text
+  };
 };
 
-export default (
-  cards,
+const cardsSpoofedGet = (
+  _cards,
   _characters
+) => {
+
+  return _cards.reduce(
+    (
+      memo,
+      _card
+    ) => {
+
+      const card = cardsSpoofedGetFn(
+        _card,
+        _characters
+      );
+
+      return [
+        ...memo,
+        card
+      ];
+    },
+    []
+  );
+};
+
+const cardsCharacterAssignedGet = (
+  cards
 ) => {
 
   return cards.reduce(
@@ -105,11 +133,51 @@ export default (
       card
     ) => {
 
-      const characters = deckCardsSpoofedGetFn(
-        card,
-        _characters
-      );
+      const character = card.characters
+        .find(
+          (
+            character
+          ) => {
+
+            return (
+              character._text ===
+              card.character.text
+            );
+          }
+        );
+
+      return [
+        ...memo,
+        {
+          ...card,
+          character
+        }
+      ];
     },
     []
+  );
+};
+
+export default (
+  _cards,
+  _characters
+) => {
+
+  let cards = cardsSpoofedGet(
+    _cards,
+    _characters
+  );
+
+  cards = cardsCharactersAssignedGet(
+    cards,
+    _characters
+  );
+
+  cards = cardsCharacterAssignedGet(
+    cards
+  );
+
+  return (
+    cards
   );
 };

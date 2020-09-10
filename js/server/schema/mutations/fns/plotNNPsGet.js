@@ -17,8 +17,7 @@ export default (
       return [
         ...memo,
         ...NNPsGet(
-          sentence.text,
-          false
+          sentence.text
         )
           .map(
             (

@@ -2,8 +2,6 @@
 
 import actorsGenderAssignedGet 
   from './actorsGenderAssignedGet';
-import deckActorImageIdsAssignedGet 
-  from './deckActorImageIdsAssignedGet';
 
 const actorsFlatlistGet = (
   characters
@@ -83,52 +81,28 @@ const charactersActorGenderAssignedGet = (
   );
 };
 
-const deckSplashCharactersGenderAssignedGet = async (
-  characters
+export default async (
+  deck
 ) => {
 
   let actors = actorsFlatlistGet(
-    characters
+    deck.splash.characters
   );
 
   actors = await actorsGenderAssignedGet(
     actors
   );
 
-  characters = charactersActorGenderAssignedGet(
-    characters,
+  let characters = charactersActorGenderAssignedGet(
+    deck.splash.characters,
     actors
   );
 
-  return (
-    characters
-  );
-};
-
-export default async (
-  _deck,
-  genre,
-  db
-) => {
-
-  const characters = 
-  await deckSplashCharactersGenderAssignedGet(
-    _deck.splash.characters
-  );
-
-  const deck = await deckActorImageIdsAssignedGet(
-    {
-      ..._deck,
-      splash: {
-        ..._deck.splash,
-        characters
-      }
-    },
-    genre,
-    db
-  );
-
-  return (
-    deck
-  );
+  return {
+    ...deck,
+    splash: {
+      ...deck.splash,
+      characters
+    }
+  };
 };

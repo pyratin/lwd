@@ -22,6 +22,8 @@ import deckCulledByLimitGet
 import deckSpoofedGet from '../fns/deckSpoofedGet';
 import deckActorImageIdsAssignedGet 
   from '../fns/deckActorImageIdsAssignedGet';
+import deckRenderDetailsAssignedGet 
+  from '../fns/deckRenderDetailsAssignedGet';
 import deckGifyUrlsAssignedGet 
   from '../fns/deckGifyUrlsAssignedGet';
 import {
@@ -71,6 +73,16 @@ const deckLocalPreRenderHandledGet = (
         deck
       ) => {
 
+        return deckRenderDetailsAssignedGet(
+          deck
+        );
+      }
+    )
+    .then(
+      (
+        deck
+      ) => {
+
         return deckGifyUrlsAssignedGet(
           deck
         );
@@ -109,14 +121,6 @@ const deckLocalRandomGet = async (
     0
   ];
 
-  deck = await deckLocalPreRenderHandledGet(
-    deck,
-    genre,
-    db,
-    deckHardLimit,
-    spoofFlag
-  );
-
   if (
     !deck.splash.spoofable
   ) {
@@ -128,6 +132,14 @@ const deckLocalRandomGet = async (
       spoofFlag
     );
   }
+
+  deck = await deckLocalPreRenderHandledGet(
+    deck,
+    genre,
+    db,
+    deckHardLimit,
+    spoofFlag
+  );
 
   return (
     deck

@@ -19,7 +19,8 @@ const actorNNPsGet = (
     ) => {
 
       const NNPs = NNPsGet(
-        castLine
+        castLine,
+        true
       );
 
       const NNP = NNPs.find(
@@ -282,7 +283,27 @@ const castGetFn = (
           /\n/g,
           ' '
         ) :
-        null;
+        '';
+
+      role = (
+        castRoleLimit
+      ) ?
+        sentencesTokenizedGet(
+          role
+        )[
+          0
+        ] :
+        role;
+
+      role = (
+        castRoleLimit
+      ) ?
+        role.split(
+          /[:,]/
+        )[
+          0
+        ] :
+        role;
 
       role = `
         ${
@@ -292,21 +313,6 @@ const castGetFn = (
         }
       `
         .trim();
-
-      role = (
-        castRoleLimit
-      ) ?
-        sentencesTokenizedGet(
-          role
-        )[
-          0
-        ]
-          .split(
-            /[:,]/
-          )[
-            0
-          ]:
-        role;
 
       if (
         role

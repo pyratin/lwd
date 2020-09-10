@@ -3,7 +3,7 @@
 import plotNNPsGet from './plotNNPsGet';
 import NNPCrossMatchesGet from './NNPCrossMatchesGet';
 
-export default (
+const heroExistsGet = (
   deck
 ) => {
 
@@ -40,11 +40,65 @@ export default (
     _NNPs
   );
 
+  return (
+    !!matches
+  );
+};
+
+const textIsLengthyGet = (
+  deck
+) => {
+
+  return deck.cards
+    .reduce(
+      (
+        memo,
+        {
+          text
+        }
+      ) => {
+
+        if (
+          !memo &&
+          (
+            text.length >
+            100
+          )
+        ) {
+
+          return (
+            true
+          );
+        }
+
+        return (
+          memo
+        );
+      },
+      false
+    );
+};
+
+export default (
+  deck
+) => {
+
+  const heroExists = heroExistsGet(
+    deck
+  );
+
+  const textIsLengthy = textIsLengthyGet(
+    deck
+  );
+
   return {
     ...deck,
     splash: {
       ...deck.splash,
-      spoofable: !!matches
+      spoofable: (
+        !!heroExists &&
+        !textIsLengthy
+      )
     }
   };
 };

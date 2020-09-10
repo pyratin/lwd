@@ -6,6 +6,7 @@ import deckCardsSpoofedGet from './deckCardsSpoofedGet';
 
 export default (
   deck,
+  genre,
   spoofFlag
 ) => {
 
@@ -19,7 +20,8 @@ export default (
   }
 
   const characters = deckCharactersSpoofedGet(
-    deck.splash.characters
+    deck.splash.characters,
+    genre
   );
 
   const cards = deckCardsSpoofedGet(
@@ -27,7 +29,12 @@ export default (
     characters
   );
 
-  return (
-    deck
-  );
+  return {
+    ...deck,
+    splash: {
+      ...deck.splash,
+      characters
+    },
+    cards
+  };
 };

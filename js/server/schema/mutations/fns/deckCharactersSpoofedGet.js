@@ -1,7 +1,6 @@
 'use strict';
 
 import NNPCrossMatchesGet from './NNPCrossMatchesGet';
-
 import spoofNamesGetFn from './spoofNamesGet';
 
 const _NNPsGet = (
@@ -215,27 +214,52 @@ const characterGroupsOrderedGet = (
     _characterGroups
   );
 
-  let heroGroups = characterGroups.filter(
+  let heroGroups = characterGroups.reduce(
     (
+      memo,
       characterGroup
     ) => {
 
-      return (
+      const match = characterGroup.find(
         (
-          !characterGroup[
-            0
-          ]
-            .castIndex
-        ) &&
-        (
-          characterGroup[
-            0
-          ]
-            .actor.gender ===
-            'man'
-        )
+          character
+        ) => {
+
+          return (
+            !character.castIndex &&
+            (
+              character.actor.gender ===
+              'man'
+            )
+          );
+        }
       );
-    }
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          characterGroup.map(
+            (
+              character
+            ) => {
+
+              return {
+                ...character,
+                role: 'hero'
+              };
+            }
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
   );
 
   let heroineGroups = characterGroups.reduce(
@@ -257,7 +281,17 @@ const characterGroupsOrderedGet = (
 
         return [
           ...memo,
-          characterGroup
+          characterGroup.map(
+            (
+              character
+            ) => {
+
+              return {
+                ...character,
+                role: 'heroine'
+              };
+            }
+          )
         ];
       }
 
@@ -297,49 +331,139 @@ const characterGroupsOrderedGet = (
     }
   );
 
-  const manGroups = otherGroups.filter(
+  const manGroups = otherGroups.reduce(
     (
+      memo,
       characterGroup
     ) => {
 
-      return (
-        characterGroup[
-          0
-        ]
-          .actor.gender ===
-          'man'
+      const match = characterGroup.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.actor.gender ===
+            'man'
+          );
+        }
       );
-    }
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          characterGroup.map(
+            (
+              character
+            ) => {
+
+              return {
+                ...character,
+                role: 'man'
+              };
+            }
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
   );
 
-  const womanGroups = otherGroups.filter(
+  const womanGroups = otherGroups.reduce(
     (
+      memo,
       characterGroup
     ) => {
 
-      return (
-        characterGroup[
-          0
-        ]
-          .actor.gender ===
-          'woman'
+      const match = characterGroup.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.actor.gender ===
+            'woman'
+          );
+        }
       );
-    }
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          characterGroup.map(
+            (
+              character
+            ) => {
+
+              return {
+                ...character,
+                role: 'woman'
+              };
+            }
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
   );
 
-  const unknownGroups = otherGroups.filter(
+  const unknownGroups = otherGroups.reduce(
     (
+      memo,
       characterGroup
     ) => {
 
-      return (
-        characterGroup[
-          0
-        ]
-          .actor.gender ===
-          'unknown'
+      const match = characterGroup.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.actor.gender ===
+            'unknown'
+          );
+        }
       );
-    }
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          characterGroup.map(
+            (
+              character
+            ) => {
+
+              return {
+                ...character,
+                role: 'unknown'
+              };
+            }
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
   );
 
   return [
@@ -426,6 +550,33 @@ const spoofNamesShuffledGet = (
     );
 };
 
+const dualRoleSuffixGet = (
+  index
+) => {
+
+  switch (
+    index
+  ) {
+
+    case (0) :
+
+      return '';
+
+    case (1) :
+
+      return '-Man';
+
+    default :
+
+      return `
+        -Man-${
+          index + 1
+        }
+      `
+        .trim();
+  }
+};
+
 const spoofNamesProcessedGet = (
   _spoofNames,
   _characterGroups,
@@ -457,18 +608,9 @@ const spoofNamesProcessedGet = (
                 0
               ]
             }${
-              (
+              dualRoleSuffixGet(
                 index
-              ) ?
-                (
-                  `
-                    -${
-                      index + 1
-                    }
-                  `
-                    .trim()
-                ) :
-                ''
+              )
             }
           `
             .trim();
@@ -640,7 +782,8 @@ const charactersGet = (
 };
 
 export default (
-  _characters
+  _characters,
+  genre
 ) => {
 
   let characterGroups = charactersGroupedGet(
@@ -654,7 +797,7 @@ export default (
     spoofNames
   );
 
-  const characters = charactersGet(
+  let characters = charactersGet(
     characterGroups
   );
 

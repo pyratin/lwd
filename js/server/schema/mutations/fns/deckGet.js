@@ -5,9 +5,11 @@ import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
 import deckCulledByLimitGet 
   from './deckCulledByLimitGet';
-import deckAsyncDataAssignedGet 
-  from './deckAsyncDataAssignedGet';
+import deckSplashCharactersGenderAssignedGet 
+  from './deckSplashCharactersGenderAssignedGet';
 import deckSpoofedGet from './deckSpoofedGet';
+import deckActorImageIdsAssignedGet
+  from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
 import deckGifyUrlsAssignedGet from 
@@ -72,15 +74,20 @@ export default async (
     deckHardLimit
   );
 
-  deck = await deckAsyncDataAssignedGet(
-    deck,
-    genre,
-    db
+  deck = await deckSplashCharactersGenderAssignedGet(
+    deck
   );
 
   deck = deckSpoofedGet(
     deck,
+    genre,
     spoofFlag
+  );
+
+  deck = await deckActorImageIdsAssignedGet(
+    deck,
+    genre,
+    db
   );
 
   deck = deckRenderDetailsAssignedGet(

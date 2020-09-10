@@ -105,7 +105,10 @@ const starringActorsFlatlistGet = (
 
         return [
           ...memo,
-          character.actor
+          {
+            ...character.actor,
+            role: character.role
+          }
         ];
       }
 
@@ -359,11 +362,11 @@ const spoofActorsGetFn = async (
   db
 ) => {
 
-  const gender = starringActor.gender;
+  const role = starringActor.role;
 
   let spoofActors = await actorsFindFn(
     {
-      gender
+      role
     },
     undefined,
     db
