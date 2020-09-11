@@ -496,6 +496,43 @@ const charactersGroupedGet = (
   );
 };
 
+const spoofNameHeroGet = (
+  genre
+) => {
+
+  return [
+    genre.split(
+      /^spoof-/
+    )[
+      1
+    ]
+      .split(
+        ''
+      )
+      .map(
+        (
+          letter,
+          index
+        ) => {
+
+          if (
+            !index
+          ) {
+
+            return letter.toUpperCase();
+          }
+
+          return (
+            letter
+          );
+        }
+      )
+      .join(
+        ''
+      )
+  ];
+};
+
 const spoofNamesShuffledGet = (
   spoofNames
 ) => {
@@ -675,7 +712,8 @@ const characterGroupsSpoofNameAssignedGetFn = (
 
 const characterGroupsSpoofNameAssignedGet = (
   _characterGroups,
-  spoofNames
+  spoofNames,
+  genre
 ) => {
 
   const heroGroups = 
@@ -683,7 +721,9 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       0
     ],
-    spoofNames.hero,
+    spoofNameHeroGet(
+      genre
+    ),
     'single'
   );
 
@@ -794,7 +834,8 @@ export default (
 
   characterGroups = characterGroupsSpoofNameAssignedGet(
     characterGroups,
-    spoofNames
+    spoofNames,
+    genre
   );
 
   let characters = charactersGet(

@@ -23,8 +23,7 @@ export default async (
   db,
   plotLimit,
   castRoleLimit,
-  deckHardLimit,
-  spoofFlag
+  deckHardLimit
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
@@ -80,8 +79,7 @@ export default async (
 
   deck = deckSpoofedGet(
     deck,
-    genre,
-    spoofFlag
+    genre
   );
 
   deck = await deckActorImageIdsAssignedGet(

@@ -35,8 +35,7 @@ const deckLocalPreRenderHandledGet = (
   deck,
   genre,
   db,
-  deckHardLimit,
-  spoofFlag
+  deckHardLimit
 ) => {
 
   return Promise.resolve(
@@ -52,7 +51,7 @@ const deckLocalPreRenderHandledGet = (
 
         return deckSpoofedGet(
           deck,
-          spoofFlag
+          genre
         );
       }
     )
@@ -93,8 +92,7 @@ const deckLocalPreRenderHandledGet = (
 const deckLocalRandomGet = async (
   genre,
   db,
-  deckHardLimit,
-  spoofFlag
+  deckHardLimit
 ) => {
 
   const count = await deckCountDocuments(
@@ -128,8 +126,7 @@ const deckLocalRandomGet = async (
     return deckLocalRandomGet(
       genre,
       db,
-      deckHardLimit,
-      spoofFlag
+      deckHardLimit
     );
   }
 
@@ -137,8 +134,7 @@ const deckLocalRandomGet = async (
     deck,
     genre,
     db,
-    deckHardLimit,
-    spoofFlag
+    deckHardLimit
   );
 
   return (
@@ -199,8 +195,7 @@ const deckGet = async (
   db,
   plotLimit,
   castRoleLimit,
-  deckHardLimit,
-  spoofFlag
+  deckHardLimit
 ) => {
 
   let deck;
@@ -226,8 +221,7 @@ const deckGet = async (
         deck,
         genre,
         db,
-        5,
-        spoofFlag
+        5
       );
 
     case (
@@ -239,8 +233,7 @@ const deckGet = async (
       return deckLocalRandomGet(
         genre,
         db,
-        5,
-        spoofFlag
+        5
       );
 
     case (
@@ -263,8 +256,7 @@ const deckGet = async (
               db,
               plotLimit,
               castRoleLimit,
-              deckHardLimit,
-              spoofFlag
+              deckHardLimit
             );
           }
         );
@@ -277,8 +269,7 @@ const deckGet = async (
         db,
         plotLimit,
         castRoleLimit,
-        deckHardLimit,
-        spoofFlag
+        deckHardLimit
       );
   }
 };
@@ -290,7 +281,6 @@ const outputGet = async (
   plotLimit,
   castRoleLimit,
   deckHardLimit,
-  spoofFlag,
   outputType
 ) => {
 
@@ -300,8 +290,7 @@ const outputGet = async (
     db,
     plotLimit,
     castRoleLimit,
-    deckHardLimit,
-    spoofFlag
+    deckHardLimit
   );
 
   switch (
@@ -396,10 +385,9 @@ export default async (
   genre,
   db,
   req,
-  plotLimit = 10,
+  plotLimit = 5,
   castRoleLimit = true,
   deckHardLimit = 5,
-  spoofFlag = true,
   outputType = 'movie',
   createFlag = true
 ) => {
@@ -411,7 +399,6 @@ export default async (
     plotLimit,
     castRoleLimit,
     deckHardLimit,
-    spoofFlag,
     outputType
   );
 

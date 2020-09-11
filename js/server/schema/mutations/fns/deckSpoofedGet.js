@@ -6,12 +6,13 @@ import deckCardsSpoofedGet from './deckCardsSpoofedGet';
 
 export default (
   deck,
-  genre,
-  spoofFlag
+  genre
 ) => {
 
   if (
-    !spoofFlag
+    !genre.match(
+      /^spoof-/
+    )
   ) {
 
     return (

@@ -70,6 +70,7 @@ const charactersActorGenderAssignedGet = (
         ...memo,
         {
           ...character,
+          role: actor.gender,
           actor: {
             ...character.actor,
             gender: actor.gender

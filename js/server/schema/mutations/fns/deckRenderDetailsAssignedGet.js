@@ -291,14 +291,23 @@ const charactersRenderAssignedGet = (
       character
     ) => {
 
-      const exists = characterExistsGet(
+      const match = characterExistsGet(
         character,
         memo
       );
 
       if (
         character.starringCardIndexes &&
-        !exists
+        (
+          !match ||
+          (
+            memo[
+              match._NNPIndex
+            ]
+              .actor.text !==
+            character.actor.text
+          )
+        )
       ) {
         
         return [
