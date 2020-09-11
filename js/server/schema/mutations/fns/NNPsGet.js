@@ -5,7 +5,7 @@ import wordsTaggedGet from './wordsTaggedGet';
 import NNPWhitelistGet from './NNPWhitelistGet';
 import NNPBlacklistGet from './NNPBlacklistGet';
 
-const NNPWhitelistMatch = (
+const NNPWhitelistIsMatchGet = (
   text
 ) => {
 
@@ -23,7 +23,7 @@ const NNPWhitelistMatch = (
     );
 };
 
-const NNPBlacklistMatch = (
+const NNPBlacklistIsMatchGet = (
   text
 ) => {
 
@@ -63,7 +63,7 @@ const wordsChunk = (
       ) {
 
         case (
-          !!NNPWhitelistMatch(
+          !!NNPWhitelistIsMatchGet(
             word.text
           )
         ) :
@@ -77,7 +77,7 @@ const wordsChunk = (
           ];
 
         case (
-          !!NNPBlacklistMatch(
+          !!NNPBlacklistIsMatchGet(
             word.text
           )
         ) :

@@ -812,8 +812,8 @@ const cardsCharacterAssignedGet = (
         ) => {
 
           return (
-            character.text ===
-            card.character?.text
+            character._text ===
+            card.character?._text
           );
         }
       );

@@ -7,10 +7,15 @@ export default () => {
     'Locksley',
     'Skynet',
     'Terminator',
-    'Big Z Memorial',
     'Aunt',
     'Uncle',
     'CEO',
-    'General'
+    'General',
+    'Congressman',
+    'U.S',
+    'U.S.',
+    'Army',
+    'Captain',
+    'Marshal'
   ];
 };

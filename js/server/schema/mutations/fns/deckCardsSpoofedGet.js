@@ -94,6 +94,7 @@ const cardsSpoofedGetFn = (
 
   return {
     ...card,
+    _text: card.text,
     text
   };
 };

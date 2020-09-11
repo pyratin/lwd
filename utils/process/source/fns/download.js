@@ -35,7 +35,7 @@ export default async (
       return ytdlCore(
         link,
         {
-          quality: '136'
+          quality: 'highest'
         }
       )
         .pipe(

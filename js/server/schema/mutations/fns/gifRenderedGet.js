@@ -51,60 +51,6 @@ const gifGetFn = (
   );
 };
 
-const gifOptimizedGet = (
-  gif
-) => {
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-
-      const buffer = new Buffer.from(
-        gif,
-        'base64'
-      );
-
-      const proc = exec(
-        'convert gif:- -coalesce -fuzz 5% -layers optimize gif:-',
-        {
-          encoding: 'base64'
-        },
-        (
-          error,
-          stdout
-        ) => {
-
-          if (
-            error
-          ) {
-
-            return reject(
-              error
-            );
-          }
-
-          return resolve(
-            `
-              data:image/gif;base64,${
-                stdout
-              }
-            `
-              .trim()
-          );
-        }
-      );
-
-      proc.stdin.write(
-        buffer
-      );
-
-      proc.stdin.end();
-    }
-  );
-};
-
 const gifGet = async (
   splash,
   base64s
@@ -125,10 +71,6 @@ const gifGet = async (
 
   let gif = await gifGetFn(
     miffStreamsConcated
-  );
-
-  gif = await gifOptimizedGet(
-    gif
   );
 
   return (

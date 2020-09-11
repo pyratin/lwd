@@ -385,7 +385,7 @@ export default async (
   genre,
   db,
   req,
-  plotLimit = 5,
+  plotLimit = 10,
   castRoleLimit = true,
   deckHardLimit = 5,
   outputType = 'movie',

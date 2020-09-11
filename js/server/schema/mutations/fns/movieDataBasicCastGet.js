@@ -279,14 +279,17 @@ const castGetFn = (
       }
 
       role = (role) ?
-        role.replace(
-          /\n/g,
-          ' '
-        ) :
+        role :
         '';
 
+      role = role.replace(
+        /\n/g,
+        ' '
+      );
+
       role = (
-        castRoleLimit
+        castRoleLimit &&
+        role.trim()
       ) ?
         sentencesTokenizedGet(
           role
@@ -296,7 +299,8 @@ const castGetFn = (
         role;
 
       role = (
-        castRoleLimit
+        castRoleLimit &&
+        role.trim()
       ) ?
         role.split(
           /[:,]/

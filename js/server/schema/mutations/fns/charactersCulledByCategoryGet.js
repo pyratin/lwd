@@ -1,6 +1,8 @@
 'use strict';
 
 import mediawikiFetch from './mediawikiFetch';
+import categoryWhitelistGet from './categoryWhitelistGet';
+import categoryBlacklistGet from './categoryBlacklistGet';
 
 const charactersUdAssignedGetFn = (
   plotText,
@@ -263,6 +265,42 @@ const charactersCategoryAssignedGet = (
   );
 };
 
+const categoryWhitelistIsMatchGet = (
+  character
+) => {
+
+  return categoryWhitelistGet()
+    .find(
+      (
+        _categoryWhitelist
+      ) => {
+
+        return (
+          _categoryWhitelist ===
+          character.text
+        );
+      }
+    );
+};
+
+const categoryBlacklistIsMatchedGet = (
+  character
+) => {
+
+  return categoryBlacklistGet()
+    .find(
+      (
+        _categoryBlacklist
+      ) => {
+
+        return (
+          _categoryBlacklist ===
+          character.text
+        );
+      }
+    );
+};
+
 const charactersFilteredGet = (
   characters
 ) => {
@@ -273,20 +311,50 @@ const charactersFilteredGet = (
       character
     ) => {
 
-      if (
-        character.ud &&
-        !character.category
+      switch (
+        true
       ) {
 
-        return (
-          memo
-        );
-      }
+        case (
+          !!categoryWhitelistIsMatchGet(
+            character
+          )
+        ) :
 
-      return [
-        ...memo,
-        character
-      ];
+          return [
+            ...memo,
+            {
+              ...character,
+              category: 'people'
+            }
+          ];
+
+        case (
+          !!categoryBlacklistIsMatchedGet(
+            character
+          )
+        ) :
+
+          return (
+            memo
+          );
+
+        case (
+          !!character.ud &&
+          !character.category
+        ) :
+
+          return (
+            memo
+          );
+
+        default :
+
+          return [
+            ...memo,
+            character
+          ];
+      }
     },
     []
   )
