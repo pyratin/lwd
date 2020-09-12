@@ -3,6 +3,8 @@
 export default () => {
 
   return [
-    'Private'
+    'Private',
+    'Will',
+    'Bloodbath'
   ];
 };

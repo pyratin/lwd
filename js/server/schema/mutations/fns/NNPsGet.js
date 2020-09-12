@@ -41,7 +41,65 @@ const NNPBlacklistIsMatchGet = (
     );
 };
 
-const wordsChunk = (
+const wordsNNPOverridesAppliedGet = (
+  _words
+) => {
+
+  const words = _words.reduce(
+    (
+      memo,
+      _word
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          !!NNPWhitelistIsMatchGet(
+            _word.text
+          )
+        ) :
+
+          return [
+            ...memo,
+            {
+              ..._word,
+              tag: 'NNP'
+            }
+          ];
+
+        case (
+          !!NNPBlacklistIsMatchGet(
+            _word.text
+          )
+        ) :
+
+          return [
+            ...memo,
+            {
+              ..._word,
+              tag: 'blacklist'
+            }
+          ];
+
+        default:
+
+          return [
+            ...memo,
+            _word
+          ];
+      }
+    },
+    []
+  );
+
+  return (
+    words
+  );
+};
+
+const wordsChunkedGet = (
   words,
   attachIndexZeroOverride
 ) => {
@@ -61,30 +119,6 @@ const wordsChunk = (
       switch (
         true
       ) {
-
-        case (
-          !!NNPWhitelistIsMatchGet(
-            word.text
-          )
-        ) :
-
-          return [
-            ...memo,
-            {
-              ...word,
-              tag: 'NNP'
-            }
-          ];
-
-        case (
-          !!NNPBlacklistIsMatchGet(
-            word.text
-          )
-        ) :
-
-          return (
-            memo
-          );
 
         case (
           !_word
@@ -111,10 +145,16 @@ const wordsChunk = (
             'NNP'
           ) &&
           (
-            !!word.text
-              .match(
-                /^[A-Z]/
-              )
+            (
+              !!word.text
+                .match(
+                  /^[A-Z]/
+                )
+            ) &&
+            (
+              word.tag !==
+              'blacklist'
+            )
           )
         ) :
         case (
@@ -123,10 +163,16 @@ const wordsChunk = (
             'NNP'
           ) &&
           (
-            !!_word.text
-              .match(
-                /^[A-Z]/
-              )
+            (
+              !!_word.text
+                .match(
+                  /^[A-Z]/
+                )
+            ) &&
+            (
+              _word.tag !==
+              'blacklist'
+            )
           ) &&
           (
             !!_word.tokenIndex ||
@@ -148,19 +194,6 @@ const wordsChunk = (
                 }
               `
                 .trim(),
-              tag: 'NNP'
-            }
-          ];
-
-        case (
-          word.tag ===
-          'FW'
-        ) :
-
-          return [
-            ...memo,
-            {
-              ...word,
               tag: 'NNP'
             }
           ];
@@ -238,7 +271,7 @@ const NNPsCleanedGet = (
 
 export default (
   sentence,
-  attachIndexZeroOverride = false
+  attachIndexZeroOverride
 ) => {
 
   let words = wordsTokenizedGet(
@@ -249,7 +282,11 @@ export default (
     words
   );
 
-  words = wordsChunk(
+  words = wordsNNPOverridesAppliedGet(
+    words
+  );
+
+  words = wordsChunkedGet(
     words,
     attachIndexZeroOverride
   );

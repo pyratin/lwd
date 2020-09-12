@@ -12,10 +12,15 @@ export default () => {
     'CEO',
     'General',
     'Congressman',
+    'American',
+    'America',
+    'Civil',
+    'War',
     'U.S',
     'U.S.',
     'Army',
     'Captain',
-    'Marshal'
+    'Marshal',
+    'President'
   ];
 };
