@@ -150,21 +150,60 @@ const characterPunctTokensMatchedGet = (
     null;
 };
 
-const characterRegExpMatchedGet = (
+const characterTokensRegExpMatchedGet = (
   character,
   _character
 ) => {
 
-  return (
-    (
-      character.length >
-      2
-    ) &&
-    (
-      character.match(
-        _character
-      )
+  const characterTokenCombinations = combinations(
+    characterTokenizedGet(
+      _character
     )
+  )
+    .reduce(
+      (
+        memo,
+        characterTokenCombination
+      ) => {
+
+        return [
+          ...memo,
+          characterTokenCombination.join(
+            ' '
+          )
+        ];
+      },
+      []
+    );
+
+  const characterToken = characterTokenCombinations.find(
+    (
+      characterToken
+    ) => {
+
+      if (
+        character === 'George Mac McHale' &&
+        _character.match(/George/)
+      ) {
+
+        console.log(characterToken, '        ', character);
+      }
+
+      return (
+        character.match(
+          characterToken
+        )
+      );
+    }
+  );
+  if (
+    characterToken
+  ) {
+    console.log('characterToken', characterToken);
+  }
+
+  return (
+    characterToken
   ) ?
     '3' :
     null;
@@ -244,7 +283,7 @@ export default (
     case (
       !strict &&
       (
-        NNPmatchIndexString = characterRegExpMatchedGet(
+        NNPmatchIndexString = characterTokensRegExpMatchedGet(
           character,
           _character
         )
@@ -254,7 +293,7 @@ export default (
     case (
       !strict &&
       (
-        NNPmatchIndexString = characterRegExpMatchedGet(
+        NNPmatchIndexString = characterTokensRegExpMatchedGet(
           _character,
           character
         )

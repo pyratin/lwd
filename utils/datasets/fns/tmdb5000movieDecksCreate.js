@@ -126,12 +126,14 @@ const decksCreateFn = async (
 
   return movieCreate(
     title,
-    'general',
+    {
+      genre: 'general',
+      outputType: 'deck',
+      createFlag: true
+    },
     db,
     null,
     5,
-    true,
-    'deck',
     true
   );
 };

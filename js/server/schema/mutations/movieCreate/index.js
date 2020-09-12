@@ -352,14 +352,18 @@ const outputCreatedGet = (
 
 export default async (
   text,
-  genre,
+  input,
   db,
   req,
   plotLimit = 5,
-  castRoleLimit = true,
-  outputType = 'movie',
-  createFlag = true
+  castRoleLimit = true
 ) => {
+
+  const {
+    genre = 'general',
+    outputType = 'movie',
+    createFlag = true
+  } = input;
 
   let output = await outputGet(
     text,

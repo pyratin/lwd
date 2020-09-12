@@ -6,7 +6,9 @@ import {
   GraphQLID,
   GraphQLString,
   GraphQLNonNull,
-  GraphQLList
+  GraphQLList,
+  GraphQLBoolean,
+  GraphQLUnionType
 } from 'graphql';
 import {
   mutationWithClientMutationId
@@ -15,6 +17,121 @@ import {
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
 import movieCreate from './mutations/movieCreate';
+
+const characterType = new GraphQLObjectType(
+  {
+    name: 'Character',
+    fields() {
+
+      return {
+        text: {
+          type: GraphQLString,
+          resolve(
+            {
+              renderText: text
+            }
+          ) {
+
+            return (
+              text
+            );
+          }
+        },
+        actorImageId: {
+          type: GraphQLID
+        }
+      };
+    }
+  }
+);
+
+const splashType = new GraphQLObjectType(
+  {
+    name: 'Splash',
+    fields() {
+
+      return {
+        title: {
+          type: GraphQLString,
+        },
+        poster: {
+          type: GraphQLString
+        },
+        characters: {
+          type: new GraphQLList(
+            characterType
+          ),
+          resolve(
+            {
+              characters
+            }
+          ) {
+
+            return characters.filter(
+              (
+                character
+              ) => {
+
+                return (
+                  character.render
+                );
+              }
+            );
+          }
+        }
+      };
+    }
+  }
+);
+
+const cardType = new GraphQLObjectType(
+  {
+    name: 'Card',
+    fields() {
+
+      return {
+        text: {
+          type: GraphQLString,
+          resolve(
+            {
+              renderText: text
+            }
+          ) {
+
+            return (
+              text
+            );
+          }
+        },
+        actorImageId: {
+          type: GraphQLID
+        },
+        gifyUrl: {
+          type: GraphQLString
+        }
+      };
+    }
+  }
+);
+
+const deckType = new GraphQLObjectType(
+  {
+    name: 'Deck',
+    fields() {
+
+      return {
+        splash: {
+          type: splashType
+        },
+        cards: {
+          type: new GraphQLList(
+            cardType
+          )
+        }
+      };
+    }
+  }
+);
 
 const movieType = new GraphQLObjectType(
   {
@@ -39,13 +156,35 @@ const movieType = new GraphQLObjectType(
         title: {
           type: GraphQLString
         },
-        gif: {
+        base64: {
           type: GraphQLString
         },
         path: {
           type: GraphQLString
         }
       };
+    }
+  }
+);
+
+const outputType = new GraphQLUnionType(
+  {
+    name: 'Output',
+    types: [
+      deckType,
+      movieType
+    ],
+    resolveType(
+      {
+        splash
+      }
+    ) {
+
+      return (
+        splash
+      ) ?
+        deckType :
+        movieType;
     }
   }
 );
@@ -168,6 +307,12 @@ const MovieCreateMutation = mutationWithClientMutationId(
       },
       genre: {
         type: GraphQLString
+      },
+      outputType: {
+        type: GraphQLString
+      },
+      createFlag: {
+        type: GraphQLBoolean
       }
     },
     outputFields: {
@@ -179,7 +324,7 @@ const MovieCreateMutation = mutationWithClientMutationId(
         }
       },
       movie: {
-        type: movieType,
+        type: outputType,
         resolve(
           movie
         ) {
@@ -193,7 +338,7 @@ const MovieCreateMutation = mutationWithClientMutationId(
     mutateAndGetPayload(
       {
         text,
-        genre
+        ...input
       },
       {
         db,
@@ -203,7 +348,7 @@ const MovieCreateMutation = mutationWithClientMutationId(
 
       return movieCreate(
         text,
-        genre,
+        input,
         db,
         req
       );

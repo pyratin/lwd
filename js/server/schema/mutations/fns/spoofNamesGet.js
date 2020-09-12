@@ -21,7 +21,8 @@ export default () => {
         'Selva',
         'Babu',
         'Raju',
-        'Mani'
+        'Mani',
+        'Ravi'
       ],
       woman: [
         'Uma', 
