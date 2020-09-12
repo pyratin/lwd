@@ -797,7 +797,8 @@ const charactersActorImageIdAssignedGet = (
 
 const cardsCharacterAssignedGet = (
   characters,
-  cards
+  cards,
+  genre
 ) => {
 
   return cards.reduce(
@@ -812,9 +813,18 @@ const cardsCharacterAssignedGet = (
         ) => {
 
           return (
-            character._text ===
-            card.character?._text
-          );
+            genre.match(
+              /^spoof-/
+            )
+          ) ?
+            (
+              character._text ===
+              card.character?._text
+            ) :
+            (
+              character.text ===
+              card.character?.text
+            );
         }
       );
 
@@ -868,7 +878,8 @@ export default async (
 
   const cards = cardsCharacterAssignedGet(
     characters,
-    deck.cards
+    deck.cards,
+    genre
   ); 
 
   return {

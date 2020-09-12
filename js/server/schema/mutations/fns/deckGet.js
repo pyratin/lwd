@@ -3,8 +3,8 @@
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
-import deckCulledByLimitGet 
-  from './deckCulledByLimitGet';
+import charactersStarringCardIndexesAssignedGet 
+  from './charactersStarringCardIndexesAssignedGet';
 import deckSplashCharactersGenderAssignedGet 
   from './deckSplashCharactersGenderAssignedGet';
 import deckSpoofedGet from './deckSpoofedGet';
@@ -22,8 +22,7 @@ export default async (
   genre,
   db,
   plotLimit,
-  castRoleLimit,
-  deckHardLimit
+  castRoleLimit
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
@@ -59,6 +58,11 @@ export default async (
     db
   );
 
+  characters = charactersStarringCardIndexesAssignedGet(
+    characters,
+    cards
+  );
+
   let deck = {
     splash: {
       title: movieDataBasic.title,
@@ -67,11 +71,6 @@ export default async (
     },
     cards
   };
-
-  deck = deckCulledByLimitGet(
-    deck,
-    deckHardLimit
-  );
 
   deck = await deckSplashCharactersGenderAssignedGet(
     deck

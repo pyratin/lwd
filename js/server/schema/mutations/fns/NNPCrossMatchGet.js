@@ -150,6 +150,26 @@ const characterPunctTokensMatchedGet = (
     null;
 };
 
+const characterRegExpMatchedGet = (
+  character,
+  _character
+) => {
+
+  return (
+    (
+      character.length >
+      2
+    ) &&
+    (
+      character.match(
+        _character
+      )
+    )
+  ) ?
+    '3' :
+    null;
+};
+
 export default (
   character,
   _character,
@@ -215,6 +235,26 @@ export default (
       !strict &&
       (
         NNPmatchIndexString = characterPunctTokensMatchedGet(
+          _character,
+          character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      !strict &&
+      (
+        NNPmatchIndexString = characterRegExpMatchedGet(
+          character,
+          _character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      !strict &&
+      (
+        NNPmatchIndexString = characterRegExpMatchedGet(
           _character,
           character
         )

@@ -46,6 +46,65 @@ const sentencesGetFn = (
   );
 };
 
+const sentencesTerminatedGet = (
+  sentences
+) => {
+
+  return (
+    !sentences[
+      sentences.length - 1
+    ]?.text.match(
+        /\s...,$/
+      )
+  );
+};
+
+const sentencesCulledByLimitGet = (
+  _sentences,
+  plotLimit
+) => {
+
+  const sentences = _sentences.reduce(
+    (
+      memo,
+      _sentence
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          !!plotLimit &&
+          (
+            memo.length >=
+            plotLimit
+          ) &&
+          sentencesTerminatedGet(
+            memo
+          )
+        ) :
+
+          return (
+            memo
+          );
+
+        default :
+
+          return [
+            ...memo,
+            _sentence
+          ];
+      }
+    },
+    []
+  );
+
+  return (
+    sentences
+  );
+};
+
 export default (
   plotText,
   plotLimit
@@ -109,13 +168,10 @@ export default (
     paragraphs
   );
 
-  sentences = (
+  sentences = sentencesCulledByLimitGet(
+    sentences,
     plotLimit
-  ) ?
-    sentences.slice(
-      0, plotLimit
-    ) :
-    sentences;
+  );
 
   return (
     sentences

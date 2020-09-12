@@ -129,9 +129,8 @@ const decksCreateFn = async (
     'general',
     db,
     null,
-    10,
-    true,
     5,
+    true,
     'deck',
     true
   );
