@@ -67,6 +67,36 @@ const deckLocalPreRenderHandledGet = (
     );
 };
 
+const deckLocalPreviewGet = async (
+  skip,
+  genre,
+  db
+) => {
+
+  let deck = (
+    await deckFind(
+      {},
+      {
+        skip,
+        limit: 1
+      },
+      db
+    )
+  )[
+    0
+  ];
+
+  deck = await deckLocalPreRenderHandledGet(
+    deck,
+    genre,
+    db
+  );
+
+  return (
+    deck
+  );
+};
+
 const deckLocalRandomGet = async (
   genre,
   db
@@ -179,23 +209,21 @@ const deckGet = async (
   ) {
 
     case (
-      (
-        deck = await deckFindOne(
-          {
-            'splash.title': text
-          },
-          undefined,
-          db
-        )
-      ) &&
-      !!deck
+      !!text.match(
+        /^preview:\d+$/
+      )
     ) :
 
-      return deckLocalPreRenderHandledGet(
-        deck,
+      return deckLocalPreviewGet(
+        parseInt(
+          text.split(
+            ':'
+          )[
+            1
+          ]
+        ),
         genre,
-        db,
-        5
+        db
       );
 
     case (
@@ -206,8 +234,7 @@ const deckGet = async (
 
       return deckLocalRandomGet(
         genre,
-        db,
-        5
+        db
       );
 
     case (
@@ -233,6 +260,26 @@ const deckGet = async (
             );
           }
         );
+
+    case (
+      (
+        deck = await deckFindOne(
+          {
+            'splash.title': text
+          },
+          undefined,
+          db
+        )
+      ) &&
+      !!deck
+    ) :
+
+      return deckLocalPreRenderHandledGet(
+        deck,
+        genre,
+        db,
+        5
+      );
 
     default :
 

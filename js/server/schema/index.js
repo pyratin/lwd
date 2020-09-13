@@ -25,17 +25,13 @@ const characterType = new GraphQLObjectType(
 
       return {
         text: {
-          type: GraphQLString,
-          resolve(
-            {
-              renderText: text
-            }
-          ) {
-
-            return (
-              text
-            );
-          }
+          type: GraphQLString
+        },
+        _text: {
+          type: GraphQLString
+        },
+        renderText: {
+          type: GraphQLString
         },
         actorImageId: {
           type: GraphQLID
@@ -78,6 +74,9 @@ const splashType = new GraphQLObjectType(
               }
             );
           }
+        },
+        spoofable: {
+          type: GraphQLBoolean
         }
       };
     }
@@ -90,18 +89,8 @@ const cardType = new GraphQLObjectType(
     fields() {
 
       return {
-        text: {
-          type: GraphQLString,
-          resolve(
-            {
-              renderText: text
-            }
-          ) {
-
-            return (
-              text
-            );
-          }
+        renderText: {
+          type: GraphQLString
         },
         actorImageId: {
           type: GraphQLID

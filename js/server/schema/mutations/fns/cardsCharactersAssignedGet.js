@@ -44,7 +44,6 @@ const cardGet = (
     true
   );
 
-
   return matches.map(
     (
       match

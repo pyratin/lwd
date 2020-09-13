@@ -21,6 +21,8 @@ export default () => {
     'Army',
     'Captain',
     'Marshal',
-    'President'
+    'President',
+    'Mars',
+    'M'
   ];
 };

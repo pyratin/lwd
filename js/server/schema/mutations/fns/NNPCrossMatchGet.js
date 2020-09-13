@@ -181,26 +181,19 @@ const characterTokensRegExpMatchedGet = (
       characterToken
     ) => {
 
-      if (
-        character === 'George Mac McHale' &&
-        _character.match(/George/)
-      ) {
-
-        console.log(characterToken, '        ', character);
-      }
-
       return (
-        character.match(
-          characterToken
+        (
+          characterToken.length >
+          2
+        ) &&
+        (
+          character.match(
+            characterToken
+          )
         )
       );
     }
   );
-  if (
-    characterToken
-  ) {
-    console.log('characterToken', characterToken);
-  }
 
   return (
     characterToken

@@ -55,10 +55,32 @@ const _castNNPsGet = (
         sentenceIndex
       ) => {
 
-        const NNPs = sentenceNNPsGet(
+        let NNPs = sentenceNNPsGet(
           sentence,
           sentenceIndex,
           castIndex
+        );
+
+        NNPs = NNPs.map(
+          (
+            NNP
+          ) => {
+
+            const _distance = (
+              NNP.distance
+            ) ?
+              NNP.distance -
+              NNPs[
+                0
+              ]
+                .text.length :
+              0;
+
+            return {
+              ...NNP,
+              _distance
+            };
+          }
         );
 
         return [
