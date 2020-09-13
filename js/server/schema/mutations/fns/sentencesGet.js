@@ -7,8 +7,101 @@ import parenthesisPurgedGet from './parenthesisPurgedGet';
 
 const sentenceNormalizeRegExp = /,\s/;
 
-const _sentenceShortenedGetFn = (
-  _sentence
+const sentenceIsNormalizedGet = (
+  sentence
+) => {
+
+  return (
+    !!sentence.match(
+      sentenceNormalizeRegExp
+    )
+  );
+};
+
+const wordPOSMatchConditionGet = (
+  word,
+  sentence,
+  tagType
+) => {
+
+  if (
+    sentenceIsNormalizedGet(
+      sentence
+    ) 
+  ) {
+
+    return (
+      sentence
+    );
+  }
+
+  switch (
+    tagType
+  ) {
+
+    case (
+      'CC'
+    ) :
+
+      return (
+        word.tag === 
+        'CC'
+      );
+
+    case (
+      'VBG'
+    ) :
+
+      return (
+        (
+          word.tag === 
+          'VBG'
+        ) &&
+        (
+          !!word.text
+            .match(
+              /ing$/
+            )
+        )
+      );
+  }
+};
+
+const wordPOSMatchedGet = (
+  word,
+  sentence,
+  tagType
+) => {
+
+  const caseCondition = wordPOSMatchConditionGet(
+    word,
+    sentence,
+    tagType
+  );
+
+  switch (
+    true
+  ) {
+
+    case (
+      caseCondition
+    ) :
+
+      return (
+        word
+      );
+
+    default:
+
+      return (
+        null
+      );
+  }
+};
+
+const sentenceShortenedByPOSGet = (
+  _sentence,
+  tagType
 ) => {
 
   let words = wordsTokenizedGet(
@@ -22,37 +115,22 @@ const _sentenceShortenedGetFn = (
   words = words.reduce(
     (
       memo,
-      {
-        tag,
-        text
-      }
+      _word
     ) => {
 
+      const word = wordPOSMatchedGet(
+        _word,
+        _sentence,
+        tagType
+      );
+
       if (
-        (
-          tag === 
-          'CC'
-        ) ||
-        (
-          (
-            tag === 
-            'VBG'
-          ) &&
-          (
-            text.match(
-              /ing$/
-            )
-          )
-        )
+        word
       ) {
 
         return [
-          ...new Set(
-            [
-              ...memo,
-              text
-            ]
-          )
+          ...memo,
+          word
         ];
       }
 
@@ -73,7 +151,7 @@ const _sentenceShortenedGetFn = (
         new RegExp(
           `
             ,*\\s${
-              word
+              word.text
             }(\\s)
           `
             .trim(),
@@ -81,7 +159,7 @@ const _sentenceShortenedGetFn = (
         ),
         `
           , ${
-            word
+            word.text
           }$1
         `
           .trim()
@@ -99,8 +177,14 @@ const sentenceShortenedGetFn = (
   _sentence
 ) => {
 
-  let sentence = _sentenceShortenedGetFn(
-    _sentence
+  let sentence = sentenceShortenedByPOSGet(
+    _sentence,
+    'CC'
+  );
+
+  sentence = sentenceShortenedByPOSGet(
+    sentence,
+    'VBG'
   );
 
   sentence = sentence.replace(
