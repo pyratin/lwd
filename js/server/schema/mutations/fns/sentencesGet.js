@@ -112,7 +112,7 @@ const sentenceShortenedByPOSGet = (
     words
   ); 
 
-  words = words.reduce(
+  const sentence = words.reduce(
     (
       memo,
       _word
@@ -120,7 +120,7 @@ const sentenceShortenedByPOSGet = (
 
       const word = wordPOSMatchedGet(
         _word,
-        _sentence,
+        memo,
         tagType
       );
 
@@ -129,40 +129,27 @@ const sentenceShortenedByPOSGet = (
       ) {
 
         return [
-          ...memo,
-          word
-        ];
+          ...memo.slice(
+            0, word.distance
+          ),
+          `
+            , ${
+              word.text
+            }
+          `
+            .trim(),
+          ...memo.slice(
+            word.distance +
+            word.text.length
+          )
+        ]
+          .join(
+            ''
+          );
       }
 
       return (
         memo
-      );
-    },
-    []
-  );
-
-  const sentence = words.reduce(
-    (
-      memo,
-      word
-    ) => {
-
-      return memo.replace(
-        new RegExp(
-          `
-            ,*\\s${
-              word.text
-            }(\\s)
-          `
-            .trim(),
-          'g'
-        ),
-        `
-          , ${
-            word.text
-          }$1
-        `
-          .trim()
       );
     },
     _sentence
