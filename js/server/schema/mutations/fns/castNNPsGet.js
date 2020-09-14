@@ -83,6 +83,17 @@ const _castNNPsGet = (
           }
         );
 
+        NNPs = NNPs.filter(
+          (
+            NNP
+          ) => {
+
+            return (
+              NNP.distance
+            );
+          }
+        );
+
         return [
           ...memo,
           ...NNPs

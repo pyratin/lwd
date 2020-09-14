@@ -3,6 +3,7 @@
 import sentencesTokenizedGet from './sentencesTokenizedGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
+import NNPsGet from './NNPsGet';
 import parenthesisPurgedGet from './parenthesisPurgedGet';
 
 const sentenceNormalizeRegExp = /,\s/;
@@ -31,7 +32,7 @@ const wordPOSMatchConditionGet = (
   ) {
 
     return (
-      sentence
+      false
     );
   }
 
@@ -99,10 +100,57 @@ const wordPOSMatchedGet = (
   }
 };
 
+const wordsPosMatchedGet = (
+  words,
+  sentence,
+  tagType
+) => {
+
+  return words.reduce(
+    (
+      memo,
+      _word
+    ) => {
+
+      const word = wordPOSMatchedGet(
+        _word,
+        sentence,
+        tagType
+      );
+
+      if (
+        word
+      ) {
+
+        return [
+          ...memo,
+          word
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const sentenceShortenedByPOSGet = (
   _sentence,
   tagType
 ) => {
+
+  if (
+    sentenceIsNormalizedGet(
+      _sentence
+    )
+  ) {
+
+    return (
+      _sentence
+    );
+  }
 
   let words = wordsTokenizedGet(
     _sentence
@@ -112,45 +160,42 @@ const sentenceShortenedByPOSGet = (
     words
   ); 
 
+  words = wordsPosMatchedGet(
+    words,
+    _sentence,
+    tagType
+  );
+
   const sentence = words.reduce(
     (
       memo,
-      _word
+      word
     ) => {
 
-      const word = wordPOSMatchedGet(
-        _word,
-        memo,
-        tagType
-      );
+      const _distance = word.distance;
 
-      if (
-        word
-      ) {
+      const distanceOffset = memo.length - _sentence.length;
 
-        return [
-          ...memo.slice(
-            0, word.distance
-          ),
-          `
-            , ${
-              word.text
-            }
-          `
-            .trim(),
-          ...memo.slice(
-            word.distance +
-            word.text.length
-          )
-        ]
-          .join(
-            ''
-          );
-      }
+      const distance = _distance + distanceOffset;
 
-      return (
-        memo
-      );
+      return [
+        ...memo.slice(
+          0, distance
+        ),
+        `
+          , ${
+            word.text
+          }
+        `
+          .trim(),
+        ...memo.slice(
+          distance +
+          word.text.length
+        )
+      ]
+        .join(
+          ''
+        );
     },
     _sentence
   );
@@ -160,12 +205,115 @@ const sentenceShortenedByPOSGet = (
   );
 };
 
-const sentenceShortenedGetFn = (
-  _sentence
+const NNPsSortedGet = (
+  NNPs,
+  sentenceMaxLength
 ) => {
 
-  let sentence = sentenceShortenedByPOSGet(
-    _sentence,
+  return NNPs.sort(
+    (
+      a, b
+    ) => {
+
+      const factor = sentenceMaxLength / 2;
+
+      switch (
+        true
+      ) {
+
+        case (
+          Math.abs(
+            a.distance -
+            factor
+          ) >
+          Math.abs(
+            b.distance -
+            factor
+          )
+        ) :
+
+          return 1;
+
+        case (
+          Math.abs(
+            b.distance -
+            factor
+          ) >
+          Math.abs(
+            a.distance -
+            factor
+          )
+        ) :
+
+          return -1;
+      }
+    }
+  );
+};
+
+const sentenceShortenedByNNPGet = (
+  _sentence,
+  sentenceMaxLength
+) => {
+
+  if (
+    sentenceIsNormalizedGet(
+      _sentence
+    )
+  ) {
+
+    return (
+      _sentence
+    );
+  }
+
+  const NNPs = NNPsGet(
+    _sentence
+  );
+
+  const NNP = NNPsSortedGet(
+    NNPs,
+    sentenceMaxLength
+  )?.[
+    0
+  ];
+
+  const sentence = [
+    ..._sentence.slice(
+      0, NNP.distance
+    ),
+    `
+      ${
+        NNP.text
+      } ,
+    `
+      .trim(),
+    ..._sentence.slice(
+      NNP.distance +
+      NNP.text.length
+    )
+  ]
+    .join(
+      ''
+    );
+
+  return (
+    sentence
+  );
+};
+
+const sentenceShortenedGetFn = (
+  _sentence,
+  sentenceMaxLength
+) => {
+
+  let sentence = _sentence.replace(
+    /\swhich(\s)/g,
+    ', which$1'
+  );
+
+  sentence = sentenceShortenedByPOSGet(
+    sentence,
     'CC'
   );
 
@@ -174,9 +322,9 @@ const sentenceShortenedGetFn = (
     'VBG'
   );
 
-  sentence = sentence.replace(
-    /\swhich(\s)/g,
-    ', which$1'
+  sentence = sentenceShortenedByNNPGet(
+    sentence,
+    sentenceMaxLength
   );
 
   return (
@@ -206,7 +354,8 @@ const sentenceShortenedGet = (
         ) {
 
           sentence = sentenceShortenedGetFn(
-            sentence
+            sentence,
+            sentenceMaxLength
           );
 
           return [

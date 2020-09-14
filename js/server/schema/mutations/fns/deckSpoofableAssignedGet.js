@@ -62,7 +62,10 @@ const textIsLengthyGet = (
           !memo &&
           (
             text.length >
-            100
+            (
+              100 + 
+              25
+            )
           )
         ) {
 
