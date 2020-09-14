@@ -12,6 +12,12 @@ export default () => {
         'Trisha',
         'Nayantara'
       ],
+      villain: [
+        'bombay-seth',
+        'delhi-seth',
+        'bombay-terrorist',
+        'delhi-terrorist'
+      ],
       man: [
         'Ramu',
         'Gaja',

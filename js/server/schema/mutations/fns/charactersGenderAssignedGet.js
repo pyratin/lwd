@@ -83,11 +83,11 @@ const charactersActorGenderAssignedGet = (
 };
 
 export default async (
-  deck
+  _characters
 ) => {
 
   let actors = actorsFlatlistGet(
-    deck.splash.characters
+    _characters
   );
 
   actors = await actorsGenderAssignedGet(
@@ -95,15 +95,11 @@ export default async (
   );
 
   let characters = charactersActorGenderAssignedGet(
-    deck.splash.characters,
+    _characters,
     actors
   );
 
-  return {
-    ...deck,
-    splash: {
-      ...deck.splash,
-      characters
-    }
-  };
+  return (
+    characters
+  );
 };

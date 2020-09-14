@@ -302,6 +302,51 @@ const characterGroupsOrderedGet = (
     []
   );
 
+  let villainGroups = characterGroups.reduce(
+    (
+      memo,
+      characterGroup
+    ) => {
+
+      const match = characterGroup.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.role ===
+            'villain'
+          );
+        }
+      );
+
+      if (
+        match
+      ) {
+
+        return [
+          ...memo,
+          characterGroup.map(
+            (
+              character
+            ) => {
+
+              return {
+                ...character,
+                role: 'villain'
+              };
+            }
+          )
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+
   const otherGroups = characterGroups.filter(
     (
       characterGroup
@@ -318,6 +363,12 @@ const characterGroupsOrderedGet = (
         0
       ]?.castIndex;
 
+      const villainCastIndex = villainGroups[
+        0
+      ]?.[
+        0
+      ]?.castIndex;
+
       return (
         (
           characterGroupCastIndex !==
@@ -326,6 +377,10 @@ const characterGroupsOrderedGet = (
         (
           characterGroupCastIndex !==
           heroineCastIndex
+        ) &&
+        (
+          characterGroupCastIndex !==
+          villainCastIndex
         )
       );
     }
@@ -469,6 +524,7 @@ const characterGroupsOrderedGet = (
   return [
     heroGroups,
     heroineGroups,
+    villainGroups,
     manGroups,
     womanGroups,
     unknownGroups
@@ -736,10 +792,19 @@ const characterGroupsSpoofNameAssignedGet = (
     'single'
   );
 
-  const manGroups = 
+  const villainGroups = 
   characterGroupsSpoofNameAssignedGetFn(
     _characterGroups[
       2
+    ],
+    spoofNames.villain,
+    'single'
+  );
+
+  const manGroups = 
+  characterGroupsSpoofNameAssignedGetFn(
+    _characterGroups[
+      3
     ],
     spoofNames.man,
     'multi'
@@ -748,7 +813,7 @@ const characterGroupsSpoofNameAssignedGet = (
   const womanGroups =
   characterGroupsSpoofNameAssignedGetFn(
     _characterGroups[
-      3
+      4
     ],
     spoofNames.woman,
     'multi'
@@ -766,6 +831,7 @@ const characterGroupsSpoofNameAssignedGet = (
   const characterGroups = [
     heroGroups,
     heroineGroups,
+    villainGroups,
     manGroups,
     womanGroups,
     unknownGroups

@@ -23,6 +23,7 @@ export default () => {
     'Marshal',
     'President',
     'Mars',
-    'M'
+    'M',
+    'Colonel'
   ];
 };

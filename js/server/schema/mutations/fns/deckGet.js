@@ -5,8 +5,10 @@ import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
 import charactersStarringCardIndexesAssignedGet 
   from './charactersStarringCardIndexesAssignedGet';
-import deckSplashCharactersGenderAssignedGet 
-  from './deckSplashCharactersGenderAssignedGet';
+import charactersGenderAssignedGet
+  from './charactersGenderAssignedGet';
+import charactersRoleVillainAssignedGet
+  from './charactersRoleVillainAssignedGet';
 import deckSpoofedGet from './deckSpoofedGet';
 import deckActorImageIdsAssignedGet
   from './deckActorImageIdsAssignedGet';
@@ -63,6 +65,15 @@ export default async (
     cards
   );
 
+  characters = await charactersGenderAssignedGet(
+    characters
+  );
+
+  characters = await charactersRoleVillainAssignedGet(
+    characters,
+    movieDataBasic.title
+  );
+
   let deck = {
     splash: {
       title: movieDataBasic.title,
@@ -71,10 +82,6 @@ export default async (
     },
     cards
   };
-
-  deck = await deckSplashCharactersGenderAssignedGet(
-    deck
-  );
 
   deck = deckSpoofedGet(
     deck,

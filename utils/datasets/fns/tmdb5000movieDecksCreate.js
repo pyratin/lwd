@@ -133,7 +133,7 @@ const decksCreateFn = async (
     },
     db,
     null,
-    5,
+    undefined,
     true
   );
 };
