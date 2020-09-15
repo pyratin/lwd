@@ -49,31 +49,30 @@ const antagonistGetFn = (
     0
   ];
 
-  if (
-    !NNP
-  ) {
-
-    return (
-      null
-    );
-  }
-
   const _NNPs = _NNPsGet(
     characters
   );
 
-  let matches = NNPCrossMatchesGet(
-    NNP,
-    _NNPs
-  );
+  let matches = (
+    NNP
+  ) ?
+    NNPCrossMatchesGet(
+      NNP,
+      _NNPs
+    ) :
+    null;
 
-  const character = characters?.[
-    _NNPs?.[
-      matches?.[
-        0
-      ]?._NNPIndex
-    ]?.index
-  ];
+  const character = (
+    matches
+  ) ?
+    characters?.[
+      _NNPs?.[
+        matches?.[
+          0
+        ]?._NNPIndex
+      ]?.index
+    ] :
+    null;
 
   return (
     character &&
@@ -157,6 +156,8 @@ const antagonistGet = async (
       selector
     )
   );
+
+  await browser.close();
 
   const antagonist = antagonistGetFn(
     characters,

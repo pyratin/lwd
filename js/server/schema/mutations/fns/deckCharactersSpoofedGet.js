@@ -1,556 +1,6 @@
 'use strict';
 
-import NNPCrossMatchesGet from './NNPCrossMatchesGet';
 import spoofNamesGetFn from './spoofNamesGet';
-
-const _NNPsGet = (
-  characters
-) => {
-
-  return characters.map(
-    (
-      {
-        text
-      },
-      index
-    ) => {
-
-      return {
-        text,
-        index
-      };
-    }
-  );
-};
-
-const charactersMatchIndexAssignedGetFn = (
-  character,
-  characters
-) => {
-
-  const NNP = {
-    text: character.text,
-    index: 0
-  };
-
-  const _NNPs = _NNPsGet(
-    characters
-  );
-
-  const matches = NNPCrossMatchesGet(
-    NNP,
-    _NNPs,
-    false
-  );
-
-  return matches?.[
-    0
-  ];
-};
-
-const charactersMatchIndexAssignedGet = (
-  characters
-) => {
-
-  return characters.map(
-    (
-      character,
-      index
-    ) => {
-
-      return {
-        ...character,
-        index
-      };
-    }
-  )
-    .reduce(
-      (
-        memo,
-        character
-      ) => {
-
-        const match = charactersMatchIndexAssignedGetFn(
-          character,
-          memo
-        );
-
-        if (
-          match &&
-          (
-            memo[
-              match._NNPIndex
-            ]
-              .actor.text ===
-            character.actor.text
-          )
-        ) {
-
-          return [
-            ...memo,
-            {
-              ...character,
-              matchIndex: memo[
-                match._NNPIndex
-              ]
-                .index
-            }
-          ];
-        }
-
-        return [
-          ...memo,
-          {
-            ...character,
-            matchIndex: -1
-          }
-        ];
-      },
-      []
-    );
-};
-
-const charactersGroupedGetFn = (
-  characters
-) => {
-
-  let characterGroups = characters.reduce(
-    (
-      memo,
-      character
-    ) => {
-
-      const matchIndex = character.matchIndex;
-
-      delete character.matchIndex;
-
-      delete character.index;
-
-      if (
-        matchIndex >=
-        0
-      ) {
-
-        return [
-          ...memo.slice(
-            0, matchIndex
-          ),
-          [
-            ...memo[
-              matchIndex
-            ],
-            character
-          ],
-          ...memo.slice(
-            matchIndex + 1
-          ),
-          null
-        ];
-      }
-
-      return [
-        ...memo,
-        [
-          character
-        ]
-      ];
-    },
-    []
-  );
-
-  characterGroups = characterGroups.filter(
-    (
-      characterGroup
-    ) => {
-
-      return (
-        characterGroup
-      );
-    }
-  );
-
-  return (
-    characterGroups
-  );
-};
-
-const characterGroupsSortedByCastIndexGet = (
-  characterGroups
-) => {
-
-  return characterGroups.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a[0].castIndex >
-          b[0].castIndex
-        ) :
-
-          return 1;
-
-        case (
-          b[0].castIndex >
-          a[0].castIndex
-        ) :
-
-          return -1;
-      }
-    }
-  );
-};
-
-const characterGroupsOrderedGet = (
-  _characterGroups
-) => {
-
-  let characterGroups = 
-  characterGroupsSortedByCastIndexGet(
-    _characterGroups
-  );
-
-  let heroGroups = characterGroups.reduce(
-    (
-      memo,
-      characterGroup
-    ) => {
-
-      const match = characterGroup.find(
-        (
-          character
-        ) => {
-
-          return (
-            !character.castIndex &&
-            (
-              character.actor.gender ===
-              'man'
-            )
-          );
-        }
-      );
-
-      if (
-        match
-      ) {
-
-        return [
-          ...memo,
-          characterGroup.map(
-            (
-              character
-            ) => {
-
-              return {
-                ...character,
-                role: 'hero'
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  let heroineGroups = characterGroups.reduce(
-    (
-      memo,
-      characterGroup
-    ) => {
-
-      if (
-        !memo.length &&
-        (
-          characterGroup[
-            0
-          ]
-            .actor.gender ===
-            'woman'
-        )
-      ) {
-
-        return [
-          ...memo,
-          characterGroup.map(
-            (
-              character
-            ) => {
-
-              return {
-                ...character,
-                role: 'heroine'
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  let villainGroups = characterGroups.reduce(
-    (
-      memo,
-      characterGroup
-    ) => {
-
-      const match = characterGroup.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.role ===
-            'villain'
-          );
-        }
-      );
-
-      if (
-        match
-      ) {
-
-        return [
-          ...memo,
-          characterGroup.map(
-            (
-              character
-            ) => {
-
-              return {
-                ...character,
-                role: 'villain'
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  const otherGroups = characterGroups.filter(
-    (
-      characterGroup
-    ) => {
-
-      const characterGroupCastIndex = characterGroup[
-        0
-      ]
-        .castIndex;
-
-      const heroineCastIndex = heroineGroups[
-        0
-      ]?.[
-        0
-      ]?.castIndex;
-
-      const villainCastIndex = villainGroups[
-        0
-      ]?.[
-        0
-      ]?.castIndex;
-
-      return (
-        (
-          characterGroupCastIndex !==
-          0
-        ) &&
-        (
-          characterGroupCastIndex !==
-          heroineCastIndex
-        ) &&
-        (
-          characterGroupCastIndex !==
-          villainCastIndex
-        )
-      );
-    }
-  );
-
-  const manGroups = otherGroups.reduce(
-    (
-      memo,
-      characterGroup
-    ) => {
-
-      const match = characterGroup.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.actor.gender ===
-            'man'
-          );
-        }
-      );
-
-      if (
-        match
-      ) {
-
-        return [
-          ...memo,
-          characterGroup.map(
-            (
-              character
-            ) => {
-
-              return {
-                ...character,
-                role: 'man'
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  const womanGroups = otherGroups.reduce(
-    (
-      memo,
-      characterGroup
-    ) => {
-
-      const match = characterGroup.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.actor.gender ===
-            'woman'
-          );
-        }
-      );
-
-      if (
-        match
-      ) {
-
-        return [
-          ...memo,
-          characterGroup.map(
-            (
-              character
-            ) => {
-
-              return {
-                ...character,
-                role: 'woman'
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  const unknownGroups = otherGroups.reduce(
-    (
-      memo,
-      characterGroup
-    ) => {
-
-      const match = characterGroup.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.actor.gender ===
-            'unknown'
-          );
-        }
-      );
-
-      if (
-        match
-      ) {
-
-        return [
-          ...memo,
-          characterGroup.map(
-            (
-              character
-            ) => {
-
-              return {
-                ...character,
-                role: 'unknown'
-              };
-            }
-          )
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-
-  return [
-    heroGroups,
-    heroineGroups,
-    villainGroups,
-    manGroups,
-    womanGroups,
-    unknownGroups
-  ];
-};
-
-const charactersGroupedGet = (
-  characters
-) => {
-
-  characters = charactersMatchIndexAssignedGet(
-    characters
-  );
-
-  let characterGroups = charactersGroupedGetFn(
-    characters
-  );
-
-  characterGroups = characterGroupsOrderedGet(
-    characterGroups
-  );
-
-  return (
-    characterGroups
-  );
-};
 
 const spoofNameHeroGet = (
   genre
@@ -822,7 +272,7 @@ const characterGroupsSpoofNameAssignedGet = (
   const unknownGroups =
   characterGroupsSpoofNameAssignedGetFn(
     _characterGroups[
-      4
+      5
     ],
     spoofNames.unknown,
     'multi'
@@ -887,12 +337,78 @@ const charactersGet = (
   );
 };
 
+const characterGroupsGet = (
+  _characters
+) => {
+
+  return [
+    'hero',
+    'heroine',
+    'villain',
+    'man',
+    'woman',
+    'unknown'
+  ]
+    .reduce(
+      (
+        memo,
+        role
+      ) => {
+
+        const characters = _characters.filter(
+          (
+            character
+          ) => {
+
+            return (
+              character.role ===
+              role
+            );
+          }
+        );
+
+        const characterSubGroups = characters.reduce(
+          (
+            memo,
+            character
+          ) => {
+
+            const index = character.characterSubGroupIndex;
+
+            return [
+              ...memo.slice(
+                0, index
+              ),
+              [
+                ...memo[
+                  index
+                ] ||
+                [],
+                character
+              ],
+              ...memo.slice(
+                index + 1
+              )
+            ];
+          },
+          []
+        );
+
+        return [
+          ...memo,
+          characterSubGroups
+        ];
+      },
+      []
+    );
+};
+
 export default (
   _characters,
   genre
 ) => {
 
-  let characterGroups = charactersGroupedGet(
+  let characterGroups = characterGroupsGet(
     _characters
   );
 

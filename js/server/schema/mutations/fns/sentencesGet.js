@@ -278,24 +278,28 @@ const sentenceShortenedByNNPGet = (
     0
   ];
 
-  const sentence = [
-    ..._sentence.slice(
-      0, NNP.distance
-    ),
-    `
-      ${
-        NNP.text
-      } ,
-    `
-      .trim(),
-    ..._sentence.slice(
-      NNP.distance +
-      NNP.text.length
-    )
-  ]
-    .join(
-      ''
-    );
+  const sentence = (
+    NNP
+  ) ?
+    [
+      ..._sentence.slice(
+        0, NNP.distance
+      ),
+      `
+        ${
+          NNP.text
+        } ,
+      `
+        .trim(),
+      ..._sentence.slice(
+        NNP.distance +
+        NNP.text.length
+      )
+    ]
+      .join(
+        ''
+      ) :
+    _sentence;
 
   return (
     sentence

@@ -67,20 +67,6 @@ const matchesSortedGet = (
           return -1;
 
         case (
-          a._cross.NNPmatchIndex >
-          b._cross.NNPmatchIndex
-        ) :
-
-          return 1;
-
-        case (
-          b._cross.NNPmatchIndex >
-          a._cross.NNPmatchIndex
-        ) :
-
-          return -1;
-
-        case (
           a._NNP._distance >
           b._NNP._distance
         ) :
@@ -90,20 +76,6 @@ const matchesSortedGet = (
         case (
           b._NNP._distance >
           a._NNP._distance
-        ) :
-
-          return -1;
-
-        case (
-          a._NNP.castIndex >
-          b._NNP.castIndex
-        ) :
-
-          return 1;
-
-        case (
-          b._NNP.castIndex >
-          a._NNP.castIndex
         ) :
 
           return -1;

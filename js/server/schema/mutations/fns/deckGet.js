@@ -3,12 +3,10 @@
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
-import charactersStarringCardIndexesAssignedGet 
-  from './charactersStarringCardIndexesAssignedGet';
+import charactersMetaAssignedGet 
+  from './charactersMetaAssignedGet';
 import charactersGenderAssignedGet
   from './charactersGenderAssignedGet';
-import charactersRoleVillainAssignedGet
-  from './charactersRoleVillainAssignedGet';
 import deckSpoofedGet from './deckSpoofedGet';
 import deckActorImageIdsAssignedGet
   from './deckActorImageIdsAssignedGet';
@@ -60,17 +58,13 @@ export default async (
     db
   );
 
-  characters = charactersStarringCardIndexesAssignedGet(
-    characters,
-    cards
-  );
-
   characters = await charactersGenderAssignedGet(
     characters
   );
 
-  characters = await charactersRoleVillainAssignedGet(
+  characters = await charactersMetaAssignedGet(
     characters,
+    cards,
     movieDataBasic.title
   );
 
