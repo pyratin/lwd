@@ -509,17 +509,92 @@ const charactersActorAssignedGet = (
   );
 };
 
-const actorImageIdsPreviousGet = (
-  charactersPrevious
+const cardCharactersGet = (
+  characters
 ) => {
 
-  return charactersPrevious.reduce(
+  if (
+    !characters.length
+  ) {
+
+    return (
+      characters
+    );
+  }
+
+  const starringCardIndexes = characters.reduce(
     (
       memo,
       character
     ) => {
 
-      const actorImageId = character?.actorImageId;
+      return [
+        ...memo,
+        ...character.starringCardIndexes ||
+        []
+      ];
+    },
+    []
+  );
+
+  const starringCardIndexMax = Math.max(
+    ...starringCardIndexes
+  );
+
+  let cardCharacters = new Array(
+    starringCardIndexMax + 1
+  )
+    .fill();
+
+  cardCharacters = cardCharacters.reduce(
+    (
+      memo,
+      _,
+      index
+    ) => {
+
+      const characterIndex = characters.findIndex(
+        (
+          character
+        ) => {
+
+          return (
+            character.starringCardIndexes?.includes(
+              index
+            )
+          );
+        }
+      );
+
+      return [
+        ...memo,
+        {
+          ...characters[
+            characterIndex
+          ],
+          characterIndex
+        }
+      ];
+    },
+    []
+  );
+
+  return (
+    cardCharacters
+  );
+};
+
+const actorImageIdsPreviousGet = (
+  cardCharacters
+) => {
+
+  return cardCharacters.reduce(
+    (
+      memo,
+      cardCharacter
+    ) => {
+
+      const actorImageId = cardCharacter?.actorImageId;
 
       if (
         actorImageId
@@ -666,14 +741,14 @@ const actorImageIdsSortedByWeightGet = (
     );
 };
 
-const charactersActorImageIdAssignedGetFn = async (
-  character,
-  charactersPrevious,
+const cardCharactersActorImageIdAssignedGetFn = async (
+  cardCharacter,
+  cardCharacters,
   db
 ) => {
 
   if (
-    !character.starringCardIndexes
+    !cardCharacter?.starringCardIndexes
   ) {
 
     return Promise.resolve(
@@ -682,13 +757,13 @@ const charactersActorImageIdAssignedGetFn = async (
   }
 
   const actorImageIdsPrevious = actorImageIdsPreviousGet(
-    charactersPrevious
+    cardCharacters
   );
 
   let actorImageIds = await actorImagesFind(
     {
       _actorId: new ObjectID(
-        character._actor._id
+        cardCharacter._actor._id
       )
     },
     {
@@ -739,15 +814,15 @@ const charactersActorImageIdAssignedGetFn = async (
   );
 };
 
-const charactersActorImageIdAssignedGet = (
-  characters,
+const cardCharactersActorImageIdAssignedGet = (
+  cardCharacters,
   db
 ) => {
 
-  return characters.reduce(
+  return cardCharacters.reduce(
     (
       memo,
-      character
+      cardCharacter
     ) => {
 
       return memo.then(
@@ -755,8 +830,8 @@ const charactersActorImageIdAssignedGet = (
           res
         ) => {
 
-          return charactersActorImageIdAssignedGetFn(
-            character,
+          return cardCharactersActorImageIdAssignedGetFn(
+            cardCharacter,
             res,
             db
           )
@@ -769,12 +844,12 @@ const charactersActorImageIdAssignedGet = (
                   result
                 ) {
 
-                  delete character._actor;
+                  delete cardCharacter._actor;
 
                   return [
                     ...res,
                     {
-                      ...character,
+                      ...cardCharacter,
                       actorImageId: result
                     }
                   ];
@@ -782,7 +857,7 @@ const charactersActorImageIdAssignedGet = (
 
                 return [
                   ...res,
-                  character
+                  cardCharacter
                 ];
               }
             );
@@ -796,47 +871,30 @@ const charactersActorImageIdAssignedGet = (
 };
 
 const cardsCharacterAssignedGet = (
-  characters,
   cards,
-  genre
+  cardCharacters
 ) => {
 
   return cards.reduce(
     (
       memo,
-      card
+      card,
+      index
     ) => {
 
-      const character = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            genre.match(
-              /^spoof-/
-            )
-          ) ?
-            (
-              character._text ===
-              card.character?._text
-            ) :
-            (
-              character.text ===
-              card.character?.text
-            );
-        }
-      );
+      const cardCharacter = cardCharacters[
+        index
+      ];
 
       if (
-        character
+        cardCharacter
       ) {
 
         return [
           ...memo,
           {
             ...card,
-            actorImageId: character.actorImageId
+            actorImageId: cardCharacter.actorImageId
           }
         ];
       }
@@ -844,6 +902,42 @@ const cardsCharacterAssignedGet = (
       return [
         ...memo,
         card
+      ];
+    },
+    []
+  );
+};
+
+const charactersActorImageIdAssignedGet = (
+  characters,
+  cardCharacters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character,
+      characterIndex
+    ) => {
+
+      const cardCharacter = cardCharacters.find(
+        (
+          cardCharacter
+        ) => {
+
+          return (
+            cardCharacter?.characterIndex ===
+            characterIndex
+          );
+        }
+      );
+
+      return [
+        ...memo,
+        {
+          ...character,
+          actorImageId: cardCharacter?.actorImageId
+        }
       ];
     },
     []
@@ -871,16 +965,25 @@ export default async (
     spoofActors
   );
 
-  characters = await charactersActorImageIdAssignedGet(
-    characters,
+  let cardCharacters = cardCharactersGet(
+    characters
+  );
+
+  cardCharacters = 
+  await cardCharactersActorImageIdAssignedGet(
+    cardCharacters,
     db
   );
 
   const cards = cardsCharacterAssignedGet(
-    characters,
     deck.cards,
-    genre
+    cardCharacters
   ); 
+
+  characters = charactersActorImageIdAssignedGet(
+    characters,
+    cardCharacters
+  );
 
   return {
     ...deck,

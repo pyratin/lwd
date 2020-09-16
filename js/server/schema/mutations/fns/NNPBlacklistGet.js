@@ -24,6 +24,8 @@ export default () => {
     'President',
     'Mars',
     'M',
-    'Colonel'
+    'Colonel',
+    'Nottingham',
+    'Sheriff'
   ];
 };

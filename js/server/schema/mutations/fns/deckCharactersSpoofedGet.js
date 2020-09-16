@@ -373,7 +373,7 @@ const characterGroupsGet = (
             character
           ) => {
 
-            const index = character.characterSubGroupIndex;
+            const index = character.roleGroupIndex;
 
             return [
               ...memo.slice(
