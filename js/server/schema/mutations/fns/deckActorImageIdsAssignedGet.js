@@ -513,15 +513,6 @@ const cardCharactersGet = (
   characters
 ) => {
 
-  if (
-    !characters.length
-  ) {
-
-    return (
-      characters
-    );
-  }
-
   const starringCardIndexes = characters.reduce(
     (
       memo,
@@ -537,9 +528,13 @@ const cardCharactersGet = (
     []
   );
 
-  const starringCardIndexMax = Math.max(
-    ...starringCardIndexes
-  );
+  const starringCardIndexMax = (
+    starringCardIndexes.length
+  ) ?
+    Math.max(
+      ...starringCardIndexes
+    ) :
+    -1;
 
   let cardCharacters = new Array(
     starringCardIndexMax + 1
@@ -553,7 +548,7 @@ const cardCharactersGet = (
       index
     ) => {
 
-      const characterIndex = characters.findIndex(
+      const character = characters.find(
         (
           character
         ) => {
@@ -566,14 +561,21 @@ const cardCharactersGet = (
         }
       );
 
+      if (
+        character
+      ) {
+
+        return [
+          ...memo,
+          {
+            ...character
+          }
+        ];
+      }
+
       return [
         ...memo,
-        {
-          ...characters[
-            characterIndex
-          ],
-          characterIndex
-        }
+        null
       ];
     },
     []
@@ -926,19 +928,25 @@ const charactersActorImageIdAssignedGet = (
         ) => {
 
           return (
-            cardCharacter?.characterIndex ===
+            cardCharacter?.starringIndex ===
             characterIndex
           );
         }
       );
 
-      return [
-        ...memo,
-        {
-          ...character,
-          actorImageId: cardCharacter?.actorImageId
-        }
-      ];
+      if (
+        cardCharacter
+      ) {
+
+        return [
+          ...memo,
+          cardCharacter
+        ];
+      }
+
+      return (
+        memo
+      );
     },
     []
   );

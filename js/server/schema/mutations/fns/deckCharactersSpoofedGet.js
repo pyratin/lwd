@@ -1,6 +1,8 @@
 'use strict';
 
 import spoofNamesGetFn from './spoofNamesGet';
+import charactersSortedByStarringIndexGet 
+  from './charactersSortedByStarringIndexGet';
 
 const spoofNameHeroGet = (
   genre
@@ -422,6 +424,10 @@ export default (
 
   let characters = charactersGet(
     characterGroups
+  );
+
+  characters = charactersSortedByStarringIndexGet(
+    characters
   );
 
   return (

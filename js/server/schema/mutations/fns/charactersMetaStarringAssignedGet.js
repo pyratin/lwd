@@ -79,7 +79,7 @@ const starringCharactersGet = (
   );
 };
 
-export default (
+const charactersStarringCardIndexesAssignedGet = (
   characters,
   cards
 ) => {
@@ -122,3 +122,96 @@ export default (
   );
 };
 
+const charactersSortedByStarringCardIndexesGet = (
+  characters
+) => {
+
+  return characters.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a.starringCardIndexes &&
+          !b.starringCardIndexes
+        ) :
+
+          return -1;
+
+        case (
+          b.starringCardIndexes &&
+          !a.starringCardIndexes
+        ) :
+
+          return 1;
+
+        case (
+          a.starringCardIndexes?.[
+            0
+          ] >
+          b.starringCardIndexes?.[
+            0
+          ]
+        ) :
+
+          return 1;
+
+        case (
+          b.starringCardIndexes?.[
+            0
+          ] >
+          a.starringCardIndexes?.[
+            0
+          ]
+        ) :
+
+          return -1;
+      }
+    }
+  );
+};
+
+const charactersStarringIndexAssignedGet = (
+  characters
+) => {
+
+  return characters.map(
+    (
+      character,
+      starringIndex
+    ) => {
+
+      return {
+        ...character,
+        starringIndex
+      };
+    }
+  );
+};
+
+export default (
+  _characters,
+  cards
+) => {
+
+  let characters = charactersStarringCardIndexesAssignedGet(
+    _characters,
+    cards
+  );
+
+  characters = charactersSortedByStarringCardIndexesGet(
+    characters
+  );
+
+  characters = charactersStarringIndexAssignedGet(
+    characters
+  );
+
+  return (
+    characters
+  );
+};

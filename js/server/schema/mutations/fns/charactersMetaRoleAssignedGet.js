@@ -1,61 +1,10 @@
 'use strict';
 
-import charactersRoleVillainAssignedGet
-  from './charactersRoleVillainAssignedGet';
+import charactersMetaRoleVillainAssignedGet
+  from './charactersMetaRoleVillainAssignedGet';
 import NNPCrossMatchesGet from './NNPCrossMatchesGet';
-
-const charactersSortedByStarringCardIndexesGet = (
-  characters
-) => {
-
-  return characters.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a.starringCardIndexes &&
-          !b.starringCardIndexes
-        ) :
-
-          return -1;
-
-        case (
-          b.starringCardIndexes &&
-          !a.starringCardIndexes
-        ) :
-
-          return 1;
-
-        case (
-          a.starringCardIndexes?.[
-            0
-          ] >
-          b.starringCardIndexes?.[
-            0
-          ]
-        ) :
-
-          return 1;
-
-        case (
-          b.starringCardIndexes?.[
-            0
-          ] >
-          a.starringCardIndexes?.[
-            0
-          ]
-        ) :
-
-          return -1;
-      }
-    }
-  );
-};
+import charactersSortedByStarringIndexGet 
+  from './charactersSortedByStarringIndexGet';
 
 const _NNPsGet = (
   characters
@@ -77,7 +26,7 @@ const _NNPsGet = (
   );
 };
 
-const charactersRoleMatchIndexAssignedGetFn = (
+const roleExistsGet = (
   character,
   characters
 ) => {
@@ -106,62 +55,66 @@ const charactersRoleMatchIndexAssignedGet = (
   characters
 ) => {
 
-  return characters.map(
+  return characters.reduce(
     (
-      character,
-      index
+      memo,
+      character
     ) => {
 
-      return {
-        ...character,
-        index
-      };
-    }
-  )
-    .reduce(
-      (
-        memo,
-        character
-      ) => {
+      const match = roleExistsGet(
+        character,
+        memo
+      );
 
-        const match = charactersRoleMatchIndexAssignedGetFn(
-          character,
-          memo
-        );
+      const roleMatchIndex = (
+        match &&
+        (
+          memo[
+            match._NNPIndex
+          ]
+            .castIndex ===
+          character.castIndex
+        )
+      ) ?
+        memo[
+          match._NNPIndex
+        ]
+          .starringIndex :
+        -1;
 
-        if (
-          match &&
+      const dualRoleIndex = (
+        !match
+      ) ?
+        memo.findIndex(
           (
-            memo[
-              match._NNPIndex
-            ]
-              .castIndex ===
-            character.castIndex
-          )
-        ) {
+            _memo
+          ) => {
 
-          return [
-            ...memo,
-            {
-              ...character,
-              roleMatchIndex: memo[
-                match._NNPIndex
-              ]
-                .index
-            }
-          ];
-        }
-
-        return [
-          ...memo,
-          {
-            ...character,
-            roleMatchIndex: -1
+            return (
+              (
+                _memo.dualRoleIndex === 
+                -1
+              ) &&
+              (
+                _memo.castIndex ===
+                character.castIndex
+              )
+            );
           }
-        ];
-      },
-      []
-    );
+        ) :
+        -1;
+
+      return [
+        ...memo,
+        {
+          ...character,
+          roleMatchIndex,
+          dualRoleIndex
+        }
+      ];
+    },
+    []
+  );
 };
 
 const characterGroupsGet = (
@@ -177,8 +130,6 @@ const characterGroupsGet = (
       const roleMatchIndex = character.roleMatchIndex;
 
       delete character.roleMatchIndex;
-
-      delete character.index;
 
       if (
         roleMatchIndex >=
@@ -639,7 +590,8 @@ const charactersRoleAssignedGet = async (
   title
 ) => {
 
-  let characters = await charactersRoleVillainAssignedGet(
+  let characters = 
+  await charactersMetaRoleVillainAssignedGet(
     _characters,
     title
   );
@@ -656,6 +608,10 @@ const charactersRoleAssignedGet = async (
     characterGroups
   );
 
+  characters = charactersSortedByStarringIndexGet(
+    characters
+  );
+
   return (
     characters
   );
@@ -666,12 +622,8 @@ export default async (
   title
 ) => {
 
-  let characters = charactersSortedByStarringCardIndexesGet(
+  let characters = charactersRoleMatchIndexAssignedGet(
     _characters
-  );
-
-  characters = charactersRoleMatchIndexAssignedGet(
-    characters
   );
 
   characters = await charactersRoleAssignedGet(

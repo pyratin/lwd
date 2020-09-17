@@ -54,7 +54,7 @@ const FolderSelect = (
 
               return (
                 file.match(
-                  /^(man|woman|discard)/
+                  /^(hero|heroine|villain|man|woman|discard)/
                 )
               );
             }

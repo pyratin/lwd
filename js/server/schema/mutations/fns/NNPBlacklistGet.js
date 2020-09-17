@@ -26,6 +26,7 @@ export default () => {
     'M',
     'Colonel',
     'Nottingham',
-    'Sheriff'
+    'Sheriff',
+    'Agent'
   ];
 };

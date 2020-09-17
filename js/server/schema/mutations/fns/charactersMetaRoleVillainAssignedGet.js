@@ -25,7 +25,7 @@ const _NNPsGet = (
   );
 };
 
-const antagonistGetFn = (
+const _antagonistGetFn = (
   characters,
   text
 ) => {
@@ -86,7 +86,7 @@ const antagonistGetFn = (
     null;
 };
 
-const antagonistGet = async (
+const antagonistGetFn = async (
   characters,
   title
 ) => {
@@ -159,7 +159,7 @@ const antagonistGet = async (
 
   await browser.close();
 
-  const antagonist = antagonistGetFn(
+  const antagonist = _antagonistGetFn(
     characters,
     text
   );
@@ -167,6 +167,26 @@ const antagonistGet = async (
   return (
     antagonist
   );
+};
+
+const antagonistGet = (
+  characters,
+  title
+) => {
+
+  return antagonistGetFn(
+    characters,
+    title
+  )
+    .catch(
+      () => {
+
+        return antagonistGet(
+          characters,
+          title
+        );
+      }
+    );
 };
 
 const charactersGet = (
