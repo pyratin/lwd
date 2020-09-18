@@ -124,17 +124,22 @@ const dualRoleSuffixGet = (
 
 const spoofNamesProcessedGet = (
   _spoofNames,
-  _characterGroups,
-  assignType
+  _characterGroups
 ) => {
 
   let spoofNames = spoofNamesShuffledGet(
     _spoofNames
   );
 
+  const role = _characterGroups?.[
+    0
+  ]?.[
+    0
+  ]?.role;
+
   if (
-    assignType ===
-    'single'
+    role ===
+    'hero'
   ) {
 
     spoofNames = new Array(
@@ -170,14 +175,12 @@ const spoofNamesProcessedGet = (
 
 const characterGroupsSpoofNameAssignedGetFn = (
   _characterGroups,
-  _spoofNames,
-  assignType
+  _spoofNames
 ) => {
 
   const spoofNames = spoofNamesProcessedGet(
     _spoofNames,
-    _characterGroups,
-    assignType
+    _characterGroups
   );
 
   const characterGroups = _characterGroups.reduce(
@@ -231,8 +234,7 @@ const characterGroupsSpoofNameAssignedGet = (
     ],
     spoofNameHeroGet(
       genre
-    ),
-    'single'
+    )
   );
 
   const heroineGroups = 
@@ -240,8 +242,7 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       1
     ],
-    spoofNames.heroine,
-    'single'
+    spoofNames.heroine
   );
 
   const villainGroups = 
@@ -249,8 +250,7 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       2
     ],
-    spoofNames.villain,
-    'single'
+    spoofNames.villain
   );
 
   const manGroups = 
@@ -258,8 +258,7 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       3
     ],
-    spoofNames.man,
-    'multi'
+    spoofNames.man
   );
 
   const womanGroups =
@@ -267,8 +266,7 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       4
     ],
-    spoofNames.woman,
-    'multi'
+    spoofNames.woman
   );
 
   const unknownGroups =
@@ -276,8 +274,7 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       5
     ],
-    spoofNames.unknown,
-    'multi'
+    spoofNames.unknown
   );
 
   const characterGroups = [

@@ -918,8 +918,7 @@ const charactersActorImageIdAssignedGet = (
   return characters.reduce(
     (
       memo,
-      character,
-      characterIndex
+      character
     ) => {
 
       const cardCharacter = cardCharacters.find(
@@ -929,24 +928,18 @@ const charactersActorImageIdAssignedGet = (
 
           return (
             cardCharacter?.starringIndex ===
-            characterIndex
+            character.starringIndex
           );
         }
       );
 
-      if (
-        cardCharacter
-      ) {
-
-        return [
-          ...memo,
-          cardCharacter
-        ];
-      }
-
-      return (
-        memo
-      );
+      return [
+        ...memo,
+        {
+          ...character,
+          actorImageId: cardCharacter?.actorImageId
+        }
+      ];
     },
     []
   );

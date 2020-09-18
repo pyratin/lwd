@@ -21,41 +21,69 @@ const dataFilename = 'tmdb_5000_movies';
 
 const datasetsFolderPathString = 'temp/datasets';
 
-const dataGet = (
+const decksDoneFilePathString = 
+  'utils/datasets/fns/decksDone.json';
+
+const dataGet = async (
   jsonFilePath
 ) => {
 
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
+  let data = await(
+    new Promise(
+      (
+        resolve,
+        reject
+      ) => {
 
-      return fs.readFile(
-        jsonFilePath,
-        'utf8',
-        (
-          error,
-          res
-        ) => {
+        return fs.readFile(
+          jsonFilePath,
+          'utf8',
+          (
+            error,
+            res
+          ) => {
 
-          if (
-            error
-          ) {
-
-            return reject(
+            if (
               error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              JSON.parse(
+                res
+              )
             );
           }
+        );
+      }
+    )
+  );
 
-          return resolve(
-            JSON.parse(
-              res
-            )
-          );
-        }
+  let decksDone = await decksDoneGet();
+
+  data = data.filter(
+    (
+      {
+        title
+      }
+    ) => {
+
+      const exists = decksDone.includes(
+        title
+      );
+
+      return (
+        !exists
       );
     }
+  );
+
+  return (
+    data
   );
 };
 
@@ -138,6 +166,103 @@ const decksCreateFn = async (
   );
 };
 
+const decksDoneGet = () => {
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      return fs.readFile(
+        path.join(
+          process.cwd(),
+          decksDoneFilePathString
+        ),
+        'utf8',
+        (
+          error,
+          res
+        ) => {
+
+          if (
+            error
+          ) {
+
+            return reject(
+              error
+            );
+          }
+
+          return resolve(
+            JSON.parse(
+              res
+            )
+          );
+        }
+      );
+    }
+  );
+};
+
+const decksDoneWrite = async (
+  _data,
+  deck
+) => {
+
+  if (
+    !deck
+  ) {
+
+    return Promise.resolve(
+      deck
+    );
+  }
+
+  let decksDone = await decksDoneGet();
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+
+      return fs.writeFile(
+        path.join(
+          process.cwd(),
+          decksDoneFilePathString
+        ),
+        JSON.stringify(
+          [
+            ...decksDone,
+            _data.title
+          ],
+          null,
+          2
+        ),
+        (
+          error,
+          res
+        ) => {
+
+          if (
+            error
+          ) {
+
+            return reject(
+              error
+            );
+          }
+
+          return resolve(
+            res
+          );
+        }
+      );
+    }
+  );
+};
+
 const decksCreate = async (
   data,
   db
@@ -162,9 +287,14 @@ const decksCreate = async (
               db
             )
               .then(
-                (
+                async (
                   result
                 ) => {
+
+                  await decksDoneWrite(
+                    _data,
+                    result
+                  );
 
                   return [
                     ...res,
