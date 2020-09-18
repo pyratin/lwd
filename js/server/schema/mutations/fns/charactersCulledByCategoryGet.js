@@ -117,7 +117,10 @@ const __charactersCategoryAssignedGetFn = (
       if (
         !memo &&
         categoryTitle.match(
-          peopleCategoryString
+          new RegExp(
+            peopleCategoryString,
+            'i'
+          )
         )
       ) {
 

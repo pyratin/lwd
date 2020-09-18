@@ -83,7 +83,7 @@ const sectionTextCleanedGet = (
   );
 
   sectionText = sectionText?.replace(
-    /((?:[A-Z][a-z]*.?)*)(\s?)"([A-Z][a-z]+)"(\s?)((?:[A-Z][a-z]+)*)/g,
+    /((?:[A-Z][a-z]*.?)*)(\s?)"([A-Za-z.]+)"(\s?)((?:[A-Z][a-z]+)*)/g,
     '$1$2$3$4$5'
   );
 

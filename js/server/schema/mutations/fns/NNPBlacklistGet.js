@@ -27,6 +27,10 @@ export default () => {
     'Colonel',
     'Nottingham',
     'Sheriff',
-    'Agent'
+    'Agent',
+    'Hobbit',
+    'Wreck-It',
+    'Fix-It',
+    'Jr.'
   ];
 };

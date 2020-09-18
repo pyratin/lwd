@@ -36,6 +36,7 @@ export default () => {
     ...spoofNamesGet(),
     'Private',
     'Will',
-    'Bloodbath'
+    'Bloodbath',
+    'Pi'
   ];
 };

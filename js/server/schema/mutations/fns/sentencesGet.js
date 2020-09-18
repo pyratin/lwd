@@ -63,6 +63,12 @@ const wordPOSMatchConditionGet = (
             .match(
               /ing$/
             )
+        ) && 
+        (
+          !word.text
+            .match(
+              /^king$/i
+            )
         )
       );
   }
@@ -267,8 +273,59 @@ const sentenceShortenedByNNPGet = (
     );
   }
 
-  const NNPs = NNPsGet(
+  let NNPs = NNPsGet(
     _sentence
+  );
+
+  NNPs = NNPs.map(
+    (
+      NNP
+    ) => {
+
+      const possessive = !!_sentence
+        .match(
+          new RegExp(
+            `
+              ${
+                NNP.text
+              }'s
+            `
+              .trim()
+          )
+        );
+
+      return {
+        ...NNP,
+        possessive
+      };
+    }
+  );
+
+  NNPs = NNPs.filter(
+    (
+      NNP
+    ) => {
+
+      return (
+        !NNP.possessive
+      );
+    }
+  );
+
+  NNPs = NNPs.filter(
+    (
+      NNP
+    ) => {
+
+      return (
+        _sentence.length !==
+        (
+          NNP.distance +
+          NNP.text.length + 
+          1
+        )
+      );
+    }
   );
 
   const NNP = NNPsSortedGet(
@@ -285,12 +342,9 @@ const sentenceShortenedByNNPGet = (
       ..._sentence.slice(
         0, NNP.distance
       ),
-      `
-        ${
+      `${
           NNP.text
-        } ,
-      `
-        .trim(),
+        }, `,
       ..._sentence.slice(
         NNP.distance +
         NNP.text.length

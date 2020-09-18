@@ -6,6 +6,7 @@ export default () => {
     'James Bond',
     'Attalus',
     'Agamemnon',
-    'Triopas'
+    'Triopas',
+    'Pi Patel'
   ];
 };

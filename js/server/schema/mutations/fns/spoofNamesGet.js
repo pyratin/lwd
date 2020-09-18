@@ -13,10 +13,10 @@ export default () => {
         'Nayantara'
       ],
       villain: [
-        'bombay-seth',
-        'delhi-seth',
-        'bombay-terrorist',
-        'delhi-terrorist'
+        'Bombay-Seth',
+        'Delhi-Seth',
+        'Bombay-Terrorist',
+        'Delhi-Terrorist'
       ],
       man: [
         'Ramu',
