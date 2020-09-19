@@ -83,6 +83,79 @@ const characterTokensMatchedGet = (
     null;
 };
 
+const _characterTokensMatchedGet = (
+  character,
+  _character
+) => {
+
+  const characterTokenCombinations = combinations(
+    characterTokenizedGet(
+      character
+    )
+  )
+    .reduce(
+      (
+        memo,
+        characterTokenCombination
+      ) => {
+
+        return [
+          ...memo,
+          characterTokenCombination.join(
+            ' '
+          )
+        ];
+      },
+      []
+    );
+
+  const _characterTokenCombinations = combinations(
+    characterTokenizedGet(
+      _character
+    )
+  )
+    .reduce(
+      (
+        memo,
+        _characterTokenCombination
+      ) => {
+
+        return [
+          ...memo,
+          _characterTokenCombination.join(
+            ' '
+          )
+        ];
+      },
+      []
+    );
+
+  const characterToken = _characterTokenCombinations.find(
+    (
+      _characterToken
+    ) => {
+
+      return characterTokenCombinations.find(
+        (
+          characterToken
+        ) => {
+
+          return (
+            characterToken ===
+            _characterToken
+          );
+        }
+      );
+    }
+  );
+
+  return (
+    characterToken
+  ) ?
+    '2' :
+    null;
+};
+
 export default (
   character,
   _character,
@@ -130,6 +203,16 @@ export default (
         NNPmatchIndexString = characterTokensMatchedGet(
           _character,
           character
+        )
+      ) &&
+      !!NNPmatchIndexString
+    ) :
+    case (
+      !strict &&
+      (
+        NNPmatchIndexString = _characterTokensMatchedGet(
+          character,
+          _character
         )
       ) &&
       !!NNPmatchIndexString

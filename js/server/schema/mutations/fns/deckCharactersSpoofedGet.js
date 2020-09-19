@@ -186,8 +186,7 @@ const characterGroupsSpoofNameAssignedGetFn = (
   const characterGroups = _characterGroups.reduce(
     (
       memo,
-      characterGroup,
-      characterGroupIndex
+      characterGroup
     ) => {
 
       return [
@@ -203,7 +202,7 @@ const characterGroupsSpoofNameAssignedGetFn = (
               {
                 ...character,
                 text: spoofNames[
-                  characterGroupIndex
+                  character.roleGroupIndex
                 ],
                 _text: character.text
               }

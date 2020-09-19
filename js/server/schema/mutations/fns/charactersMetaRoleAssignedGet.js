@@ -129,8 +129,6 @@ const characterGroupsGet = (
 
       const roleMatchIndex = character.roleMatchIndex;
 
-      delete character.roleMatchIndex;
-
       if (
         roleMatchIndex >=
         0
@@ -362,6 +360,12 @@ const characterGroupsOrderedGet = (
       ]
         .castIndex;
 
+      const heroCastIndex = heroGroups[
+        0
+      ]?.[
+        0
+      ]?.castIndex;
+
       const heroineCastIndex = heroineGroups[
         0
       ]?.[
@@ -377,7 +381,7 @@ const characterGroupsOrderedGet = (
       return (
         (
           characterGroupCastIndex !==
-          0
+          heroCastIndex
         ) &&
         (
           characterGroupCastIndex !==

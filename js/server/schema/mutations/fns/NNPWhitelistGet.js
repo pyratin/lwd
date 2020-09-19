@@ -37,6 +37,8 @@ export default () => {
     'Private',
     'Will',
     'Bloodbath',
-    'Pi'
+    'Pi',
+    'Ping',
+    'Nux'
   ];
 };

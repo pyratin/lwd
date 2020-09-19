@@ -8,14 +8,103 @@ import NNPCrossMatchGet from './NNPCrossMatchGet';
 import sentencesTokenizedGet
   from './sentencesTokenizedGet';
 
-const actorNNPsGet = (
-  castLines
+const castParsedGet = (
+  _castText
+) => {
+
+  const $ = cheerio.load(
+    _castText
+  );
+
+  const castParsed = $(
+    'li'
+  )
+    .toArray()
+    .map(
+      (
+        _el
+      ) => {
+
+        const el = $(_el)
+          .find('span.mw-reflink-text')
+          .remove()
+          .end();
+
+        return [
+          $(el)
+            .text(),
+          $(el)
+            .html()
+        ];
+      }
+    );
+
+  return castParsed.reduce(
+    (
+      memo,
+      _castParsed
+    ) => {
+
+      return [
+        [
+          ...memo[
+            0
+          ],
+          _castParsed[
+            0
+          ]
+        ],
+        [
+          ...memo[
+            1
+          ],
+          _castParsed[
+            1
+          ]
+        ]
+      ];
+    },
+    [
+      [],
+      []
+    ]
+  );
+};
+
+const actorUdGet = (
+  castHtml
+) => {
+
+  const regExpString = 
+    '^<a href="/wiki/([^"]*?)"[^>]*?>[^<]*?</a>';
+
+  const regExp = new RegExp(
+    regExpString
+  );
+
+  const match = castHtml.match(
+    regExp
+  );
+
+  return (
+    match
+  ) ?
+    match[
+      1
+    ] :
+    null;
+};
+
+const actorsGet = (
+  castLines,
+  castHtmls
 ) => {
 
   const NNPs = castLines.reduce(
     (
       memo,
-      castLine
+      castLine,
+      index
     ) => {
 
       const NNPs = NNPsGet(
@@ -41,9 +130,18 @@ const actorNNPsGet = (
         NNP
       ) {
 
+        const actorUd = actorUdGet(
+          castHtmls[
+            index
+          ]
+        );
+
         return [
           ...memo,
-          NNP
+          {
+            ...NNP,
+            ud: actorUd
+          }
         ];
       }
 
@@ -56,65 +154,6 @@ const actorNNPsGet = (
 
   return (
     NNPs
-  );
-};
-
-const actorsUdAssignedGet = (
-  _actors,
-  castHtml
-) => {
-
-  const actors = _actors.reduce(
-    (
-      memo,
-      actor
-    ) => {
-
-      const hrefCatchString = '[^"]*?';
-
-      const regExpString = `
-      <a href="/wiki/(${
-        hrefCatchString
-      })" [^>]*?>${
-          actor.text
-        }</a>
-      `
-        .trim();
-
-      const regExp = new RegExp(
-        regExpString,
-      );
-
-      const match = castHtml.match(
-        regExp
-      );
-
-      if (
-        match
-      ) {
-
-        return [
-          ...memo,
-          {
-            ...actor,
-            ud: match[1]
-          }
-        ];
-      }
-
-      return [
-        ...memo,
-        {
-          ...actor,
-          ud: null
-        }
-      ];
-    },
-    []
-  );
-
-  return (
-    actors
   );
 };
 
@@ -359,36 +398,16 @@ export default (
     );
   }
 
-  const $ = cheerio.load(
+  const [
+    castLines,
+    castHtmls
+  ] = castParsedGet(
     _castText
   );
 
-  const castLines = $(
-    'li'
-  )
-    .toArray()
-    .map(
-      (
-        _el
-      ) => {
-
-        const el = $(_el)
-          .find('span.mw-reflink-text')
-          .remove()
-          .end();
-
-        return $(el)
-          .text();
-      }
-    );
-
-  let actors = actorNNPsGet(
-    castLines
-  );
-
-  actors = actorsUdAssignedGet(
-    actors,
-    _castText
+  let actors = actorsGet(
+    castLines,
+    castHtmls
   );
 
   actors = actorsFilteredGet(

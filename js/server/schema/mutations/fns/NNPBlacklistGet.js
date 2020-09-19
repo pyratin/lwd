@@ -31,6 +31,9 @@ export default () => {
     'Hobbit',
     'Wreck-It',
     'Fix-It',
-    'Jr.'
+    'Jr.',
+    'Ahkmenrah',
+    'WABAC',
+    'Grandpa'
   ];
 };
