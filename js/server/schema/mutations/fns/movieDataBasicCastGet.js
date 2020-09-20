@@ -13,7 +13,10 @@ const castParsedGet = (
 ) => {
 
   const $ = cheerio.load(
-    _castText
+    _castText,
+    {
+      decodeEntities: false
+    }
   );
 
   const castParsed = $(

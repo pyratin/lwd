@@ -34,9 +34,7 @@ export default () => {
 
   return [
     ...spoofNamesGet(),
-    'Private',
     'Will',
-    'Bloodbath',
     'Pi',
     'Ping',
     'Nux'

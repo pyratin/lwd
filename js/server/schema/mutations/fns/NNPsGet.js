@@ -100,8 +100,7 @@ const wordsNNPOverridesAppliedGet = (
 };
 
 const wordsChunkedGet = (
-  words,
-  attachIndexZeroOverride
+  words
 ) => {
 
   const wordsChunked = words.reduce(
@@ -137,46 +136,6 @@ const wordsChunkedGet = (
           (
             word.tag === 
             'NNP'
-          )
-        ) :
-        case (
-          (
-            _word.tag === 
-            'NNP'
-          ) &&
-          (
-            (
-              !!word.text
-                .match(
-                  /^[A-Z]/
-                )
-            ) &&
-            (
-              word.tag !==
-              'blacklist'
-            )
-          )
-        ) :
-        case (
-          (
-            word.tag === 
-            'NNP'
-          ) &&
-          (
-            (
-              !!_word.text
-                .match(
-                  /^[A-Z]/
-                )
-            ) &&
-            (
-              _word.tag !==
-              'blacklist'
-            )
-          ) &&
-          (
-            !!_word.tokenIndex ||
-            !!attachIndexZeroOverride
           )
         ) :
 

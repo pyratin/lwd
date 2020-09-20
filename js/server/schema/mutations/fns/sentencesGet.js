@@ -282,13 +282,13 @@ const sentenceShortenedByNNPGet = (
       NNP
     ) => {
 
-      const possessive = !!_sentence
+      const terminal = !!_sentence
         .match(
           new RegExp(
             `
               ${
                 NNP.text
-              }'s
+              }\\s
             `
               .trim()
           )
@@ -296,7 +296,7 @@ const sentenceShortenedByNNPGet = (
 
       return {
         ...NNP,
-        possessive
+        terminal
       };
     }
   );
@@ -307,7 +307,7 @@ const sentenceShortenedByNNPGet = (
     ) => {
 
       return (
-        !NNP.possessive
+        NNP.terminal
       );
     }
   );
