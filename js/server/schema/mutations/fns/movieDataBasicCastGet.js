@@ -2,13 +2,11 @@
 
 import cheerio from 'cheerio';
 
-import plotNNPsGet from './plotNNPsGet';
 import NNPsGet from './NNPsGet';
-import NNPCrossMatchGet from './NNPCrossMatchGet';
 import sentencesTokenizedGet
   from './sentencesTokenizedGet';
 
-const castParsedGet = (
+const castLinesGet = (
   _castText
 ) => {
 
@@ -19,7 +17,7 @@ const castParsedGet = (
     }
   );
 
-  const castParsed = $(
+  return $(
     'li'
   )
     .toArray()
@@ -41,110 +39,163 @@ const castParsedGet = (
         ];
       }
     );
-
-  return castParsed.reduce(
-    (
-      memo,
-      _castParsed
-    ) => {
-
-      return [
-        [
-          ...memo[
-            0
-          ],
-          _castParsed[
-            0
-          ]
-        ],
-        [
-          ...memo[
-            1
-          ],
-          _castParsed[
-            1
-          ]
-        ]
-      ];
-    },
-    [
-      [],
-      []
-    ]
-  );
 };
 
-const actorUdGet = (
-  castHtml
+const actorLinkMatchedGet = (
+  castLine
 ) => {
 
-  const regExpString = 
-    '^<a href="/wiki/([^"]*?)"[^>]*?>[^<]*?</a>';
+  const castHtml = castLine[
+    1
+  ];
 
-  const regExp = new RegExp(
-    regExpString
-  );
+  const actorLinkRegExp =
+    /^<a href="\/wiki\/([^"]*?)"[^>]*?>([^<]*?)<\/a>/;
 
   const match = castHtml.match(
-    regExp
+    actorLinkRegExp
   );
 
   return (
     match
   ) ?
-    match[
-      1
-    ] :
+    {
+      text: match[
+        2
+      ],
+      ud: match[
+        1
+      ]
+    } :
     null;
 };
 
-const actorsGet = (
-  castLines,
-  castHtmls
+const actorNNPMatchedGet = (
+  castLine
 ) => {
 
-  const NNPs = castLines.reduce(
+  const castText = castLine[
+    0
+  ];
+
+  const NNPs = NNPsGet(
+    castText
+  );
+
+  const match = NNPs.find(
     (
-      memo,
-      castLine,
-      index
+      {
+        distance
+      }
     ) => {
 
-      const NNPs = NNPsGet(
-        castLine,
-        true
+      return (
+        distance ===
+        0
       );
+    }
+  );
 
-      const NNP = NNPs.find(
-        (
-          {
-            distance
-          }
-        ) => {
+  return (
+    match
+  ) ?
+    {
+      text: match.text,
+      ud: null
+    } :
+    null;
+};
 
-          return (
-            distance ===
-            0
-          );
-        }
+const actorSyntaxMatchedGet = (
+  castLine
+) => {
+
+  const castText = castLine[
+    0
+  ];
+
+  const syntaxRegExp = /(.*)\sas\s/;
+
+  const match = (
+    castText.match(
+      syntaxRegExp
+    )
+  );
+
+  return (
+    match
+  ) ?
+    {
+      text: match[
+        1
+      ],
+      ud: null
+    } :
+    null;
+};
+
+const actorsGetFn = (
+  castLine
+) => {
+
+  let actor;
+
+  switch (
+    true
+  ) {
+
+    case (
+      (
+        actor = actorLinkMatchedGet(
+          castLine
+        )
+      ) &&
+      !!actor
+    ) :
+    case (
+      (
+        actor = actorNNPMatchedGet(
+          castLine
+        )
+      ) &&
+      !!actor
+    ) :
+    case (
+      (
+        actor = actorSyntaxMatchedGet(
+          castLine
+        )
+      ) &&
+      !!actor
+    ) :
+
+      return (
+        actor
+      );
+  }
+};
+
+const actorsGet = (
+  castLines
+) => {
+
+  return castLines.reduce(
+    (
+      memo,
+      castLine
+    ) => {
+
+      const actor = actorsGetFn(
+        castLine
       );
 
       if (
-        NNP
+        actor
       ) {
-
-        const actorUd = actorUdGet(
-          castHtmls[
-            index
-          ]
-        );
 
         return [
           ...memo,
-          {
-            ...NNP,
-            ud: actorUd
-          }
+          actor
         ];
       }
 
@@ -153,88 +204,6 @@ const actorsGet = (
       );
     },
     []
-  );
-
-  return (
-    NNPs
-  );
-};
-
-const actorsFilteredGetFn = (
-  plotCharacters,
-  actor
-) => {
-
-  return plotCharacters.reduce(
-    (
-      memo,
-      plotCharacter
-    ) => {
-
-      const match = NNPCrossMatchGet(
-        plotCharacter.text,
-        actor.text,
-        false
-      );
-
-      if (
-        !memo &&
-        match
-      ) {
-
-        return (
-          match
-        );
-      }
-
-      return (
-        memo
-      );
-    },
-    null
-  );
-};
-
-const actorsFilteredGet = (
-  _actors,
-  plot
-) => {
-
-  const plotCharacters = plotNNPsGet(
-    plot
-  );
-
-  const actors = _actors.reduce(
-    (
-      memo,
-      actor
-    ) => {
-
-      const match = actorsFilteredGetFn(
-        plotCharacters,
-        actor
-      );
-
-      if (
-        match &&
-        !actor.ud
-      ) {
-
-        return (
-          memo
-        );
-      }
-
-      return [
-        ...memo,
-        actor
-      ];
-    },
-    []
-  );
-
-  return (
-    actors
   );
 };
 
@@ -275,13 +244,27 @@ const actorRegExpGet = (
 
 const castGetFn = (
   actors,
-  castLines,
-  castRoleLimit
+  castLines
 ) => {
 
-  const castText = castLines.join(
-    '\n'
-  );
+  const castText = castLines.reduce(
+    (
+      memo,
+      [
+        _castText
+      ]
+    ) => {
+
+      return [
+        ...memo,
+        _castText
+      ];
+    },
+    []
+  )
+    .join(
+      '\n'
+    );
 
   const cast = actors.reduce(
     (
@@ -330,7 +313,6 @@ const castGetFn = (
       );
 
       role = (
-        castRoleLimit &&
         role.trim()
       ) ?
         sentencesTokenizedGet(
@@ -341,11 +323,10 @@ const castGetFn = (
         role;
 
       role = (
-        castRoleLimit &&
         role.trim()
       ) ?
         role.split(
-          /[:,]/
+          /[:]/
         )[
           0
         ] :
@@ -386,14 +367,11 @@ const castGetFn = (
 };
 
 export default (
-  _castText,
-  plot,
-  castRoleLimit
+  castText
 ) => {
 
   if (
-    !_castText ||
-    !plot
+    !castText
   ) {
 
     return (
@@ -401,21 +379,12 @@ export default (
     );
   }
 
-  const [
-    castLines,
-    castHtmls
-  ] = castParsedGet(
-    _castText
+  const castLines = castLinesGet(
+    castText
   );
 
   let actors = actorsGet(
-    castLines,
-    castHtmls
-  );
-
-  actors = actorsFilteredGet(
-    actors,
-    plot
+    castLines
   );
 
   actors = actorsCleanedGet(
@@ -424,8 +393,7 @@ export default (
 
   let cast = castGetFn(
     actors,
-    castLines,
-    castRoleLimit
+    castLines
   );
 
   return (

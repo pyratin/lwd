@@ -21,14 +21,12 @@ export default async (
   title,
   genre,
   db,
-  plotLimit,
-  castRoleLimit
+  plotLimit
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(
     title,
-    plotLimit,
-    castRoleLimit
+    plotLimit
   );
 
   if (

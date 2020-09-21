@@ -282,21 +282,32 @@ const sentenceShortenedByNNPGet = (
       NNP
     ) => {
 
-      const terminal = !!_sentence
-        .match(
-          new RegExp(
-            `
-              ${
-                NNP.text
-              }\\s
-            `
-              .trim()
-          )
-        );
+      const wordBoundry = !!_sentence.match(
+        new RegExp(
+          `
+            ${
+              NNP.text
+            }\\s
+          `
+            .trim()
+        )
+      );
+
+      const end = !_sentence.match(
+        new RegExp(
+          `
+            ${
+              NNP.text
+            }\\s[A-Z]
+          `
+            .trim()
+        )
+      );
 
       return {
         ...NNP,
-        terminal
+        wordBoundry,
+        end
       };
     }
   );
@@ -307,7 +318,8 @@ const sentenceShortenedByNNPGet = (
     ) => {
 
       return (
-        NNP.terminal
+        NNP.wordBoundry &&
+        NNP.end
       );
     }
   );
@@ -407,8 +419,15 @@ const sentenceShortenedGet = (
         let sentence = __sentence.trim();
 
         if (
-          sentence.length >
-          sentenceMaxLength
+          (
+            sentence.length >
+            sentenceMaxLength
+          ) &&
+          (
+            !sentence.match(
+              sentenceNormalizeRegExp
+            )
+          )
         ) {
 
           sentence = sentenceShortenedGetFn(

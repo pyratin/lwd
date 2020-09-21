@@ -161,8 +161,7 @@ const decksCreateFn = async (
     },
     db,
     null,
-    undefined,
-    true
+    undefined
   );
 };
 

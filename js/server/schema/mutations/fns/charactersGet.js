@@ -93,6 +93,20 @@ const matchesSortedGet = (
         ) :
 
           return -1;
+
+        case (
+          a._NNP.castIndex >
+          b._NNP.castIndex
+        ) :
+
+          return 1;
+
+        case (
+          b._NNP.castIndex >
+          a._NNP.castIndex
+        ) :
+
+          return -1;
       }
     }
   );

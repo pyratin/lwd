@@ -3,6 +3,16 @@
 export default () => {
 
   return [
+    'Lord',
+    'M',
+    'MI6',
+    'Commodore',
+
+    'American', 
+    'Civil', 
+    'War', 
+    'Confederate',
+    'Texas',
     'King',
     'Locksley',
     'Skynet',
@@ -12,10 +22,6 @@ export default () => {
     'CEO',
     'General',
     'Congressman',
-    'American',
-    'America',
-    'Civil',
-    'War',
     'U.S',
     'U.S.',
     'Army',
@@ -23,7 +29,6 @@ export default () => {
     'Marshal',
     'President',
     'Mars',
-    'M',
     'Colonel',
     'Nottingham',
     'Sheriff',
@@ -31,7 +36,6 @@ export default () => {
     'Hobbit',
     'Wreck-It',
     'Fix-It',
-    'Jr.',
     'Ahkmenrah',
     'WABAC',
     'Grandpa'

@@ -229,8 +229,7 @@ const NNPsCleanedGet = (
 };
 
 export default (
-  sentence,
-  attachIndexZeroOverride
+  sentence
 ) => {
 
   let words = wordsTokenizedGet(
@@ -246,8 +245,7 @@ export default (
   );
 
   words = wordsChunkedGet(
-    words,
-    attachIndexZeroOverride
+    words
   );
 
   words = NNPsGetFn(

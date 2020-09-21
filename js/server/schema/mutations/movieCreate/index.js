@@ -1,11 +1,11 @@
 'use strict';
 
+import path from 'path';
+import fs from 'fs';
 import {
   ObjectID
 } from 'mongodb';
 
-import movieTitleRandomGet from 
-  '../fns/movieTitleRandomGet';
 import deckGetFn from '../fns/deckGet';
 import gifRenderedGet from '../fns/gifRenderedGet';
 import {
@@ -24,6 +24,8 @@ import deckRenderDetailsAssignedGet
   from '../fns/deckRenderDetailsAssignedGet';
 import deckGifyUrlsAssignedGet 
   from '../fns/deckGifyUrlsAssignedGet';
+import movieSearch from 
+  '../movieSearch';
 import {
   movieCreate as movieCreateFn
 } from '~/js/server/data/movie';
@@ -67,24 +69,117 @@ const deckLocalPreRenderHandledGet = (
     );
 };
 
+const tmd5000moviesTitleByIndexGet = async (
+  index
+) => {
+
+  const dataFilename = 'tmdb_5000_movies.json';
+
+  const datasetsFolderPathString = 'temp/datasets';
+
+  const jsonFilePath = path.join(
+    process.cwd(),
+    datasetsFolderPathString,
+    'json',
+    dataFilename
+  );
+
+  let data = await(
+    new Promise(
+      (
+        resolve,
+        reject
+      ) => {
+
+        return fs.readFile(
+          jsonFilePath,
+          'utf8',
+          (
+            error,
+            res
+          ) => {
+
+            if (
+              error
+            ) {
+
+              return reject(
+                error
+              );
+            }
+
+            return resolve(
+              JSON.parse(
+                res
+              )
+            );
+          }
+        );
+      }
+    )
+  );
+
+  const title = data[
+    index
+  ]?.title;
+
+  return (
+    title
+  );
+};
+
+const titleMatchGet = (
+  _title
+) => {
+
+  return movieSearch(
+    _title,
+    1,
+    false
+  )
+    .then(
+      (
+        res
+      ) => {
+
+        const title = res[
+          0
+        ]?.title;
+
+        const match = title?.match(
+          _title
+        );
+
+        return (
+          match
+        ) ?
+          title :
+          null;
+      }
+    );
+};
+
 const deckLocalPreviewGet = async (
-  skip,
+  index,
   genre,
   db
 ) => {
 
-  let deck = (
-    await deckFind(
-      {},
-      {
-        skip,
-        limit: 1
-      },
-      db
-    )
-  )[
-    0
-  ];
+  let text = await tmd5000moviesTitleByIndexGet(
+    index
+  );
+
+  text = await titleMatchGet(
+    text
+  );
+
+  let deck = await deckFindOne(
+    {
+      'splash.title': text
+    },
+    undefined,
+    db
+  );
 
   deck = await deckLocalPreRenderHandledGet(
     deck,
@@ -147,19 +242,6 @@ const deckLocalRandomGet = async (
   );
 };
 
-const titleGet = async (
-  text
-) => {
-
-  return await movieTitleRandomGet(
-    text.split(
-      /:/
-    )[
-      1
-    ]
-  );
-};
-
 const movieCreate = async (
   movie,
   db,
@@ -198,8 +280,7 @@ const deckGet = async (
   text,
   genre,
   db,
-  plotLimit,
-  castRoleLimit
+  plotLimit
 ) => {
 
   let deck;
@@ -238,30 +319,6 @@ const deckGet = async (
       );
 
     case (
-      !!text.match(
-        /^random:(english|hindi|tamil)$/
-      )
-    ) :
-
-      return titleGet(
-        text
-      )
-        .then(
-          (
-            title
-          ) => {
-          
-            return deckGetFn(
-              title,
-              genre,
-              db,
-              plotLimit,
-              castRoleLimit
-            );
-          }
-        );
-
-    case (
       (
         deck = await deckFindOne(
           {
@@ -277,8 +334,7 @@ const deckGet = async (
       return deckLocalPreRenderHandledGet(
         deck,
         genre,
-        db,
-        5
+        db
       );
 
     default :
@@ -287,8 +343,7 @@ const deckGet = async (
         text,
         genre,
         db,
-        plotLimit,
-        castRoleLimit
+        plotLimit
       );
   }
 };
@@ -298,7 +353,6 @@ const outputGet = async (
   genre,
   db,
   plotLimit,
-  castRoleLimit,
   outputType
 ) => {
 
@@ -306,8 +360,7 @@ const outputGet = async (
     text,
     genre,
     db,
-    plotLimit,
-    castRoleLimit
+    plotLimit
   );
 
   switch (
@@ -402,8 +455,7 @@ export default async (
   input,
   db,
   req,
-  plotLimit = 5,
-  castRoleLimit = true
+  plotLimit = 5
 ) => {
 
   const {
@@ -417,7 +469,6 @@ export default async (
     genre,
     db,
     plotLimit,
-    castRoleLimit,
     outputType
   );
 
