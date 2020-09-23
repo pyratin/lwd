@@ -9,12 +9,45 @@ import parenthesisPurgedGet from './parenthesisPurgedGet';
 const sentenceNormalizeRegExp = /,\s/;
 
 const sentenceIsNormalizedGet = (
-  sentence
+  sentence,
+  sentenceMaxLength
 ) => {
 
   return (
-    !!sentence.match(
-      sentenceNormalizeRegExp
+    (
+      !!sentence.match(
+        sentenceNormalizeRegExp
+      )
+    ) &&
+    (
+      !!sentence.split(
+        sentenceNormalizeRegExp
+      )
+        .reduce(
+          (
+            memo,
+            _sentence
+          ) => {
+
+            if (
+              memo &&
+              (
+                _sentence.length >
+                sentenceMaxLength
+              )
+            ) {
+
+              return (
+                false
+              );
+            }
+
+            return (
+              memo
+            );
+          },
+          true
+        )
     )
   );
 };
@@ -22,12 +55,14 @@ const sentenceIsNormalizedGet = (
 const wordPOSMatchConditionGet = (
   word,
   sentence,
-  tagType
+  tagType,
+  sentenceMaxLength
 ) => {
 
   if (
     sentenceIsNormalizedGet(
-      sentence
+      sentence,
+      sentenceMaxLength
     ) 
   ) {
 
@@ -77,13 +112,15 @@ const wordPOSMatchConditionGet = (
 const wordPOSMatchedGet = (
   word,
   sentence,
-  tagType
+  tagType,
+  sentenceMaxLength
 ) => {
 
   const caseCondition = wordPOSMatchConditionGet(
     word,
     sentence,
-    tagType
+    tagType,
+    sentenceMaxLength
   );
 
   switch (
@@ -109,7 +146,8 @@ const wordPOSMatchedGet = (
 const wordsPosMatchedGet = (
   words,
   sentence,
-  tagType
+  tagType,
+  sentenceMaxLength
 ) => {
 
   return words.reduce(
@@ -121,7 +159,8 @@ const wordsPosMatchedGet = (
       const word = wordPOSMatchedGet(
         _word,
         sentence,
-        tagType
+        tagType,
+        sentenceMaxLength
       );
 
       if (
@@ -144,12 +183,14 @@ const wordsPosMatchedGet = (
 
 const sentenceShortenedByPOSGet = (
   _sentence,
-  tagType
+  tagType,
+  sentenceMaxLength
 ) => {
 
   if (
     sentenceIsNormalizedGet(
-      _sentence
+      _sentence,
+      sentenceMaxLength
     )
   ) {
 
@@ -169,7 +210,8 @@ const sentenceShortenedByPOSGet = (
   words = wordsPosMatchedGet(
     words,
     _sentence,
-    tagType
+    tagType,
+    sentenceMaxLength
   );
 
   const sentence = words.reduce(
@@ -264,7 +306,8 @@ const sentenceShortenedByNNPGet = (
 
   if (
     sentenceIsNormalizedGet(
-      _sentence
+      _sentence,
+      sentenceMaxLength
     )
   ) {
 
@@ -384,12 +427,14 @@ const sentenceShortenedGetFn = (
 
   sentence = sentenceShortenedByPOSGet(
     sentence,
-    'CC'
+    'CC',
+    sentenceMaxLength
   );
 
   sentence = sentenceShortenedByPOSGet(
     sentence,
-    'VBG'
+    'VBG',
+    sentenceMaxLength
   );
 
   sentence = sentenceShortenedByNNPGet(
@@ -424,8 +469,9 @@ const sentenceShortenedGet = (
             sentenceMaxLength
           ) &&
           (
-            !sentence.match(
-              sentenceNormalizeRegExp
+            !sentenceIsNormalizedGet(
+              sentence,
+              sentenceMaxLength
             )
           )
         ) {

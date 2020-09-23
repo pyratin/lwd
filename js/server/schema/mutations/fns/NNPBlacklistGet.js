@@ -3,41 +3,19 @@
 export default () => {
 
   return [
-    'Lord',
     'M',
-    'MI6',
-    'Commodore',
-
-    'American', 
-    'Civil', 
-    'War', 
-    'Confederate',
-    'Texas',
     'King',
+    'Sheriff',
+    'Nottingham',
+    'Bishop',
+    'Hereford',
     'Locksley',
-    'Skynet',
-    'Terminator',
-    'Aunt',
-    'Uncle',
-    'CEO',
-    'General',
-    'Congressman',
-    'U.S',
-    'U.S.',
-    'Army',
+    'Castle',
     'Captain',
     'Marshal',
-    'President',
-    'Mars',
     'Colonel',
-    'Nottingham',
-    'Sheriff',
-    'Agent',
-    'Hobbit',
-    'Wreck-It',
-    'Fix-It',
-    'Ahkmenrah',
-    'WABAC',
-    'Grandpa'
+    'General',
+
+    'U.S'
   ];
 };

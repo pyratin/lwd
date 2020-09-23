@@ -124,7 +124,7 @@ export default (
   );
 
   const plotEl = $(
-    'span, sup'
+    'span.mw-reflink-text, sup'
   )
     .remove()
     .end();

@@ -34,6 +34,10 @@ export default () => {
 
   return [
     ...spoofNamesGet(),
+    'Hiccup',
+    'Willy',
+    'Neo',
+
     'Will',
     'Pi',
     'Ping',

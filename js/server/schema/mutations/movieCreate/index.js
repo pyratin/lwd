@@ -279,8 +279,8 @@ const movieCreate = async (
 const deckGet = async (
   text,
   genre,
-  db,
-  plotLimit
+  plotLimit,
+  db
 ) => {
 
   let deck;
@@ -342,8 +342,8 @@ const deckGet = async (
       return deckGetFn(
         text,
         genre,
-        db,
-        plotLimit
+        plotLimit,
+        db
       );
   }
 };
@@ -351,16 +351,16 @@ const deckGet = async (
 const outputGet = async (
   text,
   genre,
-  db,
   plotLimit,
-  outputType
+  outputType,
+  db
 ) => {
 
   const deck = await deckGet(
     text,
     genre,
-    db,
-    plotLimit
+    plotLimit,
+    db
   );
 
   switch (
@@ -398,9 +398,9 @@ const outputGet = async (
 
 const outputCreatedGet = (
   output,
+  createFlag,
   db,
-  req,
-  createFlag
+  req
 ) => {
 
   switch (
@@ -453,9 +453,9 @@ const outputCreatedGet = (
 export default async (
   text,
   input,
+  plotLimit = 5,
   db,
-  req,
-  plotLimit = 5
+  req
 ) => {
 
   const {
@@ -467,16 +467,16 @@ export default async (
   let output = await outputGet(
     text,
     genre,
-    db,
     plotLimit,
-    outputType
+    outputType,
+    db
   );
 
   output = await outputCreatedGet(
     output,
+    createFlag,
     db,
-    req,
-    createFlag
+    req
   );
 
   return (

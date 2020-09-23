@@ -20,8 +20,8 @@ import deckSpoofableAssignedGet
 export default async (
   title,
   genre,
-  db,
-  plotLimit
+  plotLimit,
+  db
 ) => {
 
   let movieDataBasic = await movieDataBasicGet(

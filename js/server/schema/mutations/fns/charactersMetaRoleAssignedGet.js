@@ -42,8 +42,7 @@ const roleExistsGet = (
 
   const matches = NNPCrossMatchesGet(
     NNP,
-    _NNPs,
-    false
+    _NNPs
   );
 
   return matches?.[
@@ -74,6 +73,13 @@ const charactersRoleMatchIndexAssignedGet = (
           ]
             .castIndex ===
           character.castIndex
+        ) &&
+        (
+          memo[
+            match._NNPIndex
+          ]
+            .roleMatchIndex ===
+          -1
         )
       ) ?
         memo[

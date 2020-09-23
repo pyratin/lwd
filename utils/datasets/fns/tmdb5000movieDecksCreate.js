@@ -159,9 +159,9 @@ const decksCreateFn = async (
       outputType: 'deck',
       createFlag: true
     },
+    undefined,
     db,
-    null,
-    undefined
+    null
   );
 };
 

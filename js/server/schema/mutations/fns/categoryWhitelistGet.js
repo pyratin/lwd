@@ -7,6 +7,7 @@ export default () => {
     'Attalus',
     'Agamemnon',
     'Triopas',
-    'Pi Patel'
+    'Pi Patel',
+    'Bane'
   ];
 };

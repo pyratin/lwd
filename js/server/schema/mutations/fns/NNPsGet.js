@@ -4,6 +4,8 @@ import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
 import NNPWhitelistGet from './NNPWhitelistGet';
 import NNPBlacklistGet from './NNPBlacklistGet';
+import NNPChunkedBlacklistGet 
+  from './NNPChunkedBlacklistGet';
 
 const NNPWhitelistIsMatchGet = (
   text
@@ -173,6 +175,47 @@ const wordsChunkedGet = (
   );
 };
 
+const wordsChunkedFilteredGet = (
+  words
+) => {
+
+  return words.reduce(
+    (
+      memo,
+      word
+    ) => {
+
+      const match = NNPChunkedBlacklistGet()
+        .find(
+          (
+            _NNPChunkedBlacklist
+          ) => {
+
+            return (
+              _NNPChunkedBlacklist ===
+              word.text
+            );
+          }
+        );
+
+      if (
+        !match
+      ) {
+
+        return [
+          ...memo,
+          word
+        ];
+      }
+
+      return (
+        memo
+      );
+    },
+    []
+  );
+};
+
 const NNPsGetFn = (
   words
 ) => {
@@ -245,6 +288,10 @@ export default (
   );
 
   words = wordsChunkedGet(
+    words
+  );
+
+  words = wordsChunkedFilteredGet(
     words
   );
 

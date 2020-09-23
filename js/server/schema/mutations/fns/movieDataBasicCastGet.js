@@ -326,7 +326,7 @@ const castGetFn = (
         role.trim()
       ) ?
         role.split(
-          /[:]/
+          /[:,]/
         )[
           0
         ] :
