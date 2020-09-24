@@ -534,12 +534,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 10 - ((8 * winheight(0) + 18) / 36)
+let s:l = 11 - ((9 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-10
-normal! 013|
+11
+normal! 09|
 tabedit js/server/schema/mutations/fns/NNPChunkedBlacklistGet.js
 set splitbelow splitright
 set nosplitbelow
