@@ -43,6 +43,7 @@ badd +0 js/server/fns/movieOutputGifRouteHandle.js
 badd +0 views/index.ejs
 badd +0 js/server/fns/movieIdRouteHandle.js
 badd +0 utils/process/index.js
+badd +0 js/server/fns/variable.js
 argglobal
 %argdel
 set stal=2
@@ -65,11 +66,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 66 - ((31 * winheight(0) + 18) / 36)
+let s:l = 8 - ((7 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-66
+8
 normal! 0
 tabedit utils/process/index.js
 set splitbelow splitright
@@ -90,7 +91,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 78 - ((35 * winheight(0) + 18) / 36)
+let s:l = 78 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -115,11 +116,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 81 - ((20 * winheight(0) + 18) / 36)
+let s:l = 121 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-81
+121
 normal! 06|
 tabedit views/index.ejs
 set splitbelow splitright
@@ -140,12 +141,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((14 * winheight(0) + 18) / 36)
+let s:l = 36 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
-normal! 020|
+36
+normal! 027|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -165,12 +166,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((19 * winheight(0) + 18) / 36)
+let s:l = 125 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-20
-normal! 016|
+125
+normal! 021|
 tabedit js/server/fns/movieOutputGifRouteHandle.js
 set splitbelow splitright
 set nosplitbelow
@@ -215,12 +216,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 33 - ((24 * winheight(0) + 17) / 34)
+let s:l = 43 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-33
-normal! 04|
+43
+normal! 013|
+tabedit js/server/fns/variable.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 103 - ((31 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+103
+normal! 0
 tabedit js/server/data/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -721,7 +747,7 @@ exe s:l
 normal! zt
 193
 normal! 0
-tabnext 5
+tabnext 4
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -8,7 +8,8 @@ import {
   titleGet,
   portGet,
   nodeEnvGet,
-  mongoUriGet
+  mongoUriGet,
+  outputResGet
 } from './fns/variable';
 import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
@@ -120,7 +121,11 @@ import movieIdRouteHandle from
             'index',
             {
               title: titleGet(),
-              path: ''
+              image: {
+                path: '',
+                width: outputResGet(),
+                height: outputResGet()
+              }
             }
           );
         }

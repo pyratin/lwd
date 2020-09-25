@@ -9,6 +9,9 @@ import {
 } from '~/js/server/data/movie';
 import movieWrite from 
   '~/js/server/schema/mutations/fns/movieWrite';
+import {
+  outputResGet
+} from './variable';
 
 export default async (
   db,
@@ -36,7 +39,11 @@ export default async (
     'index',
     {
       title: movie.title,
-      path: movie.path
+      image: {
+        path: movie.path,
+        width: outputResGet(),
+        height: outputResGet()
+      }
     }
   );
 };
