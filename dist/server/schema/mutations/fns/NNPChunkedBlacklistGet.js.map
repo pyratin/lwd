@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../js/server/schema/mutations/fns/NNPChunkedBlacklistGet.js"],"names":[],"mappings":"AAAA;;;;;;;eAEe,oBAAM;AAEnB,SAAO,CACL,eADK,CAAP;AAGD,C","sourcesContent":["'use strict';\n\nexport default () => {\n\n  return [\n    'New York City'\n  ];\n};\n"],"file":"NNPChunkedBlacklistGet.js"}

@@ -227,19 +227,16 @@ const sentenceShortenedByPOSGet = (
       const distance = _distance + distanceOffset;
 
       return [
-        ...memo.slice(
+        memo.slice(
           0, distance
-        ),
-        `
-          , ${
-            word.text
-          }
-        `
+        )
           .trim(),
-        ...memo.slice(
+        `, ${word.text} `,
+        memo.slice(
           distance +
           word.text.length
         )
+          .trim()
       ]
         .join(
           ''
@@ -394,16 +391,16 @@ const sentenceShortenedByNNPGet = (
     NNP
   ) ?
     [
-      ..._sentence.slice(
+      _sentence.slice(
         0, NNP.distance
-      ),
-      `${
-          NNP.text
-        }, `,
-      ..._sentence.slice(
+      )
+        .trim(),
+      ` ${NNP.text}, `,
+      _sentence.slice(
         NNP.distance +
         NNP.text.length
       )
+        .trim()
     ]
       .join(
         ''
@@ -569,6 +566,103 @@ const sentencesPreprocessedGet = (
   );
 };
 
+const _sentenceNormalizedGetFn = (
+  sentence
+) => {
+
+  let commas = [
+    ...sentence.matchAll(
+      new RegExp(
+        sentenceNormalizeRegExp,
+        'g'
+      )
+    )
+  ]
+    .reduce(
+      (
+        memo,
+        {
+          index
+        }
+      ) => {
+
+        const fragments = [
+          sentence.slice(
+            0, index
+          ),
+          sentence.slice(
+            index + 1
+          )
+        ];
+
+        return [
+          ...memo,
+          {
+            distance: index,
+            effect: Math.abs(
+              (
+                fragments[
+                  0
+                ]
+                  .length 
+              ) -
+              fragments[
+                1
+              ]
+                .length
+            )
+          }
+        ];
+      },
+      []
+    );
+
+  commas = commas.sort(
+    (
+      a, b
+    ) => {
+
+      switch (
+        true
+      ) {
+
+        case (
+          a.effect >
+          b.effect
+        ) :
+
+          return 1;
+
+        case (
+          b.effect >
+          a.effect
+        ) :
+
+          return -1;
+      }
+    }
+  );
+
+  const comma = commas[
+    0
+  ];
+
+  const fragments = [
+    sentence.slice(
+      0, comma.distance
+    )
+      .trim(),
+    sentence.slice(
+      comma.distance + 1
+    )
+      .trim()
+  ];
+
+  return (
+    fragments
+  );
+};
+
 const sentenceNormalizedGetFn = (
   text,
   sentenceMaxLength
@@ -576,10 +670,9 @@ const sentenceNormalizedGetFn = (
 
   const joinString = ', ';
 
-  return text
-    .split(
-      sentenceNormalizeRegExp
-    )
+  return _sentenceNormalizedGetFn(
+    text
+  )
     .reduce(
       (
         memo,

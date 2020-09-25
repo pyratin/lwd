@@ -14,8 +14,10 @@ import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
 import mediaOutputFolderInit from 
   './fns/mediaOutputFolderInit';
-import movieOutputGifRouteHandle from 
+import movieGifRouteHandle from 
   './fns/movieOutputGifRouteHandle';
+import movieIdRouteHandle from 
+  './fns/movieIdRouteHandle';
 
 (
   async () => {
@@ -84,7 +86,22 @@ import movieOutputGifRouteHandle from
           res
         ) => {
 
-          return movieOutputGifRouteHandle(
+          return movieGifRouteHandle(
+            db,
+            req,
+            res
+          );
+        }
+      )
+
+      .get(
+        '/movies/:movieId(\\w{24})',
+        (
+          req,
+          res
+        ) => {
+
+          return movieIdRouteHandle(
             db,
             req,
             res
@@ -102,7 +119,8 @@ import movieOutputGifRouteHandle from
           return res.render(
             'index',
             {
-              title: titleGet()
+              title: titleGet(),
+              path: ''
             }
           );
         }

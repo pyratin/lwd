@@ -8,7 +8,7 @@
     "GIFY_API_KEY": "aJT6CDc1W7E5g5S38tj6STaddrUa75Xx",
     "OUTPUT_RES": 320,
     "MONGO_LOCAL_URI": "mongodb://localhost:27017/lwd",
-    "MONGO_REMOTE_URI": "mongodb://pyratin:didi1234@ds233806.mlab.com:33806/lwd"
+    "MONGO_REMOTE_URI": "mongodb+srv://pyratin:didi1234@cluster0.9h098.mongodb.net/lwd"
   },
   "scripts": {
     "dev:server": "env NODE_ENV=development node_modules/nodemon/bin/nodemon.js -L --exec node_modules/@babel/node/bin/babel-node.js -w js/server -e js js/server",
@@ -40,6 +40,7 @@
     "ink-select-input": "^4.0.0",
     "ink-text-input": "^4.0.0",
     "json": "^9.0.6",
+    "ngrok": "^3.3.0",
     "nodemon": "^2.0.4",
     "pad-left": "^2.1.0",
     "react": "^16.13.1",
