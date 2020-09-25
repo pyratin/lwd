@@ -6,7 +6,7 @@
   "config": {
     "PORT": 3000,
     "GIFY_API_KEY": "aJT6CDc1W7E5g5S38tj6STaddrUa75Xx",
-    "OUTPUT_RES": 380,
+    "OUTPUT_RES": 420,
     "MONGO_LOCAL_URI": "mongodb://localhost:27017/lwd",
     "MONGO_REMOTE_URI": "mongodb+srv://pyratin:didi1234@cluster0.9h098.mongodb.net/lwd"
   },
