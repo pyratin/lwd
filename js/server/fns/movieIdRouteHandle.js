@@ -36,7 +36,7 @@ export default async (
   );
 
   return res.render(
-    'index',
+    'movies',
     {
       title: movie.title,
       image: {
