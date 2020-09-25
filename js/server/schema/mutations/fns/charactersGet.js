@@ -243,7 +243,6 @@ export default async (
     matches,
     cast
   );
-  console.log(characters);
 
   characters = await charactersCulledByCategoryGet(
     characters,
