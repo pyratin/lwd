@@ -66,12 +66,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 10 - ((9 * winheight(0) + 18) / 36)
+let s:l = 14 - ((12 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-10
-normal! 021|
+14
+normal! 020|
 tabedit utils/process/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -91,7 +91,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 78 - ((35 * winheight(0) + 18) / 36)
+let s:l = 78 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -116,7 +116,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 121 - ((32 * winheight(0) + 18) / 36)
+let s:l = 121 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -141,12 +141,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 31 - ((25 * winheight(0) + 18) / 36)
+let s:l = 41 - ((9 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-31
-normal! 026|
+41
+normal! 07|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
