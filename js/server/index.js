@@ -9,7 +9,8 @@ import {
   portGet,
   nodeEnvGet,
   mongoUriGet,
-  outputResGet
+  outputResGet,
+  hostUrlGet
 } from './fns/variable';
 import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
@@ -121,8 +122,11 @@ import movieIdRouteHandle from
             'index',
             {
               title: titleGet(),
+              url: hostUrlGet(
+                req
+              ),
               image: {
-                path: '',
+                path: '/root.gif',
                 width: outputResGet(),
                 height: outputResGet()
               }

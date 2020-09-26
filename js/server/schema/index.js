@@ -150,6 +150,9 @@ const movieType = new GraphQLObjectType(
         },
         path: {
           type: GraphQLString
+        },
+        url: {
+          type: GraphQLString
         }
       };
     }

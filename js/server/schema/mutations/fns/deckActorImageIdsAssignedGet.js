@@ -446,22 +446,50 @@ const spoofActorsGet = async (
   );
 };
 
-const spoofActorByStarringIndexGet = (
+const charactersActorAssignedGetFn = (
   character,
-  spoofActors
+  spoofActors,
+  _characters
 ) => {
 
-  return spoofActors.find(
-    (
-      spoofActor
-    ) => {
+  return (
+    character.roleMatchIndex ===
+    -1
+  ) ?
+    spoofActors.find(
+      (
+        spoofActor
+      ) => {
 
-      return (
-        spoofActor.starringIndex ===
-        character.starringIndex
+        return (
+          spoofActor.starringIndex ===
+          character.starringIndex
+        );
+      }
+    ) :
+    _characters.map(
+      (
+        {
+          _actor
+        }
+      ) => {
+
+        return (
+          _actor
+        );
+      }
+    )
+      .find(
+        (
+          spoofActor
+        ) => {
+
+          return (
+            spoofActor.starringIndex ===
+            character.roleMatchIndex
+          );
+        }
       );
-    }
-  );
 };
 
 const charactersActorAssignedGet = (
@@ -479,9 +507,10 @@ const charactersActorAssignedGet = (
         character.starringCardIndexes
       ) {
 
-        const spoofActor = spoofActorByStarringIndexGet(
+        const spoofActor = charactersActorAssignedGetFn(
           character,
-          spoofActors
+          spoofActors,
+          memo
         );
 
         return [

@@ -39,6 +39,7 @@ export default async (
     'movies',
     {
       title: movie.title,
+      url: movie.url,
       image: {
         path: movie.path,
         width: outputResGet(),

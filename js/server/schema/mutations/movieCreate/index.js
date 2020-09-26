@@ -261,6 +261,17 @@ const movieCreate = async (
   `
     .trim();
 
+  const url = `
+    ${
+      hostUrlGet(
+        req
+      )
+    }/movies/${
+      movieId.toString()
+    }
+  `
+    .trim();
+
   return movieCreateFn(
     {
       _id: movieId
@@ -268,7 +279,8 @@ const movieCreate = async (
     {
       $set: {
         ...movie,
-        path
+        path,
+        url
       }
     },
     undefined,
