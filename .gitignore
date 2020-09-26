@@ -1,5 +1,4 @@
 node_modules
 media/output
-temp/data
-temp/process
-temp/datasets
+dist
+temp
