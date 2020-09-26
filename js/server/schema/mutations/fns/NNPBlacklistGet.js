@@ -16,6 +16,8 @@ export default () => {
     'Colonel',
     'General',
 
-    'U.S'
+    'U.S',
+    'Aunt',
+    'Uncle'
   ];
 };

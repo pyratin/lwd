@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../../js/server/schema/mutations/fns/categoryBlacklistGet.js"],"names":[],"mappings":"AAAA;;;;;;;eAEe,oBAAM;AAEnB,SAAO,EAAP;AAGD,C","sourcesContent":["'use strict';\n\nexport default () => {\n\n  return [\n\n  ];\n};\n"],"file":"categoryBlacklistGet.js"}

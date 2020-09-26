@@ -98,6 +98,9 @@ const charactersRoleMatchIndexAssignedGet = (
 
             return (
               (
+                !character.castIndex
+              ) &&
+              (
                 _memo.dualRoleIndex === 
                 -1
               ) &&
