@@ -33,7 +33,7 @@ const imageResize = (
 
       const proc = exec(
         `
-          convert jpeg:- -resize ${
+          convert - -resize ${
             res
           }x${
             res
@@ -41,7 +41,7 @@ const imageResize = (
             res
           }x${
             res
-          }+0+0 jpeg:-
+          }+0+0 -background "#fff" jpeg:-
         `
           .trim(),
         {

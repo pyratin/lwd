@@ -18,6 +18,7 @@ export default () => {
 
     'U.S',
     'Aunt',
-    'Uncle'
+    'Uncle',
+    'Terminator'
   ];
 };

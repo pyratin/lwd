@@ -5,18 +5,14 @@ export default () => {
   return (
     {
       hero: [
-        'Vijay',
-        'Ajit'
+        'You'
       ],
       heroine: [
         'Trisha',
         'Nayantara'
       ],
       villain: [
-        'Bombay-Seth',
-        'Delhi-Seth',
-        'Bombay-Terrorist',
-        'Delhi-Terrorist'
+        'Bombay-Terrorist'
       ],
       man: [
         'Ramu',

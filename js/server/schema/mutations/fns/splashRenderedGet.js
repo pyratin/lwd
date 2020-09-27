@@ -14,6 +14,8 @@ import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 import charactersMontageGet from './charactersMontageGet';
+import base64FilterAppliedGet 
+  from './base64FilterAppliedGet';
 
 const base64BlankGet = () => {
 
@@ -185,6 +187,18 @@ const moviePosterBase64Get = (
     );
 };
 
+const moviePosterFilterAppliedGet = (
+  moviePosterBase64
+) => {
+
+  return base64FilterAppliedGet(
+    {
+      base64: moviePosterBase64,
+      filterType: 'giphy'
+    }
+  );
+};
+
 const finalCompositedGetFn = (
   finalCompositeMiffStreamsConcated
 ) => {
@@ -291,8 +305,12 @@ export default async (
   db
 ) => {
 
-  const moviePosterBase64 = await moviePosterBase64Get(
+  let moviePosterBase64 = await moviePosterBase64Get(
     poster
+  );
+
+  moviePosterBase64 = await moviePosterFilterAppliedGet(
+    moviePosterBase64
   );
 
   const charactersMontageBase64 = 
