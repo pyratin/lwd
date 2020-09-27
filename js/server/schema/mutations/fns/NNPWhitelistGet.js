@@ -41,6 +41,7 @@ export default () => {
     'Will',
     'Pi',
     'Ping',
-    'Nux'
+    'Nux',
+    'St.' //Flushed Away
   ];
 };
