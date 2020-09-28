@@ -8,7 +8,23 @@ import parenthesisPurgedGet from './parenthesisPurgedGet';
 
 const sentenceNormalizeRegExp = /,\s/;
 
-const sentenceIsNormalizedGet = (
+const sentencesParenthesisPurgedGet = (
+  sentences 
+) => {
+
+  return sentences.map(
+    (
+      sentence
+    ) => {
+
+      return parenthesisPurgedGet(
+        sentence
+      );
+    }
+  );
+};
+
+const sentenceIsNormalizableGet = (
   sentence,
   sentenceMaxLength
 ) => {
@@ -60,7 +76,7 @@ const wordPOSMatchConditionGet = (
 ) => {
 
   if (
-    sentenceIsNormalizedGet(
+    sentenceIsNormalizableGet(
       sentence,
       sentenceMaxLength
     ) 
@@ -188,7 +204,7 @@ const sentenceShortenedByPOSGet = (
 ) => {
 
   if (
-    sentenceIsNormalizedGet(
+    sentenceIsNormalizableGet(
       _sentence,
       sentenceMaxLength
     )
@@ -212,6 +228,37 @@ const sentenceShortenedByPOSGet = (
     _sentence,
     tagType,
     sentenceMaxLength
+  );
+
+  words = words.map(
+    (
+      word
+    ) => {
+
+      return {
+        ...word,
+        redundant: (
+          !!_sentence.slice(
+            0, word.distance
+          )
+            .trim()
+            .match(
+              /,$/
+            )
+        )
+      };
+    }
+  );
+
+  words = words.filter(
+    (
+      word
+    ) => {
+
+      return (
+        !word.redundant
+      );
+    }
   );
 
   const sentence = words.reduce(
@@ -302,7 +349,7 @@ const sentenceShortenedByNNPGet = (
 ) => {
 
   if (
-    sentenceIsNormalizedGet(
+    sentenceIsNormalizableGet(
       _sentence,
       sentenceMaxLength
     )
@@ -412,7 +459,7 @@ const sentenceShortenedByNNPGet = (
   );
 };
 
-const sentenceShortenedGetFn = (
+const sentenceProcessedGet = (
   _sentence,
   sentenceMaxLength
 ) => {
@@ -444,95 +491,98 @@ const sentenceShortenedGetFn = (
   );
 };
 
-const sentenceShortenedGet = (
+const sentencesNormalizedGetFn = (
   _sentence,
   sentenceMaxLength
 ) => {
 
-  const sentence = _sentence.split(
+  const sentence = (
+    !sentenceIsNormalizableGet(
+      _sentence,
+      sentenceMaxLength
+    )
+  ) ?
+    sentenceProcessedGet(
+      _sentence,
+      sentenceMaxLength
+    ) :
+    _sentence;
+
+  let fragments = sentence.split(
     sentenceNormalizeRegExp
-  )
-    .reduce(
-      (
-        memo,
-        __sentence
-      ) => {
+  );
 
-        let sentence = __sentence.trim();
+  fragments = fragments.reduce(
+    (
+      memo,
+      fragment
+    ) => {
 
-        if (
+      const fragmentPrevious = memo[
+        memo.length - 1
+      ];
+
+      switch (
+        true
+      ) {
+
+        case (
+          !!fragmentPrevious &&
           (
-            sentence.length >
-            sentenceMaxLength
-          ) &&
-          (
-            !sentenceIsNormalizedGet(
-              sentence,
-              sentenceMaxLength
-            )
-          )
-        ) {
+            fragmentPrevious.length +
+            fragment.length
+          ) <
+          sentenceMaxLength
+        ) :
 
-          sentence = sentenceShortenedGetFn(
-            sentence,
-            sentenceMaxLength
-          );
+          return [
+            ...memo.slice(
+              0, -1
+            ),
+            `
+              ${
+                fragmentPrevious
+              }, ${
+                fragment
+              }
+            `
+              .trim()
+          ];
+
+        case (
+          !!fragmentPrevious
+        ) :
+
+          return [
+            ...memo.slice(
+              0, -1
+            ),
+            `
+              ${
+                fragmentPrevious
+              } ...,
+            `
+              .trim(),
+            fragment
+          ];
+
+        default :
 
           return [
             ...memo,
-            sentence
+            fragment
           ];
-        }
-
-        return [
-          ...memo,
-          sentence
-        ];
-      },
-      []
-    )
-    .join(
-      ', '
-    );
-
-  return (
-    sentence
-  );
-};
-
-const sentenceParenthesisHandle = (
-  _sentence
-) => {
-
-  let sentence = parenthesisPurgedGet(
-    _sentence
+      }
+    },
+    []
   );
 
   return (
-    sentence
+    fragments
   );
 };
 
-const sentencesPreprocessedGetFn = (
-  _sentence,
-  sentenceMaxLength
-) => {
-
-  let sentence = sentenceShortenedGet(
-    _sentence,
-    sentenceMaxLength
-  );
-
-  sentence = sentenceParenthesisHandle(
-    sentence
-  );
-
-  return (
-    sentence
-  );
-};
-
-const sentencesPreprocessedGet = (
+const sentencesNormalizedGet = (
   sentences,
   sentenceMaxLength
 ) => {
@@ -543,302 +593,17 @@ const sentencesPreprocessedGet = (
       _sentence
     ) => {
 
-      const sentence = sentencesPreprocessedGetFn(
+      const sentence = sentencesNormalizedGetFn(
         _sentence,
         sentenceMaxLength
       );
 
-      if (
-        sentence.trim()
-      ) {
-
-        return [
-          ...memo,
-          sentence
-        ];
-      }
-
-      return (
-        memo
-      );
-    },
-    []
-  );
-};
-
-const _sentenceNormalizedGetFn = (
-  sentence
-) => {
-
-  let commas = [
-    ...sentence.matchAll(
-      new RegExp(
-        sentenceNormalizeRegExp,
-        'g'
-      )
-    )
-  ]
-    .reduce(
-      (
-        memo,
-        {
-          index
-        }
-      ) => {
-
-        const fragments = [
-          sentence.slice(
-            0, index
-          ),
-          sentence.slice(
-            index + 1
-          )
-        ];
-
-        return [
-          ...memo,
-          {
-            distance: index,
-            effect: Math.abs(
-              (
-                fragments[
-                  0
-                ]
-                  .length 
-              ) -
-              fragments[
-                1
-              ]
-                .length
-            )
-          }
-        ];
-      },
-      []
-    );
-
-  commas = commas.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a.effect >
-          b.effect
-        ) :
-
-          return 1;
-
-        case (
-          b.effect >
-          a.effect
-        ) :
-
-          return -1;
-      }
-    }
-  );
-
-  const comma = commas[
-    0
-  ];
-
-  const fragments = [
-    sentence.slice(
-      0, comma.distance
-    )
-      .trim(),
-    sentence.slice(
-      comma.distance + 1
-    )
-      .trim()
-  ];
-
-  return (
-    fragments
-  );
-};
-
-const sentenceNormalizedGetFn = (
-  text,
-  sentenceMaxLength
-) => {
-
-  const joinString = ', ';
-
-  return _sentenceNormalizedGetFn(
-    text
-  )
-    .reduce(
-      (
-        memo,
-        _text
-      ) => {
-
-        switch (
-          true
-        ) {
-
-          case (
-            !memo.length
-          ) :
-
-            return [
-              _text
-            ];
-
-          case (
-            (
-              memo.length < 
-              2
-            ) &&
-            (
-              memo[
-                0
-              ]
-                .length +
-              _text.length +
-              +joinString.length
-            ) < 
-            sentenceMaxLength
-          ) :
-
-            return [
-              `
-                ${
-                  memo[
-                    0
-                  ]
-                    .trim()
-                }${
-                  joinString
-                }${
-                  _text.trim()
-                }
-              `
-                .trim()
-            ];
-
-          case (
-            memo.length < 2
-          ) :
-
-            return [
-              memo[
-                0
-              ],
-              _text.trim()
-            ];
-
-          default:
-
-            return [
-              memo[
-                0
-              ],
-              `
-                ${
-                  memo[
-                    1
-                  ]
-                    .trim()
-                }${
-                  joinString
-                }${
-                  _text.trim()
-                }
-              `
-                .trim()
-            ];
-        }
-      },
-      []
-    );
-};
-
-const sentenceNormalizedGet = (
-  text,
-  sentenceMaxLength
-) => {
-
-  let texts = [
-    text
-  ];
-
-  while (
-    (
-      (
-        texts[
-          texts.length - 1
-        ]
-          .length
-      ) >
-      sentenceMaxLength
-    ) &&
-    (
-      !!texts[
-        texts.length -1
-      ]
-        .match(
-          sentenceNormalizeRegExp 
-        )
-    )
-  ) {
-
-    const sentenceNormalized = sentenceNormalizedGetFn(
-      texts[
-        texts.length - 1
-      ],
-      sentenceMaxLength
-    );
-
-    texts = [
-      ...texts.slice(
-        0, -1
-      ),
-      ...sentenceNormalized
-    ];
-  }
-
-  texts = texts.reduce(
-    (
-      memo,
-      text,
-      index
-    ) => {
-
-      if (
-        index <
-        (
-          texts.length - 1
-        )
-      ) {
-
-        return [
-          ...memo,
-          `
-            ${
-            text
-            } ...,
-          `
-            .trim()
-        ];
-      }
-
       return [
         ...memo,
-        text
+        ...sentence
       ];
     },
     []
-  );
-
-  return (
-    texts
   );
 };
 
@@ -851,30 +616,16 @@ export default (
     paragraph
   );
 
-  sentences = sentencesPreprocessedGet(
+  sentences = sentencesParenthesisPurgedGet(
+    sentences
+  );
+
+  sentences = sentencesNormalizedGet(
     sentences,
     sentenceMaxLength
-  );
-  
-  sentences = sentences.reduce(
-    (
-      memo,
-      text
-    ) => {
-
-      return [
-        ...memo,
-        ...sentenceNormalizedGet(
-          text,
-          sentenceMaxLength
-        )
-      ];
-    },
-    []
   );
 
   return (
     sentences
   );
 };
-

@@ -34,14 +34,14 @@ export default () => {
 
   return [
     ...spoofNamesGet(),
-    'Hiccup',
-    'Willy',
-    'Neo',
-
-    'Will',
+    'Hiccup', //How to Train Your Dragon 2
+    'Willy', //Charlie and the Chocolate Factory (film)
+    'Neo', //The Matrix Revolutions
+    'Will', //Pirates of the Caribbean: At World's End
     'Pi',
     'Ping',
     'Nux',
-    'St.' //Flushed Away
+    'St.', //Flushed Away
+    'Niobe' //The Matrix Reloaded
   ];
 };

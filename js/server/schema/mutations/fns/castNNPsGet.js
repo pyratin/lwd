@@ -70,10 +70,7 @@ const _castNNPsGet = (
               NNP.distance
             ) ?
               NNP.distance -
-              NNPs[
-                0
-              ]
-                .text.length :
+              _cast.actor.text.length :
               0;
 
             return {
