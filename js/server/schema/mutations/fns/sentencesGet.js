@@ -491,6 +491,145 @@ const sentenceProcessedGet = (
   );
 };
 
+const fragmentWordCountGet = (
+  fragment
+) => {
+
+  if (
+    !fragment
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  return fragment.split(
+    /\s/
+  )
+    .length;
+};
+
+const fragmentsShortHandledGetFn = (
+  index,
+  memo,
+  fragments
+) => {
+
+  const fragment = fragments[
+    index
+  ];
+    
+  const fragmentWordCount = fragmentWordCountGet(
+    fragment
+  );
+
+  const fragmentPrevious = (
+    index
+  ) &&
+    fragments[
+      index - 1
+    ];
+
+  const fragmentPreviousWordCount = fragmentWordCountGet(
+    fragmentPrevious
+  );
+
+  const fragmentNext = (
+    fragments.length >
+    index + 1
+  ) &&
+    fragments[
+      index + 1
+    ];
+
+  const fragmentNextWordCount = fragmentWordCountGet(
+    fragmentNext
+  );
+
+  switch (
+    true
+  ) {
+
+    case (
+      fragmentPrevious &&
+      (
+        fragmentPreviousWordCount <=
+        3
+      ) &&
+      (
+        fragmentWordCount <=
+        3
+      )
+    ) :
+    case (
+      fragmentPrevious &&
+      fragmentNext &&
+      (
+        fragmentPreviousWordCount >
+        3
+      ) &&
+      (
+        fragmentWordCount <=
+        3
+      ) &&
+      (
+        fragmentNextWordCount >
+        3
+      )
+    ) :
+
+      return [
+        ...memo.slice(
+          0,
+          memo.length - 1
+        ),
+        `
+          ${
+            memo[
+              memo.length - 1
+            ]
+          }, ${
+            fragment
+          }
+        `
+          .trim()
+      ];
+
+    default :
+
+      return [
+        ...memo,
+        fragment
+      ];
+  }
+};
+
+const fragmentsShortHandledGet = (
+  _fragments
+) => {
+
+  return _fragments.reduce(
+    (
+      memo,
+      fragment,
+      index
+    ) => {
+
+      const fragments = fragmentsShortHandledGetFn(
+        index,
+        memo,
+        _fragments
+      );
+
+      return (
+        fragments
+      );
+    },
+    []
+  );
+};
+
 const sentencesNormalizedGetFn = (
   _sentence,
   sentenceMaxLength
@@ -510,6 +649,10 @@ const sentencesNormalizedGetFn = (
 
   let fragments = sentence.split(
     sentenceNormalizeRegExp
+  );
+
+  fragments = fragmentsShortHandledGet(
+    fragments
   );
 
   fragments = fragments.reduce(

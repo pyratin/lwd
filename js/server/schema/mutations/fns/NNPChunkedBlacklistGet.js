@@ -3,7 +3,5 @@
 export default () => {
 
   return [
-    'New York City',
-    'Texas Ranger'
   ];
 };

@@ -10,8 +10,13 @@ const castLinesGet = (
   _castText
 ) => {
 
+  const castText = _castText.replace(
+    /<br>/g,
+    '\n'
+  );
+
   const $ = cheerio.load(
-    _castText,
+    castText,
     {
       decodeEntities: false
     }
@@ -307,11 +312,6 @@ const castGetFn = (
         role :
         '';
 
-      role = role.replace(
-        /\n/g,
-        ' '
-      );
-
       role = (
         role.trim()
       ) ?
@@ -326,7 +326,7 @@ const castGetFn = (
         role.trim()
       ) ?
         role.split(
-          /[:,]/
+          /[:,\n]/
         )[
           0
         ] :
