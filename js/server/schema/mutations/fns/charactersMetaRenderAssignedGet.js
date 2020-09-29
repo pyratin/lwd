@@ -76,7 +76,6 @@ export default (
   let characters = charactersRenderAssignedGet(
     _characters
   );
-  console.log(characters);
 
   return (
     characters
