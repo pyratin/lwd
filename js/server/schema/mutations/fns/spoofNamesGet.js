@@ -7,41 +7,13 @@ export default () => {
       hero: [
         'You'
       ],
-      heroine: [
-        'Trisha',
-        'Nayantara'
-      ],
+      heroine: [],
       villain: [
         'Bombay-Terrorist'
       ],
-      man: [
-        'Ramu',
-        'Gaja',
-        'Muthu',
-        'Pari',
-        'Gopal',
-        'Selva',
-        'Babu',
-        'Raju',
-        'Mani',
-        'Ravi'
-      ],
-      woman: [
-        'Uma', 
-        'Selvi', 
-        'Vena', 
-        'Radha', 
-        'Getha', 
-        'Akila',
-        'Mena'
-      ],
-      unknown: [
-        'Bucket',
-        'Drum', 
-        'Socks',
-        'Scooter',
-        'Umberlla'
-      ]
+      man: [],
+      woman: [],
+      unknown: []
     }
   );
 };

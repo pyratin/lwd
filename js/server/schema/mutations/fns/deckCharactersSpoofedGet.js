@@ -95,92 +95,13 @@ const spoofNamesShuffledGet = (
     );
 };
 
-const dualRoleSuffixGet = (
-  index
-) => {
-
-  switch (
-    index
-  ) {
-
-    case (0) :
-
-      return '';
-
-    case (1) :
-
-      return '-Man';
-
-    default :
-
-      return `
-        -Man-${
-          index + 1
-        }
-      `
-        .trim();
-  }
-};
-
-const spoofNamesProcessedGet = (
-  _spoofNames,
-  _characterGroups
-) => {
-
-  let spoofNames = spoofNamesShuffledGet(
-    _spoofNames
-  );
-
-  const role = _characterGroups?.[
-    0
-  ]?.[
-    0
-  ]?.role;
-
-  if (
-    role ===
-    'hero'
-  ) {
-
-    spoofNames = new Array(
-      _characterGroups.length
-    )
-      .fill()
-      .map(
-        (
-          _,
-          index
-        ) => {
-
-          return `
-            ${
-              spoofNames[
-                0
-              ]
-            }${
-              dualRoleSuffixGet(
-                index
-              )
-            }
-          `
-            .trim();
-        }
-      );
-  }
-
-  return (
-    spoofNames
-  );
-};
-
 const characterGroupsSpoofNameAssignedGetFn = (
   _characterGroups,
   _spoofNames
 ) => {
 
-  const spoofNames = spoofNamesProcessedGet(
-    _spoofNames,
-    _characterGroups
+  const spoofNames = spoofNamesShuffledGet(
+    _spoofNames
   );
 
   const characterGroups = _characterGroups.reduce(
@@ -201,9 +122,13 @@ const characterGroupsSpoofNameAssignedGetFn = (
               ...memo,
               {
                 ...character,
-                text: spoofNames[
-                  character.roleGroupIndex
-                ],
+                text: (
+                  spoofNames.length
+                ) ?
+                  spoofNames[
+                    character.roleGroupIndex
+                  ] :
+                  character.text,
                 _text: character.text
               }
             ];

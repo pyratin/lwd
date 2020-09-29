@@ -24,7 +24,7 @@ const characterExistsGet = (
   );
 };
 
-export default (
+const charactersRenderAssignedGet = (
   _characters 
 ) => {
 
@@ -69,3 +69,16 @@ export default (
   );
 };
 
+export default (
+  _characters
+) => {
+
+  let characters = charactersRenderAssignedGet(
+    _characters
+  );
+  console.log(characters);
+
+  return (
+    characters
+  );
+};

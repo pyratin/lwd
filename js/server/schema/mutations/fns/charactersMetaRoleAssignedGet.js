@@ -232,23 +232,14 @@ const characterGroupsOrderedGet = (
       characterGroup
     ) => {
 
-      const match = characterGroup.find(
-        (
-          character
-        ) => {
-
-          return (
-            !character.castIndex &&
-            (
-              character.actor.gender ===
-              'man'
-            )
-          );
-        }
-      );
-
       if (
-        match
+        !memo.length &&
+        (
+          !characterGroup[
+            0
+          ]
+            .castIndex
+        )
       ) {
 
         return [

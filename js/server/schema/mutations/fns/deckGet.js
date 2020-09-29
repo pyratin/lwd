@@ -51,9 +51,7 @@ export default async (
 
   cards = cardsGet(
     movieDataBasic.plot,
-    characters,
-    genre,
-    db
+    characters
   );
 
   characters = await charactersGenderAssignedGet(
