@@ -196,14 +196,23 @@ const characterGroupsOrderedGet = (
       characterGroup
     ) => {
 
-      if (
-        !memo.length &&
+      const match = characterGroup.find(
         (
-          !characterGroup[
-            0
-          ]
-            .castIndex
-        )
+          character
+        ) => {
+
+          return (
+            !character.castIndex &&
+            (
+              character.actor.gender ===
+              'man'
+            )
+          );
+        }
+      );
+
+      if (
+        match
       ) {
 
         return [

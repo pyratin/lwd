@@ -111,17 +111,16 @@ const characterGroupsSpoofNameAssignedGetFn = (
             character
           ) => {
 
+            const text = spoofNames[
+              character.roleGroupIndex
+            ] ||
+            character.text;
+
             return [
               ...memo,
               {
                 ...character,
-                text: (
-                  spoofNames.length
-                ) ?
-                  spoofNames[
-                    character.roleGroupIndex
-                  ] :
-                  character.text,
+                text,
                 _text: character.text
               }
             ];
