@@ -4,41 +4,34 @@ import spoofNamesGetFn from './spoofNamesGet';
 import charactersSortedByStarringIndexGet 
   from './charactersSortedByStarringIndexGet';
 
-const spoofNameHeroGet = (
-  genre
+const spoofNameCapitalizedGet = (
+  spoofName
 ) => {
 
-  return [
-    genre.split(
-      /^spoof-/
-    )[
-      1
-    ]
-      .split(
-        ''
-      )
-      .map(
-        (
-          letter,
-          index
-        ) => {
+  return spoofName.split(
+    ''
+  )
+    .map(
+      (
+        letter,
+        index
+      ) => {
 
-          if (
-            !index
-          ) {
+        if (
+          !index
+        ) {
 
-            return letter.toUpperCase();
-          }
-
-          return (
-            letter
-          );
+          return letter.toUpperCase();
         }
-      )
-      .join(
-        ''
-      )
-  ];
+
+        return (
+          letter
+        );
+      }
+    )
+    .join(
+      ''
+    );
 };
 
 const spoofNamesShuffledGet = (
@@ -148,7 +141,7 @@ const characterGroupsSpoofNameAssignedGetFn = (
 const characterGroupsSpoofNameAssignedGet = (
   _characterGroups,
   spoofNames,
-  genre
+  hero
 ) => {
 
   const heroGroups = 
@@ -156,9 +149,11 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       0
     ],
-    spoofNameHeroGet(
-      genre
-    )
+    [
+      spoofNameCapitalizedGet(
+        hero
+      )
+    ]
   );
 
   const heroineGroups = 
@@ -328,7 +323,7 @@ const characterGroupsGet = (
 
 export default (
   _characters,
-  genre
+  hero
 ) => {
 
   let characterGroups = characterGroupsGet(
@@ -340,7 +335,7 @@ export default (
   characterGroups = characterGroupsSpoofNameAssignedGet(
     characterGroups,
     spoofNames,
-    genre
+    hero
   );
 
   let characters = charactersGet(

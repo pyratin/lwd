@@ -186,45 +186,9 @@ const characterGroupsGet = (
   );
 };
 
-const characterGroupsSortedByCastIndexGet = (
+const characterGroupsOrderedGet = (
   characterGroups
 ) => {
-
-  return characterGroups.sort(
-    (
-      a, b
-    ) => {
-
-      switch (
-        true
-      ) {
-
-        case (
-          a[0].castIndex >
-          b[0].castIndex
-        ) :
-
-          return 1;
-
-        case (
-          b[0].castIndex >
-          a[0].castIndex
-        ) :
-
-          return -1;
-      }
-    }
-  );
-};
-
-const characterGroupsOrderedGet = (
-  _characterGroups
-) => {
-
-  let characterGroups = 
-  characterGroupsSortedByCastIndexGet(
-    _characterGroups
-  );
 
   let heroGroups = characterGroups.reduce(
     (
@@ -272,7 +236,21 @@ const characterGroupsOrderedGet = (
     ) => {
 
       if (
-        !memo.length &&
+        (
+          !memo.length ||
+          (
+            characterGroup[
+              0
+            ]
+              .castIndex <
+            memo[
+              0
+            ][
+              0
+            ]
+              .castIndex
+          )
+        ) &&
         (
           characterGroup[
             0
@@ -547,7 +525,8 @@ const charactersGet = (
   return characterGroups.reduce(
     (
       memo,
-      _characterGroups
+      _characterGroups,
+      roleIndex
     ) => {
 
       const characters = _characterGroups.reduce(
@@ -569,6 +548,7 @@ const charactersGet = (
                   ...memo,
                   {
                     ...character,
+                    roleIndex,
                     roleGroupIndex
                   }
                 ];

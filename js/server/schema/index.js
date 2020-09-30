@@ -297,6 +297,12 @@ const MovieCreateMutation = mutationWithClientMutationId(
           GraphQLString
         )
       },
+      spoofFlag: {
+        type: GraphQLBoolean
+      },
+      hero: {
+        type: GraphQLString
+      },
       genre: {
         type: GraphQLString
       },

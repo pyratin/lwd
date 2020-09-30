@@ -168,34 +168,62 @@ const charactersConcatedGet = (
   );
 };
 
-const charactersSortedByCastIndexGet = (
-  characters
+const charactersSortedBySplashIndexGet = (
+  _characters
 ) => {
 
-  return characters.sort(
-    (
-      a, b
-    ) => {
+  let characters = [
+    ..._characters.filter(
+      (
+        _character
+      ) => {
 
-      switch (
-        true
-      ) {
-
-        case (
-          a.castIndex >
-          b.castIndex
-        ) :
-
-          return 1;
-
-        case (
-          b.castIndex >
-          a.castIndex
-        ) :
-
-          return -1;
+        return (
+          _character.splashIndex >=
+          0
+        );
       }
-    }
+    )
+      .sort(
+        (
+          a, b
+        ) => {
+
+          switch (
+            true
+          ) {
+
+            case (
+              a.splashIndex >
+              b.splashIndex
+            ) :
+
+              return 1;
+
+            case (
+              b.splashIndex >
+              a.splashIndex
+            ) :
+
+              return -1;
+          }
+        }
+      ),
+    ..._characters.filter(
+      (
+        _character
+      ) => {
+
+        return (
+          _character.splashIndex ===
+          -1
+        );
+      }
+    )
+  ];
+
+  return (
+    characters
   );
 };
 
@@ -211,7 +239,7 @@ const charactersRenderDetailAssignedGet = (
     characters
   );
 
-  characters = charactersSortedByCastIndexGet(
+  characters = charactersSortedBySplashIndexGet(
     characters
   );
 

@@ -17,13 +17,6 @@ import {
   deckCountDocuments,
   deckCreate as deckCreateFn
 } from '~/js/server/data/deck';
-import deckSpoofedGet from '../fns/deckSpoofedGet';
-import deckActorImageIdsAssignedGet 
-  from '../fns/deckActorImageIdsAssignedGet';
-import deckRenderDetailsAssignedGet 
-  from '../fns/deckRenderDetailsAssignedGet';
-import deckGifyUrlsAssignedGet 
-  from '../fns/deckGifyUrlsAssignedGet';
 import movieSearch from 
   '../movieSearch';
 import {
@@ -32,41 +25,22 @@ import {
 import movieWrite from '../fns/movieWrite';
 
 const deckLocalPreRenderHandledGet = (
-  _deck,
+  deck,
+  spoofFlag,
+  hero,
   genre,
   db
 ) => {
 
-  const deck = deckSpoofedGet(
-    _deck,
-    genre
-  );
-
-  return deckActorImageIdsAssignedGet(
+  return deckGetFn(
     deck,
+    spoofFlag,
+    hero,
     genre,
-    db
-  )
-    .then(
-      (
-        deck
-      ) => {
-
-        return deckRenderDetailsAssignedGet(
-          deck
-        );
-      }
-    )
-    .then(
-      (
-        deck
-      ) => {
-
-        return deckGifyUrlsAssignedGet(
-          deck
-        );
-      }
-    );
+    undefined,
+    db,
+    false
+  );
 };
 
 const tmd5000moviesTitleByIndexGet = async (
@@ -161,6 +135,8 @@ const titleMatchGet = (
 
 const deckLocalPreviewGet = async (
   index,
+  spoofFlag,
+  hero,
   genre,
   db
 ) => {
@@ -183,6 +159,8 @@ const deckLocalPreviewGet = async (
 
   deck = await deckLocalPreRenderHandledGet(
     deck,
+    spoofFlag,
+    hero,
     genre,
     db
   );
@@ -193,6 +171,8 @@ const deckLocalPreviewGet = async (
 };
 
 const deckLocalRandomGet = async (
+  spoofFlag,
+  hero,
   genre,
   db
 ) => {
@@ -226,6 +206,8 @@ const deckLocalRandomGet = async (
   ) {
 
     return deckLocalRandomGet(
+      spoofFlag,
+      hero,
       genre,
       db
     );
@@ -233,6 +215,8 @@ const deckLocalRandomGet = async (
 
   deck = await deckLocalPreRenderHandledGet(
     deck,
+    spoofFlag,
+    hero,
     genre,
     db
   );
@@ -290,6 +274,8 @@ const movieCreate = async (
 
 const deckGet = async (
   text,
+  spoofFlag,
+  hero,
   genre,
   plotLimit,
   db
@@ -315,6 +301,8 @@ const deckGet = async (
             1
           ]
         ),
+        spoofFlag,
+        hero,
         genre,
         db
       );
@@ -326,6 +314,8 @@ const deckGet = async (
     ) :
 
       return deckLocalRandomGet(
+        spoofFlag,
+        hero,
         genre,
         db
       );
@@ -345,6 +335,8 @@ const deckGet = async (
 
       return deckLocalPreRenderHandledGet(
         deck,
+        spoofFlag,
+        hero,
         genre,
         db
       );
@@ -353,15 +345,20 @@ const deckGet = async (
 
       return deckGetFn(
         text,
+        spoofFlag,
+        hero,
         genre,
         plotLimit,
-        db
+        db,
+        true
       );
   }
 };
 
 const outputGet = async (
   text,
+  spoofFlag,
+  hero,
   genre,
   plotLimit,
   outputType,
@@ -370,6 +367,8 @@ const outputGet = async (
 
   const deck = await deckGet(
     text,
+    spoofFlag,
+    hero,
     genre,
     plotLimit,
     db
@@ -471,6 +470,8 @@ export default async (
 ) => {
 
   const {
+    spoofFlag = false,
+    hero = '____',
     genre = 'general',
     outputType = 'movie',
     createFlag = true
@@ -478,6 +479,8 @@ export default async (
 
   let output = await outputGet(
     text,
+    spoofFlag,
+    hero,
     genre,
     plotLimit,
     outputType,

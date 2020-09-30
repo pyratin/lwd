@@ -6,13 +6,12 @@ import deckCardsSpoofedGet from './deckCardsSpoofedGet';
 
 export default (
   deck,
-  genre
+  spoofFlag,
+  hero
 ) => {
 
   if (
-    !genre.match(
-      /^spoof-/
-    )
+    !spoofFlag
   ) {
 
     return (
@@ -22,7 +21,7 @@ export default (
 
   const characters = deckCharactersSpoofedGet(
     deck.splash.characters,
-    genre
+    hero
   );
 
   const cards = deckCardsSpoofedGet(
