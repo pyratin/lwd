@@ -92,6 +92,7 @@ export default async (
     spoofFlag,
     hero
   );
+  console.log(deck.splash.characters);
 
   deck = await deckActorImageIdsAssignedGet(
     deck,
