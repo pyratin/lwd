@@ -18,8 +18,8 @@ import mediaOutputFolderInit from
   './fns/mediaOutputFolderInit';
 import movieGifRouteHandle from 
   './fns/movieOutputGifRouteHandle';
-import movieIdRouteHandle from 
-  './fns/movieIdRouteHandle';
+import movieIdRouteHandle from './fns/movieIdRouteHandle';
+import schemaUpdate from './fns/schemaUpdate';
 
 (
   async () => {
@@ -29,6 +29,8 @@ import movieIdRouteHandle from
     const db = await mongoClientConnect(
       mongoUriGet()
     );
+
+    await schemaUpdate();
 
     const port = portGet();
 
