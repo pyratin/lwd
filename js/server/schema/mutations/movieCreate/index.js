@@ -24,7 +24,7 @@ import {
 } from '~/js/server/data/movie';
 import movieWrite from '../fns/movieWrite';
 
-const deckLocalPreRenderHandledGet = (
+const deckCachedHandledGet = (
   deck,
   spoofInput,
   genre,
@@ -36,8 +36,7 @@ const deckLocalPreRenderHandledGet = (
     spoofInput,
     genre,
     undefined,
-    db,
-    false
+    db
   );
 };
 
@@ -131,7 +130,36 @@ const titleMatchGet = (
     );
 };
 
-const deckLocalPreviewGet = async (
+const deckByIdGet = async (
+  deckId,
+  spoofInput,
+  genre,
+  db
+) => {
+
+  let deck = await deckFindOne(
+    {
+      _id: new ObjectID(
+        deckId
+      )
+    },
+    undefined,
+    db
+  );
+
+  deck = await deckCachedHandledGet(
+    deck,
+    spoofInput,
+    genre,
+    db
+  );
+
+  return (
+    deck
+  );
+};
+
+const deckByIndexGet = async (
   index,
   spoofInput,
   genre,
@@ -154,7 +182,7 @@ const deckLocalPreviewGet = async (
     db
   );
 
-  deck = await deckLocalPreRenderHandledGet(
+  deck = await deckCachedHandledGet(
     deck,
     spoofInput,
     genre,
@@ -166,7 +194,7 @@ const deckLocalPreviewGet = async (
   );
 };
 
-const deckLocalRandomGet = async (
+const deckRandomGet = async (
   spoofInput,
   genre,
   db
@@ -200,14 +228,14 @@ const deckLocalRandomGet = async (
     !deck.splash.spoofable
   ) {
 
-    return deckLocalRandomGet(
+    return deckRandomGet(
       spoofInput,
       genre,
       db
     );
   }
 
-  deck = await deckLocalPreRenderHandledGet(
+  deck = await deckCachedHandledGet(
     deck,
     spoofInput,
     genre,
@@ -281,14 +309,31 @@ const deckGet = async (
 
     case (
       !!text.match(
-        /^preview:\d+$/
+        /^id:.{24}$/
       )
     ) :
 
-      return deckLocalPreviewGet(
+      return deckByIdGet(
+        text.split(
+          /:/
+        )[
+          1
+        ],
+        spoofInput,
+        genre,
+        db
+      );
+
+    case (
+      !!text.match(
+        /^index:\d+$/
+      )
+    ) :
+
+      return deckByIndexGet(
         parseInt(
           text.split(
-            ':'
+            /:/
           )[
             1
           ]
@@ -300,11 +345,11 @@ const deckGet = async (
 
     case (
       !!text.match(
-        /^random:local$/
+        /^random$/
       )
     ) :
 
-      return deckLocalRandomGet(
+      return deckRandomGet(
         spoofInput,
         genre,
         db
@@ -323,7 +368,7 @@ const deckGet = async (
       !!deck
     ) :
 
-      return deckLocalPreRenderHandledGet(
+      return deckCachedHandledGet(
         deck,
         spoofInput,
         genre,
@@ -337,8 +382,7 @@ const deckGet = async (
         spoofInput,
         genre,
         plotLimit,
-        db,
-        true
+        db
       );
   }
 };

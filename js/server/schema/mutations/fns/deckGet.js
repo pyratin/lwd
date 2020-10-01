@@ -7,6 +7,8 @@ import charactersMetaAssignedGet
   from './charactersMetaAssignedGet';
 import charactersGenderAssignedGet
   from './charactersGenderAssignedGet';
+import deckSpoofableGet 
+  from './deckSpoofableGet';
 import deckSpoofedGet from './deckSpoofedGet';
 import deckActorImageIdsAssignedGet
   from './deckActorImageIdsAssignedGet';
@@ -14,8 +16,6 @@ import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
 import deckGifyUrlsAssignedGet from 
   './deckGifyUrlsAssignedGet';
-import deckSpoofableAssignedGet 
-  from './deckSpoofableAssignedGet';
 
 const deckBuiltGet = async (
   title,
@@ -58,11 +58,17 @@ const deckBuiltGet = async (
     movieDataBasic.title
   );
 
+  const spoofable = deckSpoofableGet(
+    characters,
+    cards
+  );
+
   return {
     splash: {
       title: movieDataBasic.title,
       poster: movieDataBasic.poster,
-      characters
+      characters,
+      spoofable
     },
     cards
   };
@@ -73,12 +79,13 @@ export default async (
   spoofInput,
   genre,
   plotLimit,
-  db,
-  buildFlag
+  db
 ) => {
 
   let deck = (
-    buildFlag
+    typeof(
+      input
+    ) === 'string'
   ) ?
     await deckBuiltGet(
       input,
@@ -102,10 +109,6 @@ export default async (
   );
 
   deck = await deckGifyUrlsAssignedGet(
-    deck
-  );
-
-  deck = deckSpoofableAssignedGet(
     deck
   );
 

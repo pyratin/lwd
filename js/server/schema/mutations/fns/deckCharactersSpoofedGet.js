@@ -172,7 +172,8 @@ const characterGroupsSpoofNameAssignedGet = (
     ],
     [
       spoofNameCapitalizedGet(
-        spoofInput.hero
+        spoofInput?.hero ||
+        'hero'
       )
     ]
   );
@@ -192,7 +193,8 @@ const characterGroupsSpoofNameAssignedGet = (
     ],
     [
       spoofNameCapitalizedGet(
-        spoofInput.villain
+        spoofInput?.villain ||
+        'villain'
       )
     ]
   );
