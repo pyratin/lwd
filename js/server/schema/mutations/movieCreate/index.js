@@ -26,16 +26,14 @@ import movieWrite from '../fns/movieWrite';
 
 const deckLocalPreRenderHandledGet = (
   deck,
-  spoofFlag,
-  hero,
+  spoofInput,
   genre,
   db
 ) => {
 
   return deckGetFn(
     deck,
-    spoofFlag,
-    hero,
+    spoofInput,
     genre,
     undefined,
     db,
@@ -135,8 +133,7 @@ const titleMatchGet = (
 
 const deckLocalPreviewGet = async (
   index,
-  spoofFlag,
-  hero,
+  spoofInput,
   genre,
   db
 ) => {
@@ -159,8 +156,7 @@ const deckLocalPreviewGet = async (
 
   deck = await deckLocalPreRenderHandledGet(
     deck,
-    spoofFlag,
-    hero,
+    spoofInput,
     genre,
     db
   );
@@ -171,8 +167,7 @@ const deckLocalPreviewGet = async (
 };
 
 const deckLocalRandomGet = async (
-  spoofFlag,
-  hero,
+  spoofInput,
   genre,
   db
 ) => {
@@ -206,8 +201,7 @@ const deckLocalRandomGet = async (
   ) {
 
     return deckLocalRandomGet(
-      spoofFlag,
-      hero,
+      spoofInput,
       genre,
       db
     );
@@ -215,8 +209,7 @@ const deckLocalRandomGet = async (
 
   deck = await deckLocalPreRenderHandledGet(
     deck,
-    spoofFlag,
-    hero,
+    spoofInput,
     genre,
     db
   );
@@ -274,8 +267,7 @@ const movieCreate = async (
 
 const deckGet = async (
   text,
-  spoofFlag,
-  hero,
+  spoofInput,
   genre,
   plotLimit,
   db
@@ -301,8 +293,7 @@ const deckGet = async (
             1
           ]
         ),
-        spoofFlag,
-        hero,
+        spoofInput,
         genre,
         db
       );
@@ -314,8 +305,7 @@ const deckGet = async (
     ) :
 
       return deckLocalRandomGet(
-        spoofFlag,
-        hero,
+        spoofInput,
         genre,
         db
       );
@@ -335,8 +325,7 @@ const deckGet = async (
 
       return deckLocalPreRenderHandledGet(
         deck,
-        spoofFlag,
-        hero,
+        spoofInput,
         genre,
         db
       );
@@ -345,8 +334,7 @@ const deckGet = async (
 
       return deckGetFn(
         text,
-        spoofFlag,
-        hero,
+        spoofInput,
         genre,
         plotLimit,
         db,
@@ -357,8 +345,7 @@ const deckGet = async (
 
 const outputGet = async (
   text,
-  spoofFlag,
-  hero,
+  spoofInput,
   genre,
   plotLimit,
   outputType,
@@ -367,8 +354,7 @@ const outputGet = async (
 
   const deck = await deckGet(
     text,
-    spoofFlag,
-    hero,
+    spoofInput,
     genre,
     plotLimit,
     db
@@ -470,8 +456,7 @@ export default async (
 ) => {
 
   const {
-    spoofFlag = false,
-    hero = '____',
+    spoofInput,
     genre = 'general',
     outputType = 'movie',
     createFlag = true
@@ -479,8 +464,7 @@ export default async (
 
   let output = await outputGet(
     text,
-    spoofFlag,
-    hero,
+    spoofInput,
     genre,
     plotLimit,
     outputType,

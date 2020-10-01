@@ -70,8 +70,7 @@ const deckBuiltGet = async (
 
 export default async (
   input,
-  spoofFlag,
-  hero,
+  spoofInput,
   genre,
   plotLimit,
   db,
@@ -89,8 +88,7 @@ export default async (
 
   deck = deckSpoofedGet(
     deck,
-    spoofFlag,
-    hero
+    spoofInput
   );
 
   deck = await deckActorImageIdsAssignedGet(

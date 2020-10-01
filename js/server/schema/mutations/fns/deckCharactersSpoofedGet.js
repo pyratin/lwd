@@ -4,11 +4,11 @@ import spoofNamesGetFn from './spoofNamesGet';
 import charactersSortedByStarringIndexGet 
   from './charactersSortedByStarringIndexGet';
 
-const spoofNameCapitalizedGet = (
-  spoofName
+const spoofNameCapitalizedGetFn = (
+  _spoofName
 ) => {
 
-  return spoofName.split(
+  return _spoofName.split(
     ''
   )
     .map(
@@ -31,6 +31,28 @@ const spoofNameCapitalizedGet = (
     )
     .join(
       ''
+    );
+};
+
+const spoofNameCapitalizedGet = (
+  spoofName
+) => {
+
+  return spoofName.split(
+    /\W/
+  )
+    .map(
+      (
+        _spoofName
+      ) => {
+
+        return spoofNameCapitalizedGetFn(
+          _spoofName
+        );
+      }
+    )
+    .join(
+      '-'
     );
 };
 
@@ -140,7 +162,7 @@ const characterGroupsSpoofNameAssignedGetFn = (
 const characterGroupsSpoofNameAssignedGet = (
   _characterGroups,
   spoofNames,
-  hero
+  spoofInput
 ) => {
 
   const heroGroups = 
@@ -150,7 +172,7 @@ const characterGroupsSpoofNameAssignedGet = (
     ],
     [
       spoofNameCapitalizedGet(
-        hero
+        spoofInput.hero
       )
     ]
   );
@@ -168,7 +190,11 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       2
     ],
-    spoofNames.villain
+    [
+      spoofNameCapitalizedGet(
+        spoofInput.villain
+      )
+    ]
   );
 
   const manGroups = 
@@ -322,7 +348,7 @@ const characterGroupsGet = (
 
 export default (
   _characters,
-  hero
+  spoofInput
 ) => {
 
   let characterGroups = characterGroupsGet(
@@ -334,7 +360,7 @@ export default (
   characterGroups = characterGroupsSpoofNameAssignedGet(
     characterGroups,
     spoofNames,
-    hero
+    spoofInput
   );
 
   let characters = charactersGet(

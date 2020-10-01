@@ -5,9 +5,7 @@ export default () => {
   return (
     {
       heroine: [],
-      villain: [
-        'Bombay-Terrorist'
-      ],
+      villain: [],
       man: [],
       woman: [],
       unknown: []

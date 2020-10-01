@@ -6,12 +6,11 @@ import deckCardsSpoofedGet from './deckCardsSpoofedGet';
 
 export default (
   deck,
-  spoofFlag,
-  hero
+  spoofInput
 ) => {
 
   if (
-    !spoofFlag
+    !spoofInput
   ) {
 
     return (
@@ -21,7 +20,7 @@ export default (
 
   const characters = deckCharactersSpoofedGet(
     deck.splash.characters,
-    hero
+    spoofInput
   );
 
   const cards = deckCardsSpoofedGet(

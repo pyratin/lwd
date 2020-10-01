@@ -8,7 +8,8 @@ import {
   GraphQLNonNull,
   GraphQLList,
   GraphQLBoolean,
-  GraphQLUnionType
+  GraphQLUnionType,
+  GraphQLInputObjectType
 } from 'graphql';
 import {
   mutationWithClientMutationId
@@ -288,6 +289,23 @@ const MovieSearchMutation = mutationWithClientMutationId(
   }
 );
 
+const spoofInputType = new GraphQLInputObjectType(
+  {
+    name: 'spoofInput',
+    fields() {
+
+      return {
+        hero: {
+          type: GraphQLString
+        },
+        villain: {
+          type: GraphQLString
+        }
+      };
+    }
+  }
+);
+
 const MovieCreateMutation = mutationWithClientMutationId(
   {
     name: 'MovieCreate',
@@ -297,11 +315,8 @@ const MovieCreateMutation = mutationWithClientMutationId(
           GraphQLString
         )
       },
-      spoofFlag: {
-        type: GraphQLBoolean
-      },
-      hero: {
-        type: GraphQLString
+      spoofInput: {
+        type: spoofInputType
       },
       genre: {
         type: GraphQLString
