@@ -12,8 +12,8 @@ const characterExistsGet = (
 
       return (
         (
-          _character.role ===
-          character.role
+          _character.roleIndex ===
+          character.roleIndex
         ) &&
         (
           _character.roleGroupIndex ===
@@ -41,6 +41,10 @@ const charactersRenderAssignedGet = (
 
       if (
         _character.starringCardIndexes &&
+        (
+          _character.dualRoleIndex ===
+          -1
+        ) &&
         !exists
       ) {
         

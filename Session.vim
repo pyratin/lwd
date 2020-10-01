@@ -47,7 +47,7 @@ badd +103 js/server/fns/variable.js
 badd +65 views/movies.ejs
 badd +533 js/server/schema/mutations/fns/deckActorImageIdsAssignedGet.js
 badd +11 js/server/schema/mutations/fns/charactersMetaAssignedGet.js
-badd +120 js/server/schema/mutations/fns/charactersMetaStarringAssignedGet.js
+badd +180 js/server/schema/mutations/fns/charactersMetaStarringAssignedGet.js
 badd +3 .gitignore
 badd +24 utils/process/source/fns/download.js
 badd +2 utils/process/source/index.js
@@ -139,7 +139,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 128 - ((27 * winheight(0) + 18) / 36)
+let s:l = 128 - ((28 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -164,7 +164,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 300 - ((16 * winheight(0) + 17) / 34)
+let s:l = 300 - ((17 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -189,12 +189,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 40 - ((23 * winheight(0) + 17) / 34)
+let s:l = 476 - ((14 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-40
-normal! 010|
+476
+normal! 0
 tabedit js/server/schema/mutations/fns/deckGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -214,12 +214,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 117 - ((33 * winheight(0) + 17) / 34)
+let s:l = 105 - ((25 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-117
-normal! 02|
+105
+normal! 0
 tabedit js/server/schema/mutations/fns/deckSpoofedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -239,11 +239,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((19 * winheight(0) + 18) / 36)
+let s:l = 14 - ((13 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-20
+14
 normal! 03|
 tabedit js/server/schema/mutations/fns/deckCharactersSpoofedGet.js
 set splitbelow splitright
@@ -339,12 +339,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 220 - ((30 * winheight(0) + 18) / 36)
+let s:l = 225 - ((30 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-220
-normal! 04|
+225
+normal! 0
 tabedit js/server/schema/mutations/fns/charactersMetaStarringAssignedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -370,6 +370,31 @@ exe s:l
 normal! zt
 180
 normal! 0
+tabedit js/server/schema/mutations/fns/deckActorImageIdsAssignedGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 974 - ((14 * winheight(0) + 18) / 36)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+974
+normal! 0
 tabedit js/server/schema/mutations/fns/deckRenderDetailsAssignedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -389,12 +414,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 241 - ((19 * winheight(0) + 18) / 36)
+let s:l = 391 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-241
-normal! 0
+391
+normal! 02|
 tabedit js/server/schema/mutations/fns/cardsGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -539,11 +564,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 191 - ((34 * winheight(0) + 18) / 36)
+let s:l = 1 - ((0 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-191
+1
 normal! 0
 tabedit js/server/schema/mutations/fns/NNPWhitelistGet.js
 set splitbelow splitright
@@ -564,7 +589,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 36 - ((24 * winheight(0) + 18) / 36)
+let s:l = 36 - ((23 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -589,7 +614,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 6 - ((5 * winheight(0) + 18) / 36)
+let s:l = 6 - ((5 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -614,7 +639,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 7 - ((5 * winheight(0) + 18) / 36)
+let s:l = 7 - ((5 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -639,7 +664,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 6 - ((5 * winheight(0) + 18) / 36)
+let s:l = 6 - ((5 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -664,7 +689,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 6 - ((5 * winheight(0) + 18) / 36)
+let s:l = 6 - ((5 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -689,13 +714,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 77 - ((29 * winheight(0) + 18) / 36)
+let s:l = 77 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 77
 normal! 02|
-tabnext 6
+tabnext 20
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

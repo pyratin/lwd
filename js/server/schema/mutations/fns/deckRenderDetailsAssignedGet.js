@@ -116,11 +116,8 @@ const charactersConcatedGet = (
       const dualRoleIndex = character.dualRoleIndex;
 
       if (
-        character.render &&
-        (
-          dualRoleIndex >=
-          0
-        )
+        dualRoleIndex >=
+        0
       ) {
 
         const renderText = `
@@ -148,10 +145,7 @@ const charactersConcatedGet = (
           ...memo.slice(
             dualRoleIndex + 1
           ),
-          {
-            ...character,
-            render: false
-          }
+          character
         ];
       }
 
