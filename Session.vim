@@ -20,6 +20,7 @@ badd +1 utils/webpack/webpackConfigDev.js
 badd +0 js/client/styles.scss
 badd +0 .stylelintrc.json
 badd +0 js/client/Components/Viewer/index.js
+badd +0 utils/webpack/webpackConfigProd.js
 argglobal
 %argdel
 set stal=2
@@ -42,12 +43,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 63 - ((16 * winheight(0) + 17) / 34)
+let s:l = 1 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-63
-normal! 05|
+1
+normal! 0
 tabedit utils/webpack/webpackConfigBase.js
 set splitbelow splitright
 set nosplitbelow
@@ -67,12 +68,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 66 - ((16 * winheight(0) + 17) / 34)
+let s:l = 29 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-66
-normal! 034|
+29
+normal! 017|
 tabedit utils/webpack/webpackConfigDev.js
 set splitbelow splitright
 set nosplitbelow
@@ -92,12 +93,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 8 - ((7 * winheight(0) + 17) / 34)
+let s:l = 20 - ((19 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-8
-normal! 020|
+20
+normal! 0
+tabedit utils/webpack/webpackConfigProd.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 31 - ((24 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+31
+normal! 011|
 tabedit utils/datasets/fns/tmdb5000movieDecksCreate.js
 set splitbelow splitright
 set nosplitbelow
@@ -242,12 +268,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 53 - ((28 * winheight(0) + 17) / 34)
+let s:l = 142 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-53
-normal! 0
+142
+normal! 016|
 tabedit js/client/Components/Viewer/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -267,11 +293,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 9 - ((8 * winheight(0) + 17) / 34)
+let s:l = 13 - ((12 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-9
+13
 normal! 022|
 tabedit js/client/styles.scss
 set splitbelow splitright
@@ -292,12 +318,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 9 - ((8 * winheight(0) + 17) / 34)
+let s:l = 1 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-9
-normal! 053|
+1
+normal! 0
 tabedit .stylelintrc.json
 set splitbelow splitright
 set nosplitbelow
@@ -323,7 +349,7 @@ exe s:l
 normal! zt
 3
 normal! 0
-tabnext 9
+tabnext 1
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
