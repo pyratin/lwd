@@ -33,6 +33,7 @@ import 'bootstrap/dist/js/bootstrap';
 
 import 'styles.scss';
 import Viewer from 'Components/Viewer';
+import Decks from 'Components/Decks';
 
 const query = graphql`
   query clientQuery {
@@ -52,6 +53,12 @@ const routeConfig = makeRouteConfig(
       query
     }
   >
+    <Route
+      path = 'Decks'
+      Component = {
+        Decks
+      }
+    />
   </Route>
 );
 

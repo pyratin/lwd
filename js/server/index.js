@@ -70,7 +70,6 @@ import schemaUpdate from './fns/schemaUpdate';
             {
               schema,
               pretty: true,
-              graphiql: true,
               context: {
                 db,
                 req

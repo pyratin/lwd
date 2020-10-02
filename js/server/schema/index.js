@@ -203,6 +203,46 @@ const viewerType = new GraphQLObjectType(
         },
         text: {
           type: GraphQLString
+        },
+        deckId: {
+          type: GraphQLID,
+          resolve(
+            parent,
+            args,
+            {
+              db,
+              req
+            }
+          ) {
+
+            return movieCreate(
+              'random',
+              {
+                spoofInput: {
+                  hero: 'maha',
+                  villain: 'bombay-terrorist'
+                },
+                genre: 'general',
+                outputType: 'deck',
+                createFlag: false
+              },
+              undefined,
+              db,
+              req
+            )
+              .then(
+                (
+                  {
+                    _id: deckId
+                  }
+                ) => {
+
+                  return (
+                    deckId
+                  );
+                }
+              );
+          }
         }
       };
     }

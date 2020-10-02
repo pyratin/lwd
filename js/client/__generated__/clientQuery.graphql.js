@@ -30,8 +30,14 @@ query clientQuery {
   }
 }
 
+fragment Decks_viewer on Viewer {
+  id
+}
+
 fragment Viewer_viewer on Viewer {
   id
+  deckId
+  ...Decks_viewer
 }
 */
 
@@ -82,6 +88,13 @@ const node/*: ConcreteRequest*/ = {
             "kind": "ScalarField",
             "name": "id",
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "deckId",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -89,12 +102,12 @@ const node/*: ConcreteRequest*/ = {
     ]
   },
   "params": {
-    "cacheID": "94c5f9644c06082087dafd3d7aa4b96c",
+    "cacheID": "b25b4eaadd6dc19edc6656eb1e303cd0",
     "id": null,
     "metadata": {},
     "name": "clientQuery",
     "operationKind": "query",
-    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n}\n"
+    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment Decks_viewer on Viewer {\n  id\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n  deckId\n  ...Decks_viewer\n}\n"
   }
 };
 // prettier-ignore
