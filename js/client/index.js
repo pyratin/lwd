@@ -4,11 +4,160 @@ import React from 'react';
 import {
   render
 } from 'react-dom';
+import {
+  RecordSource,
+  Store,
+  Network,
+  Environment
+} from 'relay-runtime';
+import {
+  graphql
+} from 'react-relay';
+import {
+  makeRouteConfig,
+  Route,
+  createFarceRouter,
+  createRender
+} from 'found';
+import {
+  BrowserProtocol,
+  queryMiddleware
+} from 'farce';
+import {
+  Resolver
+} from 'found-relay';
+import {
+  ScrollManager
+} from 'found-scroll';
+import 'bootstrap/dist/js/bootstrap';
+
+import 'styles.scss';
+import Viewer from 'Components/Viewer';
+
+const query = graphql`
+  query clientQuery {
+    viewer {
+      ...Viewer_viewer
+    }
+  }
+`;
+
+const routeConfig = makeRouteConfig(
+  <Route
+    path = '/'
+    Component = {
+      Viewer
+    }
+    query = {
+      query
+    }
+  >
+  </Route>
+);
+
+const recordSource = new RecordSource();
+
+const store = new Store(
+  recordSource
+);
+
+const fetchQuery = (
+  operation,
+  variables
+) => {
+
+  return fetch(
+    '/graphql',
+    {
+      method: 'POST',
+      crendentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(
+        {
+          query: operation.text,
+          variables
+        }
+      )
+    }
+  )
+    .then(
+      (
+        res
+      ) => {
+
+        return res.json();
+      }
+    )
+    .then(
+      (
+        json
+      ) => {
+
+        return (
+          json.errors
+        ) ?
+          Promise.reject(
+            json
+          ) :
+          Promise.resolve(
+            json
+          );
+      }
+    );
+};
+
+const network = Network.create(
+  fetchQuery
+);
+
+const environment = new Environment(
+  {
+    store,
+    network
+  }
+);
+
+const Router = createFarceRouter(
+  {
+    historyProtocol: new BrowserProtocol(),
+    historyMiddleware: [
+      queryMiddleware
+    ],
+    routeConfig,
+    render(
+      renderArgs
+    ) {
+
+      return (
+        <ScrollManager
+          renderArgs = {
+            renderArgs
+          }
+        >
+          {
+            createRender(
+              {}
+            )(
+              renderArgs
+            )
+          }
+        </ScrollManager>
+      );
+    }
+  }
+);
 
 render(
-  <h1>
-    maha
-  </h1>,
+  <Router
+    resolver = {
+      new Resolver(
+        environment
+      )
+    }
+  />,
   document.getElementById(
     'viewer'
   )
