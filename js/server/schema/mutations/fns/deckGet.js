@@ -14,8 +14,8 @@ import deckActorImageIdsAssignedGet
   from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
-import deckGifyUrlsAssignedGet from 
-  './deckGifyUrlsAssignedGet';
+import cardsGifyUrlAssignedGet from 
+  './cardsGifyUrlAssignedGet';
 
 const deckBuiltGet = async (
   title,
@@ -56,6 +56,10 @@ const deckBuiltGet = async (
     characters,
     cards,
     movieDataBasic.title
+  );
+
+  cards = await cardsGifyUrlAssignedGet(
+    cards
   );
 
   const spoofable = deckSpoofableGet(
@@ -105,10 +109,6 @@ export default async (
   );
 
   deck = deckRenderDetailsAssignedGet(
-    deck
-  );
-
-  deck = await deckGifyUrlsAssignedGet(
     deck
   );
 

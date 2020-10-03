@@ -12,12 +12,15 @@ import {
   GraphQLInputObjectType
 } from 'graphql';
 import {
-  mutationWithClientMutationId
+  mutationWithClientMutationId,
+  connectionDefinitions,
+  connectionArgs
 } from 'graphql-relay';
 
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
 import movieCreate from './mutations/movieCreate';
+import deckConnectionGet from './query/deckConnectionGet';
 
 const characterType = new GraphQLObjectType(
   {
@@ -110,6 +113,20 @@ const deckType = new GraphQLObjectType(
     fields() {
 
       return {
+        id: {
+          type: GraphQLID,
+          resolve(
+            {
+              _id: deckId
+            }
+          ) {
+
+            return (
+              deckId
+            ) &&
+              deckId.toString();
+          }
+        },
         splash: {
           type: splashType
         },
@@ -182,6 +199,15 @@ const outputType = new GraphQLUnionType(
   }
 );
 
+const {
+  connectionType: deckConnectionType
+} = connectionDefinitions(
+  {
+    name: 'Deck',
+    nodeType: deckType
+  }
+);
+
 const viewerType = new GraphQLObjectType(
   {
     name: 'Viewer',
@@ -210,25 +236,16 @@ const viewerType = new GraphQLObjectType(
             parent,
             args,
             {
-              db,
-              req
+              db
             }
           ) {
 
             return movieCreate(
               'random',
-              {
-                spoofInput: {
-                  hero: 'maha',
-                  villain: 'bombay-terrorist'
-                },
-                genre: 'general',
-                outputType: 'deck',
-                createFlag: false
-              },
+              undefined,
               undefined,
               db,
-              req
+              undefined
             )
               .then(
                 (
@@ -242,6 +259,32 @@ const viewerType = new GraphQLObjectType(
                   );
                 }
               );
+          }
+        },
+        decks: {
+          type: deckConnectionType,
+          args: {
+            deckId: {
+              type: GraphQLID
+            },
+            ...connectionArgs
+          },
+          resolve(
+            parent,
+            {
+              deckId,
+              ...connectionArgs
+            },
+            {
+              db
+            }
+          ) {
+
+            return deckConnectionGet(
+              deckId,
+              connectionArgs,
+              db
+            );
           }
         }
       };

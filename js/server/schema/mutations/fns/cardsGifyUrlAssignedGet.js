@@ -226,11 +226,11 @@ const cardsGifyUrlAssignedGet = (
 };
 
 export default async (
-  deck
+  _cards
 ) => {
 
   let cardsFlatlist = cardsForGifyGet(
-    deck.cards
+    _cards
   );
 
   cardsFlatlist = await cardsFlatlistGifyUrlAssignedGet(
@@ -239,11 +239,10 @@ export default async (
 
   const cards = cardsGifyUrlAssignedGet(
     cardsFlatlist,
-    deck.cards
+    _cards
   );
 
-  return {
-    ...deck,
+  return (
     cards
-  };
+  );
 };

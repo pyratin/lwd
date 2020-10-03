@@ -493,7 +493,7 @@ const outputCreatedGet = (
 
 export default async (
   text,
-  input,
+  input = {},
   plotLimit = 5,
   db,
   req
@@ -502,8 +502,8 @@ export default async (
   const {
     spoofInput,
     genre = 'general',
-    outputType = 'movie',
-    createFlag = true
+    outputType = 'deck',
+    createFlag = false
   } = input;
 
   let output = await outputGet(

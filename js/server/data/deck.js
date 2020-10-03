@@ -4,7 +4,8 @@ import {
   find,
   findOne,
   countDocuments,
-  findOneAndUpdate
+  findOneAndUpdate,
+  connectionGet
 } from './index';
 
 const deckCollectionName = 'decks';
@@ -73,9 +74,27 @@ const deckCreate = (
   );
 };
 
+const deckConnectionGet = (
+  deckId,
+  connectionArgs,
+  db
+) => {
+
+  return connectionGet(
+    {},
+    deckId,
+    connectionArgs,
+    undefined,
+    deckCollectionName,
+    db,
+    undefined
+  );
+};
+
 export {
   deckFind,
   deckFindOne,
   deckCountDocuments,
-  deckCreate
+  deckCreate,
+  deckConnectionGet
 };
