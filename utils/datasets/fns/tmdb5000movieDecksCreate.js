@@ -155,12 +155,8 @@ const decksCreateFn = async (
   return movieCreate(
     title,
     {
-      spoofInput: undefined,
-      genre: 'general',
-      outputType: 'deck',
       createFlag: true
     },
-    undefined,
     db,
     undefined
   );

@@ -17,13 +17,24 @@ import deckRenderDetailsAssignedGet
 import cardsGifyUrlAssignedGet from 
   './cardsGifyUrlAssignedGet';
 
-const deckBuiltGet = async (
-  title,
+const deckPreBuiltGet = async (
+  input,
   plotLimit
 ) => {
 
+  if (
+    typeof(
+      input
+    ) !== 'string'
+  ) {
+
+    return Promise.resolve(
+      input
+    );
+  }
+
   let movieDataBasic = await movieDataBasicGet(
-    title,
+    input,
     plotLimit
   );
 
@@ -78,24 +89,22 @@ const deckBuiltGet = async (
   };
 };
 
-export default async (
-  input,
+const deckPostProcessedGet = async (
+  deck,
   spoofInput,
   genre,
-  plotLimit,
   db
 ) => {
 
-  let deck = (
-    typeof(
-      input
-    ) === 'string'
-  ) ?
-    await deckBuiltGet(
-      input,
-      plotLimit
-    ) :
-    input;
+  if (
+    !spoofInput ||
+    !genre
+  ) {
+
+    return Promise.resolve(
+      deck
+    );
+  }
 
   deck = deckSpoofedGet(
     deck,
@@ -110,6 +119,31 @@ export default async (
 
   deck = deckRenderDetailsAssignedGet(
     deck
+  );
+
+  return (
+    deck
+  );
+};
+
+export default async (
+  input,
+  spoofInput,
+  genre,
+  plotLimit,
+  db
+) => {
+
+  let deck = await deckPreBuiltGet(
+    input,
+    plotLimit
+  );
+
+  deck = await deckPostProcessedGet(
+    deck,
+    spoofInput,
+    genre,
+    db
   );
 
   return (

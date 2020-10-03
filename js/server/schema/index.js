@@ -243,7 +243,6 @@ const viewerType = new GraphQLObjectType(
             return movieCreate(
               'random',
               undefined,
-              undefined,
               db,
               undefined
             )
@@ -434,7 +433,7 @@ const MovieCreateMutation = mutationWithClientMutationId(
     mutateAndGetPayload(
       {
         text,
-        ...input
+        ...options
       },
       {
         db,
@@ -444,8 +443,7 @@ const MovieCreateMutation = mutationWithClientMutationId(
 
       return movieCreate(
         text,
-        input,
-        undefined,
+        options,
         db,
         req
       );

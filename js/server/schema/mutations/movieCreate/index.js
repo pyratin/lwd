@@ -391,8 +391,8 @@ const outputGet = async (
   text,
   spoofInput,
   genre,
-  plotLimit,
   outputType,
+  plotLimit,
   db
 ) => {
 
@@ -493,25 +493,25 @@ const outputCreatedGet = (
 
 export default async (
   text,
-  input = {},
-  plotLimit = 5,
+  options = {},
   db,
   req
 ) => {
 
   const {
-    spoofInput,
-    genre = 'general',
+    spoofInput = undefined,
+    genre = undefined,
     outputType = 'deck',
-    createFlag = false
-  } = input;
+    createFlag = false,
+    plotLimit = 5
+  } = options;
 
   let output = await outputGet(
     text,
     spoofInput,
     genre,
-    plotLimit,
     outputType,
+    plotLimit,
     db
   );
 
