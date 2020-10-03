@@ -8,11 +8,12 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
+type DeckNode_viewer$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type DeckDetail_viewer$ref: FragmentReference;
 declare export opaque type DeckDetail_viewer$fragmentType: DeckDetail_viewer$ref;
 export type DeckDetail_viewer = {|
-  +id: ?string,
+  +$fragmentRefs: DeckNode_viewer$ref,
   +$refType: DeckDetail_viewer$ref,
 |};
 export type DeckDetail_viewer$data = DeckDetail_viewer;
@@ -31,17 +32,15 @@ const node/*: ReaderFragment*/ = {
   "name": "DeckDetail_viewer",
   "selections": [
     {
-      "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "DeckNode_viewer"
     }
   ],
   "type": "Viewer",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'e70c080041602dc4f340d4a6e359e3b6';
+(node/*: any*/).hash = '8cbf02cee7b0a7b3455b2ef12745189f';
 
 module.exports = node;

@@ -26,14 +26,14 @@ import {
 import {
   Resolver
 } from 'found-relay';
-import {
-  ScrollManager
-} from 'found-scroll';
 import 'bootstrap/dist/js/bootstrap';
 
 import 'styles.scss';
 import Viewer from 'Components/Viewer';
-import Decks from 'Components/Decks';
+import Home from 'Components/Home';
+import Deck from 'Components/Deck';
+import DeckDetail from 'Components/Deck/DeckDetail';
+import DeckNode from 'Components/Deck/DeckNode';
 
 const query = graphql`
   query clientQuery {
@@ -54,11 +54,30 @@ const routeConfig = makeRouteConfig(
     }
   >
     <Route
-      path = 'Decks'
       Component = {
-        Decks
+        Home
       }
     />
+
+    <Route
+      path = 'Deck'
+      Component = {
+        Deck
+      }
+    >
+      <Route
+        path = ':deckId'
+        Component = {
+          DeckDetail
+        }
+      >
+        <Route
+          Component = {
+            DeckNode
+          }
+        />
+      </Route>
+    </Route>
   </Route>
 );
 
@@ -77,10 +96,8 @@ const fetchQuery = (
     '/graphql',
     {
       method: 'POST',
-      crendentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(
         {
@@ -130,30 +147,11 @@ const environment = new Environment(
 const Router = createFarceRouter(
   {
     historyProtocol: new BrowserProtocol(),
-    historyMiddleware: [
+    historyMiddlewares: [
       queryMiddleware
     ],
     routeConfig,
-    render(
-      renderArgs
-    ) {
-
-      return (
-        <ScrollManager
-          renderArgs = {
-            renderArgs
-          }
-        >
-          {
-            createRender(
-              {}
-            )(
-              renderArgs
-            )
-          }
-        </ScrollManager>
-      );
-    }
+    render: createRender({})
   }
 );
 

@@ -6,22 +6,22 @@ import {
   graphql
 } from 'react-relay';
 
-const DeckDetail = () => {
+const Home = () => {
 
   return (
     <div
-      className = 'DeckDetail'
+      className = 'Home'
     >
-      DeckDetail
+      Home
     </div>
   );
 };
 
 export default createFragmentContainer(
-  DeckDetail,
+  Home,
   {
     viewer: graphql`
-      fragment DeckDetail_viewer on Viewer {
+      fragment Home_viewer on Viewer {
         id
       }
     `

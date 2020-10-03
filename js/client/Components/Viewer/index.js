@@ -1,10 +1,10 @@
 'use strict';
 
-import React,
+import React, 
 {
+  cloneElement,
   useEffect,
-  useCallback,
-  cloneElement
+  useCallback
 } from 'react';
 import {
   createFragmentContainer,
@@ -20,7 +20,9 @@ const Viewer = (
 
       if (
         !props.match.location.pathname
-          .match('/')
+          .match(
+            /^\/$/
+          )
       ) {
 
         return (
@@ -31,7 +33,7 @@ const Viewer = (
       return props.match.router
         .push(
           `
-            /decks/${
+            /Deck/${
               props.viewer.deckId
             }
           `
@@ -48,9 +50,10 @@ const Viewer = (
   useEffect(
     () => {
 
+      init();
     },
     [
-
+      init
     ]
   );
 
@@ -72,7 +75,6 @@ const Viewer = (
     <div
       className = 'Viewer'
     >
-      Viewer
       {
         childrenRender()
       }
@@ -87,7 +89,8 @@ export default createFragmentContainer(
       fragment Viewer_viewer on Viewer {
         id,
         deckId,
-        ...Decks_viewer
+        ...Home_viewer,
+        ...Deck_viewer
       }
     `
   }

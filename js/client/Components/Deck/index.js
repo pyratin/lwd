@@ -9,7 +9,7 @@ import {
   graphql
 } from 'react-relay';
 
-const Decks = (
+const Deck = (
   props
 ) => {
 
@@ -24,24 +24,26 @@ const Decks = (
           viewer: props.viewer,
           match: props.match
         }
-      );
+      ); 
   };
 
   return (
     <div
-      className = 'Decks'
+      className = 'Deck'
     >
-      Decks
+      {
+        childrenRender()
+      }
     </div>
   );
 };
 
 export default createFragmentContainer(
-  Decks,
+  Deck,
   {
     viewer: graphql`
-      fragment Decks_viewer on Viewer {
-        id
+      fragment Deck_viewer on Viewer {
+        ...DeckDetail_viewer
       }
     `
   }

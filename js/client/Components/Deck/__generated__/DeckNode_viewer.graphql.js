@@ -9,16 +9,16 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type Decks_viewer$ref: FragmentReference;
-declare export opaque type Decks_viewer$fragmentType: Decks_viewer$ref;
-export type Decks_viewer = {|
+declare export opaque type DeckNode_viewer$ref: FragmentReference;
+declare export opaque type DeckNode_viewer$fragmentType: DeckNode_viewer$ref;
+export type DeckNode_viewer = {|
   +id: ?string,
-  +$refType: Decks_viewer$ref,
+  +$refType: DeckNode_viewer$ref,
 |};
-export type Decks_viewer$data = Decks_viewer;
-export type Decks_viewer$key = {
-  +$data?: Decks_viewer$data,
-  +$fragmentRefs: Decks_viewer$ref,
+export type DeckNode_viewer$data = DeckNode_viewer;
+export type DeckNode_viewer$key = {
+  +$data?: DeckNode_viewer$data,
+  +$fragmentRefs: DeckNode_viewer$ref,
   ...
 };
 */
@@ -28,7 +28,7 @@ const node/*: ReaderFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Decks_viewer",
+  "name": "DeckNode_viewer",
   "selections": [
     {
       "alias": null,
@@ -42,6 +42,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '24b0eab2451daeb60758d1cf3e9cc690';
+(node/*: any*/).hash = 'aaca7b6b8385902aad113dffbd8988a5';
 
 module.exports = node;
