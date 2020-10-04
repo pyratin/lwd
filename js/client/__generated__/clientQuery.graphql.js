@@ -30,6 +30,15 @@ query clientQuery {
   }
 }
 
+fragment Card_card on Card {
+  image
+  renderText
+}
+
+fragment Card_viewer on Viewer {
+  id
+}
+
 fragment DeckDetail_viewer on Viewer {
   id
   decks(first: 1) {
@@ -52,12 +61,12 @@ fragment DeckDetail_viewer on Viewer {
 fragment DeckNode_deck on Deck {
   id
   cards {
-    renderText
+    ...Card_card
   }
 }
 
 fragment DeckNode_viewer on Viewer {
-  id
+  ...Card_viewer
 }
 
 fragment Deck_viewer on Viewer {
@@ -177,6 +186,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "image",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "renderText",
                             "storageKey": null
                           }
@@ -248,12 +264,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ec66083f81971071157ec78c098126d5",
+    "cacheID": "39bbf8dffd9f2293c98303408ff9403d",
     "id": null,
     "metadata": {},
     "name": "clientQuery",
     "operationKind": "query",
-    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment DeckDetail_viewer on Viewer {\n  id\n  decks(first: 1) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    renderText\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  id\n}\n\nfragment Deck_viewer on Viewer {\n  ...DeckDetail_viewer\n}\n\nfragment Home_viewer on Viewer {\n  id\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n  deckId\n  ...Home_viewer\n  ...Deck_viewer\n}\n"
+    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer on Viewer {\n  id\n  decks(first: 1) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Card_viewer\n}\n\nfragment Deck_viewer on Viewer {\n  ...DeckDetail_viewer\n}\n\nfragment Home_viewer on Viewer {\n  id\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n  deckId\n  ...Home_viewer\n  ...Deck_viewer\n}\n"
   }
 };
 })();

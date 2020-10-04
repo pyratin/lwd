@@ -16,8 +16,6 @@ import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
 import cardsGifyUrlAssignedGet from 
   './cardsGifyUrlAssignedGet';
-import cardsRenderedGet from './cardsRenderedGet';
-import splashRenderedGet from './splashRenderedGet';
 
 const deckPreBuiltGet = async (
   input,
@@ -91,51 +89,6 @@ const deckPreBuiltGet = async (
   };
 };
 
-const deckBase64AssignedGet = async (
-  _deck,
-  db
-) => {
-
-  const splashBase64 = await splashRenderedGet(
-    _deck.splash,
-    db
-  );
-
-  const cardBase64s = await cardsRenderedGet(
-    _deck.cards,
-    db
-  );
-
-  const cards = _deck.cards
-    .map(
-      (
-        card,
-        index
-      ) => {
-
-        return {
-          ...card,
-          base64: cardBase64s[
-            index
-          ]
-            .slice(0, 10)
-        };
-      }
-    );
-
-  let deck = {
-    splash: {
-      ..._deck.splash,
-      base64: splashBase64
-    },
-    cards
-  };
-
-  return (
-    deck
-  );
-};
-
 const deckPostProcessedGet = async (
   deck,
   spoofInput,
@@ -166,11 +119,6 @@ const deckPostProcessedGet = async (
 
   deck = deckRenderDetailsAssignedGet(
     deck
-  );
-
-  deck = await deckBase64AssignedGet(
-    deck,
-    db
   );
 
   return (

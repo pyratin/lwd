@@ -67,6 +67,7 @@
     "react": "^16.13.1",
     "react-carousel": "^4.3.0",
     "react-dom": "^16.13.1",
+    "react-html-parser": "^2.0.2",
     "react-relay": "^10.0.1",
     "relay-compiler": "^10.0.1",
     "sass-loader": "^10.0.2",

@@ -34,6 +34,15 @@ query DeckDetailRefetchQuery(
   }
 }
 
+fragment Card_card on Card {
+  image
+  renderText
+}
+
+fragment Card_viewer on Viewer {
+  id
+}
+
 fragment DeckDetail_viewer_1o7O2W on Viewer {
   id
   decks(first: 1, deckId: $deckId) {
@@ -56,12 +65,12 @@ fragment DeckDetail_viewer_1o7O2W on Viewer {
 fragment DeckNode_deck on Deck {
   id
   cards {
-    renderText
+    ...Card_card
   }
 }
 
 fragment DeckNode_viewer on Viewer {
-  id
+  ...Card_viewer
 }
 */
 
@@ -174,6 +183,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "image",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "renderText",
                             "storageKey": null
                           }
@@ -245,12 +261,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4d79b7ebfb91219c585983954fb55f5b",
+    "cacheID": "99260d0aeb6e759e65cf5192b7a8235b",
     "id": null,
     "metadata": {},
     "name": "DeckDetailRefetchQuery",
     "operationKind": "query",
-    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    renderText\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  id\n}\n"
+    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Card_viewer\n}\n"
   }
 };
 })();

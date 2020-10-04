@@ -42,6 +42,13 @@ export default {
         Bootstrap: 'bootstrap/dist/js/bootstrap',
         Popper: 'popper.js'
       }
+    ),
+    new webpack.DefinePlugin(
+      {
+        'process.env.OUTPUT_RES': JSON.stringify(
+          process.env.npm_package_config_OUTPUT_RES
+        )
+      }
     )
   ],
   module: {
@@ -89,6 +96,7 @@ export default {
   resolve: {
     modules: [
       'node_modules',
+      'media',
       'js/client'
     ]
   }

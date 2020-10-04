@@ -16,11 +16,17 @@ import {
   connectionDefinitions,
   connectionArgs
 } from 'graphql-relay';
+import {
+  ObjectID
+} from 'mongodb';
 
 import viewerGet from './fns/viewer';
 import movieSearch from './mutations/movieSearch';
 import movieCreate from './mutations/movieCreate';
 import deckConnectionGet from './query/deckConnectionGet';
+import {
+  actorImageFindOne 
+} from '~/js/server/data/actorImage';
 
 const characterType = new GraphQLObjectType(
   {
@@ -28,17 +34,46 @@ const characterType = new GraphQLObjectType(
     fields() {
 
       return {
-        text: {
-          type: GraphQLString
-        },
-        _text: {
-          type: GraphQLString
-        },
         renderText: {
           type: GraphQLString
         },
         actorImageId: {
           type: GraphQLID
+        },
+        image: {
+          type: GraphQLString,
+          resolve(
+            {
+              actorImageId
+            },
+            args,
+            {
+              db
+            }
+          ) {
+
+            return actorImageFindOne(
+              {
+                _id: new ObjectID(
+                  actorImageId
+                )
+              },
+              undefined,
+              db
+            )
+              .then(
+                (
+                  {
+                    base64
+                  }
+                ) => {
+
+                  return (
+                    base64
+                  );
+                }
+              );
+          }
         }
       };
     }
@@ -96,11 +131,45 @@ const cardType = new GraphQLObjectType(
         renderText: {
           type: GraphQLString
         },
-        actorImageId: {
-          type: GraphQLID
-        },
-        gifyUrl: {
-          type: GraphQLString
+        image: {
+          type: GraphQLString,
+          resolve(
+            {
+              actorImageId,
+              gifyUrl
+            },
+            args,
+            {
+              db
+            }
+          ) {
+
+            return (
+              actorImageId
+            ) ?
+              actorImageFindOne(
+                {
+                  _id: new ObjectID(
+                    actorImageId
+                  )
+                },
+                undefined,
+                db
+              )
+                .then(
+                  (
+                    {
+                      base64
+                    }
+                  ) => {
+
+                    return (
+                      base64
+                    );
+                  }
+                ):
+              gifyUrl;
+          }
         }
       };
     }
