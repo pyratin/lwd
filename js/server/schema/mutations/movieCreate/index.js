@@ -420,7 +420,8 @@ const outputGet = async (
     default :
 
       return gifRenderedGet(
-        deck
+        deck,
+        db
       )
         .then(
           (
