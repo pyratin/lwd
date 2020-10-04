@@ -8,31 +8,35 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type Viewer_viewer$ref = any;
-export type clientQueryVariables = {||};
-export type clientQueryResponse = {|
+type DeckDetail_viewer$ref = any;
+export type DeckDetailRefetchQueryVariables = {|
+  deckId: string
+|};
+export type DeckDetailRefetchQueryResponse = {|
   +viewer: ?{|
-    +$fragmentRefs: Viewer_viewer$ref
+    +$fragmentRefs: DeckDetail_viewer$ref
   |}
 |};
-export type clientQuery = {|
-  variables: clientQueryVariables,
-  response: clientQueryResponse,
+export type DeckDetailRefetchQuery = {|
+  variables: DeckDetailRefetchQueryVariables,
+  response: DeckDetailRefetchQueryResponse,
 |};
 */
 
 
 /*
-query clientQuery {
+query DeckDetailRefetchQuery(
+  $deckId: ID!
+) {
   viewer {
-    ...Viewer_viewer
+    ...DeckDetail_viewer_1o7O2W
     id
   }
 }
 
-fragment DeckDetail_viewer on Viewer {
+fragment DeckDetail_viewer_1o7O2W on Viewer {
   id
-  decks(first: 1) {
+  decks(first: 1, deckId: $deckId) {
     edges {
       node {
         ...DeckNode_deck
@@ -59,32 +63,30 @@ fragment DeckNode_deck on Deck {
 fragment DeckNode_viewer on Viewer {
   id
 }
-
-fragment Deck_viewer on Viewer {
-  ...DeckDetail_viewer
-}
-
-fragment Home_viewer on Viewer {
-  id
-}
-
-fragment Viewer_viewer on Viewer {
-  id
-  deckId
-  ...Home_viewer
-  ...Deck_viewer
-}
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "deckId"
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "deckId",
+  "variableName": "deckId"
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v1 = [
+v3 = [
+  (v1/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
@@ -93,10 +95,10 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "clientQuery",
+    "name": "DeckDetailRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -107,9 +109,11 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": [
+              (v1/*: any*/)
+            ],
             "kind": "FragmentSpread",
-            "name": "Viewer_viewer"
+            "name": "DeckDetail_viewer"
           }
         ],
         "storageKey": null
@@ -120,9 +124,9 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "clientQuery",
+    "name": "DeckDetailRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -132,17 +136,10 @@ return {
         "name": "viewer",
         "plural": false,
         "selections": [
-          (v0/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "deckId",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "DeckConnection",
             "kind": "LinkedField",
             "name": "decks",
@@ -164,7 +161,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v0/*: any*/),
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -229,11 +226,11 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "decks(first:1)"
+            "storageKey": null
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v3/*: any*/),
             "filters": [
               "deckId"
             ],
@@ -248,16 +245,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ec66083f81971071157ec78c098126d5",
+    "cacheID": "4d79b7ebfb91219c585983954fb55f5b",
     "id": null,
     "metadata": {},
-    "name": "clientQuery",
+    "name": "DeckDetailRefetchQuery",
     "operationKind": "query",
-    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment DeckDetail_viewer on Viewer {\n  id\n  decks(first: 1) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    renderText\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  id\n}\n\nfragment Deck_viewer on Viewer {\n  ...DeckDetail_viewer\n}\n\nfragment Home_viewer on Viewer {\n  id\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n  deckId\n  ...Home_viewer\n  ...Deck_viewer\n}\n"
+    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    renderText\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  id\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '69f623defc9f490b6f9f7298fac25b65';
+(node/*: any*/).hash = 'e5a966f463086c020b14a94514c80566';
 
 module.exports = node;

@@ -6,13 +6,15 @@ import {
   graphql
 } from 'react-relay';
 
-const DeckNode = () => {
+const DeckNode = (
+  props
+) => {
 
   return (
     <div
       className = 'DeckNode'
     >
-      DeckNode
+      maha
     </div>
   );
 };
@@ -20,6 +22,14 @@ const DeckNode = () => {
 export default createFragmentContainer(
   DeckNode,
   {
+    deck: graphql`
+      fragment DeckNode_deck on Deck {
+        id,
+        cards {
+          renderText
+        }
+      }
+    `,
     viewer: graphql`
       fragment DeckNode_viewer on Viewer {
         id

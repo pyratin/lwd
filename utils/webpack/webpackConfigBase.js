@@ -4,7 +4,7 @@ import path from 'path';
 import webpack from 'webpack';
 
 const mediaAssetsRegExp =
-/\.(otf|eot|svg|ttf|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/;
+/\.(otf|eot|svg|ttf|woff|woff2|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/;
 
 export default {
   entry: {
@@ -55,7 +55,8 @@ export default {
             options: {
               presets: [
                 '@babel/preset-env',
-                '@babel/preset-react'
+                '@babel/preset-react',
+                '@emotion/babel-preset-css-prop'
               ],
               plugins: [
                 [

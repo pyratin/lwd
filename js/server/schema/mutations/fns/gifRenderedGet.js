@@ -4,8 +4,6 @@ import {
   exec
 } from 'child_process';
 
-import cardsRenderedGet from './cardsRenderedGet';
-import splashRenderedGet from './splashRenderedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
 
@@ -65,7 +63,8 @@ const gifGet = async (
     ] :
     base64s;
 
-  let miffStreamsConcated = await base64MiffStreamsConcatedGet(
+  let miffStreamsConcated = 
+  await base64MiffStreamsConcatedGet(
     input
   );
 
@@ -79,22 +78,24 @@ const gifGet = async (
 };
 
 export default async (
-  {
-    splash: _splash,
-    cards: _cards
-  },
-  db
+  deck
 ) => {
 
-  const cardBase64s = await cardsRenderedGet(
-    _cards,
-    db
-  );
+  const cardBase64s = deck.cards
+    .map(
+      (
+        {
+          base64
+        }
+      ) => {
 
-  const splash = await splashRenderedGet(
-    _splash,
-    db
-  );
+        return (
+          base64
+        );
+      }
+    );
+
+  const splash = deck.splash.base64;
 
   const gif = await gifGet(
     splash,
