@@ -30,6 +30,8 @@ import {
   ScrollManager
 } from 'found-scroll';
 import 'bootstrap/dist/js/bootstrap';
+import 'slick-carousel/slick/slick.scss';
+import 'slick-carousel/slick/slick-theme.scss';
 
 import 'styles.scss';
 import Viewer from 'Components/Viewer';

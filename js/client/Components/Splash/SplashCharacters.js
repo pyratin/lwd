@@ -5,9 +5,6 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
-import {
-  css
-} from '@emotion/core';
 
 import SplashCharacter from './SplashCharacter';
 
@@ -46,40 +43,11 @@ const SplashCharacters = (
 
   return (
     <div
-      className = {
-        `
-          SplashCharacters
-          d-flex
-          justify-content-center
-          mt-2
-        `
-      }
-      css = {
-        css(
-          {
-            width: `
-              ${
-                process.env.OUTPUT_RES
-              }px
-            `
-              .trim(),
-            height: `
-              ${
-                process.env.OUTPUT_RES
-              }px
-            `
-              .trim()
-          }
-        )
-      }
+      className = 'SplashCharacters d-flex'
     >
-      <div
-        className = 'd-flex'
-      >
-        {
-          charactersRender()
-        }
-      </div>
+      {
+        charactersRender()
+      }
     </div>
   );
 };

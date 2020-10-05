@@ -23,7 +23,6 @@ const SplashCharacter = (
             {
               position: 'absolute',
               zIndex: 1,
-              width: process.env.OUTPUT_RES,
               left: 0,
               right: 0,
               bottom: 0,
@@ -49,8 +48,20 @@ const SplashCharacter = (
         css = {
           css(
             {
-              width: '100%',
-              height: '100%',
+              width: `
+                ${
+                  process.env.OUTPUT_RES /
+                  4
+                }px
+              `
+                .trim(),
+              height: `
+                ${
+                  process.env.OUTPUT_RES /
+                  4
+                }px
+              `
+                .trim(),
               objectFit: 'cover'
             }
           )
@@ -69,20 +80,6 @@ const SplashCharacter = (
         css(
           {
             position: 'relative',
-            width: `
-              ${
-                process.env.OUTPUT_RES /
-                4
-              }px
-            `
-              .trim(),
-            height: `
-              ${
-                process.env.OUTPUT_RES /
-                4
-              }px
-            `
-              .trim()
           }
         )
       }

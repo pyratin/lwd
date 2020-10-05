@@ -1,13 +1,14 @@
 'use strict';
 
-import React, 
-{
-  Fragment
-} from 'react';
+import React from 'react';
 import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
+import ReactSlick from 'react-slick';
+import {
+  css
+} from '@emotion/core';
 
 import Splash from 'Components/Splash';
 import Card from 'Components/Card';
@@ -43,37 +44,67 @@ const DeckNode = (
         ) => {
 
           return (
-            <Fragment
+            <Card
               key = {
                 index
               }
-            >
-              <Card
-                card = {
-                  card
-                }
-                viewer = {
-                  props.viewer
-                }
-                match = {
-                  props.match
-                }
-              />
-            </Fragment>
+              card = {
+                card
+              }
+              viewer = {
+                props.viewer
+              }
+              match = {
+                props.match
+              }
+            />
           );
         }
       );
   };
 
+  const reactSlickRender = () => {
+
+    return (
+      <div
+        className = 'reactSlickContainer'
+        css = {
+          css(
+            {
+              width: `
+                ${
+                  process.env.OUTPUT_RES
+                }px
+              `
+                .trim(),
+              height: `
+                ${
+                  process.env.OUTPUT_RES
+                }px
+              `
+                .trim(),
+            }
+          )
+        }
+      >
+        <ReactSlick>
+          {
+            splashRender()
+          }
+          {
+            cardsRender()
+          }
+        </ReactSlick>
+      </div>
+    );
+  };
+
   return (
     <div
-      className = 'DeckNode'
+      className = 'DeckNode d-flex justify-content-center'
     >
       {
-        splashRender()
-      }
-      {
-        cardsRender()
+        reactSlickRender()
       }
     </div>
   );

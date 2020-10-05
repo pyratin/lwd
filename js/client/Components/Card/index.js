@@ -48,7 +48,6 @@ const Card  = (
             {
               position: 'absolute',
               zIndex: 1,
-              width: process.env.OUTPUT_RES,
               left: 0,
               right: 0,
               bottom: 0,
@@ -74,8 +73,18 @@ const Card  = (
         css = {
           css(
             {
-              width: '100%',
-              height: '100%',
+              width: `
+                ${
+                  process.env.OUTPUT_RES
+                }px
+              `
+                .trim(),
+              height: `
+                ${
+                  process.env.OUTPUT_RES
+                }px
+              `
+                .trim(),
               objectFit: 'cover',
               filter: filterGet()
             }
@@ -94,19 +103,7 @@ const Card  = (
       css = {
         css(
           {
-            position: 'relative',
-            width: `
-              ${
-                process.env.OUTPUT_RES
-              }px
-            `
-              .trim(),
-            height: `
-              ${
-                process.env.OUTPUT_RES
-              }px
-            `
-              .trim()
+            position: 'relative'
           }
         )
       }

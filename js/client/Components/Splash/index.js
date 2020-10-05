@@ -10,6 +10,7 @@ import {
 } from '@emotion/core';
 
 import SplashCharacters from './SplashCharacters';
+import SplashSpoofInput from './SplashSpoofInput';
 
 const Splash = (
   props
@@ -19,7 +20,14 @@ const Splash = (
 
     return (
       <div
-        className = 'splashCharactersContainer'
+        className = {
+          `
+            splashCharactersContainer
+            w-100
+            d-flex justify-content-center
+            pt-2
+          `
+        }
         css = {
           css(
             {
@@ -44,6 +52,38 @@ const Splash = (
     );
   };
 
+  const spoofInputRender = () => {
+
+    return (
+      <div
+        className = {
+          `
+            splashSpoofInputContainer 
+            d-flex justify-content-center
+            mb-5
+          `
+        }
+        css = {
+          css(
+            {
+              position: 'absolute',
+              zIndex: 1,
+              left: 0,
+              right: 0,
+              bottom: 0
+            }
+          )
+        }
+      >
+        <SplashSpoofInput
+          viewer = {
+            props.viewer
+          }
+        />
+      </div>
+    );
+  };
+
   const titleRender = () => {
 
     return (
@@ -54,7 +94,6 @@ const Splash = (
             {
               position: 'absolute',
               zIndex: 2,
-              width: process.env.OUTPUT_RES,
               left: 0,
               right: 0,
               bottom: 0,
@@ -81,8 +120,18 @@ const Splash = (
         css = {
           css(
             {
-              width: '100%',
-              height: '100%',
+              width: `
+                ${
+                  process.env.OUTPUT_RES
+                }px
+              `
+                .trim(),
+              height: `
+                ${
+                  process.env.OUTPUT_RES
+                }px
+              `
+                .trim(),
               objectFit: 'cover',
               filter: 'grayscale(100%)' 
             }
@@ -101,25 +150,16 @@ const Splash = (
       css = {
         css(
           {
-            position: 'relative',
-            width: `
-              ${
-                process.env.OUTPUT_RES
-              }px
-            `
-              .trim(),
-            height: `
-              ${
-                process.env.OUTPUT_RES
-              }px
-            `
-              .trim()
+            position: 'relative'
           }
         )
       }
     >
       {
         splashCharactersRender()
+      }
+      {
+        spoofInputRender()
       }
       {
         titleRender()
@@ -143,7 +183,8 @@ export default createFragmentContainer(
     `,
     viewer: graphql`
       fragment Splash_viewer on Viewer {
-        ...SplashCharacters_viewer
+        ...SplashCharacters_viewer,
+        ...SplashSpoofInput_viewer
       }
     `
   }

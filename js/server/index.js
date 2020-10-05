@@ -127,7 +127,7 @@ import schemaUpdate from './fns/schemaUpdate';
                 req
               ),
               image: {
-                path: '/root.gif',
+                path: '/root.jpeg',
                 width: outputResGet(),
                 height: outputResGet()
               }

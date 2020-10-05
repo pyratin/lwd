@@ -98,6 +98,10 @@ fragment SplashCharacters_viewer on Viewer {
   ...SplashCharacter_viewer
 }
 
+fragment SplashSpoofInput_viewer on Viewer {
+  id
+}
+
 fragment Splash_splash on Splash {
   title
   poster
@@ -106,6 +110,7 @@ fragment Splash_splash on Splash {
 
 fragment Splash_viewer on Viewer {
   ...SplashCharacters_viewer
+  ...SplashSpoofInput_viewer
 }
 */
 
@@ -350,12 +355,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b2b72481c220a9252dbc35a6bb726d46",
+    "cacheID": "3d1ac3c7f15d3ee13165f1a08ce4747d",
     "id": null,
     "metadata": {},
     "name": "DeckDetailRefetchQuery",
     "operationKind": "query",
-    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n}\n"
+    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n}\n"
   }
 };
 })();
