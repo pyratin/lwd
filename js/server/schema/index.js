@@ -9,7 +9,8 @@ import {
   GraphQLList,
   GraphQLBoolean,
   GraphQLUnionType,
-  GraphQLInputObjectType
+  GraphQLInputObjectType,
+  GraphQLInt
 } from 'graphql';
 import {
   mutationWithClientMutationId,
@@ -130,6 +131,12 @@ const cardType = new GraphQLObjectType(
       return {
         renderText: {
           type: GraphQLString
+        },
+        actorImageId: {
+          type: GraphQLID
+        },
+        dualRoleIndex: {
+          type: GraphQLInt
         },
         image: {
           type: GraphQLString,

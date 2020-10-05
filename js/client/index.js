@@ -26,6 +26,9 @@ import {
 import {
   Resolver
 } from 'found-relay';
+import {
+  ScrollManager
+} from 'found-scroll';
 import 'bootstrap/dist/js/bootstrap';
 
 import 'styles.scss';
@@ -151,7 +154,26 @@ const Router = createFarceRouter(
       queryMiddleware
     ],
     routeConfig,
-    render: createRender({})
+    render(
+      renderArgs
+    ) {
+
+      return (
+        <ScrollManager
+          renderArgs = {
+            renderArgs
+          }
+        >
+          {
+            createRender(
+              {}
+            )(
+              renderArgs
+            )
+          }
+        </ScrollManager>
+      );
+    }
   }
 );
 

@@ -37,6 +37,8 @@ query DeckDetailRefetchQuery(
 fragment Card_card on Card {
   image
   renderText
+  actorImageId
+  dualRoleIndex
 }
 
 fragment Card_viewer on Viewer {
@@ -64,13 +66,46 @@ fragment DeckDetail_viewer_1o7O2W on Viewer {
 
 fragment DeckNode_deck on Deck {
   id
+  splash {
+    ...Splash_splash
+  }
   cards {
     ...Card_card
   }
 }
 
 fragment DeckNode_viewer on Viewer {
+  ...Splash_viewer
   ...Card_viewer
+}
+
+fragment SplashCharacter_character on Character {
+  renderText
+  image
+}
+
+fragment SplashCharacter_viewer on Viewer {
+  id
+}
+
+fragment SplashCharacters_splash on Splash {
+  characters {
+    ...SplashCharacter_character
+  }
+}
+
+fragment SplashCharacters_viewer on Viewer {
+  ...SplashCharacter_viewer
+}
+
+fragment Splash_splash on Splash {
+  title
+  poster
+  ...SplashCharacters_splash
+}
+
+fragment Splash_viewer on Viewer {
+  ...SplashCharacters_viewer
 }
 */
 
@@ -101,7 +136,21 @@ v3 = [
     "name": "first",
     "value": 1
   }
-];
+],
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "renderText",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "image",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -174,23 +223,63 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Card",
+                        "concreteType": "Splash",
                         "kind": "LinkedField",
-                        "name": "cards",
-                        "plural": true,
+                        "name": "splash",
+                        "plural": false,
                         "selections": [
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "image",
+                            "name": "title",
                             "storageKey": null
                           },
                           {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "renderText",
+                            "name": "poster",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Character",
+                            "kind": "LinkedField",
+                            "name": "characters",
+                            "plural": true,
+                            "selections": [
+                              (v4/*: any*/),
+                              (v5/*: any*/)
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Card",
+                        "kind": "LinkedField",
+                        "name": "cards",
+                        "plural": true,
+                        "selections": [
+                          (v5/*: any*/),
+                          (v4/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "actorImageId",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "dualRoleIndex",
                             "storageKey": null
                           }
                         ],
@@ -261,12 +350,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "99260d0aeb6e759e65cf5192b7a8235b",
+    "cacheID": "b2b72481c220a9252dbc35a6bb726d46",
     "id": null,
     "metadata": {},
     "name": "DeckDetailRefetchQuery",
     "operationKind": "query",
-    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Card_viewer\n}\n"
+    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n) {\n  viewer {\n    ...DeckDetail_viewer_1o7O2W\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_1o7O2W on Viewer {\n  id\n  decks(first: 1, deckId: $deckId) {\n    edges {\n      node {\n        ...DeckNode_deck\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n}\n"
   }
 };
 })();

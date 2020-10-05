@@ -3,10 +3,13 @@
 import movieDataBasicGet from '../fns/movieDataBasicGet';
 import charactersGet from '../fns/charactersGet';
 import cardsGet from '../fns/cardsGet';
-import charactersMetaAssignedGet 
-  from './charactersMetaAssignedGet';
 import charactersGenderAssignedGet
   from './charactersGenderAssignedGet';
+import charactersMetaAssignedGet 
+  from './charactersMetaAssignedGet';
+import cardsMetaAssignedGet from './cardsMetaAssignedGet';
+import cardsGifyUrlAssignedGet from 
+  './cardsGifyUrlAssignedGet';
 import deckSpoofableGet 
   from './deckSpoofableGet';
 import deckSpoofedGet from './deckSpoofedGet';
@@ -14,8 +17,6 @@ import deckActorImageIdsAssignedGet
   from './deckActorImageIdsAssignedGet';
 import deckRenderDetailsAssignedGet
   from './deckRenderDetailsAssignedGet';
-import cardsGifyUrlAssignedGet from 
-  './cardsGifyUrlAssignedGet';
 
 const deckPreBuiltGet = async (
   input,
@@ -67,6 +68,11 @@ const deckPreBuiltGet = async (
     characters,
     cards,
     movieDataBasic.title
+  );
+
+  cards = cardsMetaAssignedGet(
+    cards,
+    characters
   );
 
   cards = await cardsGifyUrlAssignedGet(

@@ -9,36 +9,42 @@ import {
   css
 } from '@emotion/core';
 
-const Card  = (
+import SplashCharacters from './SplashCharacters';
+
+const Splash = (
   props
 ) => {
 
-  const filterGet = () => {
+  const splashCharactersRender = () => {
 
-    switch (
-      true
-    ) {
-
-      case (
-        !props.card.actorImageId
-      ) :
-
-        return (
-          'grayscale(100%)'
-        );
-
-      case (
-        props.card.dualRoleIndex >=
-        0
-      ) :
-
-        return (
-          'hue-rotate(-20deg)'
-        );
-    }
+    return (
+      <div
+        className = 'splashCharactersContainer'
+        css = {
+          css(
+            {
+              position: 'absolute',
+              zIndex: 1
+            }
+          )
+        }
+      >
+        <SplashCharacters
+          splash = {
+            props.splash
+          }
+          viewer = {
+            props.viewer
+          }
+          match = {
+            props.match
+          }
+        />
+      </div>
+    );
   };
 
-  const textRender = () => {
+  const titleRender = () => {
 
     return (
       <p
@@ -47,7 +53,7 @@ const Card  = (
           css(
             {
               position: 'absolute',
-              zIndex: 1,
+              zIndex: 2,
               width: process.env.OUTPUT_RES,
               left: 0,
               right: 0,
@@ -60,29 +66,30 @@ const Card  = (
             }
           )
         }
-        dangerouslySetInnerHTML = {{
-          __html: props.card.renderText
-        }}
-      ></p>
+      >
+        {
+          props.splash.title
+        }
+      </p>
     );
   };
 
   const imageRender = () => {
 
     return (
-      <img
+      <img 
         css = {
           css(
             {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              filter: filterGet()
+              filter: 'grayscale(100%)' 
             }
           )
         }
         src = {
-          props.card.image
+          props.splash.poster
         }
       />
     );
@@ -90,7 +97,7 @@ const Card  = (
 
   return (
     <div
-      className = 'Card'
+      className = 'Splash'
       css = {
         css(
           {
@@ -112,7 +119,10 @@ const Card  = (
       }
     >
       {
-        textRender()
+        splashCharactersRender()
+      }
+      {
+        titleRender()
       }
       {
         imageRender()
@@ -122,19 +132,18 @@ const Card  = (
 };
 
 export default createFragmentContainer(
-  Card,
+  Splash,
   {
-    card: graphql`
-      fragment Card_card on Card {
-        image,
-        renderText,
-        actorImageId,
-        dualRoleIndex
+    splash: graphql`
+      fragment Splash_splash on Splash {
+        title,
+        poster,
+        ...SplashCharacters_splash
       }
     `,
     viewer: graphql`
-      fragment Card_viewer on Viewer {
-        id
+      fragment Splash_viewer on Viewer {
+        ...SplashCharacters_viewer
       }
     `
   }

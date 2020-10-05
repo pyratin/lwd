@@ -9,11 +9,29 @@ import {
   graphql
 } from 'react-relay';
 
+import Splash from 'Components/Splash';
 import Card from 'Components/Card';
 
 const DeckNode = (
   props
 ) => {
+
+  const splashRender = () => {
+
+    return (
+      <Splash
+        splash = {
+          props.deck.splash
+        }
+        viewer = {
+          props.viewer
+        }
+        match = {
+          props.match
+        }
+      />
+    );
+  };
 
   const cardsRender = () => {
 
@@ -52,6 +70,9 @@ const DeckNode = (
       className = 'DeckNode'
     >
       {
+        splashRender()
+      }
+      {
         cardsRender()
       }
     </div>
@@ -64,6 +85,9 @@ export default createFragmentContainer(
     deck: graphql`
       fragment DeckNode_deck on Deck {
         id,
+        splash {
+          ...Splash_splash
+        },
         cards {
           ...Card_card
         }
@@ -71,6 +95,7 @@ export default createFragmentContainer(
     `,
     viewer: graphql`
       fragment DeckNode_viewer on Viewer {
+        ...Splash_viewer,
         ...Card_viewer
       }
     `

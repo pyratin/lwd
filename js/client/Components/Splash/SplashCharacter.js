@@ -9,40 +9,15 @@ import {
   css
 } from '@emotion/core';
 
-const Card  = (
+const SplashCharacter = (
   props
 ) => {
-
-  const filterGet = () => {
-
-    switch (
-      true
-    ) {
-
-      case (
-        !props.card.actorImageId
-      ) :
-
-        return (
-          'grayscale(100%)'
-        );
-
-      case (
-        props.card.dualRoleIndex >=
-        0
-      ) :
-
-        return (
-          'hue-rotate(-20deg)'
-        );
-    }
-  };
 
   const textRender = () => {
 
     return (
       <p
-        className = 'p-1 m-0 text-center'
+        className = 'p-0 m-0 text-center'
         css = {
           css(
             {
@@ -54,16 +29,16 @@ const Card  = (
               bottom: 0,
               color: '#fff',
               backgroundColor: '#000',
-              opacity: 0.9,
               fontFamily: 'Muli',
-              fontSize: 20
+              fontSize: 12
             }
           )
         }
-        dangerouslySetInnerHTML = {{
-          __html: props.card.renderText
-        }}
-      ></p>
+      >
+        {
+          props.character.renderText
+        }
+      </p>
     );
   };
 
@@ -76,13 +51,12 @@ const Card  = (
             {
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
-              filter: filterGet()
+              objectFit: 'cover'
             }
           )
         }
         src = {
-          props.card.image
+          props.character.image
         }
       />
     );
@@ -90,20 +64,22 @@ const Card  = (
 
   return (
     <div
-      className = 'Card'
+      className = 'SplashCharacters m-1'
       css = {
         css(
           {
             position: 'relative',
             width: `
               ${
-                process.env.OUTPUT_RES
+                process.env.OUTPUT_RES /
+                4
               }px
             `
               .trim(),
             height: `
               ${
-                process.env.OUTPUT_RES
+                process.env.OUTPUT_RES /
+                4
               }px
             `
               .trim()
@@ -122,18 +98,16 @@ const Card  = (
 };
 
 export default createFragmentContainer(
-  Card,
+  SplashCharacter,
   {
-    card: graphql`
-      fragment Card_card on Card {
-        image,
+    character: graphql`
+      fragment SplashCharacter_character on Character {
         renderText,
-        actorImageId,
-        dualRoleIndex
+        image
       }
     `,
     viewer: graphql`
-      fragment Card_viewer on Viewer {
+      fragment SplashCharacter_viewer on Viewer {
         id
       }
     `

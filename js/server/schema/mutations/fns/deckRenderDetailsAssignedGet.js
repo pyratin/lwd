@@ -242,51 +242,6 @@ const charactersRenderDetailAssignedGet = (
   );
 };
 
-const cardsRenderDetailAssignedGet = (
-  cards,
-  characters
-) => {
-
-  return cards.reduce(
-    (
-      memo,
-      card
-    ) => {
-
-      const character = characters.find(
-        (
-          character
-        ) => {
-
-          return (
-            character.text ===
-            card.character?.text
-          );
-        }
-      );
-
-      if (
-        character
-      ) {
-
-        return [
-          ...memo,
-          {
-            ...card,
-            dualRoleIndex: character.dualRoleIndex
-          }
-        ];
-      }
-
-      return [
-        ...memo,
-        card
-      ];
-    },
-    []
-  );
-};
-
 const cardTextGet = (
   {
     text: _text,
@@ -371,13 +326,8 @@ export default (
     deck.splash.characters
   );
 
-  let cards = cardsRenderDetailAssignedGet(
-    deck.cards,
-    characters
-  );
-
-  cards = cardsRenderTextAssignedGet(
-    cards
+  let cards = cardsRenderTextAssignedGet(
+    deck.cards
   );
 
   return {
