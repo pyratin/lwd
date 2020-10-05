@@ -15,5 +15,5 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 
 .slick-prev:before,
 .slick-next:before {
-  color: grey;
+  color: grey !important;
 }

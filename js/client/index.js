@@ -30,8 +30,6 @@ import {
   ScrollManager
 } from 'found-scroll';
 import 'bootstrap/dist/js/bootstrap';
-import 'slick-carousel/slick/slick.scss';
-import 'slick-carousel/slick/slick-theme.scss';
 
 import 'styles.scss';
 import Viewer from 'Components/Viewer';
@@ -39,6 +37,8 @@ import Home from 'Components/Home';
 import Deck from 'Components/Deck';
 import DeckDetail from 'Components/Deck/DeckDetail';
 import DeckNode from 'Components/Deck/DeckNode';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const query = graphql`
   query clientQuery {
