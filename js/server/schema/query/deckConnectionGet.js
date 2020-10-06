@@ -8,6 +8,7 @@ import movieCreate from
 
 export default (
   deckId,
+  options,
   connectionArgs,
   db
 ) => {
@@ -42,13 +43,7 @@ export default (
                       }
                     `
                       .trim(),
-                    {
-                      spoofInput: {
-                        hero: '____',
-                        villain: 'bombay-terrorist'
-                      },
-                      genre: 'general'
-                    },
+                    options,
                     db,
                     undefined
                   )

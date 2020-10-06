@@ -63,7 +63,8 @@ const DeckDetail = (
 
                     return {
                       ...fragmentVariables,
-                      deckId: props.match.params.deckId
+                      deckId: props.match.params.deckId,
+                      genre: 'public-domain'
                     };
                   },
                   null,
@@ -172,12 +173,16 @@ export default createRefetchContainer(
         },
         deckId: {
           type: "ID"
+        },
+        genre: {
+          type: "String"
         }
       ) {
         id,
         decks(
           first: $deckFirst,
-          deckId: $deckId
+          deckId: $deckId,
+          genre: $genre
         ) @connection(
           key: "Connection_decks"
         ) {
@@ -193,11 +198,13 @@ export default createRefetchContainer(
   },
   graphql`
     query DeckDetailRefetchQuery(
-      $deckId: ID!
+      $deckId: ID!,
+      $genre: String
     ) {
       viewer {
         ...DeckDetail_viewer @arguments(
-          deckId: $deckId
+          deckId: $deckId,
+          genre: $genre
         )
       }
     }

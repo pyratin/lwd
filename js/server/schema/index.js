@@ -342,12 +342,20 @@ const viewerType = new GraphQLObjectType(
             deckId: {
               type: GraphQLID
             },
+            spoofInput: {
+              type: spoofInputType
+            },
+            genre: {
+              type: GraphQLString
+            },
             ...connectionArgs
           },
           resolve(
             parent,
             {
               deckId,
+              spoofInput,
+              genre,
               ...connectionArgs
             },
             {
@@ -357,6 +365,10 @@ const viewerType = new GraphQLObjectType(
 
             return deckConnectionGet(
               deckId,
+              {
+                spoofInput,
+                genre
+              },
               connectionArgs,
               db
             );

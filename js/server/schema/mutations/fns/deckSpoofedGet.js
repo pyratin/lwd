@@ -9,15 +9,6 @@ export default (
   spoofInput
 ) => {
 
-  if (
-    !spoofInput
-  ) {
-
-    return (
-      deck
-    );
-  }
-
   const characters = deckCharactersSpoofedGet(
     deck.splash.characters,
     spoofInput

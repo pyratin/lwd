@@ -43,7 +43,13 @@ const SplashCharacters = (
 
   return (
     <div
-      className = 'SplashCharacters d-flex'
+      className = {
+        `
+          SplashCharacters 
+          d-flex flex-wrap
+          justify-content-center
+        `
+      }
     >
       {
         charactersRender()

@@ -103,7 +103,6 @@ const deckPostProcessedGet = async (
 ) => {
 
   if (
-    !spoofInput ||
     !genre
   ) {
 

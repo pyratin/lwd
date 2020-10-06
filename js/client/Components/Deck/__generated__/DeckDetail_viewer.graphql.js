@@ -45,6 +45,11 @@ const node/*: ReaderFragment*/ = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "deckId"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "genre"
     }
   ],
   "kind": "Fragment",
@@ -76,6 +81,11 @@ const node/*: ReaderFragment*/ = {
           "kind": "Variable",
           "name": "deckId",
           "variableName": "deckId"
+        },
+        {
+          "kind": "Variable",
+          "name": "genre",
+          "variableName": "genre"
         }
       ],
       "concreteType": "DeckConnection",
@@ -162,6 +172,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '5cd73a7956a11077750ea8f921d15d51';
+(node/*: any*/).hash = 'e5db2fbde88c937c1c9f4459e2757979';
 
 module.exports = node;

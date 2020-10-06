@@ -5,11 +5,11 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
-import ReactSlick from 'react-slick';
 import {
   css
 } from '@emotion/core';
 
+import Carousel from 'Components/Carousel';
 import Splash from 'Components/Splash';
 import Card from 'Components/Card';
 
@@ -63,11 +63,11 @@ const DeckNode = (
       );
   };
 
-  const reactSlickRender = () => {
+  const carouselRender = () => {
 
     return (
       <div
-        className = 'reactSlickContainer'
+        className = 'carouselContainer'
         css = {
           css(
             {
@@ -87,14 +87,60 @@ const DeckNode = (
           )
         }
       >
-        <ReactSlick>
-          {
-            splashRender()
+        <Carousel
+          viewer = {
+            props.viewer
           }
+        >
           {
-            cardsRender()
+            [
+              splashRender(),
+              ...cardsRender()
+            ]
+              .reduce(
+                (
+                  memo,
+                  slide,
+                  index
+                ) => {
+
+                  if (
+                    !index
+                  ) {
+
+                    return [
+                      ...memo,
+                      <div
+                        key = {
+                          index
+                        }
+                        className = 'carousel-item active'
+                      >
+                        {
+                          slide
+                        }
+                      </div>
+                    ];
+                  }
+
+                  return [
+                    ...memo,
+                    <div
+                      key = {
+                        index
+                      }
+                      className = 'carousel-item'
+                    >
+                      {
+                        slide
+                      }
+                    </div>
+                  ];
+                },
+                []
+              )
           }
-        </ReactSlick>
+        </Carousel>
       </div>
     );
   };
@@ -104,7 +150,7 @@ const DeckNode = (
       className = 'DeckNode d-flex justify-content-center'
     >
       {
-        reactSlickRender()
+        carouselRender()
       }
     </div>
   );
@@ -127,7 +173,8 @@ export default createFragmentContainer(
     viewer: graphql`
       fragment DeckNode_viewer on Viewer {
         ...Splash_viewer,
-        ...Card_viewer
+        ...Card_viewer,
+        ...Carousel_viewer
       }
     `
   }

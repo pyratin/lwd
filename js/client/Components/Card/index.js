@@ -42,7 +42,7 @@ const Card  = (
 
     return (
       <p
-        className = 'p-1 m-0 text-center'
+        className = 'px-2 py-1 m-0 text-center'
         css = {
           css(
             {
@@ -55,7 +55,7 @@ const Card  = (
               backgroundColor: '#000',
               opacity: 0.9,
               fontFamily: 'Muli',
-              fontSize: 20
+              fontSize: 22
             }
           )
         }

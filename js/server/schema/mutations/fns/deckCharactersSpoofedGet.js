@@ -173,7 +173,11 @@ const characterGroupsSpoofNameAssignedGet = (
     [
       spoofNameCapitalizedGet(
         spoofInput?.hero ||
-        'hero'
+        spoofNamesShuffledGet(
+          spoofNames.hero
+        )[
+          0
+        ]
       )
     ]
   );
@@ -191,12 +195,7 @@ const characterGroupsSpoofNameAssignedGet = (
     _characterGroups[
       2
     ],
-    [
-      spoofNameCapitalizedGet(
-        spoofInput?.villain ||
-        'villain'
-      )
-    ]
+    spoofNames.villain
   );
 
   const manGroups = 

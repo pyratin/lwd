@@ -52,17 +52,22 @@ const Splash = (
     );
   };
 
-  const spoofInputRender = () => {
+  const splashSpoofInputRender = () => {
+
+    return (
+      <SplashSpoofInput
+        viewer = {
+          props.viewer
+        }
+      />
+    );
+  };
+
+  const titleRender = () => {
 
     return (
       <div
-        className = {
-          `
-            splashSpoofInputContainer 
-            d-flex justify-content-center
-            mb-5
-          `
-        }
+        className = 'titleContainer text-center'
         css = {
           css(
             {
@@ -70,46 +75,38 @@ const Splash = (
               zIndex: 1,
               left: 0,
               right: 0,
-              bottom: 0
-            }
-          )
-        }
-      >
-        <SplashSpoofInput
-          viewer = {
-            props.viewer
-          }
-        />
-      </div>
-    );
-  };
-
-  const titleRender = () => {
-
-    return (
-      <p
-        className = 'p-1 m-0 text-center'
-        css = {
-          css(
-            {
-              position: 'absolute',
-              zIndex: 2,
-              left: 0,
-              right: 0,
               bottom: 0,
-              color: '#fff',
-              backgroundColor: '#000',
-              opacity: 0.9,
               fontFamily: 'Muli',
-              fontSize: 20
+              fontSize: 22
             }
           )
         }
       >
         {
-          props.splash.title
+          splashSpoofInputRender()
         }
-      </p>
+        <div
+          className = {
+            `
+              d-inline-block 
+              px-2 m-2
+              rounded-circle
+              border border-secondary
+              text-white
+              bg-dark
+            `
+          }
+        >
+          in
+        </div>
+        <p
+          className = 'p-1 m-0 bg-dark text-white'
+        >
+          {
+            props.splash.title
+          }
+        </p>
+      </div>
     );
   };
 
@@ -133,7 +130,9 @@ const Splash = (
               `
                 .trim(),
               objectFit: 'cover',
-              filter: 'grayscale(100%)' 
+              filter: 
+              'grayscale(100%)',
+              opacity: .25
             }
           )
         }
@@ -146,7 +145,7 @@ const Splash = (
 
   return (
     <div
-      className = 'Splash'
+      className = 'Splash bg-dark'
       css = {
         css(
           {
@@ -157,9 +156,6 @@ const Splash = (
     >
       {
         splashCharactersRender()
-      }
-      {
-        spoofInputRender()
       }
       {
         titleRender()
