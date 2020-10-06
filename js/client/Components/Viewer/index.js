@@ -4,7 +4,8 @@ import React,
 {
   cloneElement,
   useEffect,
-  useCallback
+  useCallback,
+  useState
 } from 'react';
 import {
   createFragmentContainer,
@@ -17,6 +18,45 @@ import {
 const Viewer = (
   props
 ) => {
+
+  const matchMediaRun = useCallback(
+    () => {
+
+      if (
+        window.matchMedia(
+          '(min-width: 768px)'
+        )
+          .matches
+      ) {
+
+        return widthSet(
+          '60%'
+        );
+      }
+
+      return widthSet(
+        '100%'
+      );
+    },
+    []
+  );
+
+  const [
+    width,
+    widthSet
+  ] = useState(
+    null
+  );
+
+  const onWindowResizeHandle = useCallback(
+    () => {
+
+      return matchMediaRun();
+    },
+    [
+      matchMediaRun
+    ]
+  );
 
   const init = useCallback(
     () => {
@@ -53,10 +93,27 @@ const Viewer = (
   useEffect(
     () => {
 
+      window.addEventListener(
+        'resize',
+        onWindowResizeHandle
+      );
+
       init();
+
+      matchMediaRun();
+
+      return () => {
+
+        window.removeEventListener(
+          'resize',
+          onWindowResizeHandle
+        );
+      };
     },
     [
-      init
+      onWindowResizeHandle,
+      init,
+      matchMediaRun
     ]
   );
 
@@ -80,7 +137,9 @@ const Viewer = (
       css = {
         css(
           {
-            height: '100vh'
+            width,
+            height: '100vh',
+            margin: 'auto'
           }
         )
       }

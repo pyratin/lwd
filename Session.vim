@@ -39,13 +39,13 @@ badd +1 js/client/Components/Splash/SplashSpoofInput.js
 badd +50 js/server/fns/movieIdRouteHandle.js
 badd +23 utils/webpack/webpackConfigProd.js
 badd +1 js/server/schema/query/deckConnectionGet.js
-badd +0 js/server/schema/mutations/fns/deckCharactersSpoofedGet.js
-badd +0 js/server/schema/mutations/fns/deckSpoofedGet.js
-badd +0 js/server/schema/mutations/fns/spoofNamesGet.js
-badd +0 utils/datasets/fns/tmdb5000movieDecksCreate.js
+badd +1 js/server/schema/mutations/fns/deckCharactersSpoofedGet.js
+badd +1 js/server/schema/mutations/fns/deckSpoofedGet.js
+badd +1 js/server/schema/mutations/fns/spoofNamesGet.js
+badd +1 utils/datasets/fns/tmdb5000movieDecksCreate.js
 badd +24 .eslintrc.json
-badd +0 js/client/Components/Carousel/index.js
-badd +0 js/server/schema/mutations/fns/cardsGifyUrlAssignedGet.js
+badd +1 js/client/Components/Carousel/index.js
+badd +1 js/server/schema/mutations/fns/cardsGifyUrlAssignedGet.js
 argglobal
 %argdel
 set stal=2
@@ -243,7 +243,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 116 - ((33 * winheight(0) + 17) / 34)
+let s:l = 116 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -393,12 +393,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 79 - ((14 * winheight(0) + 17) / 34)
+let s:l = 138 - ((4 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-79
-normal! 038|
+138
+normal! 025|
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -493,7 +493,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 105 - ((33 * winheight(0) + 17) / 34)
+let s:l = 105 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -518,7 +518,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 102 - ((31 * winheight(0) + 17) / 34)
+let s:l = 102 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -543,12 +543,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 32 - ((29 * winheight(0) + 17) / 34)
+let s:l = 28 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-32
-normal! 0
+28
+normal! 030|
 tabedit js/client/Components/Splash/SplashCharacters.js
 set splitbelow splitright
 set nosplitbelow
@@ -668,12 +668,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 14 - ((13 * winheight(0) + 17) / 34)
+let s:l = 17 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-14
-normal! 0
+17
+normal! 019|
 tabedit utils/datasets/fns/decksDone.json
 set splitbelow splitright
 set nosplitbelow
@@ -699,7 +699,7 @@ exe s:l
 normal! zt
 2
 normal! 03|
-tabnext 20
+tabnext 14
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

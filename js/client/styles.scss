@@ -12,3 +12,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
   font-family: 'Muli';
   src: url('~fonts/Muli-Italic-VariableFont_wght.ttf');
 }
+
+body {
+  @extend .bg-dark;
+}
