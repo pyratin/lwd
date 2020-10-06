@@ -1,10 +1,6 @@
 'use strict';
 
-import React,
-{
-  useRef,
-  useEffect
-} from 'react';
+import React from 'react';
 import {
   createFragmentContainer,
   graphql
@@ -15,32 +11,11 @@ import {
 
 const SplashSpoofInput = () => {
 
-  const spoofInputRef = useRef(
-    null
-  );
-
-  useEffect(
-    () => {
-
-      const spoofInputEl = $(
-        spoofInputRef.current
-      )
-        .find(
-          'input'
-        );
-
-      spoofInputEl.focus();
-    }
-  );
-
   const renderFn = () => {
 
     return (
       <form
         className = 'w-50'
-        ref = {
-          spoofInputRef
-        }
       >
         <div 
           className = 'formGroupHolder'

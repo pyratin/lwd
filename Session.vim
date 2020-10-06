@@ -43,7 +43,7 @@ badd +0 js/server/schema/mutations/fns/deckCharactersSpoofedGet.js
 badd +0 js/server/schema/mutations/fns/deckSpoofedGet.js
 badd +0 js/server/schema/mutations/fns/spoofNamesGet.js
 badd +0 utils/datasets/fns/tmdb5000movieDecksCreate.js
-badd +0 .eslintrc.json
+badd +24 .eslintrc.json
 badd +0 js/client/Components/Carousel/index.js
 badd +0 js/server/schema/mutations/fns/cardsGifyUrlAssignedGet.js
 argglobal
@@ -68,37 +68,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 86 - ((13 * winheight(0) + 17) / 34)
+let s:l = 9 - ((8 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-86
-normal! 0
-tabedit .eslintrc.json
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 24 - ((23 * winheight(0) + 17) / 34)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-24
-normal! 013|
+9
+normal! 020|
 tabedit utils/datasets/fns/tmdb5000movieDecksCreate.js
 set splitbelow splitright
 set nosplitbelow
@@ -268,7 +243,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 116 - ((35 * winheight(0) + 18) / 36)
+let s:l = 116 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -293,7 +268,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 14 - ((8 * winheight(0) + 18) / 36)
+let s:l = 14 - ((8 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -518,12 +493,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 33 - ((16 * winheight(0) + 17) / 34)
+let s:l = 24 - ((7 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-33
-normal! 013|
+24
+normal! 012|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -724,7 +699,7 @@ exe s:l
 normal! zt
 2
 normal! 03|
-tabnext 19
+tabnext 20
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
