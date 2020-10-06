@@ -16,6 +16,13 @@ const SplashSpoofInput = () => {
     return (
       <form
         className = 'w-50'
+        css = {
+          css(
+            {
+              maxWidth: '200px'
+            }
+          )
+        }
       >
         <div 
           className = 'formGroupHolder'

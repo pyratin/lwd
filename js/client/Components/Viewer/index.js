@@ -76,7 +76,7 @@ const Viewer = (
 
   return (
     <div
-      className = 'Viewer'
+      className = 'Viewer pb-5 bg-dark'
       css = {
         css(
           {
