@@ -77,7 +77,7 @@ const Splash = (
               right: 0,
               bottom: 0,
               fontFamily: 'Muli',
-              fontSize: 22
+              fontSize: '1.5rem'
             }
           )
         }
@@ -88,13 +88,20 @@ const Splash = (
         <div
           className = {
             `
-              d-inline-block 
-              px-2 m-2
+              d-inline-block
+              m-2
               rounded-circle
               border border-secondary
               text-white
               bg-dark
             `
+          }
+          css = {
+            css(
+              {
+                padding: '0px 8px 0px 8px'
+              }
+            )
           }
         >
           in
@@ -110,59 +117,39 @@ const Splash = (
     );
   };
 
-  const imageRender = () => {
-
-    return (
-      <img 
+  return (
+    <div
+      className = 'Splash w-100 h-100 bg-dark'
+    >
+      <div>
+        {
+          splashCharactersRender()
+        }
+        {
+          titleRender()
+        }
+      </div>
+      <div
+        className = 'w-100 h-100'
         css = {
           css(
             {
-              width: `
-                ${
-                  process.env.OUTPUT_RES
-                }px
+              position: 'relative',
+              backgroundImage: `
+                url("${
+                  props.splash.poster
+                }")
               `
                 .trim(),
-              height: `
-                ${
-                  process.env.OUTPUT_RES
-                }px
-              `
-                .trim(),
-              objectFit: 'cover',
-              filter: 
-              'grayscale(100%)',
-              opacity: .25
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              filter: 'grayscale()',
+              opacity: 0.25
             }
           )
         }
-        src = {
-          props.splash.poster
-        }
-      />
-    );
-  };
-
-  return (
-    <div
-      className = 'Splash bg-dark'
-      css = {
-        css(
-          {
-            position: 'relative'
-          }
-        )
-      }
-    >
-      {
-        splashCharactersRender()
-      }
-      {
-        titleRender()
-      }
-      {
-        imageRender()
-      }
+      ></div>
     </div>
   );
 };

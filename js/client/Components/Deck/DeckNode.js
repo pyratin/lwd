@@ -5,9 +5,6 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
-import {
-  css
-} from '@emotion/core';
 
 import Carousel from 'Components/Carousel';
 import Splash from 'Components/Splash';
@@ -67,25 +64,7 @@ const DeckNode = (
 
     return (
       <div
-        className = 'carouselContainer'
-        css = {
-          css(
-            {
-              width: `
-                ${
-                  process.env.OUTPUT_RES
-                }px
-              `
-                .trim(),
-              height: `
-                ${
-                  process.env.OUTPUT_RES
-                }px
-              `
-                .trim(),
-            }
-          )
-        }
+        className = 'carouselContainer w-100 h-100'
       >
         <Carousel
           viewer = {
@@ -114,7 +93,8 @@ const DeckNode = (
                         key = {
                           index
                         }
-                        className = 'carousel-item active'
+                        className = 
+                          'carousel-item w-100 h-100 active'
                       >
                         {
                           slide
@@ -129,7 +109,8 @@ const DeckNode = (
                       key = {
                         index
                       }
-                      className = 'carousel-item'
+                      className = 
+                        'carousel-item w-100 h-100'
                     >
                       {
                         slide
@@ -147,7 +128,8 @@ const DeckNode = (
 
   return (
     <div
-      className = 'DeckNode d-flex justify-content-center'
+      className = 
+        'DeckNode d-flex justify-content-center h-100'
     >
       {
         carouselRender()

@@ -34,10 +34,10 @@ const Carousel = (
   return (
     <div
       id = 'Carousel'
-      className = 'Carousel carousel slide'
+      className = 'Carousel carousel w-100 h-100 slide'
     >
       <div
-        className = 'carousel-inner'
+        className = 'carousel-inner w-100 h-100'
       >
         {
           props.children

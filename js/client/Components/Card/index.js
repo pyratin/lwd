@@ -42,7 +42,7 @@ const Card  = (
 
     return (
       <p
-        className = 'px-2 py-1 m-0 text-center'
+        className = 'p-2 m-0 text-center'
         css = {
           css(
             {
@@ -55,7 +55,7 @@ const Card  = (
               backgroundColor: '#000',
               opacity: 0.9,
               fontFamily: 'Muli',
-              fontSize: 22
+              fontSize: '1.5rem'
             }
           )
         }
@@ -66,54 +66,35 @@ const Card  = (
     );
   };
 
-  const imageRender = () => {
-
-    return (
-      <img
+  return (
+    <div
+      className = 'Card w-100 h-100'
+    >
+      <div>
+        {
+          textRender()
+        }
+      </div>
+      <div
+        className = 'w-100 h-100'
         css = {
           css(
             {
-              width: `
-                ${
-                  process.env.OUTPUT_RES
-                }px
+              position: 'relative',
+              backgroundImage: `
+                url("${
+                  props.card.image
+                }")
               `
                 .trim(),
-              height: `
-                ${
-                  process.env.OUTPUT_RES
-                }px
-              `
-                .trim(),
-              objectFit: 'cover',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               filter: filterGet()
             }
           )
         }
-        src = {
-          props.card.image
-        }
-      />
-    );
-  };
-
-  return (
-    <div
-      className = 'Card'
-      css = {
-        css(
-          {
-            position: 'relative'
-          }
-        )
-      }
-    >
-      {
-        textRender()
-      }
-      {
-        imageRender()
-      }
+      ></div>
     </div>
   );
 };

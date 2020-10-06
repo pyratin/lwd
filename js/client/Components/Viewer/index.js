@@ -10,6 +10,9 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
+import {
+  css
+} from '@emotion/core';
 
 const Viewer = (
   props
@@ -74,6 +77,13 @@ const Viewer = (
   return (
     <div
       className = 'Viewer'
+      css = {
+        css(
+          {
+            height: '100vh'
+          }
+        )
+      }
     >
       {
         childrenRender()

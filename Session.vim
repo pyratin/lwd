@@ -393,11 +393,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 76 - ((22 * winheight(0) + 17) / 34)
+let s:l = 79 - ((12 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-76
+79
 normal! 026|
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
@@ -418,12 +418,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 32 - ((15 * winheight(0) + 17) / 34)
+let s:l = 6 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-32
-normal! 024|
+6
+normal! 015|
 tabedit js/client/Components/Deck/DeckDetail.js
 set splitbelow splitright
 set nosplitbelow
@@ -443,12 +443,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 67 - ((25 * winheight(0) + 17) / 34)
+let s:l = 98 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-67
-normal! 042|
+98
+normal! 010|
 tabedit js/client/Components/Deck/DeckNode.js
 set splitbelow splitright
 set nosplitbelow
@@ -468,12 +468,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 92 - ((8 * winheight(0) + 17) / 34)
+let s:l = 76 - ((17 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-92
-normal! 024|
+76
+normal! 015|
 tabedit js/client/Components/Carousel/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -493,12 +493,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 24 - ((7 * winheight(0) + 17) / 34)
+let s:l = 37 - ((14 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-24
-normal! 012|
+37
+normal! 048|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -518,12 +518,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 103 - ((19 * winheight(0) + 17) / 34)
+let s:l = 102 - ((21 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-103
-normal! 049|
+102
+normal! 032|
 tabedit js/client/Components/Splash/SplashSpoofInput.js
 set splitbelow splitright
 set nosplitbelow
@@ -543,12 +543,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 73 - ((12 * winheight(0) + 17) / 34)
+let s:l = 32 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-73
-normal! 047|
+32
+normal! 0
 tabedit js/client/Components/Splash/SplashCharacters.js
 set splitbelow splitright
 set nosplitbelow
@@ -568,12 +568,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 50 - ((21 * winheight(0) + 17) / 34)
+let s:l = 55 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-50
-normal! 032|
+55
+normal! 0
 tabedit js/client/Components/Splash/SplashCharacter.js
 set splitbelow splitright
 set nosplitbelow
@@ -593,12 +593,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 51 - ((29 * winheight(0) + 17) / 34)
+let s:l = 44 - ((3 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-51
-normal! 015|
+44
+normal! 039|
 tabedit js/client/Components/Card/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -618,12 +618,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 54 - ((17 * winheight(0) + 17) / 34)
+let s:l = 58 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-54
-normal! 0
+58
+normal! 028|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -699,7 +699,7 @@ exe s:l
 normal! zt
 2
 normal! 03|
-tabnext 20
+tabnext 19
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

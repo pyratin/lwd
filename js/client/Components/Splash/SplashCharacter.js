@@ -17,7 +17,7 @@ const SplashCharacter = (
 
     return (
       <p
-        className = 'p-0 m-0 text-center'
+        className = 'p-0 m-0 text-center text-light bg-dark'
         css = {
           css(
             {
@@ -26,10 +26,8 @@ const SplashCharacter = (
               left: 0,
               right: 0,
               bottom: 0,
-              color: '#fff',
-              backgroundColor: '#000',
               fontFamily: 'Muli',
-              fontSize: 12
+              fontSize: '1rem'
             }
           )
         }
@@ -41,54 +39,31 @@ const SplashCharacter = (
     );
   };
 
-  const imageRender = () => {
-
-    return (
-      <img
-        css = {
-          css(
-            {
-              width: `
-                ${
-                  process.env.OUTPUT_RES /
-                  4
-                }px
-              `
-                .trim(),
-              height: `
-                ${
-                  process.env.OUTPUT_RES /
-                  4
-                }px
-              `
-                .trim(),
-              objectFit: 'cover'
-            }
-          )
-        }
-        src = {
-          props.character.image
-        }
-      />
-    );
-  };
-
   return (
     <div
-      className = 'SplashCharacters m-1'
+      className = 'SplashCharacters m-2 rounded rounded-lg'
       css = {
         css(
           {
             position: 'relative',
+            width: '120px',
+            height: '120px',
+            backgroundImage: `
+              url("${
+                props.character.image
+              }")
+            `
+              .trim(),
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'grayscale(50%) brightness(1.25)'
           }
         )
       }
     >
       {
         textRender()
-      }
-      {
-        imageRender()
       }
     </div>
   );

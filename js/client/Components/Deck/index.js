@@ -29,7 +29,7 @@ const Deck = (
 
   return (
     <div
-      className = 'Deck'
+      className = 'Deck h-100'
     >
       {
         childrenRender()

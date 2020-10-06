@@ -149,7 +149,7 @@ const DeckDetail = (
 
   return (
     <div
-      className = 'DeckDetail'
+      className = 'DeckDetail h-100'
     >
       {
         childrenRender()
