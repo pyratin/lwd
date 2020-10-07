@@ -1,6 +1,9 @@
 'use strict';
 
-import React from 'react';
+import React,
+{
+  useState
+} from 'react';
 import {
   createFragmentContainer,
   graphql
@@ -9,7 +12,56 @@ import {
   css
 } from '@emotion/core';
 
-const SplashSpoofInput = () => {
+const SplashSpoofInput = (
+  props
+) => {
+
+  const [
+    text,
+    textSet
+  ] = useState(
+    null
+  );
+
+  const onChangeHandle = (
+    event
+  ) => {
+
+    return textSet(
+      event.target.value
+    );
+  };
+
+  const onSubmitHandle = (
+    event
+  ) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    return props.onSplashSpoofInputTrigger(
+      text
+    );
+  };
+
+  const onKeyDownHandle = (
+    event
+  ) => {
+
+    if (
+      event.key ===
+      'Enter'
+    ) {
+
+      return onSubmitHandle(
+        event
+      );
+    }
+
+    return (
+      event
+    );
+  };
 
   const renderFn = () => {
 
@@ -22,6 +74,9 @@ const SplashSpoofInput = () => {
               maxWidth: '200px'
             }
           )
+        }
+        onSubmit = {
+          onSubmitHandle
         }
       >
         <div 
@@ -46,6 +101,15 @@ const SplashSpoofInput = () => {
                 )
               }
               placeholder = 'YOU !!'
+              value = {
+                text || ''
+              }
+              onChange = {
+                onChangeHandle
+              }
+              onKeyDown = {
+                onKeyDownHandle
+              }
             />
 
             <div
@@ -53,6 +117,7 @@ const SplashSpoofInput = () => {
             >
               <button
                 className = 'btn btn-secondary'
+                type = 'submit'
               >
                 <i
                   className = 'fa fa-check'

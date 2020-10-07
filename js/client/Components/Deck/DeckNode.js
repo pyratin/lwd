@@ -27,6 +27,9 @@ const DeckNode = (
         match = {
           props.match
         }
+        onSplashSpoofInputTrigger = {
+          props.onSplashSpoofInputTrigger
+        }
       />
     );
   };

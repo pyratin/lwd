@@ -18,7 +18,8 @@ export type DeckDetail_viewer = {|
   +decks: ?{|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
-        +$fragmentRefs: DeckNode_deck$ref
+        +id: ?string,
+        +$fragmentRefs: DeckNode_deck$ref,
       |}
     |}>
   |},
@@ -34,7 +35,15 @@ export type DeckDetail_viewer$key = {
 */
 
 
-const node/*: ReaderFragment*/ = {
+const node/*: ReaderFragment*/ = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": 1,
@@ -50,6 +59,11 @@ const node/*: ReaderFragment*/ = {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "genre"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "spoofInput"
     }
   ],
   "kind": "Fragment",
@@ -67,13 +81,7 @@ const node/*: ReaderFragment*/ = {
   },
   "name": "DeckDetail_viewer",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "alias": "decks",
       "args": [
@@ -86,6 +94,11 @@ const node/*: ReaderFragment*/ = {
           "kind": "Variable",
           "name": "genre",
           "variableName": "genre"
+        },
+        {
+          "kind": "Variable",
+          "name": "spoofInput",
+          "variableName": "spoofInput"
         }
       ],
       "concreteType": "DeckConnection",
@@ -109,6 +122,7 @@ const node/*: ReaderFragment*/ = {
               "name": "node",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -171,7 +185,8 @@ const node/*: ReaderFragment*/ = {
   "type": "Viewer",
   "abstractKey": null
 };
+})();
 // prettier-ignore
-(node/*: any*/).hash = 'e5db2fbde88c937c1c9f4459e2757979';
+(node/*: any*/).hash = 'a12546dc3ff697584950c0e3774940f3';
 
 module.exports = node;

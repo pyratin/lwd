@@ -59,6 +59,9 @@ const Splash = (
         viewer = {
           props.viewer
         }
+        onSplashSpoofInputTrigger = {
+          props.onSplashSpoofInputTrigger
+        }
       />
     );
   };

@@ -24,6 +24,23 @@ const sentencesParenthesisPurgedGet = (
   );
 };
 
+const sentencesSemicolonsReplacedGet = (
+  sentences
+) => {
+
+  return sentences.map(
+    (
+      sentence
+    ) => {
+
+      return sentence.replace(
+        /;\s/g,
+        ', '
+      );
+    }
+  );
+};
+
 const sentenceIsNormalizableGet = (
   sentence,
   sentenceMaxLength
@@ -760,6 +777,10 @@ export default (
   );
 
   sentences = sentencesParenthesisPurgedGet(
+    sentences
+  );
+
+  sentences = sentencesSemicolonsReplacedGet(
     sentences
   );
 

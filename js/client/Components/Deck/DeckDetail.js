@@ -34,6 +34,13 @@ const DeckDetail = (
   );
 
   const [
+    hero,
+    heroSet
+  ] = useState(
+    null
+  );
+
+  const [
     loading,
     loadingSet
   ] = useState(
@@ -64,6 +71,23 @@ const DeckDetail = (
                     return {
                       ...fragmentVariables,
                       deckId: props.match.params.deckId,
+                      ...(
+                        () => {
+                          
+                          if (
+                            hero
+                          ) {
+
+                            return {
+                              spoofInput: {
+                                hero
+                              }
+                            };
+                          }
+
+                          return {};
+                        }
+                      )(),
                       genre: 'public-domain'
                     };
                   },
@@ -99,7 +123,8 @@ const DeckDetail = (
     },
     [
       props.relay,
-      props.match.params.deckId
+      props.match.params.deckId,
+      hero
     ]
   );
 
@@ -119,9 +144,20 @@ const DeckDetail = (
       refetch();
     },
     [
+      props.match.params.deckId,
+      deck?.id,
       refetch
     ]
   );
+
+  const onSplashSpoofInputTriggerHandle = (
+    text
+  ) => {
+
+    return heroSet(
+      text
+    );
+  };
 
   const childrenRender = () => {
 
@@ -134,7 +170,9 @@ const DeckDetail = (
         {
           deck,
           viewer: props.viewer,
-          match: props.match
+          match: props.match,
+          onSplashSpoofInputTrigger: 
+            onSplashSpoofInputTriggerHandle
         }
       );
   };
@@ -174,6 +212,9 @@ export default createRefetchContainer(
         deckId: {
           type: "ID"
         },
+        spoofInput: {
+          type: "spoofInput"
+        },
         genre: {
           type: "String"
         }
@@ -182,12 +223,14 @@ export default createRefetchContainer(
         decks(
           first: $deckFirst,
           deckId: $deckId,
+          spoofInput: $spoofInput,
           genre: $genre
         ) @connection(
           key: "Connection_decks"
         ) {
           edges {
             node {
+              id,
               ...DeckNode_deck
             }
           }
@@ -199,11 +242,13 @@ export default createRefetchContainer(
   graphql`
     query DeckDetailRefetchQuery(
       $deckId: ID!,
+      $spoofInput: spoofInput,
       $genre: String
     ) {
       viewer {
         ...DeckDetail_viewer @arguments(
           deckId: $deckId,
+          spoofInput: $spoofInput,
           genre: $genre
         )
       }
