@@ -1,11 +1,6 @@
 'use strict';
 
-import React, 
-{
-  useRef,
-  useEffect,
-  useState
-} from 'react';
+import React from 'react';
 import {
   createFragmentContainer,
   graphql
@@ -17,61 +12,6 @@ import {
 const SplashCharacter = (
   props
 ) => {
-
-  const [
-    dimension,
-    dimensionSet
-  ] = useState(
-    null
-  );
-
-  const splashCharacterRef = useRef(
-    null
-  );
-
-  const onWindowResizeHandle = () => {
-
-    const dimension = Math.min(
-      (
-        $(
-          splashCharacterRef.current
-        )
-          .parent()
-          .width()
-      ) /
-      3.5,
-      125
-    );
-
-    return dimensionSet(
-      dimension
-    );
-  };
-
-  useEffect(
-    () => {
-
-      if (
-        splashCharacterRef.current
-      ) {
-
-        onWindowResizeHandle();
-      }
-
-      window.addEventListener(
-        'resize',
-        onWindowResizeHandle
-      );
-      return () => {
-
-        return window.removeEventListener(
-          'resize',
-          onWindowResizeHandle
-        );
-      };
-    },
-    []
-  );
 
   const textRender = () => {
 
@@ -101,16 +41,13 @@ const SplashCharacter = (
 
   return (
     <div
-      ref = {
-        splashCharacterRef
-      }
       className = 'SplashCharacter m-2 rounded rounded-lg'
       css = {
         css(
           {
             position: 'relative',
-            width: dimension,
-            height: dimension,
+            width: 100,
+            height: 100,
             backgroundImage: `
               url("${
                 props.character.image
