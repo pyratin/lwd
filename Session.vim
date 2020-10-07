@@ -32,7 +32,7 @@ badd +47 views/index.ejs
 badd +25 utils/webpack/webpackConfigDev.js
 badd +245 js/server/schema/mutations/fns/deckRenderDetailsAssignedGet.js
 badd +10 js/server/schema/mutations/fns/cardsMetaAssignedGet.js
-badd +1 js/client/Components/Splash/SplashCharacter.js
+badd +29 js/client/Components/Splash/SplashCharacter.js
 badd +316 js/server/schema/mutations/fns/splashRenderedGet.js
 badd +117 js/server/schema/mutations/fns/charactersMontageGet.js
 badd +1 js/client/Components/Splash/SplashSpoofInput.js
@@ -671,12 +671,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 55 - ((11 * winheight(0) + 17) / 34)
+let s:l = 49 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-55
-normal! 0
+49
+normal! 015|
 tabedit js/client/Components/Splash/SplashCharacter.js
 set splitbelow splitright
 set nosplitbelow
@@ -696,12 +696,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 44 - ((3 * winheight(0) + 17) / 34)
+let s:l = 47 - ((15 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-44
-normal! 039|
+47
+normal! 017|
 tabedit js/client/Components/Card/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -721,12 +721,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 54 - ((21 * winheight(0) + 17) / 34)
+let s:l = 48 - ((15 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-54
-normal! 027|
+48
+normal! 013|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -777,7 +777,7 @@ exe s:l
 normal! zt
 17
 normal! 019|
-tabnext 27
+tabnext 26
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

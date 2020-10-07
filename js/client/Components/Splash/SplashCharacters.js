@@ -46,6 +46,7 @@ const SplashCharacters = (
       className = {
         `
           SplashCharacters 
+          w-100
           d-flex flex-wrap
           justify-content-center
         `
