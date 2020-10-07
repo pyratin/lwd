@@ -109,7 +109,7 @@ const Viewer = (
           css = {
             css(
               {
-                maxWidth: 576
+                maxWidth: 768
               }
             )
           }
