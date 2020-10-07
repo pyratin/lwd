@@ -162,6 +162,7 @@ const DeckDetail = (
   const childrenRender = () => {
 
     return (
+      !loading &&
       deck &&
       props.children
     ) &&
