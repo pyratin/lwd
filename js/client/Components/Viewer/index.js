@@ -4,8 +4,7 @@ import React,
 {
   cloneElement,
   useEffect,
-  useCallback,
-  useState
+  useCallback
 } from 'react';
 import {
   createFragmentContainer,
@@ -15,48 +14,12 @@ import {
   css
 } from '@emotion/core';
 
+import Header from 'Components/Header';
+import Footer from 'Components/Footer';
+
 const Viewer = (
   props
 ) => {
-
-  const matchMediaRun = useCallback(
-    () => {
-
-      if (
-        window.matchMedia(
-          '(min-width: 768px)'
-        )
-          .matches
-      ) {
-
-        return widthSet(
-          '60%'
-        );
-      }
-
-      return widthSet(
-        '100%'
-      );
-    },
-    []
-  );
-
-  const [
-    width,
-    widthSet
-  ] = useState(
-    null
-  );
-
-  const onWindowResizeHandle = useCallback(
-    () => {
-
-      return matchMediaRun();
-    },
-    [
-      matchMediaRun
-    ]
-  );
 
   const init = useCallback(
     () => {
@@ -93,29 +56,26 @@ const Viewer = (
   useEffect(
     () => {
 
-      window.addEventListener(
-        'resize',
-        onWindowResizeHandle
-      );
-
       init();
-
-      matchMediaRun();
-
-      return () => {
-
-        window.removeEventListener(
-          'resize',
-          onWindowResizeHandle
-        );
-      };
     },
     [
-      onWindowResizeHandle,
-      init,
-      matchMediaRun
+      init
     ]
   );
+
+  const headerRender = () => {
+
+    return (
+      <Header
+        viewer = {
+          props.viewer
+        }
+        match = {
+          props.match
+        }
+      />
+    );
+  };
 
   const childrenRender = () => {
 
@@ -131,21 +91,70 @@ const Viewer = (
       );
   };
 
+  const contentRender = () => {
+
+    return (
+      <div
+        className = {
+          `
+            contentContainer 
+            flex-fill
+            d-flex
+            justify-content-center
+          `
+        }
+      >
+        <div
+          className = 'content w-100'
+          css = {
+            css(
+              {
+                maxWidth: 576
+              }
+            )
+          }
+        >
+          {
+            childrenRender()
+          }
+        </div>
+      </div>
+    );
+  };
+
+  const footerRender = () => {
+
+    return (
+      <Footer
+        viewer = {
+          props.viewer
+        }
+        match = {
+          props.match
+        }
+      />
+    );
+  };
+
   return (
     <div
-      className = 'Viewer bg-dark'
+      className = 'Viewer d-flex flex-column'
       css = {
         css(
           {
-            width,
-            height: '100vh',
-            margin: 'auto'
+            height: '100vh'
           }
         )
       }
     >
       {
-        childrenRender()
+        headerRender()
+      }
+      {
+        contentRender()
+      }
+      {
+        footerRender()
       }
     </div>
   );
@@ -158,8 +167,10 @@ export default createFragmentContainer(
       fragment Viewer_viewer on Viewer {
         id,
         deckId,
+        ...Header_viewer,
         ...Home_viewer,
-        ...Deck_viewer
+        ...Deck_viewer,
+        ...Footer_viewer
       }
     `
   }

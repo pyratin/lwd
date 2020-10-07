@@ -80,7 +80,7 @@ const Splash = (
               right: 0,
               bottom: 0,
               fontFamily: 'Muli',
-              fontSize: '1.5rem'
+              fontSize: props.textFontSize
             }
           )
         }
@@ -114,7 +114,7 @@ const Splash = (
           css = {
             css(
               {
-                minHeight: '100px'
+                minHeight: props.textMinHeight
               }
             )
           }

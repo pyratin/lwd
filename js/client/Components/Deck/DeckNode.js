@@ -14,6 +14,10 @@ const DeckNode = (
   props
 ) => {
 
+  const textMinHeight = 100;
+
+  const textFontSize = '1.2rem';
+
   const splashRender = () => {
 
     return (
@@ -26,6 +30,12 @@ const DeckNode = (
         }
         match = {
           props.match
+        }
+        textMinHeight = {
+          textMinHeight
+        }
+        textFontSize = {
+          textFontSize
         }
         onSplashSpoofInputTrigger = {
           props.onSplashSpoofInputTrigger
@@ -56,6 +66,12 @@ const DeckNode = (
               }
               match = {
                 props.match
+              }
+              textMinHeight = {
+                textMinHeight
+              }
+              textFontSize = {
+                textFontSize
               }
             />
           );

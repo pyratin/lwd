@@ -30,7 +30,6 @@ const Carousel = (
         .carousel(
           {
             keyboard: true,
-            ride: true,
             interval: 10000
           }
         );
@@ -60,18 +59,10 @@ const Carousel = (
       ref = {
         carouselRef
       }
-      className = 'Carousel w-100 h-100 slide'
+      className = 'Carousel w-100 h-100 d-flex slide'
     >
-      <div
-        className = 'carousel-inner w-100 h-100'
-      >
-        {
-          props.children
-        }
-      </div>
-
-      <a 
-        className = 'carousel-control-prev'
+      <a
+        className = 'd-flex align-items-center'
         data-slide = 'prev'
         onClick = {
           onClickHandle
@@ -82,6 +73,9 @@ const Carousel = (
           css = {
             css(
               {
+                position: 'relative',
+                zIndex: 1,
+                left: 40,
                 padding: '5px 7px 0px 5px',
                 backgroundColor: 'rgba(0, 0, 0, 0.25)'
               }
@@ -94,8 +88,16 @@ const Carousel = (
         </div>
       </a>
 
+      <div
+        className = 'carousel-inner w-100 h-100'
+      >
+        {
+          props.children
+        }
+      </div>
+
       <a 
-        className = 'carousel-control-next'
+        className = 'd-flex align-items-center'
         data-slide = 'next'
         onClick = {
           onClickHandle
@@ -106,6 +108,9 @@ const Carousel = (
           css = {
             css(
               {
+                position: 'relative',
+                zIndex: 1,
+                right: 40,
                 padding: '5px 5px 0px 7px',
                 backgroundColor: 'rgba(0, 0, 0, 0.25)'
               }
