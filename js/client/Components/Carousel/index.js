@@ -59,10 +59,27 @@ const Carousel = (
       ref = {
         carouselRef
       }
-      className = 'Carousel w-100 h-100 d-flex slide'
+      className = 'Carousel w-100 h-100 slide'
+      css = {
+        css(
+          {
+            position: 'relative'
+          }
+        )
+      }
     >
-      <a
-        className = 'd-flex align-items-center'
+      <div
+        css = {
+          css(
+            {
+              position: 'absolute',
+              zIndex: 1,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              left: 10
+            }
+          )
+        }
         data-slide = 'prev'
         onClick = {
           onClickHandle
@@ -73,9 +90,6 @@ const Carousel = (
           css = {
             css(
               {
-                position: 'relative',
-                zIndex: 1,
-                left: 40,
                 padding: '5px 7px 0px 5px',
                 backgroundColor: 'rgba(0, 0, 0, 0.25)'
               }
@@ -86,7 +100,7 @@ const Carousel = (
             className = 'carousel-control-prev-icon'
           ></span>
         </div>
-      </a>
+      </div>
 
       <div
         className = 'carousel-inner w-100 h-100'
@@ -97,7 +111,17 @@ const Carousel = (
       </div>
 
       <a 
-        className = 'd-flex align-items-center'
+        css = {
+          css(
+            {
+              position: 'absolute',
+              zIndex: 1,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              right: 10
+            }
+          )
+        }
         data-slide = 'next'
         onClick = {
           onClickHandle
@@ -108,9 +132,6 @@ const Carousel = (
           css = {
             css(
               {
-                position: 'relative',
-                zIndex: 1,
-                right: 40,
                 padding: '5px 5px 0px 7px',
                 backgroundColor: 'rgba(0, 0, 0, 0.25)'
               }
