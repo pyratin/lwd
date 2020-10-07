@@ -49,6 +49,8 @@ badd +74 js/server/schema/mutations/fns/cardsGifyUrlAssignedGet.js
 badd +0 js/server/schema/mutations/fns/sentencesGet.js
 badd +971 js/server/schema/mutations/fns/deckActorImageIdsAssignedGet.js
 badd +0 js/client/Components/Loading/index.js
+badd +0 js/server/schema/mutations/fns/charactersMetaAssignedGet.js
+badd +0 js/server/schema/mutations/fns/charactersMetaRoleAssignedGet.js
 argglobal
 %argdel
 set stal=2
@@ -302,6 +304,56 @@ exe s:l
 normal! zt
 80
 normal! 024|
+tabedit js/server/schema/mutations/fns/charactersMetaAssignedGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 19 - ((18 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+19
+normal! 0
+tabedit js/server/schema/mutations/fns/charactersMetaRoleAssignedGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 115 - ((31 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+115
+normal! 0
 tabedit js/server/schema/mutations/fns/deckSpoofedGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -621,12 +673,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 117 - ((29 * winheight(0) + 17) / 34)
+let s:l = 83 - ((4 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-117
-normal! 030|
+83
+normal! 028|
 tabedit js/client/Components/Splash/SplashSpoofInput.js
 set splitbelow splitright
 set nosplitbelow
@@ -696,12 +748,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 47 - ((15 * winheight(0) + 17) / 34)
+let s:l = 90 - ((13 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-47
-normal! 017|
+90
+normal! 027|
 tabedit js/client/Components/Card/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -721,12 +773,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 48 - ((15 * winheight(0) + 17) / 34)
+let s:l = 45 - ((12 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-48
-normal! 013|
+45
+normal! 028|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -777,7 +829,7 @@ exe s:l
 normal! zt
 17
 normal! 019|
-tabnext 26
+tabnext 19
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

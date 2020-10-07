@@ -114,7 +114,7 @@ const Splash = (
           css = {
             css(
               {
-                minHeight: '150px'
+                minHeight: '100px'
               }
             )
           }

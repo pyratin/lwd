@@ -51,7 +51,7 @@ const Card  = (
               left: 0,
               right: 0,
               bottom: 0,
-              minHeight: '150px',
+              minHeight: '100px',
               fontFamily: 'Muli',
               fontSize: '1.5rem'
             }

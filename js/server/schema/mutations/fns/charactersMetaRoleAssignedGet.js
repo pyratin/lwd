@@ -88,30 +88,30 @@ const charactersRoleMatchIndexAssignedGet = (
           .starringIndex :
         -1;
 
-      const dualRoleIndex = (
-        !match
-      ) ?
-        memo.findIndex(
-          (
-            _memo
-          ) => {
+      const dualRoleIndex = memo.findIndex(
+        (
+          _memo
+        ) => {
 
-            return (
-              (
-                !character.castIndex
-              ) &&
-              (
-                _memo.dualRoleIndex === 
-                -1
-              ) &&
-              (
-                _memo.castIndex ===
-                character.castIndex
-              )
-            );
-          }
-        ) :
-        -1;
+          return (
+            (
+              !character.castIndex
+            ) &&
+            (
+              _memo.castIndex ===
+              character.castIndex
+            ) &&
+            (
+              _memo.dualRoleIndex === 
+              -1
+            ) &&
+            (
+              character.roleMatchIndex ===
+              -1
+            )
+          );
+        }
+      );
 
       return [
         ...memo,
