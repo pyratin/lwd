@@ -393,12 +393,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 138 - ((4 * winheight(0) + 17) / 34)
+let s:l = 33 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-138
-normal! 025|
+33
+normal! 013|
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
 set nosplitbelow
