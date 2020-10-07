@@ -74,9 +74,19 @@ const fnDelayRun = (
 
 const cardsFlatlistGifyUrlAssignedGetFn = (
   {
-    text
-  }
+    text: _text
+  },
+  title
 ) => {
+
+  const text = `
+    ${
+      _text
+    } : ${
+      title
+    }
+  `
+    .trim();
 
   return nodeFetch(
     queryGet(
@@ -128,7 +138,8 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
 };
 
 const cardsFlatlistGifyUrlAssignedGet = (
-  cards
+  cards,
+  title
 ) => {
 
   return cards.reduce(
@@ -143,7 +154,8 @@ const cardsFlatlistGifyUrlAssignedGet = (
         ) => {
 
           return cardsFlatlistGifyUrlAssignedGetFn(
-            card
+            card,
+            title
           )
             .then(
               (
@@ -226,7 +238,8 @@ const cardsGifyUrlAssignedGet = (
 };
 
 export default async (
-  _cards
+  _cards,
+  title
 ) => {
 
   let cardsFlatlist = cardsForGifyGet(
@@ -234,7 +247,8 @@ export default async (
   );
 
   cardsFlatlist = await cardsFlatlistGifyUrlAssignedGet(
-    cardsFlatlist
+    cardsFlatlist,
+    title
   );
 
   const cards = cardsGifyUrlAssignedGet(

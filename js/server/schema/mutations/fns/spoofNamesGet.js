@@ -14,9 +14,7 @@ export default () => {
       ],
       villain: [
         'Bombay-Terrorist',
-        'Delhi-Terrorist',
-        'Bombay-Seth',
-        'Delhi-Seth'
+        'Delhi-Terrorist'
       ],
       man: [],
       woman: [],

@@ -7,11 +7,10 @@ const Loading = () => {
   const iconRender = () => {
 
     return (
-      <div
-        className = 'mx-auto'
-      >
+      <div>
         <i
-          className = 'fa fa-spinner fa-spin'
+          className = 
+            'fa fa-spinner fa-lg fa-spin text-white'
         ></i>
       </div>
     );
@@ -19,7 +18,14 @@ const Loading = () => {
 
   return (
     <div
-      className = 'Loading d-flex'
+      className = {
+        `
+          Loading 
+          w-100 h-100 
+          d-flex 
+          justify-content-center align-items-center
+        `
+      }
     >
       {
         iconRender()

@@ -76,7 +76,8 @@ const deckPreBuiltGet = async (
   );
 
   cards = await cardsGifyUrlAssignedGet(
-    cards
+    cards,
+    movieDataBasic.title
   );
 
   const spoofable = deckSpoofableGet(

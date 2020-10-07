@@ -140,7 +140,8 @@ const Splash = (
               position: 'relative',
               backgroundImage: `
                 url("${
-                  props.splash.poster
+                  props.splash.poster ||
+                  '/poster.jpeg'
                 }")
               `
                 .trim(),

@@ -27,14 +27,40 @@ const Carousel = (
       $(
         carouselRef.current
       )
-        .carousel();
+        .carousel(
+          {
+            keyboard: true,
+            ride: true,
+            interval: 10000
+          }
+        );
     }
   );
 
+  const onClickHandle = (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    return $(
+      carouselRef.current
+    )
+      .carousel(
+        $(
+          event.currentTarget
+        )
+          .data(
+            'slide'
+          )
+      );
+  };
+
   return (
     <div
-      id = 'Carousel'
-      className = 'Carousel carousel w-100 h-100 slide'
+      ref = {
+        carouselRef
+      }
+      className = 'Carousel w-100 h-100 slide'
     >
       <div
         className = 'carousel-inner w-100 h-100'
@@ -46,9 +72,10 @@ const Carousel = (
 
       <a 
         className = 'carousel-control-prev'
-        href = '#Carousel'
-        role = 'button'
         data-slide = 'prev'
+        onClick = {
+          onClickHandle
+        }
       >
         <div
           className = 'rounded-circle'
@@ -69,9 +96,10 @@ const Carousel = (
 
       <a 
         className = 'carousel-control-next'
-        href = '#Carousel'
-        role = 'button'
         data-slide = 'next'
+        onClick = {
+          onClickHandle
+        }
       >
         <div
           className = 'rounded-circle'
