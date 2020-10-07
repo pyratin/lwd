@@ -596,12 +596,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 33 - ((32 * winheight(0) + 17) / 34)
+let s:l = 38 - ((32 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-33
-normal! 022|
+38
+normal! 04|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -621,12 +621,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 144 - ((18 * winheight(0) + 18) / 36)
+let s:l = 117 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-144
-normal! 032|
+117
+normal! 030|
 tabedit js/client/Components/Splash/SplashSpoofInput.js
 set splitbelow splitright
 set nosplitbelow
@@ -646,7 +646,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 75 - ((0 * winheight(0) + 18) / 36)
+let s:l = 75 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -726,7 +726,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 54
-normal! 015|
+normal! 027|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -777,7 +777,7 @@ exe s:l
 normal! zt
 17
 normal! 019|
-tabnext 22
+tabnext 27
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

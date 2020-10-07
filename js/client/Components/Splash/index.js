@@ -111,6 +111,13 @@ const Splash = (
         </div>
         <p
           className = 'p-1 m-0 bg-dark text-white'
+          css = {
+            css(
+              {
+                minHeight: '150px'
+              }
+            )
+          }
         >
           {
             props.splash.title
