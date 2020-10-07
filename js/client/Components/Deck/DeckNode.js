@@ -83,7 +83,13 @@ const DeckNode = (
 
     return (
       <div
-        className = 'carouselContainer w-100 h-100'
+        className = {
+          `
+            carouselContainer 
+            w-100 h-100
+            rounded rounded-lg
+          `
+        }
       >
         <Carousel
           viewer = {

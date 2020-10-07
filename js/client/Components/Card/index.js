@@ -42,7 +42,7 @@ const Card  = (
 
     return (
       <p
-        className = 'p-2 m-0 text-center text-white bg-dark'
+        className = 'p-1 m-0 text-center text-white bg-dark'
         css = {
           css(
             {
