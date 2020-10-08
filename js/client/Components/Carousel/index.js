@@ -29,7 +29,7 @@ const Carousel = (
       )
         .carousel(
           {
-            ride: false,
+            ride: true,
             interval: 10000
           }
         );
