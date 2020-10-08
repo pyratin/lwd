@@ -13,10 +13,7 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
   src: url('~fonts/Muli-Italic-VariableFont_wght.ttf');
 }
 
-html {
-  font-size: 1rem;
-
-  body {
-    @extend .bg-dark;
-  }
+body {
+  font-size: 16px;
+  @extend .bg-dark;
 }

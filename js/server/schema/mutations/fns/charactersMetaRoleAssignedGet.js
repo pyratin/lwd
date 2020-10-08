@@ -60,37 +60,47 @@ const charactersRoleMatchIndexAssignedGet = (
       character
     ) => {
 
+      const roles = memo.filter(
+        (
+          _memo
+        ) => {
+
+          return (
+            _memo.castIndex ===
+            character.castIndex
+          );
+        }
+      );
+      console.log(
+        character,
+        roles
+      );
+
       const match = roleExistsGet(
         character,
-        memo
+        roles
       );
+      console.log(match);
 
       const roleMatchIndex = (
         match &&
         (
-          memo[
-            match._NNPIndex
-          ]
-            .castIndex ===
-          character.castIndex
-        ) &&
-        (
-          memo[
+          roles[
             match._NNPIndex
           ]
             .roleMatchIndex ===
           -1
         )
       ) ?
-        memo[
+        roles[
           match._NNPIndex
         ]
           .starringIndex :
         -1;
 
-      const dualRoleIndex = memo.findIndex(
+      const dualRoleIndex = roles.findIndex(
         (
-          _memo
+          role
         ) => {
 
           return (
@@ -98,20 +108,18 @@ const charactersRoleMatchIndexAssignedGet = (
               !character.castIndex
             ) &&
             (
-              _memo.castIndex ===
-              character.castIndex
-            ) &&
-            (
-              _memo.dualRoleIndex === 
+              role.dualRoleIndex === 
               -1
             ) &&
             (
-              character.roleMatchIndex ===
+              roleMatchIndex ===
               -1
             )
           );
         }
       );
+      console.log(roleMatchIndex, dualRoleIndex);
+      console.log('---------------');
 
       return [
         ...memo,
