@@ -33,7 +33,7 @@ const Card  = (
       ) :
 
         return (
-          'hue-rotate(-20deg)'
+          'hue-rotate(20deg)'
         );
     }
   };

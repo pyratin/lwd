@@ -27,7 +27,7 @@ const SplashCharacter = (
               right: 0,
               bottom: 0,
               fontFamily: 'Muli',
-              fontSize: '.8rem'
+              fontSize: '1rem'
             }
           )
         }
@@ -46,8 +46,8 @@ const SplashCharacter = (
         css(
           {
             position: 'relative',
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
             backgroundImage: `
               url("${
                 props.character.image

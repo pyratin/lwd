@@ -77,7 +77,7 @@ const charactersRenderTextAssignedGet = (
   characters
 ) => {
 
-  const lengthMax = 10;
+  const lengthMax = 5;
 
   return characters.reduce(
     (
