@@ -71,16 +71,11 @@ const charactersRoleMatchIndexAssignedGet = (
           );
         }
       );
-      console.log(
-        character,
-        roles
-      );
 
       const match = roleExistsGet(
         character,
         roles
       );
-      console.log(match);
 
       const roleMatchIndex = (
         match &&
@@ -118,8 +113,6 @@ const charactersRoleMatchIndexAssignedGet = (
           );
         }
       );
-      console.log(roleMatchIndex, dualRoleIndex);
-      console.log('---------------');
 
       return [
         ...memo,

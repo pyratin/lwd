@@ -14,7 +14,7 @@ const DeckNode = (
   props
 ) => {
 
-  const textMinHeight = 100;
+  const textMinHeight = 150;
 
   const textFontSize = '1.2rem';
 
