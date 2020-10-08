@@ -631,7 +631,7 @@ exe s:l
 normal! zt
 17
 normal! 018|
-tabnext 20
+tabnext 15
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
