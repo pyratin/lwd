@@ -50,6 +50,9 @@ const Splash = (
           textFontSize = {
             props.textFontSize
           }
+          splashCharacterElementSize = {
+            props.splashCharacterElementSize
+          }
         />
       </div>
     );

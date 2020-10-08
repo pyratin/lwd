@@ -425,12 +425,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 17) / 34)
+let s:l = 43 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 033|
+43
+normal! 036|
 tabedit js/client/Components/Carousel/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -450,12 +450,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 121 - ((14 * winheight(0) + 17) / 34)
+let s:l = 32 - ((24 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-121
-normal! 023|
+32
+normal! 013|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -475,12 +475,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 120 - ((16 * winheight(0) + 17) / 34)
+let s:l = 58 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-120
-normal! 044|
+58
+normal! 06|
 tabedit js/client/Components/Splash/SplashSpoofInput.js
 set splitbelow splitright
 set nosplitbelow
@@ -525,12 +525,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 39 - ((16 * winheight(0) + 17) / 34)
+let s:l = 42 - ((19 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-39
-normal! 022|
+42
+normal! 048|
 tabedit js/client/Components/Splash/SplashCharacter.js
 set splitbelow splitright
 set nosplitbelow
@@ -550,12 +550,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 35 - ((7 * winheight(0) + 17) / 34)
+let s:l = 58 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-35
-normal! 021|
+58
+normal! 052|
 tabedit js/client/Components/Card/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -631,7 +631,7 @@ exe s:l
 normal! zt
 17
 normal! 018|
-tabnext 16
+tabnext 15
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

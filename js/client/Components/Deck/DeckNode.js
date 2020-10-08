@@ -18,6 +18,8 @@ const DeckNode = (
 
   const textFontSize = '1.2rem';
 
+  const splashCharacterElementSize = '5rem';
+
   const splashRender = () => {
 
     return (
@@ -36,6 +38,9 @@ const DeckNode = (
         }
         textFontSize = {
           textFontSize
+        }
+        splashCharacterElementSize = {
+          splashCharacterElementSize
         }
         onSplashSpoofInputTrigger = {
           props.onSplashSpoofInputTrigger

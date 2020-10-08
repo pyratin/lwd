@@ -38,6 +38,9 @@ const SplashCharacters = (
               textFontSize = {
                 props.textFontSize
               }
+              splashCharacterElementSize = {
+                props.splashCharacterElementSize
+              }
             />
           );
         }
