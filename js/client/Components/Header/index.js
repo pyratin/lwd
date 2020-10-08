@@ -28,12 +28,7 @@ const Header = (
 
   return (
     <div
-      className = {
-        `
-          Header
-          px-2 pt-3
-        `
-      }
+      className = 'Header pt-3'
     >
       {
         movieSearchRender()

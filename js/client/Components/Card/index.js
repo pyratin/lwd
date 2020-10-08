@@ -81,7 +81,8 @@ const Card  = (
               position: 'relative',
               backgroundImage: `
                 url("${
-                  props.card.image
+                  props.card.image ||
+                  '/placeholder.jpeg'
                 }")
               `
                 .trim(),

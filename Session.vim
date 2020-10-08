@@ -330,11 +330,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 115 - ((7 * winheight(0) + 17) / 34)
+let s:l = 135 - ((28 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-115
+135
 normal! 011|
 tabedit js/client/Components/Header/index.js
 set splitbelow splitright
@@ -355,12 +355,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((9 * winheight(0) + 17) / 34)
+let s:l = 30 - ((24 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
-normal! 019|
+30
+normal! 05|
 tabedit js/client/Components/MovieSearch/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -736,7 +736,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 11
+tabnext 25
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
