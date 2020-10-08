@@ -115,6 +115,9 @@ const Viewer = (
           }
         >
           {
+            headerRender()
+          }
+          {
             childrenRender()
           }
         </div>
@@ -147,9 +150,6 @@ const Viewer = (
         )
       }
     >
-      {
-        headerRender()
-      }
       {
         contentRender()
       }
