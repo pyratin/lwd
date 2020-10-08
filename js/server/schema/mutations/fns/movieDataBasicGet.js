@@ -121,9 +121,48 @@ const moviePageSectionTextsGet = (
   );
 };
 
+const processFn = (
+  title,
+  poster,
+  plotText,
+  castText,
+  plotLimit,
+  processFlag
+) => {
+
+  if (
+    !processFlag
+  ) {
+
+    return {
+      plotText,
+      castText
+    };
+  }
+
+  let plot = movieDataBasicPlotGet(
+    plotText,
+    plotLimit
+  );
+
+  const cast = movieDataBasicCastGet(
+    castText
+  );
+
+  return {
+    title,
+    poster,
+    cast,
+    plot,
+    castText,
+    plotText
+  };
+};
+
 export default async (
   title,
-  plotLimit
+  plotLimit,
+  processFlag = true
 ) => {
 
   // eslint-disable-next-line no-console
@@ -167,21 +206,12 @@ export default async (
     anchorNames
   );
 
-  let plot = movieDataBasicPlotGet(
-    plotText,
-    plotLimit
-  );
-
-  const cast = movieDataBasicCastGet(
-    castText
-  );
-
-  return {
+  return processFn(
     title,
     poster,
-    cast,
-    plot,
+    plotText,
     castText,
-    plotText
-  };
+    plotLimit,
+    processFlag
+  );
 };

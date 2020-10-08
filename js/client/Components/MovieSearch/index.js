@@ -183,7 +183,7 @@ const MovieSearch = (
             _text
           );
         },
-        1000
+        2000
       );
     },
     [

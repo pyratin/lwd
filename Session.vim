@@ -30,7 +30,7 @@ badd +1 js/client/Components/Splash/SplashCharacters.js
 badd +36 js/server/schema/mutations/fns/cardsRenderedGet.js
 badd +2 views/index.ejs
 badd +25 utils/webpack/webpackConfigDev.js
-badd +245 js/server/schema/mutations/fns/deckRenderDetailsAssignedGet.js
+badd +82 js/server/schema/mutations/fns/deckRenderDetailsAssignedGet.js
 badd +10 js/server/schema/mutations/fns/cardsMetaAssignedGet.js
 badd +29 js/client/Components/Splash/SplashCharacter.js
 badd +316 js/server/schema/mutations/fns/splashRenderedGet.js
@@ -57,6 +57,7 @@ badd +0 js/client/Components/MovieSearch/index.js
 badd +0 js/client/Components/MovieSearch/MovieSearchResultItem.js
 badd +0 js/client/mutations/MovieSearchMutation.js
 badd +0 js/server/schema/mutations/movieSearch/index.js
+badd +0 js/server/schema/mutations/fns/movieDataBasicGet.js
 argglobal
 %argdel
 set stal=2
@@ -179,11 +180,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 171 - ((29 * winheight(0) + 17) / 34)
+let s:l = 172 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-171
+172
 normal! 011|
 tabedit js/server/schema/mutations/movieCreate/index.js
 set splitbelow splitright
@@ -260,7 +261,7 @@ exe s:l
 normal! zt
 119
 normal! 09|
-tabedit js/server/schema/mutations/fns/deckRenderDetailsAssignedGet.js
+tabedit js/server/schema/mutations/fns/movieDataBasicGet.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -279,12 +280,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 82 - ((12 * winheight(0) + 17) / 34)
+let s:l = 199 - ((15 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-82
-normal! 021|
+199
+normal! 0
 tabedit js/client/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -735,7 +736,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 5
+tabnext 13
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

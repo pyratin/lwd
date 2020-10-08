@@ -106,16 +106,17 @@ const movieSearchResultCheck = async (
 ) => {
 
   const {
-    cast,
-    plot
+    castText,
+    plotText
   } = await movieDataBasicGet(
     result.title,
-    5
+    undefined,
+    false
   );
 
   return (
-    !!cast &&
-    !!plot
+    !!castText &&
+    !!plotText
   );
 };
 
