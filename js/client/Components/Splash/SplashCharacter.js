@@ -41,13 +41,13 @@ const SplashCharacter = (
 
   return (
     <div
-      className = 'SplashCharacter m-2 rounded rounded-lg'
+      className = 'SplashCharacter m-1 rounded rounded-lg'
       css = {
         css(
           {
             position: 'relative',
-            width: 100,
-            height: 100,
+            width: 80,
+            height: 80,
             backgroundImage: `
               url("${
                 props.character.image
