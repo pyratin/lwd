@@ -8,11 +8,12 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
+type MovieSearch_viewer$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type Header_viewer$ref: FragmentReference;
 declare export opaque type Header_viewer$fragmentType: Header_viewer$ref;
 export type Header_viewer = {|
-  +id: ?string,
+  +$fragmentRefs: MovieSearch_viewer$ref,
   +$refType: Header_viewer$ref,
 |};
 export type Header_viewer$data = Header_viewer;
@@ -31,17 +32,15 @@ const node/*: ReaderFragment*/ = {
   "name": "Header_viewer",
   "selections": [
     {
-      "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "MovieSearch_viewer"
     }
   ],
   "type": "Viewer",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '47f07e924c7d7561893a88d59becfedd';
+(node/*: any*/).hash = 'c2fce802108f2616c1c0a1bbcf5f3b01';
 
 module.exports = node;

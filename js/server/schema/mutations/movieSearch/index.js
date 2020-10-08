@@ -168,7 +168,7 @@ const movieSearchResultsFilteredGet = (
 
 export default async (
   text,
-  limit = 5,
+  limit = 2,
   fuzzy = true
 ) => {
 

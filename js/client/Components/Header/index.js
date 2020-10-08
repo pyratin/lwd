@@ -6,19 +6,38 @@ import {
   graphql
 } from 'react-relay';
 
-const Header = () => {
+import MovieSearch from 'Components/MovieSearch';
+
+const Header = (
+  props
+) => {
+
+  const movieSearchRender = () => {
+
+    return (
+      <MovieSearch
+        viewer = {
+          props.viewer
+        }
+        match = {
+          props.match
+        }
+      />
+    );
+  };
 
   return (
     <div
       className = {
         `
           Header
-          px-2 py-3
-          text-dark
+          px-2 pt-3
         `
       }
     >
-      Header
+      {
+        movieSearchRender()
+      }
     </div>
   );
 };
@@ -28,7 +47,7 @@ export default createFragmentContainer(
   {
     viewer: graphql`
       fragment Header_viewer on Viewer {
-        id
+        ...MovieSearch_viewer
       }
     `
   }

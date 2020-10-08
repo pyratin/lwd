@@ -14,11 +14,11 @@ const DeckNode = (
   props
 ) => {
 
-  const textElementMinHeight = '6em';
+  const textElementMinHeight = '6rem';
 
-  const textFontSize = '1.2em';
+  const textFontSize = '1.2rem';
 
-  const splashCharacterElementSize = '6em';
+  const splashCharacterElementSize = '6rem';
 
   const splashRender = () => {
 

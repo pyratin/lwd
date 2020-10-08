@@ -116,7 +116,7 @@ const SplashSpoofInput = (
               className = 'btnGroup input-group-append'
             >
               <button
-                className = 'btn btn-secondary'
+                className = 'btn btn-success'
                 type = 'submit'
               >
                 <i

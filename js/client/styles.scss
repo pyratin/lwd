@@ -8,6 +8,8 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
+@import '~react-bootstrap-typeahead/css/Typeahead';
+
 @font-face {
   font-family: 'Muli';
   src: url('~fonts/Muli-Italic-VariableFont_wght.ttf');
