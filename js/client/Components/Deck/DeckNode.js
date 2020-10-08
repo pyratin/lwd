@@ -5,6 +5,9 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
+import {
+  css
+} from '@emotion/core';
 
 import Carousel from 'Components/Carousel';
 import Splash from 'Components/Splash';
@@ -19,6 +22,41 @@ const DeckNode = (
   const textFontSize = '1.2rem';
 
   const splashCharacterElementSize = '6rem';
+
+  const refreshRender = () => {
+
+    return (
+      <div
+        className = {
+          `
+            refreshContainer 
+            p-1 m-1
+            rounded-circle
+            bg-dark text-white
+          `
+        }
+        css = {
+          css(
+            {
+              position: 'absolute',
+              zIndex: 2,
+              right: 0,
+              opacity: .25
+            }
+          )
+        }
+      >
+        <a
+          className = 'text-white'
+          href = '/'
+        >
+          <i
+            className = 'fa fa-sync fa-lg fa-fw'
+          ></i>
+        </a>
+      </div>
+    );
+  };
 
   const splashRender = () => {
 
@@ -159,8 +197,18 @@ const DeckNode = (
   return (
     <div
       className = 
-        'DeckNode d-flex justify-content-center h-100'
+        'DeckNode w-100 h-100 d-flex justify-content-center'
+      css = {
+        css(
+          {
+            position: 'relative'
+          }
+        )
+      }
     >
+      {
+        refreshRender()
+      }
       {
         carouselRender()
       }

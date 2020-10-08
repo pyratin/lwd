@@ -380,12 +380,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 371 - ((14 * winheight(0) + 17) / 34)
+let s:l = 186 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-371
-normal! 025|
+186
+normal! 09|
 tabedit js/client/Components/MovieSearch/MovieSearchResultItem.js
 set splitbelow splitright
 set nosplitbelow
@@ -530,11 +530,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 134 - ((33 * winheight(0) + 17) / 34)
+let s:l = 50 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-134
+50
 normal! 019|
 tabedit js/client/Components/Carousel/index.js
 set splitbelow splitright
@@ -555,12 +555,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 32 - ((24 * winheight(0) + 17) / 34)
+let s:l = 134 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-32
-normal! 022|
+134
+normal! 0
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -680,12 +680,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 54 - ((33 * winheight(0) + 17) / 34)
+let s:l = 81 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-54
-normal! 042|
+81
+normal! 035|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -736,7 +736,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 25
+tabnext 19
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
