@@ -56,7 +56,7 @@ badd +1 js/client/Components/Header/index.js
 badd +0 js/client/Components/MovieSearch/index.js
 badd +0 js/client/Components/MovieSearch/MovieSearchResultItem.js
 badd +0 js/client/mutations/MovieSearchMutation.js
-badd +0 ~/Documents/Projects/lwd/js/server/schema/mutations/movieSearch/index.js
+badd +0 js/server/schema/mutations/movieSearch/index.js
 argglobal
 %argdel
 set stal=2
@@ -160,7 +160,7 @@ exe s:l
 normal! zt
 13
 normal! 0
-tabedit ~/Documents/Projects/lwd/js/server/schema/mutations/movieSearch/index.js
+tabedit js/server/schema/mutations/movieSearch/index.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -179,12 +179,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 17) / 34)
+let s:l = 171 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+171
+normal! 011|
 tabedit js/server/schema/mutations/movieCreate/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -379,12 +379,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 324 - ((17 * winheight(0) + 17) / 34)
+let s:l = 86 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-324
-normal! 0
+86
+normal! 024|
 tabedit js/client/Components/MovieSearch/MovieSearchResultItem.js
 set splitbelow splitright
 set nosplitbelow

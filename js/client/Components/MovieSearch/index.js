@@ -83,6 +83,7 @@ const MovieSearch = (
     (
       text
     ) => {
+      console.log(text);
 
       return MovieSearchMutation.commit(
         {
