@@ -21,6 +21,8 @@ const Viewer = (
   props
 ) => {
 
+  const maxWidth = 768;
+
   const init = useCallback(
     () => {
 
@@ -66,14 +68,36 @@ const Viewer = (
   const headerRender = () => {
 
     return (
-      <Header
-        viewer = {
-          props.viewer
+      <div
+        className = {
+          `
+            headerContainer 
+            w-100 
+            d-flex 
+            justify-content-center
+          `
         }
-        match = {
-          props.match
-        }
-      />
+      >
+        <div
+          className = 'headerContainerInner w-100'
+          css = {
+            css(
+              {
+                maxWidth
+              }
+            )
+          }
+        >
+          <Header
+            viewer = {
+              props.viewer
+            }
+            match = {
+              props.match
+            }
+          />
+        </div>
+      </div>
     );
   };
 
@@ -109,14 +133,11 @@ const Viewer = (
           css = {
             css(
               {
-                maxWidth: 768
+                maxWidth
               }
             )
           }
         >
-          {
-            headerRender()
-          }
           {
             childrenRender()
           }
@@ -150,6 +171,9 @@ const Viewer = (
         )
       }
     >
+      {
+        headerRender()
+      }
       {
         contentRender()
       }

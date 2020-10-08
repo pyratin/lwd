@@ -380,12 +380,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 62 - ((3 * winheight(0) + 17) / 34)
+let s:l = 371 - ((14 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-62
-normal! 05|
+371
+normal! 025|
 tabedit js/client/Components/MovieSearch/MovieSearchResultItem.js
 set splitbelow splitright
 set nosplitbelow
@@ -560,7 +560,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 32
-normal! 013|
+normal! 022|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -736,7 +736,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 20
+tabnext 11
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
