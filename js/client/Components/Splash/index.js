@@ -47,6 +47,9 @@ const Splash = (
           match = {
             props.match
           }
+          textFontSize = {
+            props.textFontSize
+          }
         />
       </div>
     );
@@ -114,7 +117,7 @@ const Splash = (
           css = {
             css(
               {
-                minHeight: props.textMinHeight
+                minHeight: props.textElementMinHeight
               }
             )
           }

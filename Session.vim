@@ -425,12 +425,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 18 - ((16 * winheight(0) + 17) / 34)
+let s:l = 17 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-18
-normal! 0
+17
+normal! 033|
 tabedit js/client/Components/Carousel/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -475,12 +475,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 147 - ((16 * winheight(0) + 17) / 34)
+let s:l = 120 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-147
-normal! 026|
+120
+normal! 044|
 tabedit js/client/Components/Splash/SplashSpoofInput.js
 set splitbelow splitright
 set nosplitbelow
@@ -525,12 +525,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 49 - ((26 * winheight(0) + 17) / 34)
+let s:l = 39 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-49
-normal! 015|
+39
+normal! 022|
 tabedit js/client/Components/Splash/SplashCharacter.js
 set splitbelow splitright
 set nosplitbelow
@@ -550,12 +550,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 50 - ((18 * winheight(0) + 17) / 34)
+let s:l = 35 - ((7 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-50
-normal! 022|
+35
+normal! 021|
 tabedit js/client/Components/Card/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -575,12 +575,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 36 - ((31 * winheight(0) + 17) / 34)
+let s:l = 54 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-36
-normal! 022|
+54
+normal! 042|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -631,7 +631,7 @@ exe s:l
 normal! zt
 17
 normal! 018|
-tabnext 20
+tabnext 16
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

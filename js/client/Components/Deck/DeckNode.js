@@ -14,7 +14,7 @@ const DeckNode = (
   props
 ) => {
 
-  const textMinHeight = 150;
+  const textElementMinHeight = '6rem';
 
   const textFontSize = '1.2rem';
 
@@ -31,8 +31,8 @@ const DeckNode = (
         match = {
           props.match
         }
-        textMinHeight = {
-          textMinHeight
+        textElementMinHeight = {
+          textElementMinHeight
         }
         textFontSize = {
           textFontSize
@@ -67,8 +67,8 @@ const DeckNode = (
               match = {
                 props.match
               }
-              textMinHeight = {
-                textMinHeight
+              textElementMinHeight = {
+                textElementMinHeight
               }
               textFontSize = {
                 textFontSize

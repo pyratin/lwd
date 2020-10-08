@@ -51,7 +51,7 @@ const Card  = (
               left: 0,
               right: 0,
               bottom: 0,
-              minHeight: props.textMinHeight,
+              minHeight: props.textElementMinHeight,
               fontFamily: 'Muli',
               fontSize: props.textFontSize
             }

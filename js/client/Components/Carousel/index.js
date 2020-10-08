@@ -29,7 +29,7 @@ const Carousel = (
       )
         .carousel(
           {
-            keyboard: true,
+            ride: false,
             interval: 10000
           }
         );
@@ -59,7 +59,7 @@ const Carousel = (
       ref = {
         carouselRef
       }
-      className = 'Carousel w-100 h-100 slide'
+      className = 'Carousel carousel w-100 h-100 slide'
       css = {
         css(
           {
@@ -68,7 +68,7 @@ const Carousel = (
         )
       }
     >
-      <div
+      <a
         css = {
           css(
             {
@@ -100,7 +100,7 @@ const Carousel = (
             className = 'carousel-control-prev-icon'
           ></span>
         </div>
-      </div>
+      </a>
 
       <div
         className = 'carousel-inner w-100 h-100'

@@ -35,6 +35,9 @@ const SplashCharacters = (
               match = {
                 props.match
               }
+              textFontSize = {
+                props.textFontSize
+              }
             />
           );
         }
