@@ -127,6 +127,67 @@ const charactersRoleMatchIndexAssignedGet = (
   );
 };
 
+const charactersMetaHeroineAssignedGet = (
+  characters
+) => {
+
+  const match = characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      if (
+        (
+          !memo ||
+          (
+            character.castIndex <
+            memo.castIndex
+          )
+        ) &&
+        (
+          character.actor.gender ===
+            'woman'
+        )
+      ) {
+
+        return (
+          character
+        );
+      }
+
+      return (
+        memo
+      );
+    },
+    null
+  );
+
+  if (
+    match
+  ) {
+
+    return [
+      ...characters.slice(
+        0, 
+        match.starringIndex
+      ),
+      {
+        ...match,
+        role: 'heroine'
+      },
+      ...characters.slice(
+        match.starringIndex +
+        1
+      )
+    ];
+  }
+
+  return (
+    characters
+  );
+};
+
 const characterGroupsGet = (
   characters
 ) => {
@@ -245,29 +306,20 @@ const characterGroupsOrderedGet = (
       characterGroup
     ) => {
 
+      const match = characterGroup.find(
+        (
+          character
+        ) => {
+
+          return (
+            character.role ===
+            'heroine'
+          );
+        }
+      );
+
       if (
-        (
-          !memo.length ||
-          (
-            characterGroup[
-              0
-            ]
-              .castIndex <
-            memo[
-              0
-            ][
-              0
-            ]
-              .castIndex
-          )
-        ) &&
-        (
-          characterGroup[
-            0
-          ]
-            .actor.gender ===
-            'woman'
-        )
+        match
       ) {
 
         return [
@@ -588,6 +640,10 @@ const charactersRoleAssignedGet = async (
   await charactersMetaRoleVillainAssignedGet(
     _characters,
     title
+  );
+
+  characters = charactersMetaHeroineAssignedGet(
+    characters
   );
 
   let characterGroups = characterGroupsGet(

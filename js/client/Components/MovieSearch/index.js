@@ -14,6 +14,9 @@ import {
   AsyncTypeahead,
   TypeaheadMenu
 } from 'react-bootstrap-typeahead';
+import {
+  css
+} from '@emotion/core';
 
 import {
   useIsMounted
@@ -366,6 +369,15 @@ const MovieSearch = (
           <AsyncTypeahead
             id = 'wikipedia-movie-search'
             className = 'formControl w-100'
+            css = {
+              css(
+                {
+                  '& .form-control': {
+                    borderRadius: 0
+                  }
+                }
+              )
+            }
             size = 'large'
             placeholder = 
               '&#128269; by movie title ...'

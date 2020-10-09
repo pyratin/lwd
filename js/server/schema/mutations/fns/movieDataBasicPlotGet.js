@@ -2,36 +2,22 @@
 
 import cheerio from 'cheerio';
 
+import sentencesTokenizedGet from './sentencesTokenizedGet';
 import sentencesGet from './sentencesGet';
 
-const sentencesGetFn = (
+const sentencesTokenizedGetFn = (
   paragraphs
 ) => {
 
   let sentences = paragraphs.reduce(
     (
       memo,
-      paragraph,
-      paragraphIndex
+      paragraph
     ) => {
 
-      const _sentences = sentencesGet(
-        paragraph,
-        100
-      )
-        .map(
-          (
-            text,
-            sentenceIndex
-          ) => {
-
-            return {
-              text,
-              paragraphIndex,
-              sentenceIndex
-            };
-          }
-        );
+      const _sentences = sentencesTokenizedGet(
+        paragraph
+      );
 
       return [
         ...memo,
@@ -43,6 +29,24 @@ const sentencesGetFn = (
 
   return (
     sentences
+  );
+};
+
+const sentencesIndexAssignedGet = (
+  sentences
+) => {
+
+  return sentences.map(
+    (
+      text,
+      sentenceIndex
+    ) => {
+
+      return {
+        text,
+        sentenceIndex
+      };
+    }
   );
 };
 
@@ -164,8 +168,22 @@ export default (
     null
   );
 
-  let sentences = sentencesGetFn(
+  let sentences = sentencesTokenizedGetFn(
     paragraphs
+  );
+
+  sentences = sentences.slice(
+    0,
+    plotLimit
+  );
+
+  sentences = sentencesGet(
+    sentences,
+    75
+  );
+
+  sentences = sentencesIndexAssignedGet(
+    sentences
   );
 
   sentences = sentencesCulledByLimitGet(

@@ -499,6 +499,7 @@ export default async (
 ) => {
 
   const {
+    source = 'user',
     spoofInput = undefined,
     genre = undefined,
     outputType = 'deck',
@@ -516,7 +517,10 @@ export default async (
   );
 
   output = await outputCreatedGet(
-    output,
+    {
+      source,
+      ...output
+    },
     createFlag,
     db,
     req

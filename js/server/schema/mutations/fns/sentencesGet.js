@@ -1,6 +1,5 @@
 'use strict';
 
-import sentencesTokenizedGet from './sentencesTokenizedGet';
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
 import NNPsGet from './NNPsGet';
@@ -416,6 +415,60 @@ const sentenceShortenedByNNPGet = (
     }
   );
 
+  NNPs = NNPs.reduce(
+    (
+      memo,
+      _NNP
+    ) => {
+
+      const __sentence = _sentence.slice(
+        _NNP.distance
+      );
+
+      const match = __sentence.match(
+        /([A-Z][^\s]*)\s(?![A-Z])/
+      );
+
+      if (
+        !_NNP.end &&
+        match &&
+        !NNPs.find(
+          (
+            NNP
+          ) => {
+
+            return (
+              NNP.text ===
+              match[
+                1
+              ]
+            );
+          }
+        )
+      ) {
+
+        return [
+          ...memo,
+          {
+            ..._NNP,
+            text: match[
+              1
+            ],
+            distance: _NNP.distance +
+            match.index,
+            end: true
+          }
+        ];
+      }
+
+      return [
+        ...memo,
+        _NNP
+      ];
+    },
+    []
+  );
+
   NNPs = NNPs.filter(
     (
       NNP
@@ -470,6 +523,54 @@ const sentenceShortenedByNNPGet = (
         ''
       ) :
     _sentence;
+
+  if (
+    (
+      !sentenceIsNormalizableGet(
+        sentence,
+        sentenceMaxLength
+      )
+    ) &&
+    (
+      NNPs.reduce(
+        (
+          memo,
+          NNP
+        ) => {
+
+          if (
+            !memo &&
+            sentence.match(
+              new RegExp(
+                `
+                  ${
+                    NNP.text
+                  }\\s
+                `
+                  .trim()
+              )
+            )
+          ) {
+
+            return (
+              true
+            );
+          }
+
+          return (
+            memo
+          );
+        },
+        false
+      )
+    )
+  ) {
+
+    return sentenceShortenedByNNPGet(
+      sentence,
+      sentenceMaxLength
+    );
+  }
 
   return (
     sentence
@@ -768,16 +869,12 @@ const sentencesNormalizedGet = (
 };
 
 export default (
-  paragraph,
+  _sentences,
   sentenceMaxLength
 ) => {
 
-  let sentences = sentencesTokenizedGet(
-    paragraph
-  );
-
-  sentences = sentencesParenthesisPurgedGet(
-    sentences
+  let sentences = sentencesParenthesisPurgedGet(
+    _sentences
   );
 
   sentences = sentencesSemicolonsReplacedGet(

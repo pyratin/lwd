@@ -26,7 +26,6 @@ export default (
 
               return {
                 ...NNP,
-                paragraphIndex: sentence.paragraphIndex,
                 sentenceIndex: sentence.sentenceIndex
               };
             }

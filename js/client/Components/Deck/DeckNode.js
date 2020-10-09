@@ -19,9 +19,9 @@ const DeckNode = (
 
   const textElementMinHeight = '6rem';
 
-  const textFontSize = '1.2rem';
+  const textFontSize = '1.1rem';
 
-  const splashCharacterElementSize = '6rem';
+  const splashCharacterElementSize = '5rem';
 
   const refreshRender = () => {
 
