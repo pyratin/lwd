@@ -2,7 +2,6 @@
 
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
-import NNPsGet from './NNPsGet';
 import parenthesisPurgedGet from './parenthesisPurgedGet';
 
 const sentenceNormalizeRegExp = /,\s/;
@@ -23,7 +22,7 @@ const sentencesParenthesisPurgedGet = (
   );
 };
 
-const sentencesSemicolonsReplacedGet = (
+const sentencesColonsReplacedGet = (
   sentences
 ) => {
 
@@ -33,7 +32,7 @@ const sentencesSemicolonsReplacedGet = (
     ) => {
 
       return sentence.replace(
-        /;\s/g,
+        /(;|:)+\s/g,
         ', '
       );
     }
@@ -313,52 +312,6 @@ const sentenceShortenedByPOSGet = (
   );
 };
 
-const NNPsSortedGet = (
-  NNPs,
-  sentenceMaxLength
-) => {
-
-  return NNPs.sort(
-    (
-      a, b
-    ) => {
-
-      const factor = sentenceMaxLength / 2;
-
-      switch (
-        true
-      ) {
-
-        case (
-          Math.abs(
-            a.distance -
-            factor
-          ) >
-          Math.abs(
-            b.distance -
-            factor
-          )
-        ) :
-
-          return 1;
-
-        case (
-          Math.abs(
-            b.distance -
-            factor
-          ) >
-          Math.abs(
-            a.distance -
-            factor
-          )
-        ) :
-
-          return -1;
-      }
-    }
-  );
-};
-
 const sentenceShortenedByNNPGet = (
   _sentence,
   sentenceMaxLength
@@ -376,201 +329,134 @@ const sentenceShortenedByNNPGet = (
     );
   }
 
-  let NNPs = NNPsGet(
-    _sentence
+  let matches = _sentence.matchAll(
+    /(?<![,]\s)(?<=\s)[A-Z]+[a-z]*(?=\s)(?!\s[A-Z0-9])/g
   );
 
-  NNPs = NNPs.map(
-    (
-      NNP
-    ) => {
+  let NNPs = [
+    ...matches
+  ]
+    .map(
+      (
+        match
+      ) => {
 
-      const wordBoundry = !!_sentence.match(
-        new RegExp(
-          `
-            ${
-              NNP.text
-            }\\s
-          `
-            .trim()
-        )
-      );
+        return {
+          text: match[
+            0
+          ],
+          distance: match.index
+        };
+      }
+    );
 
-      const end = !_sentence.match(
-        new RegExp(
-          `
-            ${
-              NNP.text
-            }\\s[A-Z]
-          `
-            .trim()
-        )
-      );
-
-      return {
-        ...NNP,
-        wordBoundry,
-        end
-      };
-    }
-  );
-
-  NNPs = NNPs.reduce(
+  let fragments = NNPs.reduce(
     (
       memo,
-      _NNP
+      NNP,
+      index
     ) => {
 
-      const __sentence = _sentence.slice(
-        _NNP.distance
+      const _NNP = (
+        index
+      ) ?
+        NNPs[
+          index - 
+          1
+        ] :
+        null;
+
+      const sliceStart = (
+        _NNP
+      ) ?
+        (
+          _NNP.distance +
+          _NNP.text
+            .length
+        ) :
+        0;
+
+      const sliceEnd = (
+        NNP.distance +
+          NNP.text
+            .length
       );
 
-      const match = __sentence.match(
-        /([A-Z][^\s]*)\s(?![A-Z])/
+      const fragment = _sentence.slice(
+        sliceStart,
+        sliceEnd
       );
 
-      if (
-        !_NNP.end &&
-        match &&
-        !NNPs.find(
-          (
-            NNP
-          ) => {
-
-            return (
-              NNP.text ===
-              match[
-                1
-              ]
-            );
-          }
-        )
-      ) {
-
-        return [
-          ...memo,
-          {
-            ..._NNP,
-            text: match[
-              1
-            ],
-            distance: _NNP.distance +
-            match.index,
-            end: true
-          }
-        ];
-      }
+      const rest = _sentence.slice(
+        sliceEnd
+      );
 
       return [
-        ...memo,
-        _NNP
+        ...memo.slice(
+          0, -1
+        ),
+        fragment.trim(),
+        rest
       ];
     },
     []
   );
 
-  NNPs = NNPs.filter(
+  fragments = fragments.reduce(
     (
-      NNP
+      memo,
+      fragment,
+      index
     ) => {
 
-      return (
-        NNP.wordBoundry &&
-        NNP.end
-      );
-    }
-  );
+      const fragmentPrevious = (
+        index
+      ) ?
+        fragments[
+          index - 1
+        ] :
+        '';
 
-  NNPs = NNPs.filter(
-    (
-      NNP
-    ) => {
+      const fragmentPreviousLength = (
+        fragmentPrevious
+      ) ?
+        fragmentPrevious.length :
+        0;
 
-      return (
-        _sentence.length !==
+      if (
         (
-          NNP.distance +
-          NNP.text.length + 
-          1
-        )
-      );
-    }
-  );
-
-  const NNP = NNPsSortedGet(
-    NNPs,
-    sentenceMaxLength
-  )?.[
-    0
-  ];
-
-  const sentence = (
-    NNP
-  ) ?
-    [
-      _sentence.slice(
-        0, NNP.distance
-      )
-        .trim(),
-      ` ${NNP.text}, `,
-      _sentence.slice(
-        NNP.distance +
-        NNP.text.length
-      )
-        .trim()
-    ]
-      .join(
-        ''
-      ) :
-    _sentence;
-
-  if (
-    (
-      !sentenceIsNormalizableGet(
-        sentence,
+          fragmentPreviousLength +
+          fragment.length
+        ) <
         sentenceMaxLength
-      )
-    ) &&
-    (
-      NNPs.reduce(
-        (
-          memo,
-          NNP
-        ) => {
+      ) {
 
-          if (
-            !memo &&
-            sentence.match(
-              new RegExp(
-                `
-                  ${
-                    NNP.text
-                  }\\s
-                `
-                  .trim()
-              )
-            )
-          ) {
+        return [
+          ...memo.slice(
+            0, -1
+          ),
+          `
+            ${
+              fragmentPrevious
+            } ${
+              fragment
+            }
+          `
+            .trim()
+        ];
+      }
 
-            return (
-              true
-            );
-          }
+      return [
+        ...memo,
+        fragment
+      ];
+    },
+    []
+  );
 
-          return (
-            memo
-          );
-        },
-        false
-      )
-    )
-  ) {
-
-    return sentenceShortenedByNNPGet(
-      sentence,
-      sentenceMaxLength
-    );
-  }
+  const sentence = fragments.join(
+    ', '
+  );
 
   return (
     sentence
@@ -877,7 +763,7 @@ export default (
     _sentences
   );
 
-  sentences = sentencesSemicolonsReplacedGet(
+  sentences = sentencesColonsReplacedGet(
     sentences
   );
 

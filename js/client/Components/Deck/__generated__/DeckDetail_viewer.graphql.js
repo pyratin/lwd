@@ -56,7 +56,7 @@ return {
       "name": "deckId"
     },
     {
-      "defaultValue": null,
+      "defaultValue": "public-domain",
       "kind": "LocalArgument",
       "name": "genre"
     },
@@ -187,6 +187,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'a12546dc3ff697584950c0e3774940f3';
+(node/*: any*/).hash = '32dbf5d52c7467f61a2a9f2924bfd250';
 
 module.exports = node;

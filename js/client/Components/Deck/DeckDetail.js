@@ -87,8 +87,7 @@ const DeckDetail = (
 
                           return {};
                         }
-                      )(),
-                      genre: 'public-domain'
+                      )()
                     };
                   },
                   null,
@@ -144,8 +143,6 @@ const DeckDetail = (
       refetch();
     },
     [
-      props.match.params.deckId,
-      deck?.id,
       refetch
     ]
   );
@@ -217,7 +214,8 @@ export default createRefetchContainer(
           type: "spoofInput"
         },
         genre: {
-          type: "String"
+          type: "String",
+          defaultValue: "public-domain"
         }
       ) {
         id,

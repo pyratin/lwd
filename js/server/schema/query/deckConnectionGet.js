@@ -12,6 +12,7 @@ export default (
   connectionArgs,
   db
 ) => {
+  console.log(deckId);
 
   return deckConnectionGet(
     deckId,
