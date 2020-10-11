@@ -513,12 +513,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 238 - ((30 * winheight(0) + 17) / 34)
+let s:l = 233 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-238
-normal! 024|
+233
+normal! 013|
 tabedit ~/Documents/Projects/lwd/js/client/mutations/MovieSearch.js
 set splitbelow splitright
 set nosplitbelow
@@ -869,7 +869,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 18
+tabnext 10
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

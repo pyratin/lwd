@@ -24,6 +24,9 @@ import {
 } from '~/js/server/data/movie';
 import movieWrite from '../fns/movieWrite';
 
+
+const sourceName = 'tmdb5000movies';
+
 const deckCachedHandledGet = (
   deck,
   spoofInput,
@@ -201,7 +204,9 @@ const deckRandomGet = async (
 ) => {
 
   const count = await deckCountDocuments(
-    {},
+    {
+      source: sourceName
+    },
     undefined,
     db
   );
@@ -213,7 +218,9 @@ const deckRandomGet = async (
 
   let deck = (
     await deckFind(
-      {},
+      {
+        source: sourceName
+      },
       {
         skip,
         limit: 1
