@@ -47,6 +47,9 @@ export default {
       {
         'process.env.OUTPUT_RES': JSON.stringify(
           process.env.npm_package_config_OUTPUT_RES
+        ),
+        'process.env.GENRE': JSON.stringify(
+          process.env.npm_package_config_GENRE
         )
       }
     )

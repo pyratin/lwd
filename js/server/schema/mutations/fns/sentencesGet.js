@@ -44,42 +44,37 @@ const sentenceIsNormalizableGet = (
   sentenceMaxLength
 ) => {
 
-  return (
-    (
-      !!sentence.match(
-        sentenceNormalizeRegExp
-      )
-    ) &&
-    (
-      !!sentence.split(
-        sentenceNormalizeRegExp
-      )
-        .reduce(
+  const sentenceIsNormalizable = sentence.split(
+    sentenceNormalizeRegExp
+  )
+    .reduce(
+      (
+        memo,
+        _sentence
+      ) => {
+
+        if (
+          memo &&
           (
-            memo,
-            _sentence
-          ) => {
+            _sentence.length >
+            sentenceMaxLength
+          )
+        ) {
 
-            if (
-              memo &&
-              (
-                _sentence.length >
-                sentenceMaxLength
-              )
-            ) {
+          return (
+            false
+          );
+        }
 
-              return (
-                false
-              );
-            }
+        return (
+          memo
+        );
+      },
+      true
+    );
 
-            return (
-              memo
-            );
-          },
-          true
-        )
-    )
+  return (
+    sentenceIsNormalizable
   );
 };
 
@@ -312,7 +307,7 @@ const sentenceShortenedByPOSGet = (
   );
 };
 
-const sentenceShortenedByNNPGet = (
+const sentenceShortenedByNNPGetFn = (
   _sentence,
   sentenceMaxLength
 ) => {
@@ -324,9 +319,9 @@ const sentenceShortenedByNNPGet = (
     )
   ) {
 
-    return (
+    return [
       _sentence
-    );
+    ];
   }
 
   let matches = _sentence.matchAll(
@@ -357,37 +352,45 @@ const sentenceShortenedByNNPGet = (
       index
     ) => {
 
+      const sliceStart = 0;
+
       const _NNP = (
         index
       ) ?
         NNPs[
-          index - 
+          index -
           1
         ] :
         null;
 
-      const sliceStart = (
+      const distanceOffset = (
         _NNP
       ) ?
         (
           _NNP.distance +
-          _NNP.text
+          _NNP.text 
             .length
         ) :
         0;
 
       const sliceEnd = (
-        NNP.distance +
-          NNP.text
-            .length
+        NNP.distance -
+        distanceOffset +
+        NNP.text
+          .length
       );
 
-      const fragment = _sentence.slice(
+      const fragmentPrevious = memo[
+        memo.length -
+        1
+      ];
+
+      const fragment = fragmentPrevious.slice(
         sliceStart,
         sliceEnd
       );
 
-      const rest = _sentence.slice(
+      const rest = fragmentPrevious.slice(
         sliceEnd
       );
 
@@ -396,10 +399,12 @@ const sentenceShortenedByNNPGet = (
           0, -1
         ),
         fragment.trim(),
-        rest
+        rest.trim()
       ];
     },
-    []
+    [
+      _sentence
+    ]
   );
 
   fragments = fragments.reduce(
@@ -412,16 +417,13 @@ const sentenceShortenedByNNPGet = (
       const fragmentPrevious = (
         index
       ) ?
-        fragments[
-          index - 1
+        memo[
+          memo.length -
+          1
         ] :
         '';
 
-      const fragmentPreviousLength = (
-        fragmentPrevious
-      ) ?
-        fragmentPrevious.length :
-        0;
+      const fragmentPreviousLength = fragmentPrevious.length;
 
       if (
         (
@@ -454,8 +456,108 @@ const sentenceShortenedByNNPGet = (
     []
   );
 
-  const sentence = fragments.join(
-    ', '
+  return (
+    fragments
+  );
+};
+
+const sentenceShortenedByNNPGet = (
+  _sentence,
+  sentenceMaxLength
+) => {
+
+  let fragments = _sentence.split(
+    sentenceNormalizeRegExp
+  );
+
+  fragments = fragments.reduce(
+    (
+      memo,
+      fragment,
+      index
+    ) => {
+
+      if (
+        index <
+        (
+          fragments.length -
+          1
+        )
+      ) {
+
+        return [
+          ...memo,
+          `
+            ${
+              fragment
+            },
+          `
+            .trim()
+        ];
+      }
+
+      return [
+        ...memo,
+        fragment
+      ];
+    },
+    []
+  );
+
+  fragments = fragments.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      const _fragments = sentenceShortenedByNNPGetFn(
+        fragment,
+        sentenceMaxLength
+      );
+
+      return [
+        ...memo,
+        ..._fragments
+      ];
+    },
+    []
+  );
+
+  const sentence = fragments.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      if (
+        !memo ||
+        (
+          memo.match(
+            /,$/
+          )
+        )
+      ) {
+
+        return `
+          ${
+            memo
+          } ${
+            fragment
+          }
+        `
+          .trim();
+      }
+
+      return `
+        ${
+          memo
+        }, ${
+          fragment
+        }
+      `
+        .trim();
+    },
+    ''
   );
 
   return (
@@ -469,8 +571,8 @@ const sentenceProcessedGet = (
 ) => {
 
   let sentence = _sentence.replace(
-    /\swhich(\s)/g,
-    ', which$1'
+    /(?<!,\s)(?<=\s)which(?=\s)/g,
+    ', which'
   );
 
   sentence = sentenceShortenedByPOSGet(

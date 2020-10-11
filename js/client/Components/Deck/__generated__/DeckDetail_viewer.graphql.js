@@ -56,9 +56,14 @@ return {
       "name": "deckId"
     },
     {
-      "defaultValue": "public-domain",
+      "defaultValue": null,
       "kind": "LocalArgument",
       "name": "genre"
+    },
+    {
+      "defaultValue": false,
+      "kind": "LocalArgument",
+      "name": "refetch"
     },
     {
       "defaultValue": null,
@@ -131,9 +136,16 @@ return {
                   "storageKey": null
                 },
                 {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "DeckNode_deck"
+                  "condition": "refetch",
+                  "kind": "Condition",
+                  "passingValue": true,
+                  "selections": [
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "DeckNode_deck"
+                    }
+                  ]
                 }
               ],
               "storageKey": null
@@ -187,6 +199,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '32dbf5d52c7467f61a2a9f2924bfd250';
+(node/*: any*/).hash = '071588f4bca179260124b39689c1a460';
 
 module.exports = node;

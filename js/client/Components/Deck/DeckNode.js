@@ -21,7 +21,18 @@ const DeckNode = (
 
   const textFontSize = '1.1rem';
 
-  const splashCharacterElementSize = '5rem';
+  const splashCharacterElementSize = '6rem';
+
+  const onRefreshTriggerHandle = () => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    return props.match.router
+      .push(
+        '/Deck/5f831d1929a5134b7488c537'
+      );
+  };
 
   const refreshRender = () => {
 
@@ -48,7 +59,10 @@ const DeckNode = (
       >
         <a
           className = 'text-white'
-          href = '/'
+          href = '#'
+          onClick = {
+            onRefreshTriggerHandle
+          }
         >
           <i
             className = 'fa fa-sync fa-lg fa-fw'

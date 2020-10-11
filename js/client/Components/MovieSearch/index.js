@@ -23,7 +23,9 @@ import {
 } from 'fns';
 import MovieSearchResultItem from './MovieSearchResultItem';
 import MovieSearchMutation 
-  from 'mutations/MovieSearchMutation';
+  from 'mutations/MovieSearch';
+import MovieCreateMutation
+  from 'mutations/MovieCreate';
 
 const MovieSearch = (
   props
@@ -62,7 +64,9 @@ const MovieSearch = (
     json
   ) => {
 
-    console.log(json.errors[0].message);
+    return (
+      json.errors[0].message
+    );
   };
 
   const onMovieSearchCompletedHandle = (
@@ -86,7 +90,6 @@ const MovieSearch = (
     (
       text
     ) => {
-      console.log(text);
 
       return MovieSearchMutation.commit(
         {
@@ -186,7 +189,7 @@ const MovieSearch = (
             _text
           );
         },
-        2000
+        1000
       );
     },
     [
@@ -203,19 +206,78 @@ const MovieSearch = (
     );
   };
 
-  const movieSelectFn = (
-    title
+  const onMovieSelectErrorHandle = (
+    json
   ) => {
 
-    if (
-      !title
-    ) {
-
-      return (
-        null
-      );
-    }
+    return Promise.resolve(
+      JSON.parse(
+        json.errors[
+          0
+        ]
+          .message
+      )
+    );
   };
+
+  const onMovieSelectCompletedHandle = useCallback(
+    (
+      json
+    ) => {
+
+      return props.match.router
+        .push(
+          `
+            /Deck/${
+              json.movieCreate.output.id
+            }
+          `
+            .trim()
+        );
+    },
+    [
+      props.match.router
+    ]
+  );
+
+  const movieSelectFn = useCallback(
+    (
+      title
+    ) => {
+
+      if (
+        !title
+      ) {
+
+        return (
+          null
+        );
+      }
+
+      return MovieCreateMutation.commit(
+        {
+          input: {
+            clientMutationId: (
+              clientMutationId++
+            )
+              .toString(),
+            text: title,
+            source: 'user',
+            genre: process.env.GENRE,
+            createFlag: true
+          }
+        },
+        props.relay.environment,
+        onMovieSelectErrorHandle,
+        onMovieSelectCompletedHandle
+      );
+    },
+    [
+      clientMutationId,
+      props.relay.environment,
+      onMovieSelectCompletedHandle
+    ]
+  );
 
   const movieSelect = (
     title

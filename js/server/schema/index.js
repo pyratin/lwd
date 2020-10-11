@@ -485,6 +485,9 @@ const MovieCreateMutation = mutationWithClientMutationId(
           GraphQLString
         )
       },
+      source: {
+        type: GraphQLString
+      },
       spoofInput: {
         type: spoofInputType
       },
@@ -506,14 +509,14 @@ const MovieCreateMutation = mutationWithClientMutationId(
           return viewerGet();
         }
       },
-      movie: {
+      output: {
         type: outputType,
         resolve(
-          movie
+          output
         ) {
 
           return (
-            movie
+            output
           );
         }
       },

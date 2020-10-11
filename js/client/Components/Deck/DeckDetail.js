@@ -87,7 +87,9 @@ const DeckDetail = (
 
                           return {};
                         }
-                      )()
+                      )(),
+                      genre: process.env.GENRE,
+                      refetch: true
                     };
                   },
                   null,
@@ -130,6 +132,7 @@ const DeckDetail = (
   const refetch = useCallback(
     () => {
 
+      console.log('HERE');
       return refetchFn();
     },
     [
@@ -214,8 +217,11 @@ export default createRefetchContainer(
           type: "spoofInput"
         },
         genre: {
-          type: "String",
-          defaultValue: "public-domain"
+          type: "String"
+        },
+        refetch: {
+          type: "Boolean",
+          defaultValue: false
         }
       ) {
         id,
@@ -230,7 +236,9 @@ export default createRefetchContainer(
           edges {
             node {
               id,
-              ...DeckNode_deck
+              ...DeckNode_deck @include(
+                if: $refetch
+              )
             }
           }
         },
@@ -242,13 +250,15 @@ export default createRefetchContainer(
     query DeckDetailRefetchQuery(
       $deckId: ID!,
       $spoofInput: spoofInput,
-      $genre: String
+      $genre: String!,
+      $refetch: Boolean!
     ) {
       viewer {
         ...DeckDetail_viewer @arguments(
           deckId: $deckId,
           spoofInput: $spoofInput,
-          genre: $genre
+          genre: $genre,
+          refetch: $refetch
         )
       }
     }

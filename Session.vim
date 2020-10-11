@@ -8,9 +8,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +128 js/server/index.js
-badd +336 js/server/schema/index.js
+badd +364 js/server/schema/index.js
 badd +516 js/server/schema/mutations/movieCreate/index.js
-badd +67 package.json
+badd +12 package.json
 badd +1 js/client/index.js
 badd +1 js/client/styles.scss
 badd +96 js/client/Components/Viewer/index.js
@@ -24,7 +24,7 @@ badd +17 js/server/schema/mutations/fns/deckGet.js
 badd +2 utils/datasets/fns/decksDone.json
 badd +91 js/server/schema/mutations/fns/gifRenderedGet.js
 badd +55 js/client/Components/Card/index.js
-badd +93 utils/webpack/webpackConfigBase.js
+badd +55 utils/webpack/webpackConfigBase.js
 badd +1 js/client/Components/Splash/index.js
 badd +1 js/client/Components/Splash/SplashCharacters.js
 badd +36 js/server/schema/mutations/fns/cardsRenderedGet.js
@@ -38,7 +38,7 @@ badd +117 js/server/schema/mutations/fns/charactersMontageGet.js
 badd +1 js/client/Components/Splash/SplashSpoofInput.js
 badd +50 js/server/fns/movieIdRouteHandle.js
 badd +23 utils/webpack/webpackConfigProd.js
-badd +43 js/server/schema/query/deckConnectionGet.js
+badd +15 js/server/schema/query/deckConnectionGet.js
 badd +370 js/server/schema/mutations/fns/deckCharactersSpoofedGet.js
 badd +14 js/server/schema/mutations/fns/deckSpoofedGet.js
 badd +17 js/server/schema/mutations/fns/spoofNamesGet.js
@@ -49,22 +49,23 @@ badd +86 js/server/schema/mutations/fns/cardsGifyUrlAssignedGet.js
 badd +77 js/server/schema/mutations/fns/sentencesGet.js
 badd +868 js/server/schema/mutations/fns/deckActorImageIdsAssignedGet.js
 badd +26 js/client/Components/Loading/index.js
-badd +19 js/server/schema/mutations/fns/charactersMetaAssignedGet.js
-badd +119 js/server/schema/mutations/fns/charactersMetaRoleAssignedGet.js
+badd +1 js/server/schema/mutations/fns/charactersMetaAssignedGet.js
+badd +195 js/server/schema/mutations/fns/charactersMetaRoleAssignedGet.js
 badd +1 js/client/Components/Footer/index.js
 badd +1 js/client/Components/Header/index.js
-badd +1 js/client/Components/MovieSearch/index.js
-badd +1 js/client/Components/MovieSearch/MovieSearchResultItem.js
-badd +1 js/client/mutations/MovieSearchMutation.js
+badd +269 js/client/Components/MovieSearch/index.js
+badd +18 js/client/Components/MovieSearch/MovieSearchResultItem.js
 badd +164 js/server/schema/mutations/movieSearch/index.js
 badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
 badd +20 js/server/schema/mutations/fns/movieDataBasicPlotGet.js
-badd +1 js/server/schema/mutations/fns/NNPsGet.js
-badd +1 js/server/schema/mutations/fns/plotNNPsGet.js
+badd +123 js/server/schema/mutations/fns/NNPsGet.js
+badd +29 js/server/schema/mutations/fns/plotNNPsGet.js
 badd +153 js/server/schema/mutations/fns/charactersMetaStarringAssignedGet.js
 badd +382 js/server/schema/mutations/fns/movieDataBasicCastGet.js
-badd +0 js/server/schema/mutations/fns/deckSpoofableGet.js
-badd +0 js/client/Components/Home/index.js
+badd +67 js/server/schema/mutations/fns/deckSpoofableGet.js
+badd +1 js/client/Components/Home/index.js
+badd +1 ~/Documents/Projects/lwd/js/client/mutations/MovieSearch.js
+badd +1 ~/Documents/Projects/lwd/js/client/mutations/MovieCreate.js
 argglobal
 %argdel
 set stal=2
@@ -87,12 +88,62 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 67 - ((27 * winheight(0) + 18) / 36)
+let s:l = 12 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-67
-normal! 020|
+12
+normal! 027|
+tabedit utils/webpack/webpackConfigBase.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 52 - ((17 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+52
+normal! 046|
+tabedit utils/webpack/webpackConfigDev.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 25 - ((24 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+25
+normal! 0
 tabedit utils/datasets/fns/decksDone.json
 set splitbelow splitright
 set nosplitbelow
@@ -117,7 +168,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 2
-normal! 0
+normal! 03|
 tabedit utils/datasets/fns/tmdb5000movieDecksCreate.js
 set splitbelow splitright
 set nosplitbelow
@@ -142,7 +193,7 @@ if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 158
-normal! 07|
+normal! 031|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -187,11 +238,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 213 - ((27 * winheight(0) + 17) / 34)
+let s:l = 203 - ((17 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-213
+203
 normal! 02|
 tabedit js/server/schema/index.js
 set splitbelow splitright
@@ -212,13 +263,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 364 - ((19 * winheight(0) + 17) / 34)
+let s:l = 489 - ((15 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-364
-normal! 013|
-tabedit js/server/schema/query/deckConnectionGet.js
+489
+normal! 027|
+tabedit js/server/schema/mutations/movieSearch/index.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -237,12 +288,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((14 * winheight(0) + 17) / 34)
+let s:l = 83 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
-normal! 022|
+83
+normal! 03|
 tabedit js/server/schema/mutations/movieCreate/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -262,7 +313,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 499 - ((0 * winheight(0) + 17) / 34)
+let s:l = 499 - ((10 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -293,81 +344,6 @@ exe s:l
 normal! zt
 141
 normal! 06|
-tabedit js/server/schema/mutations/fns/charactersMetaAssignedGet.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 17) / 34)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-1
-normal! 0
-tabedit js/server/schema/mutations/fns/charactersMetaRoleAssignedGet.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 195 - ((32 * winheight(0) + 17) / 34)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-195
-normal! 07|
-tabedit js/server/schema/mutations/fns/deckSpoofableGet.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 67 - ((26 * winheight(0) + 17) / 34)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-67
-normal! 04|
 tabedit js/server/schema/mutations/fns/movieDataBasicPlotGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -412,62 +388,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 459 - ((30 * winheight(0) + 17) / 34)
+let s:l = 562 - ((28 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-459
+562
 normal! 0
-tabedit js/server/schema/mutations/fns/NNPsGet.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 123 - ((0 * winheight(0) + 17) / 34)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-123
-normal! 0
-tabedit js/server/schema/mutations/fns/plotNNPsGet.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 29 - ((26 * winheight(0) + 17) / 34)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-29
-normal! 017|
 tabedit js/client/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -487,11 +413,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 66 - ((33 * winheight(0) + 17) / 34)
+let s:l = 41 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-66
+41
 normal! 0
 tabedit js/client/Components/Viewer/index.js
 set splitbelow splitright
@@ -512,11 +438,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 194 - ((26 * winheight(0) + 17) / 34)
+let s:l = 179 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-194
+179
 normal! 0
 tabedit js/client/Components/Home/index.js
 set splitbelow splitright
@@ -587,13 +513,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 65 - ((16 * winheight(0) + 17) / 34)
+let s:l = 238 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-65
-normal! 05|
-tabedit js/client/Components/MovieSearch/MovieSearchResultItem.js
+238
+normal! 024|
+tabedit ~/Documents/Projects/lwd/js/client/mutations/MovieSearch.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -612,13 +538,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 18 - ((17 * winheight(0) + 17) / 34)
+let s:l = 31 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-18
-normal! 025|
-tabedit js/client/mutations/MovieSearchMutation.js
+31
+normal! 0
+tabedit ~/Documents/Projects/lwd/js/client/mutations/MovieCreate.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -637,11 +563,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 19 - ((12 * winheight(0) + 17) / 34)
+let s:l = 44 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-19
+44
 normal! 013|
 tabedit js/client/Components/Footer/index.js
 set splitbelow splitright
@@ -687,7 +613,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 48 - ((31 * winheight(0) + 17) / 34)
+let s:l = 48 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -712,12 +638,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 220 - ((18 * winheight(0) + 17) / 34)
+let s:l = 136 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-220
-normal! 025|
+136
+normal! 05|
 tabedit js/client/Components/Deck/DeckNode.js
 set splitbelow splitright
 set nosplitbelow
@@ -737,12 +663,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 228 - ((25 * winheight(0) + 17) / 34)
+let s:l = 33 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-228
-normal! 0
+33
+normal! 011|
 tabedit js/client/Components/Carousel/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -762,12 +688,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 37 - ((33 * winheight(0) + 17) / 34)
+let s:l = 71 - ((32 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-37
-normal! 04|
+71
+normal! 08|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -787,7 +713,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 186 - ((33 * winheight(0) + 17) / 34)
+let s:l = 186 - ((24 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -837,11 +763,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 74 - ((26 * winheight(0) + 17) / 34)
+let s:l = 20 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-74
+20
 normal! 0
 tabedit js/client/Components/Splash/SplashCharacter.js
 set splitbelow splitright
@@ -862,12 +788,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 61 - ((0 * winheight(0) + 17) / 34)
+let s:l = 30 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-61
-normal! 0
+30
+normal! 015|
 tabedit js/client/Components/Card/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -887,12 +813,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 81 - ((26 * winheight(0) + 18) / 36)
+let s:l = 65 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-81
-normal! 035|
+65
+normal! 04|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -943,7 +869,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 26
+tabnext 18
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

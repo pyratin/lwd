@@ -32,7 +32,7 @@ const SplashCharacter = (
                   parseInt(
                     props.textFontSize
                   ) /
-                  1.2
+                  1.3
                 }rem
               `
                 .trim()

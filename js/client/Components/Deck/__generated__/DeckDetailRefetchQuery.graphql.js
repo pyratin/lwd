@@ -16,7 +16,8 @@ export type spoofInput = {|
 export type DeckDetailRefetchQueryVariables = {|
   deckId: string,
   spoofInput?: ?spoofInput,
-  genre?: ?string,
+  genre: string,
+  refetch: boolean,
 |};
 export type DeckDetailRefetchQueryResponse = {|
   +viewer: ?{|
@@ -34,10 +35,11 @@ export type DeckDetailRefetchQuery = {|
 query DeckDetailRefetchQuery(
   $deckId: ID!
   $spoofInput: spoofInput
-  $genre: String
+  $genre: String!
+  $refetch: Boolean!
 ) {
   viewer {
-    ...DeckDetail_viewer_7QAmx
+    ...DeckDetail_viewer_3gutIH
     id
   }
 }
@@ -57,13 +59,13 @@ fragment Carousel_viewer on Viewer {
   id
 }
 
-fragment DeckDetail_viewer_7QAmx on Viewer {
+fragment DeckDetail_viewer_3gutIH on Viewer {
   id
   decks(first: 1, deckId: $deckId, spoofInput: $spoofInput, genre: $genre) {
     edges {
       node {
         id
-        ...DeckNode_deck
+        ...DeckNode_deck @include(if: $refetch)
         __typename
       }
       cursor
@@ -141,48 +143,53 @@ v1 = {
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "spoofInput"
+  "name": "refetch"
 },
 v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "spoofInput"
+},
+v4 = {
   "kind": "Variable",
   "name": "deckId",
   "variableName": "deckId"
 },
-v4 = {
+v5 = {
   "kind": "Variable",
   "name": "genre",
   "variableName": "genre"
 },
-v5 = {
+v6 = {
   "kind": "Variable",
   "name": "spoofInput",
   "variableName": "spoofInput"
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v7 = [
-  (v3/*: any*/),
+v8 = [
+  (v4/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
     "value": 1
   },
-  (v4/*: any*/),
-  (v5/*: any*/)
+  (v5/*: any*/),
+  (v6/*: any*/)
 ],
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "renderText",
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -194,7 +201,8 @@ return {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/)
+      (v2/*: any*/),
+      (v3/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -210,9 +218,14 @@ return {
         "selections": [
           {
             "args": [
-              (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/)
+              (v5/*: any*/),
+              {
+                "kind": "Variable",
+                "name": "refetch",
+                "variableName": "refetch"
+              },
+              (v6/*: any*/)
             ],
             "kind": "FragmentSpread",
             "name": "DeckDetail_viewer"
@@ -228,8 +241,9 @@ return {
   "operation": {
     "argumentDefinitions": [
       (v0/*: any*/),
-      (v2/*: any*/),
-      (v1/*: any*/)
+      (v3/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Operation",
     "name": "DeckDetailRefetchQuery",
@@ -242,10 +256,10 @@ return {
         "name": "viewer",
         "plural": false,
         "selections": [
-          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "alias": null,
-            "args": (v7/*: any*/),
+            "args": (v8/*: any*/),
             "concreteType": "DeckConnection",
             "kind": "LinkedField",
             "name": "decks",
@@ -267,78 +281,85 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v6/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Splash",
-                        "kind": "LinkedField",
-                        "name": "splash",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "title",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "poster",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Character",
-                            "kind": "LinkedField",
-                            "name": "characters",
-                            "plural": true,
-                            "selections": [
-                              (v8/*: any*/),
-                              (v9/*: any*/)
-                            ],
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Card",
-                        "kind": "LinkedField",
-                        "name": "cards",
-                        "plural": true,
-                        "selections": [
-                          (v9/*: any*/),
-                          (v8/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "actorImageId",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "dualRoleIndex",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
+                      (v7/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
+                      },
+                      {
+                        "condition": "refetch",
+                        "kind": "Condition",
+                        "passingValue": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Splash",
+                            "kind": "LinkedField",
+                            "name": "splash",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "title",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "poster",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Character",
+                                "kind": "LinkedField",
+                                "name": "characters",
+                                "plural": true,
+                                "selections": [
+                                  (v9/*: any*/),
+                                  (v10/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Card",
+                            "kind": "LinkedField",
+                            "name": "cards",
+                            "plural": true,
+                            "selections": [
+                              (v10/*: any*/),
+                              (v9/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "actorImageId",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "dualRoleIndex",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ]
                       }
                     ],
                     "storageKey": null
@@ -383,7 +404,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v7/*: any*/),
+            "args": (v8/*: any*/),
             "filters": [
               "deckId",
               "spoofInput",
@@ -400,16 +421,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "15f72072fba1938ebfa0f00b13a3e15b",
+    "cacheID": "a93c0dde349636ee4ab7b80a08434f01",
     "id": null,
     "metadata": {},
     "name": "DeckDetailRefetchQuery",
     "operationKind": "query",
-    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n  $spoofInput: spoofInput\n  $genre: String\n) {\n  viewer {\n    ...DeckDetail_viewer_7QAmx\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment Carousel_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_7QAmx on Viewer {\n  id\n  decks(first: 1, deckId: $deckId, spoofInput: $spoofInput, genre: $genre) {\n    edges {\n      node {\n        id\n        ...DeckNode_deck\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n  ...Carousel_viewer\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n}\n"
+    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n  $spoofInput: spoofInput\n  $genre: String!\n  $refetch: Boolean!\n) {\n  viewer {\n    ...DeckDetail_viewer_3gutIH\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment Carousel_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_3gutIH on Viewer {\n  id\n  decks(first: 1, deckId: $deckId, spoofInput: $spoofInput, genre: $genre) {\n    edges {\n      node {\n        id\n        ...DeckNode_deck @include(if: $refetch)\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n  ...Carousel_viewer\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '7ee29e20dd44ac5ee0064efb42a93cc7';
+(node/*: any*/).hash = 'fcc7eee7165ad1f780ef35f03d42e85e';
 
 module.exports = node;

@@ -30,7 +30,7 @@ const Carousel = (
         .carousel(
           {
             ride: false,
-            interval: 10000
+            interval: 5000
           }
         );
     }
@@ -41,16 +41,33 @@ const Carousel = (
     event.preventDefault();
     event.stopPropagation();
 
-    return $(
-      carouselRef.current
-    )
-      .carousel(
-        $(
-          event.currentTarget
-        )
-          .data(
-            'slide'
+    return Promise.resolve(
+      $(
+        carouselRef.current
+      )
+        .carousel(
+          $(
+            event.currentTarget
           )
+            .data(
+              'slide'
+            )
+        )
+    )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            $(
+              carouselRef.current
+            )
+              .carousel(
+                {
+                  ride: true
+                }
+              )
+          );
+        }
       );
   };
 
@@ -59,7 +76,7 @@ const Carousel = (
       ref = {
         carouselRef
       }
-      className = 'Carousel carousel w-100 h-100 slide'
+      className = 'Carousel w-100 h-100 slide'
       css = {
         css(
           {
