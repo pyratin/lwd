@@ -458,6 +458,9 @@ const outputCreatedGet = (
     case (
       !createFlag
     ) :
+    case (
+      !!output._id
+    ) :
 
       return Promise.resolve(
         output
