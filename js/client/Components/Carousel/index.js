@@ -12,10 +12,36 @@ import {
 import {
   css
 } from '@emotion/core';
+import {
+  useSwipeable
+} from 'react-swipeable';
 
 const Carousel = (
   props
 ) => {
+
+  const swipeableHandlers = useSwipeable(
+    {
+      onSwipedLeft() {
+
+        return $(
+          carouselRef.current
+        )
+          .carousel(
+            'next'
+          );
+      },
+      onSwipedRight() {
+
+        return $(
+          carouselRef.current
+        )
+          .carousel(
+            'prev'
+          );
+      }
+    }
+  );
 
   const carouselRef = useRef(
     null
@@ -30,8 +56,7 @@ const Carousel = (
         .carousel(
           {
             ride: false,
-            pause: true,
-            interval: 5000
+            interval: 1000
           }
         );
     }
@@ -77,13 +102,16 @@ const Carousel = (
       ref = {
         carouselRef
       }
-      className = 'Carousel carousel w-100 h-100 slide'
+      className = 'Carousel w-100 h-100 slide'
       css = {
         css(
           {
             position: 'relative'
           }
         )
+      }
+      {
+        ...swipeableHandlers
       }
     >
       <a
