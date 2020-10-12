@@ -665,12 +665,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 106 - ((0 * winheight(0) + 17) / 34)
+let s:l = 106 - ((21 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 106
-normal! 07|
+normal! 033|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
