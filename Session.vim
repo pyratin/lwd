@@ -790,12 +790,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 65 - ((0 * winheight(0) + 17) / 34)
+let s:l = 84 - ((19 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-65
-normal! 04|
+84
+normal! 019|
 tabedit js/client/fns/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -846,7 +846,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 29
+tabnext 11
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

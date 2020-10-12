@@ -10,7 +10,7 @@ const fnDelayRun = (
 
   return fnDelayRunFn(
     mediawikiFetch,
-    500,
+    1000,
     `
       mediawikiFetch: ${
         query
