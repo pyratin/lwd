@@ -15,7 +15,7 @@ export default async (
 
   const deckId = req.params.deckId;
 
-  const genre = req.query.genre;
+  const genre = req.query.genre || 'public-domain';
 
   const hero = req.query.hero ||
     'you';

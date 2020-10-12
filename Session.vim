@@ -244,12 +244,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 60 - ((14 * winheight(0) + 17) / 34)
+let s:l = 59 - ((23 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-60
-normal! 03|
+59
+normal! 0
 tabedit js/server/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
