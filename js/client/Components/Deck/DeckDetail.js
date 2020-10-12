@@ -34,13 +34,6 @@ const DeckDetail = (
   );
 
   const [
-    hero,
-    heroSet
-  ] = useState(
-    null
-  );
-
-  const [
     loading,
     loadingSet
   ] = useState(
@@ -74,6 +67,9 @@ const DeckDetail = (
                       ...(
                         () => {
                           
+                          const hero = 
+                            props.match.location.query.hero;
+
                           if (
                             hero
                           ) {
@@ -125,7 +121,7 @@ const DeckDetail = (
     [
       props.relay,
       props.match.params.deckId,
-      hero
+      props.match.location.query.hero
     ]
   );
 
@@ -153,8 +149,18 @@ const DeckDetail = (
     text
   ) => {
 
-    return heroSet(
-      text
+    return Promise.resolve(
+      props.match.router
+        .push(
+          `
+            ${
+              props.match.location.pathname
+            }?hero=${
+              text
+            }
+          `
+            .trim()
+        )
     );
   };
 

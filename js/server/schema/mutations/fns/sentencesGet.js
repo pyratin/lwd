@@ -248,13 +248,16 @@ const sentenceShortenedByPOSGet = (
       return {
         ...word,
         redundant: (
-          !!_sentence.slice(
-            0, word.distance
-          )
-            .trim()
-            .match(
-              /,$/
+          !word.distance ||
+          (
+            !!_sentence.slice(
+              0, word.distance
             )
+              .trim()
+              .match(
+                /,$/
+              )
+          )
         )
       };
     }

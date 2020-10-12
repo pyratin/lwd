@@ -37,7 +37,8 @@ const cardsForGifyGet = (
 };
 
 const queryGet = (
-  text
+  text,
+  index
 ) => {
 
   const gifyApiKey = 
@@ -46,7 +47,9 @@ const queryGet = (
   return `
     https://api.giphy.com/v1/gifs/translate?api_key=${
       gifyApiKey
-    }&weirdness:=0&s=${
+    }&weirdness:=${
+      index
+    }&s=${
       text
     }
   `
@@ -76,7 +79,8 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
   {
     text: _text
   },
-  title
+  title,
+  index
 ) => {
 
   const text = `
@@ -92,7 +96,8 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
     queryGet(
       encodeURIComponent(
         text
-      )
+      ),
+      index
     )
   )
     .then(
@@ -145,7 +150,8 @@ const cardsFlatlistGifyUrlAssignedGet = (
   return cards.reduce(
     (
       memo,
-      card
+      card,
+      index
     ) => {
 
       return memo.then(
@@ -155,7 +161,8 @@ const cardsFlatlistGifyUrlAssignedGet = (
 
           return cardsFlatlistGifyUrlAssignedGetFn(
             card,
-            title
+            title,
+            index
           )
             .then(
               (

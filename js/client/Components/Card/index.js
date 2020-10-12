@@ -1,6 +1,10 @@
 'use strict';
 
-import React from 'react';
+import React,
+{
+  useState,
+  useEffect
+} from 'react';
 import {
   createFragmentContainer,
   graphql
@@ -9,9 +13,53 @@ import {
   css
 } from '@emotion/core';
 
+import Loading from 'Components/Loading';
+
 const Card  = (
   props
 ) => {
+
+  const imageUrl = props.card.image ||
+    '/placeholder.jpeg';
+
+  const [
+    loading,
+    loadingSet
+  ] = useState(
+    true
+  );
+
+  const onImageLoadHandle = () => {
+
+    return loadingSet(
+      false
+    );
+  };
+
+  useEffect(
+    () => {
+
+      const image = new Image();
+
+      image.addEventListener(
+        'load',
+        onImageLoadHandle
+      );
+
+      image.src = imageUrl;
+
+      return () => {
+
+        image.removeEventListener(
+          'load',
+          onImageLoadHandle
+        );
+      };
+    },
+    [
+      imageUrl
+    ]
+  );
 
   const filterGet = () => {
 
@@ -64,6 +112,25 @@ const Card  = (
     );
   };
 
+  const loadingRender = () => {
+
+    return (
+      loading
+    ) &&
+      <div
+        className = {
+          `
+            w-100 h-100
+            d-flex
+            justify-content-center
+            align-items-center
+          `
+        }
+      >
+        <Loading/>
+      </div>;
+  };
+
   return (
     <div
       className = 'Card w-100 h-100'
@@ -81,8 +148,7 @@ const Card  = (
               position: 'relative',
               backgroundImage: `
                 url("${
-                  props.card.image ||
-                  '/placeholder.jpeg'
+                  imageUrl
                 }")
               `
                 .trim(),
@@ -93,7 +159,11 @@ const Card  = (
             }
           )
         }
-      ></div>
+      >
+        {
+          loadingRender()
+        }
+      </div>
     </div>
   );
 };
