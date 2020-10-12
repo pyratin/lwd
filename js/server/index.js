@@ -19,6 +19,7 @@ import mediaOutputFolderInit from
 import movieGifRouteHandle from 
   './fns/movieOutputGifRouteHandle';
 import movieIdRouteHandle from './fns/movieIdRouteHandle';
+import deckIdRouteHandle from './fns/deckIdRouteHandle';
 import schemaUpdate from './fns/schemaUpdate';
 
 (
@@ -105,6 +106,21 @@ import schemaUpdate from './fns/schemaUpdate';
         ) => {
 
           return movieIdRouteHandle(
+            db,
+            req,
+            res
+          );
+        }
+      )
+
+      .get(
+        '/deck/:deckId(\\w{24})',
+        (
+          req,
+          res
+        ) => {
+
+          return deckIdRouteHandle(
             db,
             req,
             res
