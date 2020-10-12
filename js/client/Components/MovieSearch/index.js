@@ -255,7 +255,9 @@ const MovieSearch = (
         );
     },
     [
-      props.match.router
+      props.match.router,
+      props.match.location.query.genre,
+      props.match.location.query.hero
     ]
   );
 

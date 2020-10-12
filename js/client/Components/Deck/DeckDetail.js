@@ -85,7 +85,8 @@ const DeckDetail = (
                         }
                       )(),
                       genre: props.match.location.query
-                        .genre,
+                        .genre ||
+                      process.env.GENRE,
                       refetch: true
                     };
                   },
@@ -122,6 +123,7 @@ const DeckDetail = (
     [
       props.relay,
       props.match.params.deckId,
+      props.match.location.query.genre,
       props.match.location.query.hero
     ]
   );

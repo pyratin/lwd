@@ -16,7 +16,7 @@ badd +1 js/client/styles.scss
 badd +96 js/client/Components/Viewer/index.js
 badd +1 js/client/fns/index.js
 badd +18 js/client/Components/Deck/index.js
-badd +58 js/client/Components/Deck/DeckDetail.js
+badd +122 js/client/Components/Deck/DeckDetail.js
 badd +1 js/client/Components/Deck/DeckNode.js
 badd +7 js/server/data/deck.js
 badd +1 js/server/data/index.js
@@ -53,7 +53,7 @@ badd +1 js/server/schema/mutations/fns/charactersMetaAssignedGet.js
 badd +195 js/server/schema/mutations/fns/charactersMetaRoleAssignedGet.js
 badd +16 js/client/Components/Footer/index.js
 badd +1 js/client/Components/Header/index.js
-badd +269 js/client/Components/MovieSearch/index.js
+badd +257 js/client/Components/MovieSearch/index.js
 badd +18 js/client/Components/MovieSearch/MovieSearchResultItem.js
 badd +164 js/server/schema/mutations/movieSearch/index.js
 badd +86 js/server/schema/mutations/fns/movieDataBasicGet.js
@@ -244,12 +244,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 59 - ((23 * winheight(0) + 17) / 34)
+let s:l = 18 - ((8 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-59
-normal! 0
+18
+normal! 030|
 tabedit js/server/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
@@ -644,12 +644,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 246 - ((24 * winheight(0) + 17) / 34)
+let s:l = 258 - ((31 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-246
-normal! 053|
+258
+normal! 025|
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -694,12 +694,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 161 - ((22 * winheight(0) + 17) / 34)
+let s:l = 89 - ((16 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-161
-normal! 010|
+89
+normal! 039|
 tabedit js/client/Components/Deck/DeckNode.js
 set splitbelow splitright
 set nosplitbelow
