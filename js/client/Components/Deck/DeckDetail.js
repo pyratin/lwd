@@ -84,7 +84,8 @@ const DeckDetail = (
                           return {};
                         }
                       )(),
-                      genre: process.env.GENRE,
+                      genre: props.match.location.query
+                        .genre,
                       refetch: true
                     };
                   },
@@ -155,7 +156,9 @@ const DeckDetail = (
           `
             ${
               props.match.location.pathname
-            }?hero=${
+            }?genre=${
+              props.match.location.query.genre
+            }&hero=${
               text
             }
           `

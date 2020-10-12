@@ -53,7 +53,9 @@ const DeckRefresh = (
         `
           /Deck/${
             json.movieCreate.viewer.deckId
-          }?hero=${
+          }?genre=${
+            props.match.location.query.genre
+          }&hero=${
             props.match.location.query.hero
           }
         `

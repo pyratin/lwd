@@ -15,6 +15,8 @@ export default async (
 
   const deckId = req.params.deckId;
 
+  const genre = req.query.genre;
+
   const hero = req.query.hero;
 
   const deck = await movieCreate(
@@ -24,7 +26,12 @@ export default async (
       }
     `
       .trim(),
-    {},
+    {
+      spoofInput: {
+        hero
+      },
+      genre
+    },
     db,
     req
   );
@@ -39,6 +46,10 @@ export default async (
           deck.splash.title
         }
       `,
+      description: deck.cards[
+        0
+      ]
+        .text,
       url: hostUrlGet(
         req
       ),

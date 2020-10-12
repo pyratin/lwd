@@ -242,6 +242,10 @@ const MovieSearch = (
                   `
                     /Deck/${
                       json.movieCreate.output.id
+                    }?genre=${
+                      props.match.location.query.genre
+                    }&hero=${
+                      props.match.location.query.hero
                     }
                   `
                     .trim()

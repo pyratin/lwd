@@ -139,6 +139,7 @@ import schemaUpdate from './fns/schemaUpdate';
             'index',
             {
               title: titleGet(),
+              description: 'just messing ... :D',
               url: hostUrlGet(
                 req
               ),

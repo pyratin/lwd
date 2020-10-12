@@ -43,6 +43,8 @@ const Viewer = (
           `
             /Deck/${
               props.viewer.deckId
+            }?genre=${
+              process.env.GENRE
             }
           `
             .trim()
