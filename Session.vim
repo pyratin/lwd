@@ -9,7 +9,7 @@ endif
 set shortmess=aoO
 badd +128 js/server/index.js
 badd +364 js/server/schema/index.js
-badd +516 js/server/schema/mutations/movieCreate/index.js
+badd +468 js/server/schema/mutations/movieCreate/index.js
 badd +12 package.json
 badd +1 js/client/index.js
 badd +1 js/client/styles.scss
@@ -67,7 +67,7 @@ badd +26 js/client/Components/Home/index.js
 badd +31 js/client/mutations/MovieSearch.js
 badd +59 js/client/mutations/MovieCreate.js
 badd +51 js/client/Components/Deck/DeckRefresh.js
-badd +0 js/server/schema/mutations/fns/mediawikiFetch.js
+badd +21 js/server/schema/mutations/fns/mediawikiFetch.js
 argglobal
 %argdel
 set stal=2
@@ -315,12 +315,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 525 - ((31 * winheight(0) + 17) / 34)
+let s:l = 468 - ((21 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-525
-normal! 022|
+468
+normal! 0
 tabedit js/server/schema/mutations/fns/mediawikiFetch.js
 set splitbelow splitright
 set nosplitbelow
@@ -340,12 +340,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 21 - ((20 * winheight(0) + 17) / 34)
+let s:l = 13 - ((8 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-21
-normal! 0
+13
+normal! 07|
 tabedit js/server/schema/mutations/fns/deckGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -515,12 +515,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 303 - ((33 * winheight(0) + 17) / 34)
+let s:l = 252 - ((30 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-303
-normal! 021|
+252
+normal! 06|
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -846,7 +846,7 @@ exe s:l
 normal! zt
 11
 normal! 051|
-tabnext 10
+tabnext 29
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

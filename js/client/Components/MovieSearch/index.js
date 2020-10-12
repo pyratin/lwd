@@ -60,6 +60,10 @@ const MovieSearch = (
     null
   );
 
+  const asyncTypeaheadRef = useRef(
+    null
+  );
+
   const onMovieSearchErrorHandle = (
     json
   ) => {
@@ -225,14 +229,25 @@ const MovieSearch = (
       json
     ) => {
 
-      return props.match.router
-        .push(
-          `
-            /Deck/${
-              json.movieCreate.output.id
-            }
-          `
-            .trim()
+      return Promise.resolve(
+        asyncTypeaheadRef.current
+          .clear()
+      )
+        .then(
+          () => {
+
+            return Promise.resolve(
+              props.match.router
+                .push(
+                  `
+                    /Deck/${
+                      json.movieCreate.output.id
+                    }
+                  `
+                    .trim()
+                )
+            );
+          }
         );
     },
     [
@@ -429,7 +444,10 @@ const MovieSearch = (
           className = 'formGroup form-group'
         >
           <AsyncTypeahead
-            id = 'wikipedia-movie-search'
+            id = 'mediawiki-movie-search'
+            ref = {
+              asyncTypeaheadRef
+            }
             className = 'formControl w-100'
             css = {
               css(
