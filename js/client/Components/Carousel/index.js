@@ -24,22 +24,30 @@ const Carousel = (
     {
       onSwipedLeft() {
 
-        console.log('HERE');
         return $(
           carouselRef.current
         )
           .carousel(
             'next'
+          )
+          .carousel(
+            {
+              ride: true
+            }
           );
       },
       onSwipedRight() {
 
-        console.log('HEE');
         return $(
           carouselRef.current
         )
           .carousel(
             'prev'
+          )
+          .carousel(
+            {
+              ride: 'true'
+            }
           );
       }
     }
@@ -58,7 +66,7 @@ const Carousel = (
         .carousel(
           {
             ride: false,
-            interval: 3000
+            interval: 7000
           }
         );
     }
@@ -81,22 +89,12 @@ const Carousel = (
               'slide'
             )
         )
-    )
-      .then(
-        () => {
-
-          return Promise.resolve(
-            $(
-              carouselRef.current
-            )
-              .carousel(
-                {
-                  ride: true
-                }
-              )
-          );
-        }
-      );
+        .carousel(
+          {
+            ride: true
+          }
+        )
+    );
   };
 
   const renderFn = () => {
