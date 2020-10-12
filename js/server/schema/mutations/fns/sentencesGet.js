@@ -466,6 +466,18 @@ const sentenceShortenedByNNPGet = (
   sentenceMaxLength
 ) => {
 
+  if (
+    sentenceIsNormalizableGet(
+      _sentence,
+      sentenceMaxLength
+    )
+  ) {
+
+    return (
+      _sentence
+    );
+  }
+
   let fragments = _sentence.split(
     sentenceNormalizeRegExp
   );
@@ -565,6 +577,127 @@ const sentenceShortenedByNNPGet = (
   );
 };
 
+const sentenceShortenedByLengthGetFn = (
+  _sentence,
+  sentenceMaxLength
+) => {
+
+  if (
+    sentenceIsNormalizableGet(
+      _sentence,
+      sentenceMaxLength
+    )
+  ) {
+
+    return [
+      _sentence
+    ];
+  }
+
+  const fragments = _sentence
+    .split(
+      /\s/
+    )
+    .reduce(
+      (
+        memo,
+        word,
+        index
+      ) => {
+
+        const fragmentPrevious = (
+          index
+        ) ?
+          memo[
+            memo.length - 1
+          ] :
+          '';
+
+        if (
+          (
+            fragmentPrevious.length +
+            word.length
+          ) <
+          sentenceMaxLength
+        ) {
+
+          return [
+            ...memo.slice(
+              0, -1
+            ),
+            `
+              ${
+                fragmentPrevious
+              } ${
+                word
+              }
+            `
+              .trim()
+          ];
+        }
+
+        return [
+          ...memo,
+          word
+        ];
+      },
+      []
+    );
+
+  return (
+    fragments
+  );
+};
+
+const sentenceShortenedByLengthGet = (
+  _sentence,
+  sentenceMaxLength
+) => {
+
+  if (
+    sentenceIsNormalizableGet(
+      _sentence,
+      sentenceMaxLength
+    )
+  ) {
+
+    return (
+      _sentence
+    );
+  }
+
+  let fragments = _sentence.split(
+    sentenceNormalizeRegExp
+  );
+
+  fragments = fragments.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      const _fragment = sentenceShortenedByLengthGetFn(
+        fragment,
+        sentenceMaxLength
+      );
+
+      return [
+        ...memo,
+        ..._fragment
+      ];
+    },
+    []
+  );
+
+  let sentence = fragments.join(
+    ', '
+  );
+
+  return (
+    sentence
+  );
+};
+
 const sentenceProcessedGet = (
   _sentence,
   sentenceMaxLength
@@ -588,6 +721,11 @@ const sentenceProcessedGet = (
   );
 
   sentence = sentenceShortenedByNNPGet(
+    sentence,
+    sentenceMaxLength
+  );
+
+  sentence = sentenceShortenedByLengthGet(
     sentence,
     sentenceMaxLength
   );

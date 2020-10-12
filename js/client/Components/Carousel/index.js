@@ -20,6 +20,8 @@ const Carousel = (
   props
 ) => {
 
+  const interval = 10000;
+
   const swipeableHandlers = useSwipeable(
     {
       onSwipedLeft() {
@@ -46,7 +48,7 @@ const Carousel = (
           )
           .carousel(
             {
-              ride: 'true'
+              ride: true
             }
           );
       }
@@ -66,7 +68,7 @@ const Carousel = (
         .carousel(
           {
             ride: false,
-            interval: 7000
+            interval
           }
         );
     }

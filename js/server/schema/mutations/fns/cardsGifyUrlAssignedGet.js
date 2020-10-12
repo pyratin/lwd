@@ -46,7 +46,7 @@ const queryGet = (
   return `
     https://api.giphy.com/v1/gifs/translate?api_key=${
       gifyApiKey
-    }&weirdness:=10&s=${
+    }&weirdness:=0&s=${
       text
     }
   `
@@ -59,7 +59,7 @@ const fnDelayRun = (
 
   return fnDelayRunFn(
     cardsFlatlistGifyUrlAssignedGetFn,
-    2000,
+    0,
     `
       deckCardsGifyUrlAssignedGet: ${
         text
@@ -109,7 +109,7 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
       ) => {
 
         const gifyUrl = json.data.images?.[
-          '480w_still'
+          'downsized_still'
         ]
           .url;
 
