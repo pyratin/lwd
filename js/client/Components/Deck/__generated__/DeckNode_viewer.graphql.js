@@ -10,12 +10,13 @@
 import type { ReaderFragment } from 'relay-runtime';
 type Card_viewer$ref = any;
 type Carousel_viewer$ref = any;
+type DeckRefresh_viewer$ref = any;
 type Splash_viewer$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type DeckNode_viewer$ref: FragmentReference;
 declare export opaque type DeckNode_viewer$fragmentType: DeckNode_viewer$ref;
 export type DeckNode_viewer = {|
-  +$fragmentRefs: Splash_viewer$ref & Card_viewer$ref & Carousel_viewer$ref,
+  +$fragmentRefs: Splash_viewer$ref & Card_viewer$ref & Carousel_viewer$ref & DeckRefresh_viewer$ref,
   +$refType: DeckNode_viewer$ref,
 |};
 export type DeckNode_viewer$data = DeckNode_viewer;
@@ -47,12 +48,17 @@ const node/*: ReaderFragment*/ = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "Carousel_viewer"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "DeckRefresh_viewer"
     }
   ],
   "type": "Viewer",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '57e63ee573cd4d0edeb0c18fa3d63c51';
+(node/*: any*/).hash = '04ef6064e34ff18cab35fb3d40fc728c';
 
 module.exports = node;

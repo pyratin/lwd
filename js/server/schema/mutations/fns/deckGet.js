@@ -75,11 +75,6 @@ const deckPreBuiltGet = async (
     characters
   );
 
-  cards = await cardsGifyUrlAssignedGet(
-    cards,
-    movieDataBasic.title
-  );
-
   const spoofable = deckSpoofableGet(
     characters,
     cards
@@ -127,9 +122,15 @@ const deckPostProcessedGet = async (
     deck
   );
 
-  return (
-    deck
+  let cards = await cardsGifyUrlAssignedGet(
+    deck.cards,
+    deck.splash.title
   );
+
+  return {
+    ...deck,
+    cards
+  };
 };
 
 export default async (

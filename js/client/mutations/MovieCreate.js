@@ -13,7 +13,8 @@ const mutation = graphql`
       input: $input
     ) {
       viewer {
-        id
+        id,
+        deckId
       },
       output {
         ...on Deck {

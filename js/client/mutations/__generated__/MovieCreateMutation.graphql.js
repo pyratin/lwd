@@ -10,6 +10,7 @@
 import type { ConcreteRequest } from 'relay-runtime';
 export type MovieCreateInput = {|
   text: string,
+  source?: ?string,
   spoofInput?: ?spoofInput,
   genre?: ?string,
   outputType?: ?string,
@@ -26,7 +27,8 @@ export type MovieCreateMutationVariables = {|
 export type MovieCreateMutationResponse = {|
   +movieCreate: ?{|
     +viewer: ?{|
-      +id: ?string
+      +id: ?string,
+      +deckId: ?string,
     |},
     +output: ?{|
       +id?: ?string
@@ -47,6 +49,7 @@ mutation MovieCreateMutation(
   movieCreate(input: $input) {
     viewer {
       id
+      deckId
     }
     output {
       __typename
@@ -73,15 +76,13 @@ v1 = [
     "variableName": "input"
   }
 ],
-v2 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "id",
-    "storageKey": null
-  }
-],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
 v3 = {
   "alias": null,
   "args": null,
@@ -89,12 +90,23 @@ v3 = {
   "kind": "LinkedField",
   "name": "viewer",
   "plural": false,
-  "selections": (v2/*: any*/),
+  "selections": [
+    (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "deckId",
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 },
 v4 = {
   "kind": "InlineFragment",
-  "selections": (v2/*: any*/),
+  "selections": [
+    (v2/*: any*/)
+  ],
   "type": "Deck",
   "abstractKey": null
 };
@@ -173,16 +185,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5a77973088bfe8cf672283262e86c2ad",
+    "cacheID": "773286d26b6a9ca4a7b254edc0caf635",
     "id": null,
     "metadata": {},
     "name": "MovieCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n    }\n    output {\n      __typename\n      ... on Deck {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckId\n    }\n    output {\n      __typename\n      ... on Deck {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '9c2923ef23c58fe851638ba3c9fad0c1';
+(node/*: any*/).hash = '3af9b199deba8872bf296cbb57f302cf';
 
 module.exports = node;

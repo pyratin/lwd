@@ -132,7 +132,6 @@ const DeckDetail = (
   const refetch = useCallback(
     () => {
 
-      console.log('HERE');
       return refetchFn();
     },
     [

@@ -206,7 +206,7 @@ const MovieSearch = (
     );
   };
 
-  const onMovieSelectErrorHandle = (
+  const onMovieCreateErrorHandle = (
     json
   ) => {
 
@@ -220,7 +220,7 @@ const MovieSearch = (
     );
   };
 
-  const onMovieSelectCompletedHandle = useCallback(
+  const onMovieCreateCompletedHandle = useCallback(
     (
       json
     ) => {
@@ -240,7 +240,7 @@ const MovieSearch = (
     ]
   );
 
-  const movieSelectFn = useCallback(
+  const movieCreateFn = useCallback(
     (
       title
     ) => {
@@ -268,18 +268,18 @@ const MovieSearch = (
           }
         },
         props.relay.environment,
-        onMovieSelectErrorHandle,
-        onMovieSelectCompletedHandle
+        onMovieCreateErrorHandle,
+        onMovieCreateCompletedHandle
       );
     },
     [
       clientMutationId,
       props.relay.environment,
-      onMovieSelectCompletedHandle
+      onMovieCreateCompletedHandle
     ]
   );
 
-  const movieSelect = (
+  const movieCreate = (
     title
   ) => {
 
@@ -291,7 +291,7 @@ const MovieSearch = (
       .then(
         () => {
 
-          return movieSelectFn(
+          return movieCreateFn(
             title
           );
         }
@@ -323,7 +323,7 @@ const MovieSearch = (
       !loading
     ) {
 
-      return movieSelect(
+      return movieCreate(
         title
       );
     }

@@ -30,6 +30,7 @@ const Carousel = (
         .carousel(
           {
             ride: false,
+            pause: true,
             interval: 5000
           }
         );
@@ -76,7 +77,7 @@ const Carousel = (
       ref = {
         carouselRef
       }
-      className = 'Carousel w-100 h-100 slide'
+      className = 'Carousel carousel w-100 h-100 slide'
       css = {
         css(
           {
@@ -97,6 +98,7 @@ const Carousel = (
             }
           )
         }
+        href = '#'
         data-slide = 'prev'
         onClick = {
           onClickHandle
@@ -139,6 +141,7 @@ const Carousel = (
             }
           )
         }
+        href = '#'
         data-slide = 'next'
         onClick = {
           onClickHandle

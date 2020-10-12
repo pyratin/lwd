@@ -12,6 +12,7 @@ import {
 import Carousel from 'Components/Carousel';
 import Splash from 'Components/Splash';
 import Card from 'Components/Card';
+import DeckRefresh from './DeckRefresh';
 
 const DeckNode = (
   props
@@ -22,17 +23,6 @@ const DeckNode = (
   const textFontSize = '1.1rem';
 
   const splashCharacterElementSize = '6rem';
-
-  const onRefreshTriggerHandle = () => {
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    return props.match.router
-      .push(
-        '/Deck/5f831d1929a5134b7488c537'
-      );
-  };
 
   const refreshRender = () => {
 
@@ -57,17 +47,14 @@ const DeckNode = (
           )
         }
       >
-        <a
-          className = 'text-white'
-          href = '#'
-          onClick = {
-            onRefreshTriggerHandle
+        <DeckRefresh
+          viewer = {
+            props.viewer
           }
-        >
-          <i
-            className = 'fa fa-sync fa-lg fa-fw'
-          ></i>
-        </a>
+          match = {
+            props.match
+          }
+        />
       </div>
     );
   };
@@ -248,7 +235,8 @@ export default createFragmentContainer(
       fragment DeckNode_viewer on Viewer {
         ...Splash_viewer,
         ...Card_viewer,
-        ...Carousel_viewer
+        ...Carousel_viewer,
+        ...DeckRefresh_viewer
       }
     `
   }
