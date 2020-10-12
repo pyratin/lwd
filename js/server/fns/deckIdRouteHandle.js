@@ -17,7 +17,8 @@ export default async (
 
   const genre = req.query.genre;
 
-  const hero = req.query.hero;
+  const hero = req.query.hero ||
+    'you';
 
   const deck = await movieCreate(
     `
@@ -36,6 +37,35 @@ export default async (
     req
   );
 
+  let url = `
+    ${
+      hostUrlGet(
+        req
+      )
+    }${
+      req.path
+    }
+  `
+    .trim();
+
+  let queryString = `
+    ?genre=${
+      genre
+    }&hero=${
+      hero
+    }
+  `
+    .trim();
+
+  url = `
+    ${
+      url
+    }${
+      queryString
+    }
+  `
+    .trim();
+
   return res.render(
     'index',
     {
@@ -50,9 +80,7 @@ export default async (
         0
       ]
         .text,
-      url: hostUrlGet(
-        req
-      ),
+      url,
       image: {
         path: deck.splash.poster,
         width: outputResGet(),
