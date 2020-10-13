@@ -426,7 +426,8 @@ const sentenceShortenedByNNPGetFn = (
         ] :
         '';
 
-      const fragmentPreviousLength = fragmentPrevious.length;
+      const fragmentPreviousLength = 
+        fragmentPrevious.length;
 
       if (
         (
@@ -618,10 +619,25 @@ const sentenceShortenedByLengthGetFn = (
 
         if (
           (
-            fragmentPrevious.length +
-            word.length
-          ) <
-          sentenceMaxLength
+            (
+              fragmentPrevious.length +
+              word.length
+            ) <
+            (
+              sentenceMaxLength *
+              1.5
+            )
+          ) ||
+          (
+            word.match(
+              /^\W/
+            )
+          ) ||
+          (
+            word.match(
+              /\W$/
+            )
+          )
         ) {
 
           return [
@@ -692,8 +708,41 @@ const sentenceShortenedByLengthGet = (
     []
   );
 
-  let sentence = fragments.join(
-    ', '
+  const sentence = fragments.reduce(
+    (
+      memo,
+      fragment
+    ) => {
+
+      if (
+        !memo ||
+        (
+          memo.match(
+            /[,.]$/
+          )
+        )
+      ) {
+
+        return `
+          ${
+            memo
+          } ${
+            fragment
+          }
+        `
+          .trim();
+      }
+
+      return `
+        ${
+          memo
+        }, ${
+          fragment
+        }
+      `
+        .trim();
+    },
+    ''
   );
 
   return (

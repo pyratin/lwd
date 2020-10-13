@@ -65,6 +65,9 @@ const Splash = (
         viewer = {
           props.viewer
         }
+        match = {
+          props.match
+        }
         onSplashSpoofInputTrigger = {
           props.onSplashSpoofInputTrigger
         }

@@ -13,6 +13,41 @@ const SplashCharacter = (
   props
 ) => {
 
+  const filterGet = () => {
+
+    switch (
+      true
+    ) {
+
+      case (
+        props.character.role !==
+        'hero'
+      ) :
+
+        return (
+          'grayscale(100%)'
+        );
+
+      case (
+        props.character.role ===
+        'hero'
+      ) :
+
+        return (
+          'grayscale(50%)'
+        );
+
+      case (
+        props.character.dualRoleIndex >=
+        0
+      ) :
+
+        return (
+          'hue-rotate(20deg)'
+        );
+    }
+  };
+
   const textRender = () => {
 
     return (
@@ -65,7 +100,12 @@ const SplashCharacter = (
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            filter: 'grayscale(50%) brightness(1.25)'
+            filter: `
+              ${
+                filterGet()
+              } brightness(1.25)
+            `
+              .trim()
           }
         )
       }
@@ -83,6 +123,8 @@ export default createFragmentContainer(
     character: graphql`
       fragment SplashCharacter_character on Character {
         renderText,
+        role,
+        dualRoleIndex,
         image
       }
     `,

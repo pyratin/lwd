@@ -68,7 +68,8 @@ const Card  = (
     ) {
 
       case (
-        !props.card.actorImageId
+        props.card.character?.role !==
+        'hero'
       ) :
 
         return (
@@ -175,6 +176,9 @@ export default createFragmentContainer(
       fragment Card_card on Card {
         image,
         renderText,
+        character {
+          role
+        },
         actorImageId,
         dualRoleIndex
       }

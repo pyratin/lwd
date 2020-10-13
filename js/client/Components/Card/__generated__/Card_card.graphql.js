@@ -14,6 +14,9 @@ declare export opaque type Card_card$fragmentType: Card_card$ref;
 export type Card_card = {|
   +image: ?string,
   +renderText: ?string,
+  +character: ?{|
+    +role: ?string
+  |},
   +actorImageId: ?string,
   +dualRoleIndex: ?number,
   +$refType: Card_card$ref,
@@ -50,6 +53,24 @@ const node/*: ReaderFragment*/ = {
     {
       "alias": null,
       "args": null,
+      "concreteType": "Character",
+      "kind": "LinkedField",
+      "name": "character",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "role",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
       "name": "actorImageId",
       "storageKey": null
@@ -66,6 +87,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '4d2f866276a0700bf9bf457d2d5b83e2';
+(node/*: any*/).hash = '325f385a9631ec1e9494f0240a54cdf5';
 
 module.exports = node;

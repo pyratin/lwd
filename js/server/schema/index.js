@@ -38,6 +38,12 @@ const characterType = new GraphQLObjectType(
         renderText: {
           type: GraphQLString
         },
+        role: {
+          type: GraphQLString
+        },
+        dualRoleIndex: {
+          type: GraphQLInt
+        },
         actorImageId: {
           type: GraphQLID
         },
@@ -131,6 +137,9 @@ const cardType = new GraphQLObjectType(
       return {
         renderText: {
           type: GraphQLString
+        },
+        character: {
+          type: characterType
         },
         actorImageId: {
           type: GraphQLID

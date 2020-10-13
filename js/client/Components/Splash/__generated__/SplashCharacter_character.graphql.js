@@ -13,6 +13,8 @@ declare export opaque type SplashCharacter_character$ref: FragmentReference;
 declare export opaque type SplashCharacter_character$fragmentType: SplashCharacter_character$ref;
 export type SplashCharacter_character = {|
   +renderText: ?string,
+  +role: ?string,
+  +dualRoleIndex: ?number,
   +image: ?string,
   +$refType: SplashCharacter_character$ref,
 |};
@@ -42,6 +44,20 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "role",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "dualRoleIndex",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "image",
       "storageKey": null
     }
@@ -50,6 +66,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'f1171e758cc1dfb390ea459db1b39280';
+(node/*: any*/).hash = '71b31ef568756855bb30c947168122e7';
 
 module.exports = node;

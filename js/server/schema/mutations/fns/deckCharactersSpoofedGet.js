@@ -39,7 +39,7 @@ const spoofNameCapitalizedGet = (
 ) => {
 
   return spoofName.split(
-    /\W/
+    /\s/
   )
     .map(
       (

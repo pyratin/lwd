@@ -38,8 +38,18 @@ const cardsForGifyGet = (
 
 const queryGet = (
   text,
+  title,
   index
 ) => {
+
+  const queryText = `
+    ${
+      text
+    } : ${
+      title
+    }
+  `
+    .trim();
 
   const gifyApiKey = 
     process.env.npm_package_config_GIFY_API_KEY;
@@ -47,10 +57,12 @@ const queryGet = (
   return `
     https://api.giphy.com/v1/gifs/translate?api_key=${
       gifyApiKey
-    }&weirdness:=${
+    }&weirdness=${
       index
     }&s=${
-      text
+      encodeURIComponent(
+        queryText
+      )
     }
   `
     .trim();
@@ -62,43 +74,23 @@ const fnDelayRun = (
 
   return fnDelayRunFn(
     cardsFlatlistGifyUrlAssignedGetFn,
-    0,
+    100,
     `
       deckCardsGifyUrlAssignedGet: ${
         text
       }
     `
       .trim(),
-    {
-      text
-    }
+    text
   );
 };
 
 const cardsFlatlistGifyUrlAssignedGetFn = (
-  {
-    text: _text
-  },
-  title,
-  index
+  query
 ) => {
 
-  const text = `
-    ${
-      _text
-    } : ${
-      title
-    }
-  `
-    .trim();
-
   return nodeFetch(
-    queryGet(
-      encodeURIComponent(
-        text
-      ),
-      index
-    )
+    query
   )
     .then(
       (
@@ -123,7 +115,7 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
         ) {
 
           return fnDelayRun(
-            text
+            query
           );
         }
 
@@ -136,7 +128,7 @@ const cardsFlatlistGifyUrlAssignedGetFn = (
       () => {
 
         return fnDelayRun(
-          text
+          query
         );
       }
     );
@@ -159,10 +151,14 @@ const cardsFlatlistGifyUrlAssignedGet = (
           res
         ) => {
 
-          return cardsFlatlistGifyUrlAssignedGetFn(
-            card,
+          const query = queryGet(
+            card.text,
             title,
             index
+          );
+
+          return cardsFlatlistGifyUrlAssignedGetFn(
+            query
           )
             .then(
               (

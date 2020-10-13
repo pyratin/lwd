@@ -48,8 +48,14 @@ export default {
         'process.env.OUTPUT_RES': JSON.stringify(
           process.env.npm_package_config_OUTPUT_RES
         ),
+        'process.env.FB_APP_ID': JSON.stringify(
+          process.env.npm_package_config_FB_APP_ID
+        ),
         'process.env.GENRE': JSON.stringify(
           process.env.npm_package_config_GENRE
+        ),
+        'process.env.HERO': JSON.stringify(
+          process.env.npm_package_config_HERO
         )
       }
     )

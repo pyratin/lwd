@@ -64,29 +64,14 @@ const DeckDetail = (
                     return {
                       ...fragmentVariables,
                       deckId: props.match.params.deckId,
-                      ...(
-                        () => {
-                          
-                          const hero = 
-                            props.match.location.query.hero;
-
-                          if (
-                            hero
-                          ) {
-
-                            return {
-                              spoofInput: {
-                                hero
-                              }
-                            };
-                          }
-
-                          return {};
-                        }
-                      )(),
                       genre: props.match.location.query
                         .genre ||
                       process.env.GENRE,
+                      spoofInput: {
+                        hero: props.match.location.query
+                          .hero ||
+                        process.env.HERO
+                      },
                       refetch: true
                     };
                   },

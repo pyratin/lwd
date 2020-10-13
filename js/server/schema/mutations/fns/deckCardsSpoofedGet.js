@@ -2,8 +2,6 @@
 
 import plotNNPsGet from './plotNNPsGet';
 import NNPsCrossMatchesGet from './NNPsCrossMatchesGet';
-import cardsCharactersAssignedGet
-  from './cardsCharactersAssignedGet';
 
 const _NNPsGet = (
   characters
@@ -28,13 +26,13 @@ const _NNPsGet = (
 };
 
 const cardsSpoofedGetFn = (
-  card,
+  _card,
   characters
 ) => {
 
   const NNPs = plotNNPsGet(
     [
-      card
+      _card
     ]
   );
 
@@ -48,7 +46,7 @@ const cardsSpoofedGetFn = (
     true
   );
 
-  const text = matches.reduce(
+  const card = matches.reduce(
     (
       memo,
       match
@@ -60,42 +58,66 @@ const cardsSpoofedGetFn = (
 
       const _distance = NNP.distance;
 
-      const distanceOffset = memo.length - card.text.length;
+      const distanceOffset = (
+        memo.text
+          .length - 
+        _card.text
+          .length
+      );
 
       const distance = _distance + distanceOffset;
 
       const _NNP = _NNPs[
         match._NNPIndex
       ];
-
+      
       const name = _NNP.text;
 
       const spoofName = _NNP._text;
 
       const text = [
-        ...memo.slice(
-          0, 
-          distance
-        ),
+        ...memo.text
+          .slice(
+            0, 
+            distance
+          ),
         spoofName,
-        ...memo.slice(
-          distance +
-          name.length
-        )
+        ...memo.text
+          .slice(
+            distance +
+            name.length
+          )
       ]
         .join('');
 
-      return (
-        text
-      );
+      const character = characters[
+        _NNP.index
+      ];
+
+      return {
+        ...memo,
+        text,
+        characters: [
+          ...memo.characters,
+          {
+            ...character,
+            distance
+          }
+        ]
+      };
     },
-    card.text
+    {
+      ..._card,
+      text: _card.text,
+      characters: [],
+      character: _card.character,
+      dualRoleIndex: _card.dualRoleIndex
+    }
   );
 
   return {
     ...card,
-    _text: card.text,
-    text
+    _text: _card.text
   };
 };
 
@@ -166,11 +188,6 @@ export default (
 
   let cards = cardsSpoofedGet(
     _cards,
-    _characters
-  );
-
-  cards = cardsCharactersAssignedGet(
-    cards,
     _characters
   );
 
