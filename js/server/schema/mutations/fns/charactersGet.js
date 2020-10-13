@@ -234,6 +234,7 @@ export default async (
   matches = matchesSortedGet(
     matches
   );
+  console.log(matches);
 
   matches = matchesUniqueGet(
     matches

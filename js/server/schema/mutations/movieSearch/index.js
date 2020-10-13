@@ -170,7 +170,7 @@ const movieSearchResultsFilteredGet = (
 export default async (
   text,
   limit = 5,
-  fuzzy = true
+  fuzzy = false
 ) => {
 
   let results = await movieSearchResultsGet(
@@ -178,6 +178,16 @@ export default async (
     limit,
     fuzzy
   );
+
+  results = (
+    !results.length
+  ) ?
+    await movieSearchResultsGet(
+      text,
+      limit,
+      true
+    ) :
+    results;
 
   results = await movieSearchResultsFilteredGet(
     results
