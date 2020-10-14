@@ -284,7 +284,6 @@ const MovieSearch = (
               .toString(),
             text: title,
             source: 'user',
-            genre: process.env.GENRE,
             createFlag: true
           }
         },

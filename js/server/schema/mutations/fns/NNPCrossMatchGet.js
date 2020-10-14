@@ -45,51 +45,6 @@ const characterTokensMatchedGet = (
 
   const characterTokenCombinations = combinations(
     characterTokenizedGet(
-      _character
-    )
-  )
-    .reduce(
-      (
-        memo,
-        characterTokenCombination
-      ) => {
-
-        return [
-          ...memo,
-          characterTokenCombination.join(
-            ' '
-          )
-        ];
-      },
-      []
-    );
-
-  const characterToken = characterTokenCombinations.find(
-    (
-      characterToken
-    ) => {
-
-      return (
-        characterToken ===
-        character
-      );
-    }
-  );
-
-  return (
-    characterToken
-  ) ?
-    '1' :
-    null;
-};
-
-const _characterTokensMatchedGet = (
-  character,
-  _character
-) => {
-
-  const characterTokenCombinations = combinations(
-    characterTokenizedGet(
       character
     )
   )
@@ -152,7 +107,7 @@ const _characterTokensMatchedGet = (
   return (
     characterToken
   ) ?
-    '2' :
+    '1' :
     null;
 };
 
@@ -191,26 +146,6 @@ export default (
       !strict &&
       (
         NNPmatchIndexString = characterTokensMatchedGet(
-          character,
-          _character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
-    case (
-      !strict &&
-      (
-        NNPmatchIndexString = characterTokensMatchedGet(
-          _character,
-          character
-        )
-      ) &&
-      !!NNPmatchIndexString
-    ) :
-    case (
-      !strict &&
-      (
-        NNPmatchIndexString = _characterTokensMatchedGet(
           character,
           _character
         )

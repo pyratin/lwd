@@ -131,36 +131,22 @@ const charactersMetaHeroineAssignedGet = (
   characters
 ) => {
 
-  const match = characters.reduce(
+  const match = characters.find(
     (
-      memo,
       character
     ) => {
 
-      if (
+      return (
         (
-          !memo ||
-          (
-            character.castIndex <
-            memo.castIndex
-          )
+          character.castIndex ===
+          1
         ) &&
         (
           character.actor.gender ===
-            'woman'
+          'woman'
         )
-      ) {
-
-        return (
-          character
-        );
-      }
-
-      return (
-        memo
       );
-    },
-    null
+    }
   );
 
   if (

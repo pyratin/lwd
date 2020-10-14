@@ -57,7 +57,7 @@ const movieSearchQueryGet = (
         text,
         fuzzy
       )
-    }+incategory:tamil-language_films|hindi-language_films|English-language_films&srlimit=${
+    }&srlimit=${
       limit
     }&format=json
   `

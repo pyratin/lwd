@@ -12,6 +12,17 @@ const matchesDataAssignedGet = (
   __NNPs
 ) => {
 
+  const fullMatches = matches.filter(
+    (
+      match
+    ) => {
+
+      return (
+        !match.NNPmatchIndex
+      );
+    }
+  );
+
   return matches.reduce(
     (
       memo,
@@ -26,12 +37,27 @@ const matchesDataAssignedGet = (
         _cross._NNPIndex
       ];
 
+      const fullMatchExists = !!(
+        fullMatches.find(
+          (
+            fullMatch
+          ) => {
+
+            return (
+              fullMatch.text ===
+              _NNP.text
+            );
+          }
+        )
+      );
+
       return [
         ...memo,
         {
           _cross,
           NNP,
-          _NNP
+          _NNP,
+          fullMatchExists
         }
       ];
     },
@@ -65,6 +91,20 @@ const matchesSortedGet = (
         ) :
 
           return -1;
+
+        case (
+          a.fullMatchExists &&
+          !b.fullMatchExists
+        ) :
+
+          return -1;
+
+        case (
+          b.fullMatchExists &&
+          !a.fullMatchExists
+        ) :
+
+          return 1;
 
         case (
           a._NNP._distance >
@@ -234,7 +274,6 @@ export default async (
   matches = matchesSortedGet(
     matches
   );
-  console.log(matches);
 
   matches = matchesUniqueGet(
     matches
