@@ -228,6 +228,7 @@ const MovieSearch = (
     (
       json
     ) => {
+      console.log(json);
 
       return Promise.resolve(
         asyncTypeaheadRef.current
