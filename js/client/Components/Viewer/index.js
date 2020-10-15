@@ -42,7 +42,7 @@ const Viewer = (
         .push(
           `
             /Deck/${
-              props.viewer.deckId
+              props.viewer.deckTitle
             }?genre=${
               process.env.GENRE
             }&hero=${
@@ -55,7 +55,7 @@ const Viewer = (
     [
       props.match.location.pathname,
       props.match.router,
-      props.viewer.deckId
+      props.viewer.deckTitle
     ]
   );
 
@@ -194,7 +194,7 @@ export default createFragmentContainer(
     viewer: graphql`
       fragment Viewer_viewer on Viewer {
         id,
-        deckId,
+        deckTitle,
         ...Header_viewer,
         ...Home_viewer,
         ...Deck_viewer,

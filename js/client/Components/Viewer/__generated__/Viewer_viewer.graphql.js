@@ -17,7 +17,7 @@ declare export opaque type Viewer_viewer$ref: FragmentReference;
 declare export opaque type Viewer_viewer$fragmentType: Viewer_viewer$ref;
 export type Viewer_viewer = {|
   +id: ?string,
-  +deckId: ?string,
+  +deckTitle: ?string,
   +$fragmentRefs: Header_viewer$ref & Home_viewer$ref & Deck_viewer$ref & Footer_viewer$ref,
   +$refType: Viewer_viewer$ref,
 |};
@@ -47,7 +47,7 @@ const node/*: ReaderFragment*/ = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "deckId",
+      "name": "deckTitle",
       "storageKey": null
     },
     {
@@ -75,6 +75,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '517249e38fdfa326bdb8d7492b2a4025';
+(node/*: any*/).hash = '7bbf99edfdd0596b5dc6ec298cd40694';
 
 module.exports = node;

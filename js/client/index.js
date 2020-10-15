@@ -69,7 +69,7 @@ const routeConfig = makeRouteConfig(
       }
     >
       <Route
-        path = ':deckId'
+        path = ':deckTitle'
         Component = {
           DeckDetail
         }

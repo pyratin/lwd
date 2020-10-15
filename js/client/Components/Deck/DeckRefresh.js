@@ -52,7 +52,7 @@ const DeckRefresh = (
       .push(
         `
           /Deck/${
-            json.movieCreate.viewer.deckId
+            json.movieCreate.viewer.deckTitle
           }?genre=${
             props.match.location.query.genre
           }&hero=${

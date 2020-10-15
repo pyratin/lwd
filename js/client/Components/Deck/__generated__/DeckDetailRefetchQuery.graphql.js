@@ -14,7 +14,7 @@ export type spoofInput = {|
   villain?: ?string,
 |};
 export type DeckDetailRefetchQueryVariables = {|
-  deckId: string,
+  deckTitle: string,
   spoofInput?: ?spoofInput,
   genre: string,
   refetch: boolean,
@@ -33,13 +33,13 @@ export type DeckDetailRefetchQuery = {|
 
 /*
 query DeckDetailRefetchQuery(
-  $deckId: ID!
+  $deckTitle: String!
   $spoofInput: spoofInput
   $genre: String!
   $refetch: Boolean!
 ) {
   viewer {
-    ...DeckDetail_viewer_3gutIH
+    ...DeckDetail_viewer_3ROcCi
     id
   }
 }
@@ -62,9 +62,9 @@ fragment Carousel_viewer on Viewer {
   id
 }
 
-fragment DeckDetail_viewer_3gutIH on Viewer {
+fragment DeckDetail_viewer_3ROcCi on Viewer {
   id
-  decks(first: 1, deckId: $deckId, spoofInput: $spoofInput, genre: $genre) {
+  decks(first: 1, deckTitle: $deckTitle, spoofInput: $spoofInput, genre: $genre) {
     edges {
       node {
         id
@@ -102,6 +102,10 @@ fragment DeckRefresh_viewer on Viewer {
   id
 }
 
+fragment Share_viewer on Viewer {
+  id
+}
+
 fragment SplashCharacter_character on Character {
   renderText
   role
@@ -136,6 +140,7 @@ fragment Splash_splash on Splash {
 fragment Splash_viewer on Viewer {
   ...SplashCharacters_viewer
   ...SplashSpoofInput_viewer
+  ...Share_viewer
 }
 */
 
@@ -143,7 +148,7 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "deckId"
+  "name": "deckTitle"
 },
 v1 = {
   "defaultValue": null,
@@ -162,8 +167,8 @@ v3 = {
 },
 v4 = {
   "kind": "Variable",
-  "name": "deckId",
-  "variableName": "deckId"
+  "name": "deckTitle",
+  "variableName": "deckTitle"
 },
 v5 = {
   "kind": "Variable",
@@ -438,7 +443,7 @@ return {
             "alias": null,
             "args": (v8/*: any*/),
             "filters": [
-              "deckId",
+              "deckTitle",
               "spoofInput",
               "genre"
             ],
@@ -453,16 +458,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b1838cec6fbe5c24134c635207571719",
+    "cacheID": "a290cb2668d9b80a16968329fe0b1541",
     "id": null,
     "metadata": {},
     "name": "DeckDetailRefetchQuery",
     "operationKind": "query",
-    "text": "query DeckDetailRefetchQuery(\n  $deckId: ID!\n  $spoofInput: spoofInput\n  $genre: String!\n  $refetch: Boolean!\n) {\n  viewer {\n    ...DeckDetail_viewer_3gutIH\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  character {\n    role\n  }\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment Carousel_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_3gutIH on Viewer {\n  id\n  decks(first: 1, deckId: $deckId, spoofInput: $spoofInput, genre: $genre) {\n    edges {\n      node {\n        id\n        ...DeckNode_deck @include(if: $refetch)\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n  ...Carousel_viewer\n  ...DeckRefresh_viewer\n}\n\nfragment DeckRefresh_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  role\n  dualRoleIndex\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n}\n"
+    "text": "query DeckDetailRefetchQuery(\n  $deckTitle: String!\n  $spoofInput: spoofInput\n  $genre: String!\n  $refetch: Boolean!\n) {\n  viewer {\n    ...DeckDetail_viewer_3ROcCi\n    id\n  }\n}\n\nfragment Card_card on Card {\n  image\n  renderText\n  character {\n    role\n  }\n  actorImageId\n  dualRoleIndex\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment Carousel_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer_3ROcCi on Viewer {\n  id\n  decks(first: 1, deckTitle: $deckTitle, spoofInput: $spoofInput, genre: $genre) {\n    edges {\n      node {\n        id\n        ...DeckNode_deck @include(if: $refetch)\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_deck on Deck {\n  id\n  splash {\n    ...Splash_splash\n  }\n  cards {\n    ...Card_card\n  }\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n  ...Carousel_viewer\n  ...DeckRefresh_viewer\n}\n\nfragment DeckRefresh_viewer on Viewer {\n  id\n}\n\nfragment Share_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacter_character on Character {\n  renderText\n  role\n  dualRoleIndex\n  image\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_splash on Splash {\n  characters {\n    ...SplashCharacter_character\n  }\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_splash on Splash {\n  title\n  poster\n  ...SplashCharacters_splash\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n  ...Share_viewer\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'fcc7eee7165ad1f780ef35f03d42e85e';
+(node/*: any*/).hash = 'e2734ed06ca6211da6608b4c5d03628a';
 
 module.exports = node;

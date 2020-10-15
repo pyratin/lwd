@@ -205,7 +205,8 @@ const deckRandomGet = async (
 
   const count = await deckCountDocuments(
     {
-      source: sourceName
+      source: sourceName,
+      'splash.spoofable': true
     },
     undefined,
     db
@@ -219,7 +220,8 @@ const deckRandomGet = async (
   let deck = (
     await deckFind(
       {
-        source: sourceName
+        source: sourceName,
+        'splash.spoofable': true
       },
       {
         skip,
@@ -230,17 +232,6 @@ const deckRandomGet = async (
   )[
     0
   ];
-
-  if (
-    !deck.splash.spoofable
-  ) {
-
-    return deckRandomGet(
-      spoofInput,
-      genre,
-      db
-    );
-  }
 
   deck = await deckCachedHandledGet(
     deck,

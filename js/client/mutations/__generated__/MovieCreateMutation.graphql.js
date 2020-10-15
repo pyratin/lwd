@@ -28,7 +28,7 @@ export type MovieCreateMutationResponse = {|
   +movieCreate: ?{|
     +viewer: ?{|
       +id: ?string,
-      +deckId: ?string,
+      +deckTitle: ?string,
     |},
     +output: ?{|
       +id?: ?string
@@ -49,7 +49,7 @@ mutation MovieCreateMutation(
   movieCreate(input: $input) {
     viewer {
       id
-      deckId
+      deckTitle
     }
     output {
       __typename
@@ -96,7 +96,7 @@ v3 = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "deckId",
+      "name": "deckTitle",
       "storageKey": null
     }
   ],
@@ -185,16 +185,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "773286d26b6a9ca4a7b254edc0caf635",
+    "cacheID": "8dcedc22940438c5220f63b06bef6a3e",
     "id": null,
     "metadata": {},
     "name": "MovieCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckId\n    }\n    output {\n      __typename\n      ... on Deck {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckTitle\n    }\n    output {\n      __typename\n      ... on Deck {\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '3af9b199deba8872bf296cbb57f302cf';
+(node/*: any*/).hash = '4ebc85b9f79f4567e00d205a95d12283';
 
 module.exports = node;

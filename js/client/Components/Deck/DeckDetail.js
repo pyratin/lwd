@@ -63,7 +63,8 @@ const DeckDetail = (
 
                     return {
                       ...fragmentVariables,
-                      deckId: props.match.params.deckId,
+                      deckTitle: 
+                        props.match.params.deckTitle,
                       genre: props.match.location.query
                         .genre ||
                       process.env.GENRE,
@@ -107,7 +108,7 @@ const DeckDetail = (
     },
     [
       props.relay,
-      props.match.params.deckId,
+      props.match.params.deckTitle,
       props.match.location.query.genre,
       props.match.location.query.hero
     ]
@@ -205,8 +206,8 @@ export default createRefetchContainer(
           type: "Int!",
           defaultValue: 1
         },
-        deckId: {
-          type: "ID"
+        deckTitle: {
+          type: "String"
         },
         spoofInput: {
           type: "spoofInput"
@@ -222,7 +223,7 @@ export default createRefetchContainer(
         id,
         decks(
           first: $deckFirst,
-          deckId: $deckId,
+          deckTitle: $deckTitle,
           spoofInput: $spoofInput,
           genre: $genre
         ) @connection(
@@ -243,14 +244,14 @@ export default createRefetchContainer(
   },
   graphql`
     query DeckDetailRefetchQuery(
-      $deckId: ID!,
+      $deckTitle: String!,
       $spoofInput: spoofInput,
       $genre: String!,
       $refetch: Boolean!
     ) {
       viewer {
         ...DeckDetail_viewer @arguments(
-          deckId: $deckId,
+          deckTitle: $deckTitle,
           spoofInput: $spoofInput,
           genre: $genre,
           refetch: $refetch

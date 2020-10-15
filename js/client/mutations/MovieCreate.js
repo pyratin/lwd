@@ -14,7 +14,7 @@ const mutation = graphql`
     ) {
       viewer {
         id,
-        deckId
+        deckTitle
       },
       output {
         ...on Deck {

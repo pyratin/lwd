@@ -28,6 +28,9 @@ import deckConnectionGet from './query/deckConnectionGet';
 import {
   actorImageFindOne 
 } from '~/js/server/data/actorImage';
+import {
+  deckFindOne
+} from '~/js/server/data/deck';
 
 const characterType = new GraphQLObjectType(
   {
@@ -315,8 +318,8 @@ const viewerType = new GraphQLObjectType(
         text: {
           type: GraphQLString
         },
-        deckId: {
-          type: GraphQLID,
+        deckTitle: {
+          type: GraphQLString,
           resolve(
             parent,
             args,
@@ -334,12 +337,14 @@ const viewerType = new GraphQLObjectType(
               .then(
                 (
                   {
-                    _id: deckId
+                    splash: {
+                      title
+                    }
                   }
                 ) => {
 
                   return (
-                    deckId
+                    title
                   );
                 }
               );
@@ -351,6 +356,9 @@ const viewerType = new GraphQLObjectType(
             deckId: {
               type: GraphQLID
             },
+            deckTitle: {
+              type: GraphQLString
+            },
             spoofInput: {
               type: spoofInputType
             },
@@ -359,10 +367,11 @@ const viewerType = new GraphQLObjectType(
             },
             ...connectionArgs
           },
-          resolve(
+          async resolve(
             parent,
             {
-              deckId,
+              deckId: _deckId,
+              deckTitle,
               spoofInput,
               genre,
               ...connectionArgs
@@ -371,6 +380,20 @@ const viewerType = new GraphQLObjectType(
               db
             }
           ) {
+
+            const deckId = (
+              deckTitle
+            ) ?
+              (
+                await deckFindOne(
+                  {
+                    'splash.title': deckTitle
+                  },
+                  undefined,
+                  db
+                )
+              )?._id :
+              _deckId;
 
             return deckConnectionGet(
               deckId,
