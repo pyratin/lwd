@@ -43,7 +43,7 @@ const moviePageSectionTextsGetFn = (
       ) => {
 
         return (
-          anchor.match(
+          anchor?.match(
             new RegExp(
               `
                 ${
@@ -58,10 +58,7 @@ const moviePageSectionTextsGetFn = (
       }
     );
 
-  return (
-    section
-  ) &&
-    section.text;
+  return section?.text;
 };
 
 const sectionTextCleanedGet = (
@@ -131,6 +128,16 @@ const processFn = (
 ) => {
 
   if (
+    !plotText ||
+    !castText
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  else if (
     !processFlag
   ) {
 

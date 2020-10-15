@@ -581,6 +581,33 @@ const sentenceShortenedByNNPGet = (
   );
 };
 
+const sentenceShortenedByPossesiveGet = (
+  _sentence,
+  sentenceMaxLength
+) => {
+
+  if (
+    sentenceIsNormalizableGet(
+      _sentence,
+      sentenceMaxLength
+    )
+  ) {
+
+    return (
+      _sentence
+    );
+  }
+
+  const sentence = _sentence.replace(
+    /(?<='s\s\w+\b)./g,
+    ', '
+  );
+
+  return (
+    sentence
+  );
+};
+
 const sentenceShortenedByLengthGetFn = (
   _sentence,
   sentenceMaxLength
@@ -773,6 +800,11 @@ const sentenceProcessedGet = (
   );
 
   sentence = sentenceShortenedByNNPGet(
+    sentence,
+    sentenceMaxLength
+  );
+
+  sentence = sentenceShortenedByPossesiveGet(
     sentence,
     sentenceMaxLength
   );

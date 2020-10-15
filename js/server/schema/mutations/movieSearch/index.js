@@ -105,18 +105,15 @@ const movieSearchResultCheck = async (
   result
 ) => {
 
-  const {
-    castText,
-    plotText
-  } = await movieDataBasicGet(
+  const movieDataBasic = await movieDataBasicGet(
     result.title,
     undefined,
     false
   );
 
   return (
-    !!castText &&
-    !!plotText
+    !!movieDataBasic?.castText &&
+    !!movieDataBasic.plotText
   );
 };
 

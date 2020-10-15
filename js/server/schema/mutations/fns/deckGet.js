@@ -44,8 +44,8 @@ const deckPreBuiltGet = async (
     !movieDataBasic?.cast
   ) {
 
-    return (
-      {}
+    return Promise.resolve(
+      null
     );
   }
 
@@ -97,6 +97,15 @@ const deckPostProcessedGet = async (
   genre,
   db
 ) => {
+
+  if (
+    !deck
+  ) {
+
+    return Promise.resolve(
+      null
+    );
+  }
 
   if (
     !genre
