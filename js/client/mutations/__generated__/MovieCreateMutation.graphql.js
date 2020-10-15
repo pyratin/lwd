@@ -31,7 +31,9 @@ export type MovieCreateMutationResponse = {|
       +deckTitle: ?string,
     |},
     +output: ?{|
-      +id?: ?string
+      +splash?: ?{|
+        +title: ?string
+      |}
     |},
   |}
 |};
@@ -54,7 +56,9 @@ mutation MovieCreateMutation(
     output {
       __typename
       ... on Deck {
-        id
+        splash {
+          title
+        }
       }
     }
   }
@@ -79,19 +83,18 @@ v1 = [
 v2 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
   "concreteType": "Viewer",
   "kind": "LinkedField",
   "name": "viewer",
   "plural": false,
   "selections": [
-    (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -102,10 +105,27 @@ v3 = {
   ],
   "storageKey": null
 },
-v4 = {
+v3 = {
   "kind": "InlineFragment",
   "selections": [
-    (v2/*: any*/)
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Splash",
+      "kind": "LinkedField",
+      "name": "splash",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "title",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
   ],
   "type": "Deck",
   "abstractKey": null
@@ -125,7 +145,7 @@ return {
         "name": "movieCreate",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -134,7 +154,7 @@ return {
             "name": "output",
             "plural": false,
             "selections": [
-              (v4/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": null
           }
@@ -159,7 +179,7 @@ return {
         "name": "movieCreate",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -175,7 +195,7 @@ return {
                 "name": "__typename",
                 "storageKey": null
               },
-              (v4/*: any*/)
+              (v3/*: any*/)
             ],
             "storageKey": null
           }
@@ -185,16 +205,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8dcedc22940438c5220f63b06bef6a3e",
+    "cacheID": "5999c72a01c527fd328d6c215c71235a",
     "id": null,
     "metadata": {},
     "name": "MovieCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckTitle\n    }\n    output {\n      __typename\n      ... on Deck {\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckTitle\n    }\n    output {\n      __typename\n      ... on Deck {\n        splash {\n          title\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '4ebc85b9f79f4567e00d205a95d12283';
+(node/*: any*/).hash = 'cb03cf7275a693eddb629cc10d28c16b';
 
 module.exports = node;

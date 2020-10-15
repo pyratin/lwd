@@ -18,7 +18,9 @@ const mutation = graphql`
       },
       output {
         ...on Deck {
-          id
+          splash {
+            title
+          }
         }
       }
     }

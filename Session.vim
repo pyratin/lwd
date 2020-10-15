@@ -7,7 +7,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +22 js/server/index.js
+badd +24 js/server/index.js
 badd +409 js/server/schema/index.js
 badd +512 js/server/schema/mutations/movieCreate/index.js
 badd +13 package.json
@@ -68,7 +68,6 @@ badd +31 js/client/mutations/MovieSearch.js
 badd +17 js/client/mutations/MovieCreate.js
 badd +51 js/client/Components/Deck/DeckRefresh.js
 badd +25 js/server/schema/mutations/fns/mediawikiFetch.js
-badd +20 js/server/fns/deckIdRouteHandle.js
 badd +41 js/server/fns/movieOutputGifRouteHandle.js
 badd +19 views/movies.ejs
 badd +98 js/server/fns/variable.js
@@ -81,6 +80,7 @@ badd +21 js/server/schema/mutations/fns/base64FilterAppliedGet.js
 badd +52 js/server/schema/mutations/fns/base64MiffStreamsConcatedGet.js
 badd +10 js/server/schema/mutations/fns/base64TextCompositedGet.js
 badd +0 js/client/Components/Share/index.js
+badd +1 js/server/fns/deckTitleRouteHandle.js
 argglobal
 %argdel
 set stal=2
@@ -178,12 +178,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 139 - ((16 * winheight(0) + 17) / 34)
+let s:l = 24 - ((22 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-139
-normal! 014|
+24
+normal! 02|
+tabedit js/server/fns/deckTitleRouteHandle.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 25 - ((24 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+25
+normal! 05|
 tabedit js/server/data/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -528,12 +553,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 290 - ((26 * winheight(0) + 17) / 34)
+let s:l = 6 - ((5 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-290
-normal! 013|
+6
+normal! 03|
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -653,12 +678,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 96 - ((32 * winheight(0) + 17) / 34)
+let s:l = 97 - ((31 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-96
-normal! 022|
+97
+normal! 011|
 tabedit js/client/Components/Splash/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -878,13 +903,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 17) / 34)
+let s:l = 22 - ((21 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
+22
 normal! 017|
-tabnext 23
+tabnext 5
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

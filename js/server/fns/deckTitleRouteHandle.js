@@ -13,7 +13,7 @@ export default async (
   res
 ) => {
 
-  const deckId = req.params.deckId;
+  const deckTitle = req.params.deckTitle;
 
   const genre = req.query.genre || 
     process.env.npm_package_config_GENRE;
@@ -22,12 +22,7 @@ export default async (
     'you';
 
   const deck = await movieCreate(
-    `
-      id:${
-        deckId
-      }
-    `
-      .trim(),
+    deckTitle,
     {
       spoofInput: {
         hero

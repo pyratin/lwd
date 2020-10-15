@@ -241,7 +241,7 @@ const MovieSearch = (
                 .push(
                   `
                     /Deck/${
-                      json.movieCreate.output.id
+                      json.movieCreate.output.splash.title
                     }?genre=${
                       props.match.location.query.genre
                     }&hero=${
