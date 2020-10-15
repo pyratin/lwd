@@ -36,15 +36,6 @@ const SplashCharacter = (
         return (
           'grayscale(50%)'
         );
-
-      case (
-        props.character.dualRoleIndex >=
-        0
-      ) :
-
-        return (
-          'hue-rotate(20deg)'
-        );
     }
   };
 
@@ -67,7 +58,7 @@ const SplashCharacter = (
                   parseInt(
                     props.textFontSize
                   ) /
-                  1.3
+                  1.5
                 }rem
               `
                 .trim()

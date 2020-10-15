@@ -20,7 +20,8 @@ const cardsFilterTypeAssignedGetFn = (
   ) {
 
     case (
-      !card?.character?.text
+      card?.character?.role !==
+      'hero'
     ) :
 
       return(

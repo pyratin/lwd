@@ -13,6 +13,8 @@ import {
 import {
   outputResGet
 } from '~/js/server/fns/variable';
+import base64FilterAppliedGet from 
+  './base64FilterAppliedGet';
 import base64TextCompositedGet from './base64TextCompositedGet';
 import base64MiffStreamsConcatedGet from 
   './base64MiffStreamsConcatedGet';
@@ -107,6 +109,122 @@ const charactersBase64AssignedGet = (
   );
 };
 
+const charactersFilterTypeAssignedGetFn = (
+  character
+) => {
+
+  switch (
+    true
+  ) {
+
+    case (
+      character.role !==
+      'hero'
+    ) :
+
+      return (
+        'giphy'
+      );
+
+    case (
+      character.dualRoleIndex >=
+      0
+    ) :
+
+      return (
+        'dualRole'
+      );
+
+    default : 
+
+      return (
+        null
+      );
+  }
+};
+
+const charactersFilterTypeAssignedGet = (
+  _characters
+) => {
+
+  const characters = _characters.reduce(
+    (
+      memo,
+      _character
+    ) => {
+
+      const filterType = charactersFilterTypeAssignedGetFn(
+        _character
+      );
+
+      return [
+        ...memo,
+        {
+          ..._character,
+          filterType
+        }
+      ];
+    },
+    []
+  );
+
+  return (
+    characters
+  );
+};
+
+const charactersFilterAppliedGet = (
+  characters
+) => {
+
+  return characters.reduce(
+    (
+      memo,
+      character
+    ) => {
+
+      return memo.then(
+        (
+          res
+        ) => {
+
+          if (
+            character.base64 &&
+            character.filterType
+          ) {
+
+            return base64FilterAppliedGet(
+              character
+            )
+              .then(
+                (
+                  result
+                ) => {
+
+                  return [
+                    ...res,
+                    {
+                      ...character,
+                      base64: result
+                    }
+                  ];
+                }
+              );
+          }
+
+          return [
+            ...res,
+            character
+          ];
+        }
+      );
+    },
+    Promise.resolve(
+      []
+    )
+  );
+};
+
 const characterBase64sGet = (
   characters
 ) => {
@@ -134,7 +252,7 @@ const characterBase64sGet = (
                 }
               `
                 .trim(),
-              outputResGet() / 3.5,
+              outputResGet() / 4,
               46,
               5
             )
@@ -273,7 +391,7 @@ const charactersMontageGet = async (
     ) => {
 
       if (
-        index % 2
+        index % 3
       ) {
 
         return [
@@ -391,6 +509,14 @@ export default async (
   let characters = await charactersBase64AssignedGet(
     _characters,
     db
+  );
+
+  characters = charactersFilterTypeAssignedGet(
+    characters
+  );
+
+  characters = await charactersFilterAppliedGet(
+    characters
   );
 
   const charactersMontageBase64 = 

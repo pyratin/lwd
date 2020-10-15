@@ -18,8 +18,7 @@ const filtersGet = (
     ) :
 
       return [
-        'vintage3',
-        'vignette3'
+        'saturation 0.0'
       ];
 
     case (
