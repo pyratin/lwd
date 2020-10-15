@@ -3,6 +3,7 @@
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
 import parenthesisPurgedGet from './parenthesisPurgedGet';
+import VBGBlacklistGet from './VBGBlacklistGet';
 
 const sentenceNormalizeRegExp = /,\s/;
 
@@ -126,9 +127,27 @@ const wordPOSMatchConditionGet = (
             )
         ) && 
         (
-          !word.text
-            .match(
-              /^king$/i
+          !VBGBlacklistGet()
+            .find(
+              (
+                _VBGBlacklist
+              ) => {
+
+                return (
+                  word.text
+                    .match(
+                      new RegExp(
+                        `
+                          ^${
+                            _VBGBlacklist
+                          }$
+                        `
+                          .trim(),
+                        'i'
+                      )
+                    )
+                );
+              }
             )
         )
       );

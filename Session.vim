@@ -81,6 +81,7 @@ badd +52 js/server/schema/mutations/fns/base64MiffStreamsConcatedGet.js
 badd +10 js/server/schema/mutations/fns/base64TextCompositedGet.js
 badd +0 js/client/Components/Share/index.js
 badd +1 js/server/fns/deckTitleRouteHandle.js
+badd +0 js/server/schema/mutations/fns/VBGBlacklistGet.js
 argglobal
 %argdel
 set stal=2
@@ -353,12 +354,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 224 - ((21 * winheight(0) + 17) / 34)
+let s:l = 495 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-224
-normal! 016|
+495
+normal! 022|
 tabedit js/server/schema/mutations/fns/deckGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -453,12 +454,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 599 - ((21 * winheight(0) + 17) / 34)
+let s:l = 135 - ((11 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-599
-normal! 03|
+135
+normal! 0
+tabedit js/server/schema/mutations/fns/VBGBlacklistGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 7 - ((6 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+7
+normal! 05|
 tabedit js/client/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -553,11 +579,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 212 - ((0 * winheight(0) + 17) / 34)
+let s:l = 231 - ((19 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-212
+231
 normal! 0
 tabedit js/client/Components/Deck/index.js
 set splitbelow splitright
@@ -909,7 +935,7 @@ exe s:l
 normal! zt
 12
 normal! 016|
-tabnext 23
+tabnext 16
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
