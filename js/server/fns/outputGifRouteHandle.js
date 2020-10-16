@@ -1,6 +1,5 @@
 'use strict';
 
-import htmlEscaper from 'html-escaper';
 
 import {
   movieFindOne
@@ -26,16 +25,6 @@ export default async (
   )
     .slice(
       -3
-    )
-    .map(
-      (
-        fragment
-      ) => {
-
-        return htmlEscaper.unescape(
-          fragment
-        );
-      }
     );
 
   const movie = await movieFindOne(
@@ -51,9 +40,7 @@ export default async (
   await movieWrite(
     {
       ...movie,
-      title: htmlEscaper.escape(
-        movie.title
-      )
+      title: movie.title
     }
   );
 
