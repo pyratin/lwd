@@ -11,7 +11,6 @@ import {
 
 import SplashCharacters from './SplashCharacters';
 import SplashSpoofInput from './SplashSpoofInput';
-import Share from 'Components/Share';
 
 const Splash = (
   props
@@ -53,42 +52,6 @@ const Splash = (
           }
           splashCharacterElementSize = {
             props.splashCharacterElementSize
-          }
-        />
-      </div>
-    );
-  };
-
-  const shareRender = () => {
-
-    return (
-      <div
-        className = 'shareContainer'
-        css = {
-          css(
-            {
-              position: 'absolute',
-              zIndex: 2,
-              right: 0,
-              bottom: `
-                ${
-                  parseInt(
-                    props.textElementMinHeight
-                  ) - 
-                  1.5
-                }rem
-              `
-                .trim()
-            }
-          )
-        }
-      >
-        <Share
-          viewer = {
-            props.viewer
-          }
-          match = {
-            props.match
           }
         />
       </div>
@@ -187,9 +150,6 @@ const Splash = (
           splashCharactersRender()
         }
         {
-          shareRender()
-        }
-        {
           titleRender()
         }
       </div>
@@ -232,8 +192,7 @@ export default createFragmentContainer(
     viewer: graphql`
       fragment Splash_viewer on Viewer {
         ...SplashCharacters_viewer,
-        ...SplashSpoofInput_viewer,
-        ...Share_viewer
+        ...SplashSpoofInput_viewer
       }
     `
   }

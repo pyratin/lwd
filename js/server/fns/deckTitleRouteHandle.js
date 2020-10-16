@@ -67,11 +67,6 @@ export default async (
   `
     .trim();
 
-  console.log('movie.title', movie.title);
-  console.log('movie.url', movie.url);
-  console.log('movie.path', movie.path);
-  console.log('url', url);
-
   return res.render(
     'index',
     {
@@ -87,8 +82,8 @@ export default async (
       type: 'article',
       url: url,
       image: {
-        url: 'https://lwd-pyratin.herokuapp.com/placeholder.jpeg',
-        type: 'image/jpeg',
+        url: movie.url,
+        type: 'image/gif',
         width: outputResGet(),
         height: outputResGet()
       }

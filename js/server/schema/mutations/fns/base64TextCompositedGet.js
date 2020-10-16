@@ -3,6 +3,7 @@
 import {
   exec
 } from 'child_process';
+import htmlEscaper from 'html-escaper';
 
 export default async (
   base64,
@@ -18,19 +19,9 @@ export default async (
       reject
     ) => {
 
-      let text = _text
-        .replace(
-          /"/g,
-          '\\"'
-        )
-        .replace(
-          /&/g,
-          '\\&amp;'
-        )
-        .replace(
-          /\$/g,
-          '\\$'
-        );
+      let text = htmlEscaper.escape(
+        _text
+      );
 
       const factor = res / 480;
 

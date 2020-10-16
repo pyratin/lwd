@@ -23,7 +23,6 @@ import {
   movieFindOne,
   movieCreate as movieCreateFn
 } from '~/js/server/data/movie';
-import movieWrite from '../fns/movieWrite';
 
 const sourceName = 'tmdb5000movies';
 
@@ -263,11 +262,7 @@ const movieCreate = async (
     .trim();
 
   const path = `
-    ${
-      hostUrlGet(
-        req
-      )
-    }/output/${
+    /output/${
       movieFilenameString
     }.gif
   `
@@ -278,8 +273,8 @@ const movieCreate = async (
       hostUrlGet(
         req
       )
-    }/movies/${
-      movieFilenameString
+    }/${
+      path
     }
   `
     .trim();
@@ -434,10 +429,6 @@ const movieGet = async (
           };
         }
       )
-  );
-
-  await movieWrite(
-    movie
   );
 
   return (

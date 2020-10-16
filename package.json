@@ -10,7 +10,7 @@
     "MONGO_LOCAL_URI": "mongodb://localhost:27017/lwd",
     "MONGO_REMOTE_URI": "mongodb+srv://pyratin:didi1234@cluster0.9h098.mongodb.net/lwd",
     "GENRE": "public-domain",
-    "HERO": "YOU!",
+    "HERO": "YOU",
     "FB_APP_ID": "248823225550982"
   },
   "scripts": {
@@ -55,6 +55,7 @@
     "found": "^0.5.9",
     "found-relay": "^0.8.2",
     "found-scroll": "^1.0.0",
+    "html-escaper": "^3.0.0",
     "ink": "^3.0.3",
     "ink-select-input": "^4.0.0",
     "ink-text-input": "^4.0.0",

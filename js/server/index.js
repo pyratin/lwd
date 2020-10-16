@@ -19,6 +19,8 @@ import mediaOutputFolderInit from
   './fns/mediaOutputFolderInit';
 import deckTitleRouteHandle 
   from './fns/deckTitleRouteHandle';
+import outputGifRouteHandle 
+  from './fns/outputGifRouteHandle';
 import schemaUpdate from './fns/schemaUpdate';
 
 (
@@ -41,6 +43,23 @@ import schemaUpdate from './fns/schemaUpdate';
         'ejs'
       )
       
+      .get(
+        '/output/:gif.gif',
+        (
+          req,
+          res,
+          next
+        ) => {
+
+          return outputGifRouteHandle(
+            db,
+            req,
+            res,
+            next
+          );
+        }
+      )
+
       .use(
         express.static(
           path.join(

@@ -91,10 +91,6 @@ fragment MovieSearch_viewer on Viewer {
   ...MovieSearchResultItem_viewer
 }
 
-fragment Share_viewer on Viewer {
-  id
-}
-
 fragment SplashCharacter_viewer on Viewer {
   id
 }
@@ -110,7 +106,6 @@ fragment SplashSpoofInput_viewer on Viewer {
 fragment Splash_viewer on Viewer {
   ...SplashCharacters_viewer
   ...SplashSpoofInput_viewer
-  ...Share_viewer
 }
 
 fragment Viewer_viewer on Viewer {
@@ -279,12 +274,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2b27514f5f49bb31c3c1be826bb98f20",
+    "cacheID": "d07d927360c5c85fd837ae177d29fdfe",
     "id": null,
     "metadata": {},
     "name": "clientQuery",
     "operationKind": "query",
-    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment Carousel_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer on Viewer {\n  id\n  decks(first: 1) {\n    edges {\n      node {\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n  ...Carousel_viewer\n  ...DeckRefresh_viewer\n}\n\nfragment DeckRefresh_viewer on Viewer {\n  id\n}\n\nfragment Deck_viewer on Viewer {\n  ...DeckDetail_viewer\n}\n\nfragment Footer_viewer on Viewer {\n  id\n}\n\nfragment Header_viewer on Viewer {\n  ...MovieSearch_viewer\n}\n\nfragment Home_viewer on Viewer {\n  id\n}\n\nfragment MovieSearchResultItem_viewer on Viewer {\n  id\n}\n\nfragment MovieSearch_viewer on Viewer {\n  ...MovieSearchResultItem_viewer\n}\n\nfragment Share_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n  ...Share_viewer\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n  deckTitle\n  ...Header_viewer\n  ...Home_viewer\n  ...Deck_viewer\n  ...Footer_viewer\n}\n"
+    "text": "query clientQuery {\n  viewer {\n    ...Viewer_viewer\n    id\n  }\n}\n\nfragment Card_viewer on Viewer {\n  id\n}\n\nfragment Carousel_viewer on Viewer {\n  id\n}\n\nfragment DeckDetail_viewer on Viewer {\n  id\n  decks(first: 1) {\n    edges {\n      node {\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  ...DeckNode_viewer\n}\n\nfragment DeckNode_viewer on Viewer {\n  ...Splash_viewer\n  ...Card_viewer\n  ...Carousel_viewer\n  ...DeckRefresh_viewer\n}\n\nfragment DeckRefresh_viewer on Viewer {\n  id\n}\n\nfragment Deck_viewer on Viewer {\n  ...DeckDetail_viewer\n}\n\nfragment Footer_viewer on Viewer {\n  id\n}\n\nfragment Header_viewer on Viewer {\n  ...MovieSearch_viewer\n}\n\nfragment Home_viewer on Viewer {\n  id\n}\n\nfragment MovieSearchResultItem_viewer on Viewer {\n  id\n}\n\nfragment MovieSearch_viewer on Viewer {\n  ...MovieSearchResultItem_viewer\n}\n\nfragment SplashCharacter_viewer on Viewer {\n  id\n}\n\nfragment SplashCharacters_viewer on Viewer {\n  ...SplashCharacter_viewer\n}\n\nfragment SplashSpoofInput_viewer on Viewer {\n  id\n}\n\nfragment Splash_viewer on Viewer {\n  ...SplashCharacters_viewer\n  ...SplashSpoofInput_viewer\n}\n\nfragment Viewer_viewer on Viewer {\n  id\n  deckTitle\n  ...Header_viewer\n  ...Home_viewer\n  ...Deck_viewer\n  ...Footer_viewer\n}\n"
   }
 };
 })();

@@ -3,8 +3,6 @@
 import fs from 'fs';
 import path from 'path';
 
-const outputFolderPathString = 'media/output';
-
 export default (
   (
     movie
@@ -12,15 +10,10 @@ export default (
 
     const outputPath = path.join(
       process.cwd(),
-      outputFolderPathString,
       `
-        ${
-          movie.title
-        }_${
-          movie.genre
-        }_${
-          movie.hero
-        }.gif
+        media/${
+          movie.path
+        }
       `
         .trim()
     );
