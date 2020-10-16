@@ -3,6 +3,7 @@
 import {
   genreGet,
   heroGet,
+  hostUrlGet,
   outputResGet,
   fbAppIdGet
 } from './variable';
@@ -36,9 +37,40 @@ export default async (
     db,
     req
   );
-  console.log('title', movie.title);
-  console.log('url', movie.url);
-  console.log('path', movie.path);
+
+  let url = `
+    ${
+      hostUrlGet(
+        req
+      )
+    }${
+      req.path
+    }
+  `
+    .trim();
+
+  let queryString = `
+    ?genre=${
+      genre
+    }&hero=${
+      hero
+    }
+  `
+    .trim();
+
+  url = `
+    ${
+      url
+    }${
+      queryString
+    }
+  `
+    .trim();
+
+  console.log('movie.title', movie.title);
+  console.log('movie.url', movie.url);
+  console.log('movie.path', movie.path);
+  console.log('url', url);
 
   return res.render(
     'index',
@@ -53,10 +85,10 @@ export default async (
       `,
       description: movie.description,
       type: 'article',
-      url: movie.url,
+      url: url,
       image: {
-        path: movie.path,
-        type: 'image/gif',
+        url: 'https://lwd-pyratin.herokuapp.com/placeholder.jpeg',
+        type: 'image/jpeg',
         width: outputResGet(),
         height: outputResGet()
       }

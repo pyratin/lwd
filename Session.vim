@@ -206,12 +206,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 16 - ((10 * winheight(0) + 17) / 34)
+let s:l = 43 - ((27 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-16
-normal! 05|
+43
+normal! 030|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -231,12 +231,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 110 - ((13 * winheight(0) + 17) / 34)
+let s:l = 118 - ((21 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-110
-normal! 036|
+118
+normal! 019|
 tabedit js/server/fns/deckTitleRouteHandle.js
 set splitbelow splitright
 set nosplitbelow
@@ -256,12 +256,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 55 - ((26 * winheight(0) + 17) / 34)
+let s:l = 90 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-55
-normal! 021|
+90
+normal! 011|
 tabedit js/server/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
