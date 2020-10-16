@@ -273,7 +273,7 @@ const movieCreate = async (
       hostUrlGet(
         req
       )
-    }/${
+    }${
       path
     }
   `
