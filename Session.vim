@@ -28,7 +28,7 @@ badd +50 utils/webpack/webpackConfigBase.js
 badd +1 js/client/Components/Splash/index.js
 badd +1 js/client/Components/Splash/SplashCharacters.js
 badd +34 js/server/schema/mutations/fns/cardsRenderedGet.js
-badd +85 views/index.ejs
+badd +29 views/index.ejs
 badd +25 utils/webpack/webpackConfigDev.js
 badd +82 js/server/schema/mutations/fns/deckRenderDetailsAssignedGet.js
 badd +10 js/server/schema/mutations/fns/cardsMetaAssignedGet.js
@@ -131,12 +131,37 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 29 - ((28 * winheight(0) + 17) / 34)
+let s:l = 70 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-29
-normal! 09|
+70
+normal! 07|
+tabedit js/server/fns/movieOutputGifRouteHandle.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 42 - ((32 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+42
+normal! 0
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -156,11 +181,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 117 - ((12 * winheight(0) + 17) / 34)
+let s:l = 127 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-117
+127
 normal! 0
 tabedit js/server/fns/deckTitleRouteHandle.js
 set splitbelow splitright
@@ -181,12 +206,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 51 - ((25 * winheight(0) + 17) / 34)
+let s:l = 3 - ((2 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-51
-normal! 014|
+3
+normal! 04|
 tabedit js/server/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
@@ -206,12 +231,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 102 - ((22 * winheight(0) + 17) / 34)
+let s:l = 105 - ((25 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-102
-normal! 0
+105
+normal! 010|
 tabedit js/server/data/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -837,7 +862,7 @@ exe s:l
 normal! zt
 12
 normal! 016|
-tabnext 3
+tabnext 5
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
