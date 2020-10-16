@@ -35,6 +35,7 @@ export default async (
     db,
     req
   );
+  console.log(movie.title, movie.hero, movie.params);
 
   return res.render(
     'index',

@@ -68,7 +68,7 @@ badd +31 js/client/mutations/MovieSearch.js
 badd +17 js/client/mutations/MovieCreate.js
 badd +51 js/client/Components/Deck/DeckRefresh.js
 badd +25 js/server/schema/mutations/fns/mediawikiFetch.js
-badd +13 js/server/fns/movieOutputGifRouteHandle.js
+badd +42 js/server/fns/movieOutputGifRouteHandle.js
 badd +56 views/movies.ejs
 badd +98 js/server/fns/variable.js
 badd +103 js/server/schema/mutations/fns/deckCardsSpoofedGet.js
@@ -106,7 +106,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 17) / 34)
+let s:l = 13 - ((12 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -131,37 +131,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 70 - ((35 * winheight(0) + 18) / 36)
+let s:l = 32 - ((25 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-70
-normal! 07|
-tabedit js/server/fns/movieOutputGifRouteHandle.js
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 42 - ((34 * winheight(0) + 18) / 36)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-42
-normal! 0
+32
+normal! 05|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -862,7 +837,7 @@ exe s:l
 normal! zt
 12
 normal! 016|
-tabnext 2
+tabnext 4
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
