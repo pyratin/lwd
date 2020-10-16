@@ -93,6 +93,20 @@ const mongoUriGet = () => {
   }
 };
 
+const genreGet = () => {
+
+  return (
+    process.env.npm_package_config_GENRE
+  );
+};
+
+const heroGet = () => {
+
+  return (
+    process.env.npm_package_config_HERO
+  );
+};
+
 export {
   titleGet,
   portGet,
@@ -101,5 +115,7 @@ export {
   hostUrlGet,
   mongoLocalUriGet,
   mongoRemoteUriGet,
-  mongoUriGet
+  mongoUriGet,
+  genreGet,
+  heroGet
 };

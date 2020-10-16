@@ -1,11 +1,13 @@
 'use strict';
 
-import movieCreate 
-  from '~/js/server/schema/mutations/movieCreate';
 import {
+  genreGet,
+  heroGet,
   hostUrlGet,
   outputResGet
 } from './variable';
+import movieCreate 
+  from '~/js/server/schema/mutations/movieCreate';
 
 export default async (
   db,
@@ -16,18 +18,20 @@ export default async (
   const deckTitle = req.params.deckTitle;
 
   const genre = req.query.genre || 
-    process.env.npm_package_config_GENRE;
+    genreGet();
 
   const hero = req.query.hero ||
-    'you';
+    heroGet();
 
-  const deck = await movieCreate(
+  const movie = await movieCreate(
     deckTitle,
     {
       spoofInput: {
         hero
       },
-      genre
+      genre,
+      outputType: 'movie',
+      createFlag: true
     },
     db,
     req
@@ -69,16 +73,14 @@ export default async (
         ${
           hero
         } in ${
-          deck.splash.title
+          movie.title
         }
       `,
-      description: deck.cards[
-        0
-      ]
-        .text,
+      description: movie.description,
       url,
       image: {
-        path: deck.splash.poster,
+        path: movie.path,
+        type: 'image/gif',
         width: outputResGet(),
         height: outputResGet()
       }

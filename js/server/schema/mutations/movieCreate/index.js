@@ -20,6 +20,7 @@ import {
 import movieSearch from 
   '../movieSearch';
 import {
+  movieFindOne,
   movieCreate as movieCreateFn
 } from '~/js/server/data/movie';
 import movieWrite from '../fns/movieWrite';
@@ -251,7 +252,16 @@ const movieCreate = async (
   req
 ) => {
 
-  const movieId = new ObjectID();
+  const movieFilenameString = `
+    ${
+      movie.title
+    }_${
+      movie.genre
+    }_${
+      movie.hero
+    }
+  `
+    .trim();
 
   const path = `
     ${
@@ -259,7 +269,7 @@ const movieCreate = async (
         req
       )
     }/output/${
-      movieId.toString()
+      movieFilenameString
     }.gif
   `
     .trim();
@@ -270,14 +280,14 @@ const movieCreate = async (
         req
       )
     }/movies/${
-      movieId.toString()
+      movieFilenameString
     }
   `
     .trim();
 
   return movieCreateFn(
     {
-      _id: movieId
+      _id: new ObjectID()
     },
     {
       $set: {
@@ -385,6 +395,57 @@ const deckGet = async (
   }
 };
 
+const movieGet = async (
+  deck,
+  spoofInput,
+  genre,
+  db
+) => {
+
+  const movie = (
+    await movieFindOne(
+      {
+        title: deck.splash.title,
+        hero: spoofInput.hero,
+        genre
+      },
+      undefined,
+      db
+    )
+  ) ||
+  (
+    await gifRenderedGet(
+      deck,
+      db
+    )
+      .then(
+        (
+          base64
+        ) => {
+
+          return {
+            title: deck.splash.title,
+            description: deck.cards[
+              0
+            ]
+              .text,
+            hero: spoofInput.hero,
+            genre,
+            base64
+          };
+        }
+      )
+  );
+
+  await movieWrite(
+    movie
+  );
+
+  return (
+    movie
+  );
+};
+
 const outputGet = async (
   text,
   spoofInput,
@@ -411,27 +472,18 @@ const outputGet = async (
       'deck'
     ) :
 
-      return Promise.resolve(
+      return (
         deck
       );
 
     default :
 
-      return gifRenderedGet(
+      return movieGet(
         deck,
+        spoofInput,
+        genre,
         db
-      )
-        .then(
-          (
-            base64
-          ) => {
-
-            return {
-              title: deck.splash.title,
-              base64
-            };
-          }
-        );
+      );
   }
 };
 
@@ -465,17 +517,7 @@ const outputCreatedGet = (
         output,
         db,
         req
-      )
-        .then(
-          (
-            movie
-          ) => {
-
-            return movieWrite(
-              movie
-            );
-          }
-        );
+      );
 
     default :
 
