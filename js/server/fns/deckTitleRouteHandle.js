@@ -36,6 +36,7 @@ export default async (
     db,
     req
   );
+  console.log(movie.title, movie.url, movie.path);
 
   return res.render(
     'index',
@@ -49,7 +50,7 @@ export default async (
       `,
       description: movie.description,
       type: 'article',
-      url: movie.path,
+      url: movie.url,
       image: {
         path: movie.path,
         type: 'image/gif',

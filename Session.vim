@@ -112,6 +112,31 @@ exe s:l
 normal! zt
 13
 normal! 018|
+tabedit views/movies.ejs
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 49 - ((33 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+49
+normal! 0
 tabedit js/server/fns/movieIdRouteHandle.js
 set splitbelow splitright
 set nosplitbelow
@@ -156,11 +181,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 32 - ((22 * winheight(0) + 17) / 34)
+let s:l = 36 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-32
+36
 normal! 0
 tabedit views/index.ejs
 set splitbelow splitright
@@ -181,12 +206,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 39 - ((25 * winheight(0) + 17) / 34)
+let s:l = 42 - ((33 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-39
-normal! 05|
+42
+normal! 030|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -206,11 +231,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 100 - ((10 * winheight(0) + 17) / 34)
+let s:l = 76 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-100
+76
 normal! 07|
 tabedit js/server/fns/deckTitleRouteHandle.js
 set splitbelow splitright
@@ -231,12 +256,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 63 - ((10 * winheight(0) + 17) / 34)
+let s:l = 58 - ((29 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-63
-normal! 09|
+58
+normal! 0
 tabedit js/server/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
@@ -887,7 +912,7 @@ exe s:l
 normal! zt
 12
 normal! 016|
-tabnext 6
+tabnext 7
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
