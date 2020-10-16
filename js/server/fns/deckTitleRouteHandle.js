@@ -3,7 +3,6 @@
 import {
   genreGet,
   heroGet,
-  hostUrlGet,
   outputResGet
 } from './variable';
 import movieCreate 
@@ -37,35 +36,6 @@ export default async (
     req
   );
 
-  let url = `
-    ${
-      hostUrlGet(
-        req
-      )
-    }${
-      req.path
-    }
-  `
-    .trim();
-
-  let queryString = `
-    ?genre=${
-      genre
-    }&hero=${
-      hero
-    }
-  `
-    .trim();
-
-  url = `
-    ${
-      url
-    }${
-      queryString
-    }
-  `
-    .trim();
-
   return res.render(
     'index',
     {
@@ -77,7 +47,7 @@ export default async (
         }
       `,
       description: movie.description,
-      url,
+      url: movie.path,
       image: {
         path: movie.path,
         type: 'image/gif',
