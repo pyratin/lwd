@@ -3,6 +3,7 @@
 import {
   genreGet,
   heroGet,
+  hostUrlGet,
   outputResGet
 } from './variable';
 import movieCreate 
@@ -35,7 +36,38 @@ export default async (
     db,
     req
   );
-  console.log(movie.title, movie.hero, movie.params);
+
+  let url = `
+    ${
+      hostUrlGet(
+        req
+      )
+    }${
+      req.path
+    }
+  `
+    .trim();
+
+  let queryString = `
+    ?genre=${
+      genre
+    }&hero=${
+      hero
+    }
+  `
+    .trim();
+
+  url = `
+    ${
+      url
+    }${
+      queryString
+    }
+  `
+    .trim();
+
+  console.log(url);
+  console.log(movie.title, movie.hero, movie.path);
 
   return res.render(
     'index',
@@ -48,7 +80,7 @@ export default async (
         }
       `,
       description: movie.description,
-      url: movie.path,
+      url,
       image: {
         path: movie.path,
         type: 'image/gif',
