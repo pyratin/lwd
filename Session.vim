@@ -131,7 +131,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 70 - ((33 * winheight(0) + 17) / 34)
+let s:l = 70 - ((35 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -156,7 +156,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 42 - ((32 * winheight(0) + 17) / 34)
+let s:l = 42 - ((34 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -181,11 +181,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 127 - ((33 * winheight(0) + 17) / 34)
+let s:l = 115 - ((23 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-127
+115
 normal! 0
 tabedit js/server/fns/deckTitleRouteHandle.js
 set splitbelow splitright
@@ -206,11 +206,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 17) / 34)
+let s:l = 52 - ((28 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
+52
 normal! 04|
 tabedit js/server/fns/variable.js
 set splitbelow splitright
@@ -862,7 +862,7 @@ exe s:l
 normal! zt
 12
 normal! 016|
-tabnext 5
+tabnext 2
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
