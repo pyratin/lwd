@@ -109,6 +109,7 @@ import schemaUpdate from './fns/schemaUpdate';
             {
               title: titleGet(),
               description: 'just messing ... :D',
+              type: 'article',
               url: hostUrlGet(
                 req
               ),

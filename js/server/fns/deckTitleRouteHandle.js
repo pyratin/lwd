@@ -78,7 +78,8 @@ export default async (
         }
       `,
       description: movie.description,
-      url,
+      type: 'article',
+      url: url,
       image: {
         path: movie.path,
         type: 'image/gif',
