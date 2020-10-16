@@ -107,6 +107,7 @@ import schemaUpdate from './fns/schemaUpdate';
           return res.render(
             'index',
             {
+              fbAppId: fbAppIdGet(),
               title: titleGet(),
               description: 'just messing ... :D',
               type: 'article',
@@ -117,8 +118,7 @@ import schemaUpdate from './fns/schemaUpdate';
                 path: '/root.jpeg',
                 width: outputResGet(),
                 height: outputResGet()
-              },
-              fbAppId: fbAppIdGet()
+              }
             }
           );
         }

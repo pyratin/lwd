@@ -36,11 +36,14 @@ export default async (
     db,
     req
   );
-  console.log(movie.title, movie.url, movie.path);
+  console.log('title', movie.title);
+  console.log('url', movie.url);
+  console.log('path', movie.path);
 
   return res.render(
     'index',
     {
+      fbAppId: fbAppIdGet(),
       title: `
         ${
           movie.hero
@@ -56,8 +59,7 @@ export default async (
         type: 'image/gif',
         width: outputResGet(),
         height: outputResGet()
-      },
-      fbAppId: fbAppIdGet()
+      }
     }
   );
 };

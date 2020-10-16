@@ -131,11 +131,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 49 - ((33 * winheight(0) + 17) / 34)
+let s:l = 24 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-49
+24
 normal! 0
 tabedit js/server/fns/movieIdRouteHandle.js
 set splitbelow splitright
@@ -206,12 +206,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 42 - ((33 * winheight(0) + 17) / 34)
+let s:l = 16 - ((10 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-42
-normal! 030|
+16
+normal! 05|
 tabedit js/server/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -231,12 +231,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 76 - ((0 * winheight(0) + 17) / 34)
+let s:l = 110 - ((13 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-76
-normal! 07|
+110
+normal! 036|
 tabedit js/server/fns/deckTitleRouteHandle.js
 set splitbelow splitright
 set nosplitbelow
@@ -256,12 +256,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 58 - ((29 * winheight(0) + 17) / 34)
+let s:l = 55 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-58
-normal! 0
+55
+normal! 021|
 tabedit js/server/fns/variable.js
 set splitbelow splitright
 set nosplitbelow
