@@ -107,6 +107,13 @@ const heroGet = () => {
   );
 };
 
+const fbAppIdGet = () => {
+
+  return (
+    process.env.npm_package_config_FB_APP_ID
+  );
+};
+
 export {
   titleGet,
   portGet,
@@ -117,5 +124,6 @@ export {
   mongoRemoteUriGet,
   mongoUriGet,
   genreGet,
-  heroGet
+  heroGet,
+  fbAppIdGet
 };

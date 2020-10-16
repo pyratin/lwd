@@ -4,7 +4,8 @@ import {
   genreGet,
   heroGet,
   hostUrlGet,
-  outputResGet
+  outputResGet,
+  fbAppIdGet
 } from './variable';
 import movieCreate 
   from '~/js/server/schema/mutations/movieCreate';
@@ -66,9 +67,6 @@ export default async (
   `
     .trim();
 
-  console.log(url);
-  console.log(movie.title, movie.hero, movie.path);
-
   return res.render(
     'index',
     {
@@ -86,7 +84,8 @@ export default async (
         type: 'image/gif',
         width: outputResGet(),
         height: outputResGet()
-      }
+      },
+      fbAppId: fbAppIdGet()
     }
   );
 };
