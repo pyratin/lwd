@@ -3,7 +3,6 @@
 import {
   genreGet,
   heroGet,
-  hostUrlGet,
   outputResGet,
   fbAppIdGet
 } from './variable';
@@ -38,35 +37,6 @@ export default async (
     req
   );
 
-  let url = `
-    ${
-      hostUrlGet(
-        req
-      )
-    }${
-      req.path
-    }
-  `
-    .trim();
-
-  let queryString = `
-    ?genre=${
-      genre
-    }&hero=${
-      hero
-    }
-  `
-    .trim();
-
-  url = `
-    ${
-      url
-    }${
-      queryString
-    }
-  `
-    .trim();
-
   return res.render(
     'index',
     {
@@ -79,7 +49,7 @@ export default async (
       `,
       description: movie.description,
       type: 'article',
-      url: url,
+      url: movie.path,
       image: {
         path: movie.path,
         type: 'image/gif',
