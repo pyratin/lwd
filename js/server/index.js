@@ -16,9 +16,6 @@ import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
 import mediaOutputFolderInit from 
   './fns/mediaOutputFolderInit';
-import movieGifRouteHandle from 
-  './fns/movieOutputGifRouteHandle';
-import movieIdRouteHandle from './fns/movieIdRouteHandle';
 import deckTitleRouteHandle 
   from './fns/deckTitleRouteHandle';
 import schemaUpdate from './fns/schemaUpdate';
@@ -78,36 +75,6 @@ import schemaUpdate from './fns/schemaUpdate';
               }
             }
           )(
-            req,
-            res
-          );
-        }
-      )
-
-      .get(
-        '/output/:movieGif(\\w{24}.gif)',
-        (
-          req,
-          res
-        ) => {
-
-          return movieGifRouteHandle(
-            db,
-            req,
-            res
-          );
-        }
-      )
-
-      .get(
-        '/movies/:movieId(\\w{24})',
-        (
-          req,
-          res
-        ) => {
-
-          return movieIdRouteHandle(
-            db,
             req,
             res
           );

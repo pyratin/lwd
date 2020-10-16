@@ -41,7 +41,7 @@ export default async (
     {
       title: `
         ${
-          hero
+          movie.hero
         } in ${
           movie.title
         }
