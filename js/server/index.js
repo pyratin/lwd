@@ -10,7 +10,8 @@ import {
   nodeEnvGet,
   mongoUriGet,
   outputResGet,
-  hostUrlGet
+  hostUrlGet,
+  fbAppIdGet
 } from './fns/variable';
 import schema from './schema';
 import mongoClientConnect from './fns/mongoClientConnect';
@@ -115,7 +116,8 @@ import schemaUpdate from './fns/schemaUpdate';
                 path: '/root.jpeg',
                 width: outputResGet(),
                 height: outputResGet()
-              }
+              },
+              fbAppId: fbAppIdGet()
             }
           );
         }
