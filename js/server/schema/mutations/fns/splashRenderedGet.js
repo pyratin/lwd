@@ -247,6 +247,7 @@ const finalCompositedGetFn = (
 };
 
 const finalCompositedGet = async (
+  hero,
   movieTitle,
   moviePosterBase64,
   charactersMontageBase64
@@ -258,13 +259,22 @@ const finalCompositedGet = async (
 
   const border = 10;
 
+  const text = `
+    <b>${
+      hero.toUpperCase()
+    }</b>\\n<small>in</small>\\n${
+      movieTitle
+    }
+  `
+    .trim();
+
   if (
     !charactersMontageBase64
   ) {
 
     return base64TextCompositedGet(
       moviePosterBase64,
-      movieTitle,
+      text,
       res,
       pointsize,
       border
@@ -285,7 +295,7 @@ const finalCompositedGet = async (
 
   splash = await base64TextCompositedGet(
     splash,
-    movieTitle,
+    text,
     res,
     pointsize,
     border
@@ -302,6 +312,7 @@ export default async (
     poster,
     characters: _characters
   },
+  hero,
   db
 ) => {
 
@@ -320,6 +331,7 @@ export default async (
     );
 
   const splash = await finalCompositedGet(
+    hero,
     title,
     moviePosterBase64,
     charactersMontageBase64

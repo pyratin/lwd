@@ -410,6 +410,7 @@ const movieGet = async (
   (
     await gifRenderedGet(
       deck,
+      spoofInput.hero,
       db
     )
       .then(

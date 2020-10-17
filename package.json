@@ -99,7 +99,6 @@
     "forever": "^3.0.0",
     "graphql": "^15.1.0",
     "graphql-relay": "^0.6.0",
-    "html-escaper": "^3.0.0",
     "latinize": "^0.4.1",
     "moment": "^2.27.0",
     "mongodb": "^3.5.9",

@@ -84,6 +84,7 @@ export default async (
     splash: _splash,
     cards: _cards
   },
+  hero,
   db
 ) => {
 
@@ -94,6 +95,7 @@ export default async (
 
   const splash = await splashRenderedGet(
     _splash,
+    hero,
     db
   );
 
