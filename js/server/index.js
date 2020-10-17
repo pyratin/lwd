@@ -134,7 +134,14 @@ import schemaUpdate from './fns/schemaUpdate';
                 req
               ),
               image: {
-                url: '/root.jpeg',
+                url: `
+                  ${
+                    hostUrlGet(
+                      req
+                    )
+                  }/root.jpeg
+                `
+                  .trim(),
                 type: 'image/jpeg',
                 width: outputResGet(),
                 height: outputResGet()
