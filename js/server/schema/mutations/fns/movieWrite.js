@@ -11,7 +11,7 @@ export default (
     const outputPath = path.join(
       process.cwd(),
       `
-        media/${
+        media${
           movie.path
         }
       `

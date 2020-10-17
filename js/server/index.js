@@ -135,6 +135,7 @@ import schemaUpdate from './fns/schemaUpdate';
               ),
               image: {
                 url: '/root.jpeg',
+                type: 'image/jpeg',
                 width: outputResGet(),
                 height: outputResGet()
               }

@@ -35,7 +35,7 @@
 
     <meta
       property = 'og:url'
-      content = '<%- image.url %>'
+      content = '<%- url %>'
     />
 
     <meta
@@ -68,7 +68,10 @@
     <div
       id = 'viewer'
     >
-      ...
+      <img 
+        src = '<%- image.url %>' 
+        alt = '<%= title %>'
+      />
     </div>
 
     <script
