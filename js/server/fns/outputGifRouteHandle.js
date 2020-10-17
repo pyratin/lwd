@@ -1,6 +1,5 @@
 'use strict';
 
-
 import {
   movieFindOne
 } from '~/js/server/data/movie';
@@ -38,10 +37,7 @@ export default async (
   );
 
   await movieWrite(
-    {
-      ...movie,
-      title: movie.title
-    }
+    movie
   );
 
   return next();

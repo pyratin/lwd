@@ -37,6 +37,11 @@ export default async (
     req
   );
 
+  const imageUrl = movie.url.replace(
+    /\s/g,
+    '%20'
+  );
+
   return res.render(
     'index',
     {
@@ -50,9 +55,9 @@ export default async (
       `,
       description: movie.description,
       type: 'article',
-      url: movie.url,
+      url: imageUrl,
       image: {
-        url: movie.url,
+        url: imageUrl,
         type: 'video.other',
         width: outputResGet(),
         height: outputResGet()
