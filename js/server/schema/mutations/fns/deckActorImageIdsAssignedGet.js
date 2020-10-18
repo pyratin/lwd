@@ -98,6 +98,7 @@ const starringActorsFlatlistGet = (
           ...memo,
           {
             ...character.actor,
+            _text: character.text,
             role: character.role,
             starringIndex: character.starringIndex
           }
@@ -347,12 +348,55 @@ const spoofActorsSortedGet = (
   );
 };
 
+const genreIdGet = async (
+  genre,
+  starringActor,
+  db
+) => {
+
+  const genreId = (
+    await genreFindOne(
+      {
+        text: genre
+      },
+      undefined,
+      db
+    )
+  )?._id;
+
+  const genreHeroId = (
+    starringActor.role ===
+    'hero'
+  ) &&
+    (
+      await genreFindOne(
+        {
+          text: starringActor._text
+            .toLowerCase()
+        },
+        undefined,
+        db
+      )
+    )?._id;
+
+  return (
+    genreHeroId ||
+    genreId
+  );
+};
+
 const spoofActorsGetFn = async (
   starringActor,
-  genreId,
+  genre,
   spoofActorsPrevious,
   db
 ) => {
+
+  const genreId = await genreIdGet(
+    genre,
+    starringActor,
+    db
+  );
 
   const role = starringActor.role;
 
@@ -395,16 +439,6 @@ const spoofActorsGet = async (
   db
 ) => {
 
-  const genreId = (
-    await genreFindOne(
-      {
-        text: genre
-      },
-      undefined,
-      db
-    )
-  )?._id;
-
   return starringActors.reduce(
     (
       memo,
@@ -418,7 +452,7 @@ const spoofActorsGet = async (
 
           return spoofActorsGetFn(
             starringActor,
-            genreId,
+            genre,
             res,
             db
           )

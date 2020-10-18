@@ -79,6 +79,25 @@ const sentenceIsNormalizableGet = (
   );
 };
 
+const fragmentWordCountGet = (
+  fragment
+) => {
+
+  if (
+    !fragment
+  ) {
+
+    return (
+      null
+    );
+  }
+
+  return fragment.split(
+    /\s/
+  )
+    .length;
+};
+
 const wordPOSMatchConditionGet = (
   word,
   sentence,
@@ -347,7 +366,7 @@ const sentenceShortenedByNNPGetFn = (
   }
 
   let matches = _sentence.matchAll(
-    /(?<![,]\s)(?<=\s)[A-Z]+[a-z]*(?=\s)(?!\s[A-Z0-9])/g
+    /(?<![,]\s)(?<![A-Z]+[a-z]*\s)(?<=\s)[A-Z]+[a-z]*(?=\s)/g
   );
 
   let NNPs = [
@@ -389,17 +408,15 @@ const sentenceShortenedByNNPGetFn = (
         _NNP
       ) ?
         (
-          _NNP.distance +
-          _NNP.text 
-            .length
+          _NNP.distance
         ) :
         0;
 
       const sliceEnd = (
         NNP.distance -
-        distanceOffset +
-        NNP.text
-          .length
+        (
+          distanceOffset
+        )
       );
 
       const fragmentPrevious = memo[
@@ -450,30 +467,38 @@ const sentenceShortenedByNNPGetFn = (
 
       if (
         (
-          fragmentPreviousLength +
-          fragment.length
-        ) <
-        sentenceMaxLength
+          (
+            fragmentPreviousLength +
+            fragment.length
+          ) >
+          sentenceMaxLength
+        ) &&
+        (
+          fragmentWordCountGet(
+            fragment
+          ) >=
+          3
+        )
       ) {
 
         return [
-          ...memo.slice(
-            0, -1
-          ),
-          `
-            ${
-              fragmentPrevious
-            } ${
-              fragment
-            }
-          `
-            .trim()
+          ...memo,
+          fragment
         ];
       }
 
       return [
-        ...memo,
-        fragment
+        ...memo.slice(
+          0, -1
+        ),
+        `
+          ${
+            fragmentPrevious
+          } ${
+            fragment
+          }
+        `
+          .trim()
       ];
     },
     []
@@ -836,25 +861,6 @@ const sentenceProcessedGet = (
   return (
     sentence
   );
-};
-
-const fragmentWordCountGet = (
-  fragment
-) => {
-
-  if (
-    !fragment
-  ) {
-
-    return (
-      null
-    );
-  }
-
-  return fragment.split(
-    /\s/
-  )
-    .length;
 };
 
 const fragmentsShortHandledGetFn = (
