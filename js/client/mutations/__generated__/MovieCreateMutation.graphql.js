@@ -33,7 +33,9 @@ export type MovieCreateMutationResponse = {|
     +output: ?{|
       +splash?: ?{|
         +title: ?string
-      |}
+      |},
+      +path?: ?string,
+      +base64?: ?string,
     |},
   |}
 |};
@@ -59,6 +61,10 @@ mutation MovieCreateMutation(
         splash {
           title
         }
+      }
+      ... on Movie {
+        path
+        base64
       }
     }
   }
@@ -129,6 +135,27 @@ v3 = {
   ],
   "type": "Deck",
   "abstractKey": null
+},
+v4 = {
+  "kind": "InlineFragment",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "path",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "base64",
+      "storageKey": null
+    }
+  ],
+  "type": "Movie",
+  "abstractKey": null
 };
 return {
   "fragment": {
@@ -154,7 +181,8 @@ return {
             "name": "output",
             "plural": false,
             "selections": [
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -195,7 +223,8 @@ return {
                 "name": "__typename",
                 "storageKey": null
               },
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -205,16 +234,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5999c72a01c527fd328d6c215c71235a",
+    "cacheID": "a25d472804807707e7dec6ab163b0ae0",
     "id": null,
     "metadata": {},
     "name": "MovieCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckTitle\n    }\n    output {\n      __typename\n      ... on Deck {\n        splash {\n          title\n        }\n      }\n    }\n  }\n}\n"
+    "text": "mutation MovieCreateMutation(\n  $input: MovieCreateInput!\n) {\n  movieCreate(input: $input) {\n    viewer {\n      id\n      deckTitle\n    }\n    output {\n      __typename\n      ... on Deck {\n        splash {\n          title\n        }\n      }\n      ... on Movie {\n        path\n        base64\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cb03cf7275a693eddb629cc10d28c16b';
+(node/*: any*/).hash = 'dc25e86349614890ace645151241f18d';
 
 module.exports = node;

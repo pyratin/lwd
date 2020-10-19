@@ -17,10 +17,14 @@ const mutation = graphql`
         deckTitle
       },
       output {
-        ...on Deck {
+        ... on Deck {
           splash {
             title
           }
+        },
+        ... on Movie {
+          path,
+          base64
         }
       }
     }

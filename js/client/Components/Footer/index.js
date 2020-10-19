@@ -6,19 +6,57 @@ import {
   graphql
 } from 'react-relay';
 
-const Footer = () => {
+import Share from 'Components/Share';
+
+const Footer = (
+  props
+) => {
+
+  const contactRender = () => {
+
+    return (
+      <div
+        className = 'contact p-2 text-secondary'
+      >
+        pyratin@gmail.com
+      </div>
+    );
+  };
+
+  const shareRender = () => {
+
+    return (
+      <div
+        className = 'shareContainer ml-auto text-secondary'
+      >
+        <Share
+          viewer = {
+            props.viewer
+          }
+          match = {
+            props.match
+          }
+        />
+      </div>
+    );
+  };
 
   return (
     <div
       className = {
         `
           Footer 
-          p-2
-          text-secondary 
+          d-flex
+          align-items-center
         `
       }
     >
-      pyratin@gmail.com
+      {
+        contactRender()
+      }
+      {
+        shareRender()
+      }
     </div>
   );
 };
@@ -28,7 +66,7 @@ export default createFragmentContainer(
   {
     viewer: graphql`
       fragment Footer_viewer on Viewer {
-        id
+        ...Share_viewer
       }
     `
   }

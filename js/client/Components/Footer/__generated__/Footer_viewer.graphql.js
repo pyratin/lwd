@@ -8,11 +8,12 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
+type Share_viewer$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type Footer_viewer$ref: FragmentReference;
 declare export opaque type Footer_viewer$fragmentType: Footer_viewer$ref;
 export type Footer_viewer = {|
-  +id: ?string,
+  +$fragmentRefs: Share_viewer$ref,
   +$refType: Footer_viewer$ref,
 |};
 export type Footer_viewer$data = Footer_viewer;
@@ -31,17 +32,15 @@ const node/*: ReaderFragment*/ = {
   "name": "Footer_viewer",
   "selections": [
     {
-      "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "Share_viewer"
     }
   ],
   "type": "Viewer",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '1c8978b558592969d5bb52532d0f60be';
+(node/*: any*/).hash = '8cbbe9cf23a64ff072912c1998eca1e2';
 
 module.exports = node;
