@@ -18,6 +18,7 @@ import {
 } from 'fns';
 import MovieCreateMutation from 'mutations/MovieCreate';
 import downloadjs from 'downloadjs';
+import Loading from 'Components/Loading';
 
 const ShareDownload = (
   props
@@ -74,7 +75,15 @@ const ShareDownload = (
         base64,
         filename
       )
-    );
+    )
+      .then(
+        () => {
+
+          return Promise.resolve(
+            props.onShareCompleted()
+          );
+        }
+      );
   };
 
   let clientMutationId = 0;
@@ -155,6 +164,31 @@ const ShareDownload = (
     return movieCreate();
   };
 
+  const downloadIconRender = () => {
+
+    return (
+      <i 
+        className = 'fa fa-download fa-fw'
+      ></i>
+    );
+  };
+
+  const loadingIconRender = () => {
+
+    return (
+      <Loading/>
+    );
+  };
+
+  const iconRender = () => {
+
+    return (
+      !loading
+    ) ?
+      downloadIconRender() :
+      loadingIconRender();
+  };
+
   return (
     <button 
       ref = {
@@ -173,9 +207,9 @@ const ShareDownload = (
         onClickHandle
       }
     >
-      <i 
-        className = 'fa fa-download fa-fw'
-      ></i>
+      {
+        iconRender()
+      }
     </button>
   );
 };

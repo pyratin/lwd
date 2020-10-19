@@ -14,6 +14,7 @@ import {
 } from '@emotion/core';
 
 import ShareDownload from './ShareDownload';
+import ShareLink from './ShareLink';
 
 const Share = (
   props
@@ -51,6 +52,15 @@ const Share = (
     );
   };
 
+  const onShareCompletedHandle = () => {
+
+    return Promise.resolve(
+      dropdownMenuDisplaySet(
+        'none'
+      )
+    );
+  };
+
   const shareDownloadRender = () => {
 
     return (
@@ -60,6 +70,26 @@ const Share = (
         }
         match = {
           props.match
+        }
+        onShareCompleted = {
+          onShareCompletedHandle
+        }
+      />
+    );
+  };
+
+  const shareLinkRender = () => {
+
+    return (
+      <ShareLink
+        viewer = {
+          props.viewer
+        }
+        match = {
+          props.match
+        }
+        onShareCompleted = {
+          onShareCompletedHandle
         }
       />
     );
@@ -85,6 +115,9 @@ const Share = (
         >
           {
             shareDownloadRender()
+          }
+          {
+            shareLinkRender()
           }
         </div>
 
@@ -127,7 +160,8 @@ export default createFragmentContainer(
   {
     viewer: graphql`
       fragment Share_viewer on Viewer {
-        ...ShareDownload_viewer
+        ...ShareDownload_viewer,
+        ...ShareLink_viewer
       }
     `
   }

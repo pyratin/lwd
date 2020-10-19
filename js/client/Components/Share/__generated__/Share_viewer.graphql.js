@@ -9,11 +9,12 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 type ShareDownload_viewer$ref = any;
+type ShareLink_viewer$ref = any;
 import type { FragmentReference } from "relay-runtime";
 declare export opaque type Share_viewer$ref: FragmentReference;
 declare export opaque type Share_viewer$fragmentType: Share_viewer$ref;
 export type Share_viewer = {|
-  +$fragmentRefs: ShareDownload_viewer$ref,
+  +$fragmentRefs: ShareDownload_viewer$ref & ShareLink_viewer$ref,
   +$refType: Share_viewer$ref,
 |};
 export type Share_viewer$data = Share_viewer;
@@ -35,12 +36,17 @@ const node/*: ReaderFragment*/ = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ShareDownload_viewer"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "ShareLink_viewer"
     }
   ],
   "type": "Viewer",
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'e96dcd4012f1cea916a9c5d44d5b5dbf';
+(node/*: any*/).hash = 'ae06a024f5f69be381982227f0406291';
 
 module.exports = node;
