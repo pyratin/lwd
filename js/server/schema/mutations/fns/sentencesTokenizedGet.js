@@ -11,6 +11,7 @@ export default (
     {
       abbreviations: [
         'US',
+        'Sr',
         'al',
         'adj',
         'assn',

@@ -70,6 +70,9 @@ const Carousel = (
             ride: false,
             interval
           }
+        )
+        .carousel(
+          'pause'
         );
     }
   );
@@ -93,7 +96,7 @@ const Carousel = (
         )
         .carousel(
           {
-            ride: false
+            ride: true
           }
         )
     );

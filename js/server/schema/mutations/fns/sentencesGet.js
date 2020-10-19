@@ -5,7 +5,7 @@ import wordsTaggedGet from './wordsTaggedGet';
 import parenthesisPurgedGet from './parenthesisPurgedGet';
 import VBGBlacklistGet from './VBGBlacklistGet';
 
-const sentenceNormalizeRegExp = /,\s/;
+const sentenceNormalizeRegExp = /,\s(?![A-Z])/;
 
 const sentencesParenthesisPurgedGet = (
   sentences 
