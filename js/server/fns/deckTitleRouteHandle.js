@@ -26,16 +26,30 @@ export default async (
   const movie = await movieCreate(
     deckTitle,
     {
-      spoofInput: {
-        hero
-      },
-      genre,
-      outputType: 'movie',
+      source: 'user',
       createFlag: true
     },
     db,
     req
-  );
+  )
+    .then(
+      () => {
+
+        return movieCreate(
+          deckTitle,
+          {
+            spoofInput: {
+              hero
+            },
+            genre,
+            outputType: 'movie',
+            createFlag: true
+          },
+          db,
+          req
+        );
+      }
+    );
 
   const imageUrl = movie.url.replace(
     /\s/g,

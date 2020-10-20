@@ -3,7 +3,6 @@
 import wordsTokenizedGet from './wordsTokenizedGet';
 import wordsTaggedGet from './wordsTaggedGet';
 import parenthesisPurgedGet from './parenthesisPurgedGet';
-import VBGBlacklistGet from './VBGBlacklistGet';
 
 const sentenceNormalizeRegExp = /,\s(?![A-Z])/;
 
@@ -128,47 +127,6 @@ const wordPOSMatchConditionGet = (
       return (
         word.tag === 
         'CC'
-      );
-
-    case (
-      'VBG'
-    ) :
-
-      return (
-        (
-          word.tag === 
-          'VBG'
-        ) &&
-        (
-          !!word.text
-            .match(
-              /ing$/
-            )
-        ) && 
-        (
-          !VBGBlacklistGet()
-            .find(
-              (
-                _VBGBlacklist
-              ) => {
-
-                return (
-                  word.text
-                    .match(
-                      new RegExp(
-                        `
-                          ^${
-                            _VBGBlacklist
-                          }$
-                        `
-                          .trim(),
-                        'i'
-                      )
-                    )
-                );
-              }
-            )
-        )
       );
   }
 };
@@ -834,12 +792,6 @@ const sentenceProcessedGet = (
   sentence = sentenceShortenedByPOSGet(
     sentence,
     'CC',
-    sentenceMaxLength
-  );
-
-  sentence = sentenceShortenedByPOSGet(
-    sentence,
-    'VBG',
     sentenceMaxLength
   );
 
