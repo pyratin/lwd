@@ -20,7 +20,7 @@ badd +122 js/client/Components/Deck/DeckDetail.js
 badd +1 js/client/Components/Deck/DeckNode.js
 badd +35 js/server/data/deck.js
 badd +203 js/server/data/index.js
-badd +164 js/server/schema/mutations/fns/deckGet.js
+badd +71 js/server/schema/mutations/fns/deckGet.js
 badd +1 utils/datasets/fns/decksDone.json
 badd +98 js/server/schema/mutations/fns/gifRenderedGet.js
 badd +71 js/client/Components/Card/index.js
@@ -161,11 +161,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 2 - ((1 * winheight(0) + 17) / 34)
+let s:l = 8 - ((7 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-2
+8
 normal! 03|
 tabedit js/server/index.js
 set splitbelow splitright
@@ -211,12 +211,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 45 - ((28 * winheight(0) + 17) / 34)
+let s:l = 1 - ((0 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-45
-normal! 05|
+1
+normal! 07|
 tabedit js/server/data/index.js
 set splitbelow splitright
 set nosplitbelow
@@ -342,6 +342,31 @@ exe s:l
 normal! zt
 71
 normal! 04|
+tabedit js/server/schema/mutations/fns/deckActorImageIdsAssignedGet.js
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 371 - ((9 * winheight(0) + 17) / 34)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+371
+normal! 05|
 tabedit js/server/schema/mutations/fns/sentencesGet.js
 set splitbelow splitright
 set nosplitbelow
@@ -761,7 +786,7 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 299 - ((33 * winheight(0) + 17) / 34)
+let s:l = 299 - ((26 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -842,7 +867,7 @@ exe s:l
 normal! zt
 26
 normal! 015|
-tabnext 5
+tabnext 11
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
